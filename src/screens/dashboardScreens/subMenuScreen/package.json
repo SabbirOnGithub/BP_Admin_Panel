@@ -1,0 +1,7 @@
+{
+    "name": "Dashboard Submenu Tab",
+    "version": "0.0.0",
+    "main": "SubMenuScreen.js",
+    "private": true
+  }
+  
