@@ -24,7 +24,7 @@ const listHomePageDatas = () => async (dispatch)=>{
     try{
         dispatch({type: HOMEPAGE_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/HomePage`);
-        dispatch({ type: HOMEPAGE_LIST_SUCCESS, payload: data.data });
+        dispatch({ type: HOMEPAGE_LIST_SUCCESS, payload: data.data ? data.data : []});
         console.log(data.data)
     }
     catch(error){

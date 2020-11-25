@@ -80,6 +80,9 @@ export default function Header(props) {
             />
           )}
         </IconButton>
+        <Toolbar>
+        <img src="logo.png" alt="logo" className={classes.logo} />
+      </Toolbar>
         <Typography variant="h6" weight="medium" className={classes.logotype}>
           Best Practicify
         </Typography>

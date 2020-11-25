@@ -35,7 +35,6 @@
     "tinycolor2": "^1.4.2"
   },
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "start": "react-scripts start",
     "dev": "PORT=3002 react-scripts start",
     "build": "react-scripts build",

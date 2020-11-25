@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, } from '@material-ui/core';
-import Controls from "../../components/controls/Controls";
-import { useForm, Form } from '../../components/useForm';
+import React, { useEffect } from 'react'
+import { Grid, Button} from '@material-ui/core';
+import Controls from "../../../components/controls/Controls";
+import { useForm, Form } from '../../../components/UseForm/useForm';
 
 
 const initialFValues = {
-    id: 0,
+    id: '',
     name: '',
     shortDescription: '',
     pictureName: '',
@@ -28,8 +28,8 @@ export default function SubMenuForm(props) {
             ...temp
         })
 
-        if (fieldValues == values)
-            return Object.values(temp).every(x => x == "")
+        if (fieldValues === values)
+            return Object.values(temp).every(x => x === "")
     }
 
     const {
@@ -38,13 +38,15 @@ export default function SubMenuForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        handleFileChange,
+        resetForm,
+        files
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            addOrEdit(values, resetForm);
+            addOrEdit(values, files, resetForm);
         }
     }
 
@@ -73,18 +75,20 @@ export default function SubMenuForm(props) {
                         onChange={handleInputChange}
                         error={errors.shortDescription}
                     />
-                    <Controls.Input
-                        label="Picture"
-                        name="pictureName"
+                    <div style={{margin:5}}>
+                    <Button
+                        variant="contained"
+                        component="label"
+                        >
+                        Upload File
+                         <input
                         type="file"
-                        value={values.pictureName}
-                        onChange={handleInputChange}
-                        error={errors.pictureName}
+                        onChange={handleFileChange}
+                        hidden
                     />
-                    
-                    {/* <input
-                        type="file"
-                    /> */}
+                    </Button>
+                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
+                    </div>
                     
                     <div>
                         <Controls.Button

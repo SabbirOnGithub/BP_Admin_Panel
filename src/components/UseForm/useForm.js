@@ -5,33 +5,39 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 
 
     const [values, setValues] = useState(initialFValues);
+    const [files, setFiles] = useState(null);
     const [errors, setErrors] = useState({});
 
     const handleInputChange = e => {
-        e.target.name === "pictureName" && console.log(e.target.files[0])
+        // e.target.name === "file" && console.log(e.target.files[0]) 
         const { name, value } = e.target
-        setValues({
-            ...values,
-            [name]: value
-        })
+            setValues({
+                ...values,
+                [name]: value
+            })
+       
         if (validateOnChange)
             validate({ [name]: value })
     }
-
+    const handleFileChange = e => {
+        e.target.files[0] && setFiles(e.target.files[0])
+    }
     const resetForm = () => {
         setValues(initialFValues);
+        setFiles(null)
         setErrors({})
     }
 
 
     return {
         values,
+        files,
         setValues,
         errors,
         setErrors,
         handleInputChange,
+        handleFileChange,
         resetForm
-
     }
 }
 

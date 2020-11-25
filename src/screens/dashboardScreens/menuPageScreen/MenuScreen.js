@@ -137,9 +137,6 @@ export default function MenuPageScreen() {
                                     />
                                 </Toolbar>
                             <Paper style={{overflow:"auto",backgroundColor:"transparent"}}>
-                            
-                                {/* {console.log(homePageDataList.homePageDatas)} */}
-                                
                                 <TblContainer>
                                     <TblHead />
                                     <TableBody>

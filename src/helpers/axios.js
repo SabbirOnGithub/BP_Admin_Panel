@@ -7,10 +7,12 @@ const baseURL = config.BASE_API_URL;
 let headers ={
     'Content-Type': 'application/json',
 };
-// headers.Content-Type = 'application/json';
-
+let multipartHeaders ={
+    'Content-Type': 'multipart/form-data',
+};
 if(userToken){
     headers.Authorization = `Bearer ${userToken}`; 
+    multipartHeaders.Authorization = `Bearer ${userToken}`; 
 }
 
 const axiosWithToken = axios.create({
@@ -20,4 +22,9 @@ const axiosWithToken = axios.create({
 const axiosWithoutToken = axios.create({
     baseURL:baseURL,
 });
-export { axiosWithToken, axiosWithoutToken };
+
+const axiosWithTokenAndMultipartData = axios.create({
+    baseURL:baseURL,
+    headers:multipartHeaders,
+});
+export { axiosWithToken, axiosWithoutToken, axiosWithTokenAndMultipartData };

@@ -25,10 +25,26 @@ import {
 const structure = [
   { id: 0, label: "Dashboard", link: "/dashboard", icon: <HomeIcon /> },
   {
-    id: 1, label: "Home Page", link: "/dashboard/homepage", icon: <TypographyIcon />,
+    id: 1,
+    label: "Home Page",
+    link: "/dashboard/homepage",
+    icon: <HomeIcon />,
+    children: [
+      { label: "Slider", link: "/dashboard/homepage" },
+      { label: "Short Intro", link: "/dashboard/homepage" },
+      { label: "Walk-through", link: "/dashboard/homepage" },
+      { label: "Consulting", link: "/dashboard/homepage" },
+      { label: "Core Values", link: "/dashboard/homepage" },
+    ],
   },
+  // {
+  //   id: 1, label: "Home Page", link: "/dashboard/homepage", icon: <TypographyIcon />,
+  // },
   {
     id: 2, label: "Menu", link: "/dashboard/menu", icon: <TypographyIcon />,
+  },
+  {
+    id: 3, label: "Sub Menu", link: "/dashboard/submenu", icon: <TypographyIcon />,
   },
   // {
   //   id: 4,

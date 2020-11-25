@@ -24,7 +24,7 @@ const listMenus = () => async (dispatch)=>{
     try{
         dispatch({type: MENU_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/Menu`);
-        dispatch({ type: MENU_LIST_SUCCESS, payload: data.data });
+        dispatch({ type: MENU_LIST_SUCCESS, payload: data.data ? data.data : [] });
         console.log(data.data)
     }
     catch(error){

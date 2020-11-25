@@ -1,5 +1,5 @@
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
-import { subMenuListReducer } from './reducers/subMenuReducers';
+import { subMenuDeleteReducer, subMenuDetailsReducer, subMenuListReducer, subMenuSaveReducer } from './reducers/subMenuReducers';
 import { homePageDataListReducer, homePageDataDetailsReducer, homePageDataSaveReducer,homePageDataDeleteReducer } from './reducers/homePageReducers';
 import { menuListReducer, menuDetailsReducer, menuSaveReducer,menuDeleteReducer } from './reducers/menuReducers';
 import thunk from 'redux-thunk';
@@ -14,6 +14,9 @@ const initialState={
 };
 const reducer = combineReducers({
     subMenuList:subMenuListReducer,
+    subMenuDetails: subMenuDetailsReducer,
+    subMenuSave: subMenuSaveReducer,
+    subMenuDelete: subMenuDeleteReducer,
     userSignin:userSigninReducer,
     userRegister: userRegisterReducer,
     userUpdate: userUpdateReducer,

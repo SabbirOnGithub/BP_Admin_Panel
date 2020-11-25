@@ -158,8 +158,6 @@ export default function HomePageScreen() {
                                 </Toolbar>
                             <Paper style={{overflow:"auto",backgroundColor:"transparent"}}>
                             
-                                {/* {console.log(homePageDataList.homePageDatas)} */}
-                                
                                 <TblContainer>
                                     <TblHead />
                                     <TableBody>
