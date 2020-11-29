@@ -44,7 +44,7 @@ export default function Widget({
             header
           ) : (
             <React.Fragment>
-              <Typography variant="h5" color="textSecondary" noWrap>
+              <Typography variant="h4" color="textSecondary" noWrap>
                 {title}
               </Typography>
               {!disableWidgetMenu && (
@@ -78,18 +78,18 @@ export default function Widget({
         onClose={() => setMoreMenuOpen(false)}
         disableAutoFocusItem
       >
-        <MenuItem>
-          <Typography>Edit</Typography>
+        <MenuItem 
+          onClick={() => { props.setOpenPopup(true); props.setRecordForEdit(null);  setMoreMenuOpen(false)}}
+        >
+          <Typography>Add New</Typography>
         </MenuItem>
-        <MenuItem>
-          <Typography>Copy</Typography>
-        </MenuItem>
-        <MenuItem>
+        
+        {/* <MenuItem>
           <Typography>Delete</Typography>
         </MenuItem>
         <MenuItem>
           <Typography>Print</Typography>
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </div>
   );

@@ -52,6 +52,7 @@ const  CustomLayout = props => {
           alignItems={"center"}
           justifyContent="space-between"
         >
+{/*           
           <div>
             <Link
               color={'primary'}
@@ -119,6 +120,7 @@ const  CustomLayout = props => {
               </IconButton>
             </Link>
           </div>
+         */}
         </Box>
       </div>
     </>

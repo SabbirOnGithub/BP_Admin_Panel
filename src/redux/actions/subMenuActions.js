@@ -58,6 +58,7 @@ const saveSubMenu = (submenu, subMenuId) => async (dispatch) =>{
         }
         }else{
             console.log('update')
+            console.log(submenu)
             // const { data } = await axiosWithToken.put("/HomePage/" + homePageData.id , homePageData);
             const { data } = await axiosWithTokenAndMultipartData.put("/SubMenu/Update", submenu);
             console.log(data)

@@ -7,14 +7,20 @@ const useStyles = makeStyles(theme => ({
         paddingTop: theme.spacing(3),
         '& thead th': {
             fontWeight: '600',
-            color: '#ffffff',
-            backgroundColor: theme.palette.primary.light,
+            // color: '#ffffff',
+            color: '#4A4A4A',
+            // backgroundColor: '#F3F5FF',
+            fontSize:'1.5rem',
+            borderTop:'none',
         },
         '& tbody td': {
             fontWeight: '300',
+            fontSize:'1.5rem',
+
         },
         '& tbody tr:hover': {
-            backgroundColor: '#fffbf2',
+            // backgroundColor: '#fffbf2',
+            backgroundColor: '#F3F5FF',
             cursor: 'pointer',
         },
     },

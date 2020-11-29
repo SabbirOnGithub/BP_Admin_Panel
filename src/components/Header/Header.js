@@ -80,14 +80,12 @@ export default function Header(props) {
             />
           )}
         </IconButton>
-        <Toolbar>
-        <img src="logo.png" alt="logo" className={classes.logo} />
-      </Toolbar>
-        <Typography variant="h6" weight="medium" className={classes.logotype}>
+        <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" height='50px' width='50px' className={classes.logotypeImage} />
+        <Typography variant="h2" weight="medium" className={classes.logotype}>
           Best Practicify
         </Typography>
         <div className={classes.grow} />
-        <div
+        {/* <div
           className={classNames(classes.search, {
             [classes.searchFocused]: isSearchOpen,
           })}
@@ -107,7 +105,7 @@ export default function Header(props) {
               input: classes.inputInput,
             }}
           />
-        </div>
+        </div> */}
         <IconButton
           aria-haspopup="true"
           color="inherit"
@@ -127,7 +125,7 @@ export default function Header(props) {
           classes={{ paper: classes.profileMenu }}
           disableAutoFocusItem
         >
-          <div className={classes.profileMenuUser}>
+          {/* <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
               Tajul
             </Typography>
@@ -147,7 +145,7 @@ export default function Header(props) {
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Profile
-          </MenuItem>
+          </MenuItem> */}
           <div className={classes.profileMenuUser}>
             <Typography
               className={classes.profileMenuLink}

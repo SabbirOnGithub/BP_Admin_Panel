@@ -9,6 +9,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
+import PageTitle from "../../../components/PageTitle/PageTitle";
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -145,6 +146,8 @@ export default function HomePageScreen() {
         <>
             {
                 loading ? "Loading" :
+                <>
+                    <PageTitle title="Basic Info" />
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                         <Toolbar>
@@ -229,6 +232,7 @@ export default function HomePageScreen() {
                             />
                         </Grid>
                     </Grid>
+                </> 
             }
         </>
     )

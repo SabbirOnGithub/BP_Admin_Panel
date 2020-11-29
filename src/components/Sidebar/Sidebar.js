@@ -30,11 +30,12 @@ const structure = [
     link: "/dashboard/homepage",
     icon: <HomeIcon />,
     children: [
-      { label: "Slider", link: "/dashboard/homepage" },
-      { label: "Short Intro", link: "/dashboard/homepage" },
-      { label: "Walk-through", link: "/dashboard/homepage" },
-      { label: "Consulting", link: "/dashboard/homepage" },
-      { label: "Core Values", link: "/dashboard/homepage" },
+      { label: "Basic Info", link: "/dashboard/homepage" },
+      { label: "Slider", link: "/dashboard/homepage/5" },
+      { label: "Short Intro", link: "/dashboard/homepage/1" },
+      { label: "Walk-through", link: "/dashboard/homepage/2" },
+      { label: "Consulting", link: "/dashboard/homepage/3" },
+      { label: "Core Values", link: "/dashboard/homepage/4" },
     ],
   },
   // {

@@ -9,9 +9,15 @@ export default makeStyles(theme => ({
     fontWeight: 500,
     fontSize: 18,
     whiteSpace: "nowrap",
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
+    // [theme.breakpoints.down("xs")]: {
+    //   display: "none",
+    // },
+  },
+  logotypeImage: {
+    whiteSpace: "nowrap",
+    // [theme.breakpoints.down("xs")]: {
+    //   display: "none",
+    // },
   },
   appBar: {
     width: "100vw",
@@ -20,6 +26,8 @@ export default makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    overflow:'auto',
+
   },
   toolbar: {
     paddingLeft: theme.spacing(2),

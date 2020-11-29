@@ -9,8 +9,8 @@ const initialFValues = {
     name: '',
     shortDescription: '',
     pictureName: '',
-    hireDate: new Date(),
-    isPermanent: false,
+    isActive: false,
+    displayOrder:'',
 }
 
 export default function SubMenuForm(props) {
@@ -22,8 +22,10 @@ export default function SubMenuForm(props) {
             temp.fullName = fieldValues.name ? "" : "This field is required."
         if ('shortDescription' in fieldValues)
             temp.shortDescription = fieldValues.shortDescription ? "" : "This field is required."
-        if ('pictureName' in fieldValues)
-            temp.mobile = fieldValues.shortDescription ? "" : "This field is required."
+        if ('displayOrder' in fieldValues)
+            // temp.displayOrder = fieldValues.displayOrder && typeof(fieldValues.displayOrder)==='number'? "" : "This field is required."
+            temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
+        
         setErrors({
             ...temp
         })
@@ -74,6 +76,21 @@ export default function SubMenuForm(props) {
                         value={values.shortDescription}
                         onChange={handleInputChange}
                         error={errors.shortDescription}
+                    />
+                    <Controls.Input
+                        label="Display Order"
+                        name="displayOrder"
+                        type="number"
+                        value={values.displayOrder}
+                        onChange={handleInputChange}
+                        error={errors.displayOrder}
+                    />
+                    <Controls.Checkbox
+                        name="isActive"
+                        label="isActive"
+                        value={values.isActive}
+                        onChange={handleInputChange}
+                        error={errors.isActive}
                     />
                     <div style={{margin:5}}>
                     <Button
