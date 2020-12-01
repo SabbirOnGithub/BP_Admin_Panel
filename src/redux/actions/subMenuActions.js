@@ -21,7 +21,7 @@ const listSubMenus = () => async (dispatch)=>{
     try{
         dispatch({type: SUBMENU_LIST_REQUEST});
         const { data } = await axiosWithoutToken.get('/SubMenu',{isHomePageSubMenu:true});
-        console.log(data)
+        // console.log(data)
         dispatch({ type: SUBMENU_LIST_SUCCESS, payload: data.data ? data.data : [] });
     }
     catch(error){
@@ -43,23 +43,18 @@ const detailsSubMenu = (submenuId)=> async (dispatch) =>{
 };
 
 const saveSubMenu = (submenu, subMenuId) => async (dispatch) =>{
-    console.log(subMenuId)
     try{
         dispatch({type: SUBMENU_SAVE_REQUEST, payload:submenu })
         if(!subMenuId){
             console.log('create')
         //eslint-disable-next-line
         const formatHomePageData = delete submenu.id;
-        // console.log(homePageData)
         const { data } = await axiosWithTokenAndMultipartData.post("/SubMenu/Create", submenu)
         console.log(data)
         if(data.status===true){
             dispatch({type: SUBMENU_SAVE_SUCCESS, payload: data });
         }
         }else{
-            console.log('update')
-            console.log(submenu)
-            // const { data } = await axiosWithToken.put("/HomePage/" + homePageData.id , homePageData);
             const { data } = await axiosWithTokenAndMultipartData.put("/SubMenu/Update", submenu);
             console.log(data)
             if(data.status===true){
@@ -77,8 +72,8 @@ const saveSubMenu = (submenu, subMenuId) => async (dispatch) =>{
 };
 
 const deleteSubMenu = (submenuId)=> async (dispatch, getState) =>{
-    console.log(submenuId);
-    console.log(typeof(submenuId));
+    // console.log(submenuId);
+    // console.log(typeof(submenuId));
     try{
         dispatch({type:SUBMENU_DELETE_REQUEST});
         const { data } = await axiosWithToken.delete("/SubMenu/" + submenuId); 

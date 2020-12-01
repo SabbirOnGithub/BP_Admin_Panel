@@ -5,6 +5,7 @@ import { menuListReducer, menuDetailsReducer, menuSaveReducer,menuDeleteReducer 
 import thunk from 'redux-thunk';
 import Cookie from "js-cookie";
 import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer } from './reducers/userReducers';
+import { homePageSliderDeleteReducer, homePageSliderDetailsReducer, homePageSliderListReducer, homePageSliderSaveReducer } from './reducers/homePageSliderReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -30,6 +31,10 @@ const reducer = combineReducers({
     menuDetails: menuDetailsReducer,
     menuSave: menuSaveReducer,
     menuDelete: menuDeleteReducer,
+    homePageSliderList:homePageSliderListReducer,
+    homePageSliderDetails: homePageSliderDetailsReducer,
+    homePageSliderSave: homePageSliderSaveReducer,
+    homePageSliderDelete: homePageSliderDeleteReducer,
 
 
 

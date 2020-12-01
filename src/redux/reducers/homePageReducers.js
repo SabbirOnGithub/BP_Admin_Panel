@@ -32,7 +32,7 @@ function homePageDataDetailsReducer(state={homePageData:{}},action){
         case HOMEPAGE_DETAILS_REQUEST:
             return { loading:true };
         case HOMEPAGE_DETAILS_SUCCESS:
-            return { loading:false, product:action.payload };
+            return { loading:false, homePageData:action.payload };
         case HOMEPAGE_DETAILS_FAIL:
             return { loading:false, error: action.payload };
         default:

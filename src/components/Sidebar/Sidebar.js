@@ -31,7 +31,7 @@ const structure = [
     icon: <HomeIcon />,
     children: [
       { label: "Basic Info", link: "/dashboard/homepage" },
-      { label: "Slider", link: "/dashboard/homepage/5" },
+      { label: "Slider", link: "/dashboard/homePageSlider" },
       { label: "Short Intro", link: "/dashboard/homepage/1" },
       { label: "Walk-through", link: "/dashboard/homepage/2" },
       { label: "Consulting", link: "/dashboard/homepage/3" },

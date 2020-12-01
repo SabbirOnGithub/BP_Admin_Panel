@@ -85,6 +85,8 @@ export default function HomePageScreen() {
 
     const addOrEdit = async (homePageData, resetForm) => {
         dispatch(saveHomePageData(homePageData));
+        setRecordForEdit(null)
+        setOpenPopup(false)
         resetForm();
     }
 
@@ -115,8 +117,8 @@ export default function HomePageScreen() {
     useEffect(() => {
         if (successSave) {
             // resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
+            // setRecordForEdit(null)
+            // setOpenPopup(false)
             setNotify({
                 isOpen: true,
                 message: 'Submitted Successfully',
@@ -145,7 +147,7 @@ export default function HomePageScreen() {
 
         <>
             {
-                loading ? "Loading" :
+                loading || loadingSave || loadingDelete ? "Loading" :
                 <>
                     <PageTitle title="Basic Info" />
                     <Grid container spacing={4}>

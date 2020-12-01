@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SubMenuForm from "./SubMenuForm";
+import HomepageSliderForm from "./HomePageSliderForm";
 import { Grid, Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -11,12 +11,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
-import Widget from "../../../components/Widget";
+import Widget from "../../../components/Widget/Widget";
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { deleteSubMenu, listSubMenus, saveSubMenu } from '../../../redux/actions/subMenuActions';
+import { deleteHomePageSlider, listHomePageSliders, saveHomePageSlider } from '../../../redux/actions/homePageSliderActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -40,25 +40,25 @@ const useStyles = makeStyles(theme => ({
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'name', label: 'Name' },
-    { id: 'shortDescription', label: 'Short Description' },
-    { id: 'pictureName', label: 'Picture' },
-    { id: 'isActive', label: 'isActive' },
-    { id: 'displayOrder', label: 'displayOrder' },
+    { id: 'title', label: 'Title' },
+    { id: 'subTitle', label: 'Sub Title' },
+    { id: 'isActive', label: 'Is Active' },
+    { id: 'displayOrder', label: 'DisplayOrder' },
+    { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function SubMenuScreen() {
+export default function HomePageSliderScreen() {
 
-    const subMenuList = useSelector(state => state.subMenuList)
-    const { subMenus, loading, error } = subMenuList;
+    const homePageSliderList = useSelector(state => state.homePageSliderList)
+    const { homePageSliders, loading, error } = homePageSliderList;
     //eslint-disable-next-line
-    const subMenuSave = useSelector(state => state.subMenuSave);
+    const homePageSliderSave = useSelector(state => state.homePageSliderSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = subMenuSave;
-    const subMenuDelete = useSelector(state => state.subMenuDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = homePageSliderSave;
+    const homePageSliderDelete = useSelector(state => state.homePageSliderDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = subMenuDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = homePageSliderDelete;
 
 
     const classes = useStyles();
@@ -73,31 +73,30 @@ export default function SubMenuScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(subMenus, headCells, filterFn);
+    } = useTable(homePageSliders, headCells, filterFn);
 
-    const addOrEdit = (subMenu, files, resetForm) => {
+    const addOrEdit = (homePageSlider, files, resetForm) => {
 
         const formData = new FormData();
-        console.log(subMenu.id)
-        console.log(subMenu.displayOrder)
-        subMenu.id && formData.append('Id', subMenu.id)
-        formData.append('Name', subMenu.name)
-        formData.append('ShortDescription', subMenu.shortDescription)
-        formData.append('DisplayOrder', subMenu.displayOrder)
-        formData.append('isActive', subMenu.isActive)
+        console.log(homePageSlider.id)
+        console.log(homePageSlider.displayOrder)
+        homePageSlider.id && formData.append('Id', homePageSlider.id)
+        formData.append('Title', homePageSlider.title)
+        formData.append('SubTitle', homePageSlider.subTitle)
+        formData.append('DisplayOrder', homePageSlider.displayOrder)
+        formData.append('IsActive', homePageSlider.isActive)
         formData.append('file', files)
 
         if (formData) {
-            dispatch(saveSubMenu(formData, subMenu.id));
+            dispatch(saveHomePageSlider(formData, homePageSlider.id));
             setRecordForEdit(null)
             setOpenPopup(false)
-            resetForm();
         }
 
     }
 
     const openInPopup = item => {
-        console.log(subMenus)
+        console.log(homePageSliders)
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -107,7 +106,7 @@ export default function SubMenuScreen() {
             ...confirmDialog,
             isOpen: false
         })
-        dispatch(deleteSubMenu(id));
+        dispatch(deleteHomePageSlider(id));
 
     }
 
@@ -136,8 +135,8 @@ export default function SubMenuScreen() {
         //     // history.pushState('')
         //     console.log('error is'+error)
         // }
-        dispatch(listSubMenus());
-        console.log(subMenus)
+        dispatch(listHomePageSliders());
+        // console.log(homepageSliders)
 
         return () => {
             // 
@@ -150,12 +149,12 @@ export default function SubMenuScreen() {
         <div>
             {loading || loadingSave || loadingDelete ? "Loading ...." :
                 <>
-                    <PageTitle title="Sub Menus" />
+                    <PageTitle title="Home Page Slider" />
 
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="Sub Menu List Table"
+                                title="Home Page Slider Table"
                                 upperTitle
                                 noBodyPadding
                                 // bodyClass={classes.tableWidget}
@@ -179,14 +178,15 @@ export default function SubMenuScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{item.name}</TableCell>
-                                                        <TableCell>{item.shortDescription}</TableCell>
+                                                        <TableCell>{item.title}</TableCell>
+                                                        <TableCell>{item.subTitle}</TableCell>
                                                         <TableCell>{item.isActive ? 'Yes': 'No'}</TableCell>
                                                         <TableCell>{item.displayOrder ? item.displayOrder: 'no input given'}</TableCell>
                                                         <TableCell>
                                                             {
                                                                 item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }</TableCell>
+                                                            }
+                                                        </TableCell>
                                                         <TableCell>
                                                             <Controls.ActionButton
                                                                 color="primary"
@@ -214,11 +214,11 @@ export default function SubMenuScreen() {
                                     <TblPagination />
                                 </Paper>
                                 <Popup
-                                    title="Submenu Form"
+                                    title="Home Page Slider Form"
                                     openPopup={openPopup}
                                     setOpenPopup={setOpenPopup}
                                 >
-                                    <SubMenuForm
+                                    <HomepageSliderForm
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit} />
                                 </Popup>

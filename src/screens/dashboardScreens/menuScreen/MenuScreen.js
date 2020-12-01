@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
-import Widget from "../../../components/Widget";
+import Widget from "../../../components/Widget/Widget";
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -71,8 +71,10 @@ export default function MenuPageScreen() {
     } = useTable(menus, headCells, filterFn);
 
     const addOrEdit = async (menu, resetForm) => {
-        console.log(menu)
+        // console.log(menu)
         dispatch(saveMenu(menu));
+        setRecordForEdit(null)
+        setOpenPopup(false)
         resetForm();
     }
 
@@ -96,8 +98,8 @@ export default function MenuPageScreen() {
     useEffect(() => {
         if (successSave) {
             // resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
+            // setRecordForEdit(null)
+            // setOpenPopup(false)
             setNotify({
                 isOpen: true,
                 message: 'Submitted Successfully',
@@ -126,7 +128,7 @@ export default function MenuPageScreen() {
 
         <>
             {
-                loading ? "Loading" :
+                loading || loadingSave || loadingDelete ? "Loading" :
                     <>
                         <PageTitle title="Menus" />
 

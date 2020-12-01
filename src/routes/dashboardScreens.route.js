@@ -4,7 +4,8 @@ import CustomLayout from "../components/Layout/CustomLayout";
 import HomeScreen from "../screens/dashboardScreens/HomeScreen";
 import SubMenuScreen from "../screens/dashboardScreens/subMenuScreen/SubMenuScreen";
 import HomePageScreen from '../screens/dashboardScreens/homePageScreen/HomePageScreen';
-import MenuScreen from '../screens/dashboardScreens/menuPageScreen/MenuScreen';
+import MenuScreen from '../screens/dashboardScreens/menuScreen/MenuScreen';
+import HomepageSliderScreen from '../screens/dashboardScreens/homePageSliderScreen/HomePageSliderScreen';
 
 const DashboardScreensRoute = (props) => {
   return (<div>
@@ -14,6 +15,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/submenu`} component={SubMenuScreen} />
         <Route exact path={`${props.match.path}/homePage`} component={HomePageScreen} />
         <Route exact path={`${props.match.path}/menu`} component={MenuScreen} />
+        <Route exact path={`${props.match.path}/homePageSlider`} component={HomepageSliderScreen} />
 
       </Switch>
     </CustomLayout>
