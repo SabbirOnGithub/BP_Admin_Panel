@@ -9,8 +9,26 @@ const {
     USER_UPDATE_SUCCESS,
     USER_UPDATE_FAILED,
     USER_LOGOUT,
+    USER_LIST_REQUEST,
+    USER_LIST_SUCCESS,
+    USER_LIST_FAILED,
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAILED,
 } = require("../constants/userConstants");
 
+function userListReducer(state={users:[]},action){
+    switch(action.type){
+        case USER_LIST_REQUEST:
+            return { loading:true, users:[] };
+        case USER_LIST_SUCCESS:
+            return { loading:false, users:action.payload };
+        case USER_LIST_FAILED:
+            return { loading:false, error: action.payload };
+        default:
+            return state;
+    }
+};
 const userSigninReducer = ( state={}, action ) =>{
     switch(action.type){
         case USER_SIGNIN_REQUEST:
@@ -52,5 +70,18 @@ function userUpdateReducer(state = {}, action) {
       default: return state;
     }
 };
+
+function userDeleteReducer(state={userInfo:{}},action){
+    switch(action.type){
+        case USER_DELETE_REQUEST:
+            return { loading:true };
+        case USER_DELETE_SUCCESS:
+            return { loading:false, success:true, userInfo:action.payload };
+        case USER_DELETE_FAILED:
+            return { loading:false, error: action.payload };
+        default:
+            return state;
+    }
+};
   
-export { userSigninReducer, userRegisterReducer, userUpdateReducer };
+export { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer };

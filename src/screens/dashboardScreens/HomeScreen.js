@@ -1,9 +1,9 @@
 import React from 'react';
 
-function HomeScreen(props) {
+function HomeScreen() {
     return(
       <>
-      <h1> {props.title? props.title : 'dashboard home' } </h1>
+      <h1> {'dashboard home' } </h1>
       </>
     )
 }

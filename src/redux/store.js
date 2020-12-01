@@ -4,7 +4,7 @@ import { homePageDataListReducer, homePageDataDetailsReducer, homePageDataSaveRe
 import { menuListReducer, menuDetailsReducer, menuSaveReducer,menuDeleteReducer } from './reducers/menuReducers';
 import thunk from 'redux-thunk';
 import Cookie from "js-cookie";
-import { userSigninReducer, userRegisterReducer, userUpdateReducer } from './reducers/userReducers';
+import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer } from './reducers/userReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -13,13 +13,15 @@ const initialState={
     userSignin:{ userInfo }
 };
 const reducer = combineReducers({
+    userList:userListReducer,
+    userSignin:userSigninReducer,
+    userRegister: userRegisterReducer,
+    userUpdate: userUpdateReducer,
+    userDelete: userDeleteReducer,
     subMenuList:subMenuListReducer,
     subMenuDetails: subMenuDetailsReducer,
     subMenuSave: subMenuSaveReducer,
     subMenuDelete: subMenuDeleteReducer,
-    userSignin:userSigninReducer,
-    userRegister: userRegisterReducer,
-    userUpdate: userUpdateReducer,
     homePageDataList:homePageDataListReducer,
     homePageDataDetails: homePageDataDetailsReducer,
     homePageDataSave: homePageDataSaveReducer,

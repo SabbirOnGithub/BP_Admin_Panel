@@ -4,8 +4,8 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 export default makeStyles(theme => ({
   logotype: {
     color: "white",
-    marginLeft: theme.spacing(2.5),
-    marginRight: theme.spacing(2.5),
+    marginLeft: theme.spacing(.5),
+    marginRight: theme.spacing(.5),
     fontWeight: 500,
     fontSize: 18,
     whiteSpace: "nowrap",
@@ -27,7 +27,6 @@ export default makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflow:'auto',
-
   },
   toolbar: {
     paddingLeft: theme.spacing(2),
