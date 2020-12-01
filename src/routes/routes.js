@@ -17,7 +17,6 @@ const Baserouter = (props) => {
         <Route exact={true} path="/" component={WebsiteHomeScreen} />
         <Route exact={true} path="/signin" component={SignInScreen} />
         <AdminProtected  path="/dashboard" component={DashboardScreensRoute} />
-        <AdminProtected  path="/" component={DashboardScreensRoute} /> 
         <Route component={ErrorScreen} />
         </Switch>
     </div>
