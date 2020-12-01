@@ -149,6 +149,16 @@ export default function Header(props) {
           <div className={classes.profileMenuUser}>
             <Typography
               className={classes.profileMenuLink}
+              component="a"
+              color="primary"
+              href="/"
+            >
+             Visit Website Page
+            </Typography>
+          </div>
+          <div className={classes.profileMenuUser}>
+            <Typography
+              className={classes.profileMenuLink}
               color="primary"
               onClick={handleLogout}
             >

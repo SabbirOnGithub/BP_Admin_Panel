@@ -14,10 +14,11 @@ const Baserouter = (props) => {
 
     <div>
         <Switch>
-        <Route exact={true} path="/" component={WebsiteHomeScreen} />
-        <Route exact={true} path="/signin" component={SignInScreen} />
-        <AdminProtected  path="/dashboard" component={DashboardScreensRoute} />
-        <Route component={ErrorScreen} />
+          <Route exact={true} path="/" component={WebsiteHomeScreen} />
+          <Route exact={true} path="/signin" component={SignInScreen} />
+          <AdminProtected  path="/dashboard" component={DashboardScreensRoute} />
+          
+          <Route component={ErrorScreen} />
         </Switch>
     </div>
   )
