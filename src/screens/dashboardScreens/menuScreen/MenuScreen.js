@@ -69,17 +69,39 @@ export default function MenuPageScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(menus, headCells, filterFn);
+    
+    const dispatch = useDispatch();
+
+    // add/update promise
+    const addItem = (item) => new Promise((resolve, reject) => {
+        dispatch(saveMenu(item));
+        resolve();
+    })
+
+    // delete promise
+    const deleteItem = (id) => new Promise((resolve, reject) => {
+        dispatch(deleteMenu(id));
+        resolve();
+    })
 
     const addOrEdit = async (menu, resetForm) => {
-        // console.log(menu)
-        dispatch(saveMenu(menu));
-        setRecordForEdit(null)
-        setOpenPopup(false)
-        resetForm();
+        addItem(menu)
+        .then(()=>{
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
+            if (successSave) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Submitted Successfully',
+                    type: 'success'
+                })
+            }
+        })
+        
     }
 
     const openInPopup = item => {
-        // console.log(subMenus)
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -89,39 +111,22 @@ export default function MenuPageScreen() {
             ...confirmDialog,
             isOpen: false
         })
-        dispatch(deleteMenu(id));
+        deleteItem(id)
+        .then(()=>{
+            if (successDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Deleted Successfully',
+                    type: 'success'
+                })
+            }
+        })
     }
 
-
-    const dispatch = useDispatch();
-
     useEffect(() => {
-        if (successSave) {
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            setNotify({
-                isOpen: true,
-                message: 'Submitted Successfully',
-                type: 'success'
-            })
-        }
-        if (successDelete) {
-            setNotify({
-                isOpen: true,
-                message: 'Deleted Successfully',
-                type: 'success'
-            })
-        }
-        // if(error){
-        //     // history.pushState('')
-        //     console.log('error is'+error)
-        // }
         dispatch(listMenus());
-
         return () => {
             // 
-
         }
     }, [dispatch, successSave, successDelete])
     return (

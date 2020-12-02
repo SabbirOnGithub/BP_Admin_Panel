@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import FooterSectionForm from "./FooterSectionForm";
-import { Grid, Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar } from '@material-ui/core';
+import { Grid, Paper, makeStyles, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
-import AddIcon from '@material-ui/icons/Add';
 import Popup from "../../../components/Popup/Popup";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseIcon from '@material-ui/icons/Close';
@@ -69,6 +68,8 @@ export default function FooterSectionScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(footerSections, headCells, filterFn);
+    
+    const dispatch = useDispatch();
 
     // add/update promise
     const addItem = (item) => new Promise((resolve, reject) => {
@@ -85,21 +86,21 @@ export default function FooterSectionScreen() {
     const addOrEdit = async (footerSection, resetForm) => {
         //call add item promise 
         addItem(footerSection)
-            .then(() => {
-                if (successSave) {
-                    resetForm()
-                    setRecordForEdit(null)
-                    setOpenPopup(false)
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submitted Successfully',
-                        type: 'success'
-                    })
-                }
-            })
-            .catch(() => {
+        .then(() => {
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
+            if (successSave) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Submitted Successfully',
+                    type: 'success'
+                })
+            }
+        })
+        .catch(() => {
 
-            })
+        })
 
     }
 
@@ -109,25 +110,22 @@ export default function FooterSectionScreen() {
     }
 
     const onDelete = id => {
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        })
         //call delete item promise 
         deleteItem(id)
-            .then(() => {
-                setConfirmDialog({
-                    ...confirmDialog,
-                    isOpen: false
+        .then(() => {
+            if (successDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Deleted Successfully',
+                    type: 'success'
                 })
-                if (successDelete) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Deleted Successfully',
-                        type: 'success'
-                    })
-                }
-            })
+            }
+        })
     }
-
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(listFooterSections());
