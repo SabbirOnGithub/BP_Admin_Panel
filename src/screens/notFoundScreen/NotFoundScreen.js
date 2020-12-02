@@ -1,15 +1,15 @@
 import React from "react";
 import { Grid, Paper, Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+// import { Link, useHistory } from "react-router-dom";
 import classnames from "classnames";
-
 // styles
 import useStyles from "./styles";
 
 
-export default function NotFoundScreen() {
+export default function NotFoundScreen(props) {
   var classes = useStyles();
-
+ 
   return (
     <Grid container className={classes.container}>
       <div className={classes.logotype}>
@@ -49,6 +49,18 @@ export default function NotFoundScreen() {
         >
           Back to Home
         </Button>
+        {/* <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          // to='/'
+          onClick={()=>{props.history.goBack()}}
+          size="large"
+          className={classes.backButton}
+        >
+          Back
+        </Button> */}
+        
       </Paper>
     </Grid>
   );

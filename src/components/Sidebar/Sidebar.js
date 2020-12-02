@@ -38,14 +38,14 @@ const structure = [
       { label: "Core Values", link: "/dashboard/homepage/4" },
     ],
   },
-  // {
-  //   id: 1, label: "Home Page", link: "/dashboard/homepage", icon: <TypographyIcon />,
-  // },
   {
     id: 2, label: "Menu", link: "/dashboard/menu", icon: <TypographyIcon />,
   },
   {
     id: 3, label: "Sub Menu", link: "/dashboard/submenu", icon: <TypographyIcon />,
+  },
+  {
+    id: 4, label: "Footer Section", link: "/dashboard/footerSection", icon: <TypographyIcon />,
   },
   // {
   //   id: 4,

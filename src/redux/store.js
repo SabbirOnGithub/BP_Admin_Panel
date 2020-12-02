@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import Cookie from "js-cookie";
 import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer } from './reducers/userReducers';
 import { homePageSliderDeleteReducer, homePageSliderDetailsReducer, homePageSliderListReducer, homePageSliderSaveReducer } from './reducers/homePageSliderReducers';
+import { footerSectionDeleteReducer, footerSectionDetailsReducer, footerSectionListReducer, footerSectionSaveReducer } from './reducers/footerSectionReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -35,7 +36,10 @@ const reducer = combineReducers({
     homePageSliderDetails: homePageSliderDetailsReducer,
     homePageSliderSave: homePageSliderSaveReducer,
     homePageSliderDelete: homePageSliderDeleteReducer,
-
+    footerSectionList:footerSectionListReducer,
+    footerSectionDetails: footerSectionDetailsReducer,
+    footerSectionSave: footerSectionSaveReducer,
+    footerSectionDelete: footerSectionDeleteReducer,
 
 
 });
