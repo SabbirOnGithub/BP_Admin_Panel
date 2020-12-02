@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import CustomLayout from "../components/Layout/CustomLayout";
 import HomeScreen from "../screens/dashboardScreens/HomeScreen";
 import SubMenuScreen from "../screens/dashboardScreens/subMenuScreen/SubMenuScreen";
@@ -16,6 +16,10 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/homePage`} component={HomePageScreen} />
         <Route exact path={`${props.match.path}/menu`} component={MenuScreen} />
         <Route exact path={`${props.match.path}/homePageSlider`} component={HomepageSliderScreen} />
+        
+        <Route path="*">
+          <Redirect to="/notFound" />
+        </Route>
 
       </Switch>
     </CustomLayout>

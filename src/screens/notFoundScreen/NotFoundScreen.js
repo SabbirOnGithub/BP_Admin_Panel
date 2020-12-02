@@ -7,7 +7,7 @@ import classnames from "classnames";
 import useStyles from "./styles";
 
 
-export default function Error() {
+export default function NotFoundScreen() {
   var classes = useStyles();
 
   return (
