@@ -74,7 +74,20 @@ export default function HomePageSliderScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(homePageSliders, headCells, filterFn);
+    
+    const dispatch = useDispatch();
 
+    // add/update promise
+    const saveItem = (item, id) => new Promise((resolve, reject) => {
+        dispatch(saveHomePageSlider(item,id));
+        resolve();
+    })
+
+    // delete promise
+    const deleteItem = (id) => new Promise((resolve, reject) => {
+        dispatch(deleteHomePageSlider(id));
+        resolve();
+    })
     const addOrEdit = (homePageSlider, files, resetForm) => {
 
         const formData = new FormData();
@@ -88,9 +101,19 @@ export default function HomePageSliderScreen() {
         formData.append('file', files)
 
         if (formData) {
-            dispatch(saveHomePageSlider(formData, homePageSlider.id));
-            setRecordForEdit(null)
-            setOpenPopup(false)
+            saveItem(formData, homePageSlider.id)
+            .then(()=>{
+                resetForm()
+                setRecordForEdit(null)
+                setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+            })
         }
 
     }
@@ -106,41 +129,25 @@ export default function HomePageSliderScreen() {
             ...confirmDialog,
             isOpen: false
         })
-        dispatch(deleteHomePageSlider(id));
+        deleteItem(id)
+        .then(()=>{
+            if (successDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Deleted Successfully',
+                    type: 'success'
+                })
+            }
+        })
 
     }
 
 
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (successSave) {
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            setNotify({
-                isOpen: true,
-                message: 'Submitted Successfully',
-                type: 'success'
-            })
-        }
-        if (successDelete) {
-            setNotify({
-                isOpen: true,
-                message: 'Deleted Successfully',
-                type: 'success'
-            })
-        }
-        // if(error){
-        //     // history.pushState('')
-        //     console.log('error is'+error)
-        // }
         dispatch(listHomePageSliders());
-        // console.log(homepageSliders)
-
         return () => {
             // 
-
         }
     }, [dispatch, successSave, successDelete])
 

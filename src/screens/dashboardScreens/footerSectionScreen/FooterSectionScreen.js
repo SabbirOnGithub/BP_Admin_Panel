@@ -72,7 +72,7 @@ export default function FooterSectionScreen() {
     const dispatch = useDispatch();
 
     // add/update promise
-    const addItem = (item) => new Promise((resolve, reject) => {
+    const saveItem = (item) => new Promise((resolve, reject) => {
         dispatch(saveFooterSection(item));
         resolve();
     })
@@ -85,7 +85,7 @@ export default function FooterSectionScreen() {
 
     const addOrEdit = async (footerSection, resetForm) => {
         //call add item promise 
-        addItem(footerSection)
+        saveItem(footerSection)
         .then(() => {
             resetForm()
             setRecordForEdit(null)

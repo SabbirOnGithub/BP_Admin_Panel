@@ -74,7 +74,20 @@ export default function SubMenuScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(subMenus, headCells, filterFn);
+    
+    const dispatch = useDispatch();
 
+    // add/update promise
+    const saveItem = (item, id) => new Promise((resolve, reject) => {
+        dispatch(saveSubMenu(item, id));
+        resolve();
+    })
+
+    // delete promise
+    const deleteItem = (id) => new Promise((resolve, reject) => {
+        dispatch(deleteSubMenu(id));
+        resolve();
+    })
     const addOrEdit = (subMenu, files, resetForm) => {
 
         const formData = new FormData();
@@ -88,10 +101,20 @@ export default function SubMenuScreen() {
         formData.append('file', files)
 
         if (formData) {
-            dispatch(saveSubMenu(formData, subMenu.id));
-            setRecordForEdit(null)
-            setOpenPopup(false)
-            resetForm();
+            saveItem(formData, subMenu.id)
+            .then(()=>{
+                resetForm()
+                setRecordForEdit(null)
+                setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+            })
+          
         }
 
     }
@@ -107,41 +130,25 @@ export default function SubMenuScreen() {
             ...confirmDialog,
             isOpen: false
         })
-        dispatch(deleteSubMenu(id));
+        deleteItem(id)
+        .then(()=>{
+            if (successDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Deleted Successfully',
+                    type: 'success'
+                })
+            }
+        })
 
     }
 
 
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (successSave) {
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            setNotify({
-                isOpen: true,
-                message: 'Submitted Successfully',
-                type: 'success'
-            })
-        }
-        if (successDelete) {
-            setNotify({
-                isOpen: true,
-                message: 'Deleted Successfully',
-                type: 'success'
-            })
-        }
-        // if(error){
-        //     // history.pushState('')
-        //     console.log('error is'+error)
-        // }
         dispatch(listSubMenus());
-        console.log(subMenus)
-
         return () => {
             // 
-
         }
     }, [dispatch, successSave, successDelete])
 

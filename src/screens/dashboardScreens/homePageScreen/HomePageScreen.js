@@ -83,11 +83,36 @@ export default function HomePageScreen() {
         recordsAfterPagingAndSorting
     } = useTable(homePageDatas, headCells, filterFn);
 
+    const dispatch = useDispatch();
+    
+    // add/update promise
+    const saveItem = (item) => new Promise((resolve, reject) => {
+        dispatch(saveHomePageData(item));
+
+        resolve();
+    })
+
+    // delete promise
+    const deleteItem = (id) => new Promise((resolve, reject) => {
+        dispatch(deleteHomePageData(id));
+        resolve();
+    })
+
     const addOrEdit = async (homePageData, resetForm) => {
-        dispatch(saveHomePageData(homePageData));
-        setRecordForEdit(null)
-        setOpenPopup(false)
-        resetForm();
+        saveItem(homePageData)
+        .then(()=>{
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
+            if (successSave) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Submitted Successfully',
+                    type: 'success'
+                })
+            }
+        })
+        
     }
 
     const openInPopup = item => {
@@ -101,46 +126,24 @@ export default function HomePageScreen() {
             ...confirmDialog,
             isOpen: false
         })
-        dispatch(deleteHomePageData(id));
-        // dispatch(listHomePageDatas());
-
-        // setNotify({
-        //     isOpen: true,
-        //     message: 'Deleted Successfully',
-        //     type: 'error'
-        // })
+        deleteItem(id)
+        .then(()=>{
+            if (successDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Deleted Successfully',
+                    type: 'success'
+                })
+            }
+        })
     }
 
 
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (successSave) {
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            setNotify({
-                isOpen: true,
-                message: 'Submitted Successfully',
-                type: 'success'
-            })
-        }
-        if (successDelete) {
-            setNotify({
-                isOpen: true,
-                message: 'Deleted Successfully',
-                type: 'success'
-            })
-        }
-        // if(error){
-        //     // history.pushState('')
-        //     console.log('error is'+error)
-        // }
         dispatch(listHomePageDatas());
-
         return () => {
             // 
-
         }
     }, [dispatch, successSave, successDelete])
     return (

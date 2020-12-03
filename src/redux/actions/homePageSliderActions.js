@@ -53,6 +53,7 @@ const saveHomePageSlider = (homePageSlider, homePageSliderId) => async (dispatch
         //eslint-disable-next-line
         const formatHomePageData = delete homePageSlider.id;
         const { data } = await axiosWithToken.post("/HomepageSlider/Create", homePageSlider)
+        // console.log(data)
         dispatch({type: HOMEPAGE_SLIDER_SAVE_SUCCESS, payload: data });
 
 

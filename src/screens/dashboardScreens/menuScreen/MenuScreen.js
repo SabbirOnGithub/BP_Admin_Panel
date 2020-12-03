@@ -73,7 +73,7 @@ export default function MenuPageScreen() {
     const dispatch = useDispatch();
 
     // add/update promise
-    const addItem = (item) => new Promise((resolve, reject) => {
+    const saveItem = (item) => new Promise((resolve, reject) => {
         dispatch(saveMenu(item));
         resolve();
     })
@@ -85,7 +85,7 @@ export default function MenuPageScreen() {
     })
 
     const addOrEdit = async (menu, resetForm) => {
-        addItem(menu)
+        saveItem(menu)
         .then(()=>{
             resetForm()
             setRecordForEdit(null)
