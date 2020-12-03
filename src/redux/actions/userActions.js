@@ -11,7 +11,10 @@ import {
     USER_LOGOUT,
     USER_LIST_REQUEST,
     USER_LIST_SUCCESS,
-    USER_LIST_FAILED, 
+    USER_LIST_FAILED,
+    USER_DETAILS_REQUEST,
+    USER_DETAILS_SUCCESS,
+    USER_DETAILS_FAIL, 
 } from "../constants/userConstants";
 import {config} from "../../config";
 import axios from 'axios';
@@ -32,19 +35,18 @@ const listUsers = () => async (dispatch)=>{
 
     }
 }
-
-
-const registerUser = (name, email,password) => async(dispatch) => {
-    dispatch({type:USER_REGISTER_REQUEST, payload:{name, email, password}});
+const detailsUser = (id)=> async (dispatch) =>{
     try{
-        const {data} = await axios.post("/User", { name, email, password });
-        dispatch({type:USER_REGISTER_SUCCESS,payload:data});
-        Cookie.set('userInfo', JSON.stringify(data));
+        dispatch({type:USER_DETAILS_REQUEST});
+        const { data } = await axiosWithoutToken.get("/User/detail/" + id); 
+        dispatch({type:USER_DETAILS_SUCCESS, payload: data });
     }
     catch(error){
-        dispatch({ type:USER_REGISTER_FAILED, payload:error.message })
+        dispatch({ type: USER_DETAILS_FAIL, payload: error.message });
     }
 };
+
+
 
 const updateUser = ({ userId, name, email, password }) => async (dispatch, getState) => {
     const { userSignin: { userInfo } } = getState();
@@ -63,6 +65,18 @@ const updateUser = ({ userId, name, email, password }) => async (dispatch, getSt
     }
 };
 
+// register user
+const registerUser = (name, email,password) => async(dispatch) => {
+    dispatch({type:USER_REGISTER_REQUEST, payload:{name, email, password}});
+    try{
+        const {data} = await axios.post("/User", { name, email, password });
+        dispatch({type:USER_REGISTER_SUCCESS,payload:data});
+        // Cookie.set('userInfo', JSON.stringify(data));
+    }
+    catch(error){
+        dispatch({ type:USER_REGISTER_FAILED, payload:error.message })
+    }
+};
 
 // sign in method
 const signin = (email,password) => async(dispatch) => {
@@ -71,7 +85,7 @@ const signin = (email,password) => async(dispatch) => {
     try{
         const {data} = await axios.post(`${BASE_API_URL}/Auth/Login`, { username, password });
         if(data && data.data !== null){
-            dispatch({type:USER_SIGNIN_SUCCESS,payload:data});
+            dispatch({type:USER_SIGNIN_SUCCESS,payload:data.data.userInfo});
             console.log(data.data.userInfo);
             // console.log(data.data.token);
             Cookie.set('userInfo', JSON.stringify(data.data.userInfo));
@@ -96,4 +110,4 @@ const logout = () => (dispatch) => {
 
 
 
-export { signin, registerUser, updateUser, logout, listUsers } ;
+export { signin, registerUser, updateUser, logout, listUsers, detailsUser } ;

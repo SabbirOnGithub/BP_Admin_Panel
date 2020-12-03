@@ -4,7 +4,7 @@ import { homePageDataListReducer, homePageDataDetailsReducer, homePageDataSaveRe
 import { menuListReducer, menuDetailsReducer, menuSaveReducer,menuDeleteReducer } from './reducers/menuReducers';
 import thunk from 'redux-thunk';
 import Cookie from "js-cookie";
-import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer } from './reducers/userReducers';
+import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer, userDetailsReducer } from './reducers/userReducers';
 import { homePageSliderDeleteReducer, homePageSliderDetailsReducer, homePageSliderListReducer, homePageSliderSaveReducer } from './reducers/homePageSliderReducers';
 import { footerSectionDeleteReducer, footerSectionDetailsReducer, footerSectionListReducer, footerSectionSaveReducer } from './reducers/footerSectionReducers';
 import { homePageCoreValueDetailDeleteReducer, homePageCoreValueDetailDetailsReducer, homePageCoreValueDetailListReducer, homePageCoreValueDetailSaveReducer } from './reducers/homePageCoreValueDetailReducers';
@@ -17,6 +17,7 @@ const initialState={
 };
 const reducer = combineReducers({
     userList:userListReducer,
+    userDetails: userDetailsReducer,
     userSignin:userSigninReducer,
     userRegister: userRegisterReducer,
     userUpdate: userUpdateReducer,

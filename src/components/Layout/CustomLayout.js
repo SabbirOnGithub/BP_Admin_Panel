@@ -24,7 +24,8 @@ import { useLayoutState } from "../../context/LayoutContext";
 
 const  CustomLayout = props => {
 
-    let classes = useStyles();
+  
+  let classes = useStyles();
 
     // global
     let layoutState = useLayoutState();

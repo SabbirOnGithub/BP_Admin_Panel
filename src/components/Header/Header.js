@@ -27,13 +27,14 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions/userActions';
 import { useHistory } from "react-router-dom";
 
 export default function Header(props) {
   var classes = useStyles();
-
+  const userSignIn = useSelector( state => state.userSignin );
+  const { loading , userInfo , error } = userSignIn;
   // global
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
@@ -125,9 +126,9 @@ export default function Header(props) {
           classes={{ paper: classes.profileMenu }}
           disableAutoFocusItem
         >
-          {/* <div className={classes.profileMenuUser}>
+          <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              Tajul
+              {userInfo.userName}
             </Typography>
             <Typography
               className={classes.profileMenuLink}
@@ -135,10 +136,10 @@ export default function Header(props) {
               color="primary"
               href="/"
             >
-             Admin
+              {/* {userInfo.role} */}
             </Typography>
           </div>
-          <MenuItem
+          {/* <MenuItem
             className={classNames(
               classes.profileMenuItem,
               classes.headerMenuItem,
