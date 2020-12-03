@@ -7,6 +7,8 @@ import HomePageScreen from '../screens/dashboardScreens/homePageScreen/HomePageS
 import MenuScreen from '../screens/dashboardScreens/menuScreen/MenuScreen';
 import FooterSectionScreen from '../screens/dashboardScreens/footerSectionScreen/FooterSectionScreen';
 import HomepageSliderScreen from '../screens/dashboardScreens/homePageSliderScreen/HomePageSliderScreen';
+import HomePageCoreValueDetailScreen from "../screens/dashboardScreens/homePageCoreValueDetailScreen/HomePageCoreValueDetailScreen";
+
 
 const DashboardScreensRoute = (props) => {
   return (<div>
@@ -18,6 +20,8 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/menu`} component={MenuScreen} />
         <Route exact path={`${props.match.path}/homePageSlider`} component={HomepageSliderScreen} />
         <Route exact path={`${props.match.path}/footerSection`} component={FooterSectionScreen} />
+        <Route exact path={`${props.match.path}/homePageCoreValueDetail`} component={HomePageCoreValueDetailScreen} />
+
         
         <Route path="*">
           <Redirect to="/notFound" />

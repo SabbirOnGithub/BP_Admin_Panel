@@ -7,6 +7,7 @@ import Cookie from "js-cookie";
 import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer } from './reducers/userReducers';
 import { homePageSliderDeleteReducer, homePageSliderDetailsReducer, homePageSliderListReducer, homePageSliderSaveReducer } from './reducers/homePageSliderReducers';
 import { footerSectionDeleteReducer, footerSectionDetailsReducer, footerSectionListReducer, footerSectionSaveReducer } from './reducers/footerSectionReducers';
+import { homePageCoreValueDetailDeleteReducer, homePageCoreValueDetailDetailsReducer, homePageCoreValueDetailListReducer, homePageCoreValueDetailSaveReducer } from './reducers/homePageCoreValueDetailReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -40,7 +41,10 @@ const reducer = combineReducers({
     footerSectionDetails: footerSectionDetailsReducer,
     footerSectionSave: footerSectionSaveReducer,
     footerSectionDelete: footerSectionDeleteReducer,
-
+    homePageCoreValueDetailList:homePageCoreValueDetailListReducer,
+    homePageCoreValueDetailDetails: homePageCoreValueDetailDetailsReducer,
+    homePageCoreValueDetailSave: homePageCoreValueDetailSaveReducer,
+    homePageCoreValueDetailDelete: homePageCoreValueDetailDeleteReducer,
 
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

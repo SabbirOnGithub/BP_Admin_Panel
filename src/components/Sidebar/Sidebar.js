@@ -32,10 +32,10 @@ const structure = [
     children: [
       { label: "Basic Info", link: "/dashboard/homepage" },
       { label: "Slider", link: "/dashboard/homePageSlider" },
-      { label: "Short Intro", link: "/dashboard/homepage/1" },
+      { label: "Short Intro", link: "/dashboard/submenu" },
       { label: "Walk-through", link: "/dashboard/homepage/2" },
       { label: "Consulting", link: "/dashboard/homepage/3" },
-      { label: "Core Values", link: "/dashboard/homepage/4" },
+      { label: "Core Values", link: "/dashboard/homePageCoreValueDetail" },
     ],
   },
   {
