@@ -29,6 +29,16 @@ export default makeStyles(theme => ({
   logotypeImage: {
     width: 165,
     marginBottom: theme.spacing(4),
+    
+  },
+  logImageInMobile:{
+    fontWeight: 500,
+    textAlign: "center",
+    marginTop: theme.spacing(4),
+    display:"none",
+    [theme.breakpoints.down("md")]: {
+      display: "block",
+    },
   },
   logotypeText: {
     color: "white",
@@ -51,6 +61,7 @@ export default makeStyles(theme => ({
   },
   form: {
     width: 320,
+    padding:5,
   },
   tab: {
     fontWeight: 400,
@@ -129,6 +140,9 @@ export default makeStyles(theme => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "center",
+    },
   },
   forgetButton: {
     textTransform: "none",

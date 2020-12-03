@@ -57,6 +57,9 @@ useEffect(()=>{
       <div className={classes.formContainer}>
         <div className={classes.form}>
             <React.Fragment>
+              <Typography variant="h1" className={classes.logImageInMobile}>
+                <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" height='50px' width='50px' />
+              </Typography>
               <Typography variant="h1" className={classes.greeting}>
                 Sign In
               </Typography>
