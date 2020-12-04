@@ -8,6 +8,7 @@ import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListRedu
 import { homePageSliderDeleteReducer, homePageSliderDetailsReducer, homePageSliderListReducer, homePageSliderSaveReducer } from './reducers/homePageSliderReducers';
 import { footerSectionDeleteReducer, footerSectionDetailsReducer, footerSectionListReducer, footerSectionSaveReducer } from './reducers/footerSectionReducers';
 import { homePageCoreValueDetailDeleteReducer, homePageCoreValueDetailDetailsReducer, homePageCoreValueDetailListReducer, homePageCoreValueDetailSaveReducer } from './reducers/homePageCoreValueDetailReducers';
+import { homePageFunctionAreaDetailDeleteReducer, homePageFunctionAreaDetailDetailsReducer, homePageFunctionAreaDetailListReducer, homePageFunctionAreaDetailSaveReducer } from './reducers/homePageFunctionAreaDetailReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -46,6 +47,10 @@ const reducer = combineReducers({
     homePageCoreValueDetailDetails: homePageCoreValueDetailDetailsReducer,
     homePageCoreValueDetailSave: homePageCoreValueDetailSaveReducer,
     homePageCoreValueDetailDelete: homePageCoreValueDetailDeleteReducer,
+    homePageFunctionAreaDetailList:homePageFunctionAreaDetailListReducer,
+    homePageFunctionAreaDetailDetails: homePageFunctionAreaDetailDetailsReducer,
+    homePageFunctionAreaDetailSave: homePageFunctionAreaDetailSaveReducer,
+    homePageFunctionAreaDetailDelete: homePageFunctionAreaDetailDeleteReducer,
 
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
