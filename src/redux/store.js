@@ -9,6 +9,7 @@ import { homePageSliderDeleteReducer, homePageSliderDetailsReducer, homePageSlid
 import { footerSectionDeleteReducer, footerSectionDetailsReducer, footerSectionListReducer, footerSectionSaveReducer } from './reducers/footerSectionReducers';
 import { homePageCoreValueDetailDeleteReducer, homePageCoreValueDetailDetailsReducer, homePageCoreValueDetailListReducer, homePageCoreValueDetailSaveReducer } from './reducers/homePageCoreValueDetailReducers';
 import { homePageFunctionAreaDetailDeleteReducer, homePageFunctionAreaDetailDetailsReducer, homePageFunctionAreaDetailListReducer, homePageFunctionAreaDetailSaveReducer } from './reducers/homePageFunctionAreaDetailReducers';
+import { homeConsultationTopicDeleteReducer, homeConsultationTopicDetailsReducer, homeConsultationTopicListReducer, homeConsultationTopicSaveReducer } from './reducers/homeConsultationTopicReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -51,6 +52,10 @@ const reducer = combineReducers({
     homePageFunctionAreaDetailDetails: homePageFunctionAreaDetailDetailsReducer,
     homePageFunctionAreaDetailSave: homePageFunctionAreaDetailSaveReducer,
     homePageFunctionAreaDetailDelete: homePageFunctionAreaDetailDeleteReducer,
+    homeConsultationTopicList:homeConsultationTopicListReducer,
+    homeConsultationTopicDetails: homeConsultationTopicDetailsReducer,
+    homeConsultationTopicSave: homeConsultationTopicSaveReducer,
+    homeConsultationTopicDelete: homeConsultationTopicDeleteReducer,
 
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

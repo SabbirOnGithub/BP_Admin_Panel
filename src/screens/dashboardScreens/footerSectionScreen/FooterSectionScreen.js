@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import FooterSectionForm from "./FooterSectionForm";
-import { Grid, Paper, makeStyles, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
 import Popup from "../../../components/Popup/Popup";
@@ -16,21 +16,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { listFooterSections, saveFooterSection, deleteFooterSection } from '../../../redux/actions/footerSectionActions';
-
-
-const useStyles = makeStyles(theme => ({
-    pageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3)
-    },
-    searchInput: {
-        width: '75%'
-    },
-    newButton: {
-        position: 'absolute',
-        right: '10px'
-    }
-}))
 
 
 const headCells = [
@@ -53,7 +38,6 @@ export default function FooterSectionScreen() {
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = footerSectionDelete;
 
 
-    const classes = useStyles();
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line

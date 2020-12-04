@@ -51,7 +51,7 @@ export default function HomePageCoreValueDetailForm(props) {
             setValues({
                 ...recordForEdit
             })
-    }, [recordForEdit])
+    }, [recordForEdit,setValues])
 
     return (
         <Form onSubmit={handleSubmit}>

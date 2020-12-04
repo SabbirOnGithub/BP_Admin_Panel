@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import HomepageSliderForm from "./HomePageSliderForm";
-import { Grid, Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar } from '@material-ui/core';
+import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
-// import { Search } from "@material-ui/icons";
-import AddIcon from '@material-ui/icons/Add';
 import Popup from "../../../components/Popup/Popup";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseIcon from '@material-ui/icons/Close';
@@ -23,20 +21,6 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 
 
-const useStyles = makeStyles(theme => ({
-    pageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3),
-    },
-    searchInput: {
-        width: '75%'
-    },
-    newButton: {
-        position: 'absolute',
-        right: '10px'
-    }
-}))
-
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -51,6 +35,7 @@ const headCells = [
 export default function HomePageSliderScreen() {
 
     const homePageSliderList = useSelector(state => state.homePageSliderList)
+    //eslint-disable-next-line
     const { homePageSliders, loading, error } = homePageSliderList;
     //eslint-disable-next-line
     const homePageSliderSave = useSelector(state => state.homePageSliderSave);
@@ -61,8 +46,8 @@ export default function HomePageSliderScreen() {
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = homePageSliderDelete;
 
 
-    const classes = useStyles();
     const [recordForEdit, setRecordForEdit] = useState(null)
+    //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })

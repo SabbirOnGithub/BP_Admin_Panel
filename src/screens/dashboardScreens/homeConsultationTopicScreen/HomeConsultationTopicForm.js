@@ -6,26 +6,20 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 const initialFValues = {
     id: '',
-    title: '',
-    subTitle: '',
+    name: '',
+    description: '',
     pictureUrl: '',
-    isActive: false,
-    displayOrder:'',
 }
 
-export default function HomepageSliderForm(props) {
+export default function HomeConsultationTopicForm(props) {
     const { addOrEdit, recordForEdit } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        if ('title' in fieldValues)
-            temp.title = fieldValues.title ? "" : "This field is required."
-        if ('subTitle' in fieldValues)
-            temp.subTitle = fieldValues.subTitle ? "" : "This field is required."
-        if ('displayOrder' in fieldValues)
-            // temp.displayOrder = fieldValues.displayOrder && typeof(fieldValues.displayOrder)==='number'? "" : "This field is required."
-            temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
-        
+        if ('name' in fieldValues)
+            temp.name = fieldValues.name ? "" : "This field is required."
+        if ('description' in fieldValues)
+            temp.description = fieldValues.description ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -57,40 +51,25 @@ export default function HomepageSliderForm(props) {
             setValues({
                 ...recordForEdit
             })
-    }, [recordForEdit, setValues])
+    }, [recordForEdit,setValues])
 
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
                     <Controls.Input
-                        name="title"
-                        label="Title"
-                        value={values.title}
+                        label="Name"
+                        name="name"
+                        value={values.name}
                         onChange={handleInputChange}
-                        error={errors.title}
+                        error={errors.name}
                     />
                     <Controls.Input
-                        label="Sub-Title"
-                        name="subTitle"
-                        value={values.subTitle}
+                        label="Description"
+                        name="description"
+                        value={values.description}
                         onChange={handleInputChange}
-                        error={errors.subTitle}
-                    />
-                    <Controls.Input
-                        label="Display Order"
-                        name="displayOrder"
-                        type="number"
-                        value={values.displayOrder}
-                        onChange={handleInputChange}
-                        error={errors.displayOrder}
-                    />
-                    <Controls.Checkbox
-                        name="isActive"
-                        label="isActive"
-                        value={values.isActive}
-                        onChange={handleInputChange}
-                        error={errors.isActive}
+                        error={errors.description}
                     />
                     <div style={{margin:5}}>
                     <Button

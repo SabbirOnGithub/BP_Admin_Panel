@@ -77,6 +77,7 @@ const deleteSubMenu = (submenuId)=> async (dispatch, getState) =>{
     try{
         dispatch({type:SUBMENU_DELETE_REQUEST});
         const { data } = await axiosWithToken.delete("/SubMenu/" + submenuId); 
+        console.log(data)
         if(data){
             dispatch({type:SUBMENU_DELETE_SUCCESS, payload: data, success:true });
         }

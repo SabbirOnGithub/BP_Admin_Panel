@@ -34,7 +34,7 @@ const structure = [
       { label: "Slider", link: "/dashboard/homePageSlider" },
       { label: "Short Intro", link: "/dashboard/submenu" },
       { label: "Walk-through", link: "/dashboard/homePageFunctionAreaDetail" },
-      { label: "Consulting", link: "/dashboard/homepage/3" },
+      { label: "Consulting", link: "/dashboard/homeConsultationTopicScreen" },
       { label: "Core Values", link: "/dashboard/homePageCoreValueDetail" },
     ],
   },

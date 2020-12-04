@@ -3,14 +3,11 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  InputBase,
   Menu,
-  MenuItem,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
   Person as AccountIcon,
-  Search as SearchIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
 import classNames from "classnames";
@@ -34,6 +31,7 @@ import { useHistory } from "react-router-dom";
 export default function Header(props) {
   var classes = useStyles();
   const userSignIn = useSelector( state => state.userSignin );
+  //eslint-disable-next-line
   const { loading , userInfo , error } = userSignIn;
   // global
   var layoutState = useLayoutState();
@@ -41,7 +39,6 @@ export default function Header(props) {
 
   // local
   let [profileMenu, setProfileMenu] = useState(null);
-  let [isSearchOpen, setSearchOpen] = useState(false);
   
   const dispatch = useDispatch();
   const history = useHistory();
@@ -86,27 +83,6 @@ export default function Header(props) {
           Best Practicify
         </Typography>
         <div className={classes.grow} />
-        {/* <div
-          className={classNames(classes.search, {
-            [classes.searchFocused]: isSearchOpen,
-          })}
-        >
-          <div
-            className={classNames(classes.searchIcon, {
-              [classes.searchIconOpened]: isSearchOpen,
-            })}
-            onClick={() => setSearchOpen(!isSearchOpen)}
-          >
-            <SearchIcon classes={{ root: classes.headerIcon }} />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-          />
-        </div> */}
         <IconButton
           aria-haspopup="true"
           color="inherit"

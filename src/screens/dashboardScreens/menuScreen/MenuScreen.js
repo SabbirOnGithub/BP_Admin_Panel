@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import MenuForm from "./MenuForm";
-import { Grid, Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar } from '@material-ui/core';
+import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
-import AddIcon from '@material-ui/icons/Add';
 import Popup from "../../../components/Popup/Popup";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseIcon from '@material-ui/icons/Close';
@@ -18,20 +17,6 @@ import { useSelector, useDispatch } from 'react-redux';
 // redux actions
 import { listMenus, saveMenu, deleteMenu } from '../../../redux/actions/menuActions';
 
-
-const useStyles = makeStyles(theme => ({
-    pageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3)
-    },
-    searchInput: {
-        width: '75%'
-    },
-    newButton: {
-        position: 'absolute',
-        right: '10px'
-    }
-}))
 
 
 const headCells = [
@@ -54,7 +39,6 @@ export default function MenuPageScreen() {
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = menuDelete;
 
 
-    const classes = useStyles();
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line

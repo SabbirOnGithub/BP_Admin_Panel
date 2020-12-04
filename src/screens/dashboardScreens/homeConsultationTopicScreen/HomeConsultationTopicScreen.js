@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import HomePageFunctionAreaDetailForm from "./HomePageFunctionAreaDetailForm";
+import HomeConsultationTopicForm from "./HomeConsultationTopicForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -14,7 +14,7 @@ import Widget from "../../../components/Widget/Widget";
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { deleteHomePageFunctionAreaDetail, listHomePageFunctionAreaDetails, saveHomePageFunctionAreaDetail } from '../../../redux/actions/homePageFunctionAreaDetailActions';
+import { deleteHomeConsultationTopic, listHomeConsultationTopics, saveHomeConsultationTopic } from '../../../redux/actions/homeConsultationTopicActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -23,24 +23,24 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'title', label: 'Title' },
+    { id: 'name', label: 'Name' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function HomePageFunctionAreaDetailScreen() {
+export default function HomeConsultationTopicScreen() {
 
-    const homePageFunctionAreaDetailList = useSelector(state => state.homePageFunctionAreaDetailList)
+    const homeConsultationTopicList = useSelector(state => state.homeConsultationTopicList)
     //eslint-disable-next-line
-    const { homePageFunctionAreaDetails, loading, error } = homePageFunctionAreaDetailList;
+    const { homeConsultationTopics, loading, error } = homeConsultationTopicList;
     //eslint-disable-next-line
-    const homePageFunctionAreaDetailSave = useSelector(state => state.homePageFunctionAreaDetailSave);
+    const homeConsultationTopicSave = useSelector(state => state.homeConsultationTopicSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = homePageFunctionAreaDetailSave;
-    const homePageFunctionAreaDetailDelete = useSelector(state => state.homePageFunctionAreaDetailDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = homeConsultationTopicSave;
+    const homeConsultationTopicDelete = useSelector(state => state.homeConsultationTopicDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = homePageFunctionAreaDetailDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = homeConsultationTopicDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -55,26 +55,26 @@ export default function HomePageFunctionAreaDetailScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(homePageFunctionAreaDetails, headCells, filterFn);
+    } = useTable(homeConsultationTopics, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveHomePageFunctionAreaDetail(item, id));
+        dispatch(saveHomeConsultationTopic(item, id));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteHomePageFunctionAreaDetail(id));
+        dispatch(deleteHomeConsultationTopic(id));
         resolve();
     })
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
         console.log(item.id)
         formData.append('HompageId', item.id)
-        formData.append('Title', item.title)
+        formData.append('Name', item.name)
         formData.append('Description', item.description)
         formData.append('file', files)
         
@@ -131,7 +131,7 @@ export default function HomePageFunctionAreaDetailScreen() {
 
 
     useEffect(() => {
-        dispatch(listHomePageFunctionAreaDetails());
+        dispatch(listHomeConsultationTopics());
         return () => {
             // 
         }
@@ -142,12 +142,12 @@ export default function HomePageFunctionAreaDetailScreen() {
         <div>
             {loading || loadingSave || loadingDelete ? "Loading ...." :
                 <>
-                    <PageTitle title="Home Page Function Area Details" />
+                    <PageTitle title="Home Consultation Topic" />
 
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="Home Page Function Area Details List Table"
+                                title="Home Consultation Topic List Table"
                                 upperTitle
                                 noBodyPadding
                                 // bodyClass={classes.tableWidget}
@@ -171,7 +171,7 @@ export default function HomePageFunctionAreaDetailScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
+                                                        <TableCell>{item.name}</TableCell>
                                                         <TableCell>{item.description}</TableCell>
                                                         <TableCell>
                                                             {
@@ -208,7 +208,7 @@ export default function HomePageFunctionAreaDetailScreen() {
                                     openPopup={openPopup}
                                     setOpenPopup={setOpenPopup}
                                 >
-                                    <HomePageFunctionAreaDetailForm
+                                    <HomeConsultationTopicForm
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit} />
                                 </Popup>
