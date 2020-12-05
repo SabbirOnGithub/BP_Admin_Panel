@@ -79,11 +79,14 @@ export default function HomePageFunctionAreaDetailScreen() {
         formData.append('file', files)
         
         if (formData) {
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
             saveItem(formData, item.id)
             .then(()=>{
-                resetForm()
-                setRecordForEdit(null)
-                setOpenPopup(false)
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
                 if (successSave) {
                     setNotify({
                         isOpen: true,
@@ -122,6 +125,13 @@ export default function HomePageFunctionAreaDetailScreen() {
                     isOpen: true,
                     message: 'Deleted Successfully',
                     type: 'success'
+                })
+            }
+            if (errorDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Delete Failed',
+                    type: 'warning'
                 })
             }
             

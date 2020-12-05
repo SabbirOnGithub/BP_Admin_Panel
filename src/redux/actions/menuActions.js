@@ -24,8 +24,12 @@ const listMenus = () => async (dispatch)=>{
     try{
         dispatch({type: MENU_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/Menu`);
-        dispatch({ type: MENU_LIST_SUCCESS, payload: data.data ? data.data : [] });
-        console.log(data.data)
+        if (data.status === true) {
+            dispatch({ type: MENU_LIST_SUCCESS, payload: data.data ? data.data : [] });
+        }else{
+            dispatch({ type: MENU_LIST_FAIL, payload: data.message });
+        }
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: MENU_LIST_FAIL, payload: error.message });
@@ -49,22 +53,23 @@ const saveMenu = (menu) => async (dispatch) =>{
     try{
         dispatch({type: MENU_SAVE_REQUEST, payload:menu })
         if(!menu.id){
-        //eslint-disable-next-line
-        const formatHomePageData = delete menu.id;
-        // console.log(homePageData)
-        const { data } = await axiosWithToken.post("/Menu", menu)
-        dispatch({type: MENU_SAVE_SUCCESS, payload: data });
-
-
+            //eslint-disable-next-line
+            const formatHomePageData = delete menu.id;
+            // console.log(homePageData)
+            const { data } = await axiosWithToken.post("/Menu", menu)
+            if (data.status === true) {
+                dispatch({type: MENU_SAVE_SUCCESS, payload: data });
+            }else{
+                dispatch({ type: MENU_SAVE_FAIL, payload: data.message });
+            }
         }else{
-            // const { data } = await axiosWithToken.put("/HomePage/" + homePageData.id , homePageData);
             const { data } = await axiosWithToken.put("/Menu/", menu);
-            dispatch({type: MENU_SAVE_SUCCESS, payload: data });            
-
+            if (data.status === true) {
+                dispatch({type: MENU_SAVE_SUCCESS, payload: data });            
+            }else{
+                dispatch({ type: MENU_SAVE_FAIL, payload: data.message });
+            }
         }
-        
-
-        
     } catch (error) {
         console.log(error)
         dispatch({ type: MENU_SAVE_FAIL, payload: error.message });
@@ -72,13 +77,15 @@ const saveMenu = (menu) => async (dispatch) =>{
 };
 
 const deleteMenu = (menuId)=> async (dispatch, getState) =>{
-    console.log(menuId);
-    console.log(typeof(menuId));
+    // console.log(menuId);
+    // console.log(typeof(menuId));
     try{
         dispatch({type:MENU_DELETE_REQUEST});
         const { data } = await axiosWithToken.delete("/Menu/" + menuId); 
-        if(data){
+        if (data.status === true) {
             dispatch({type:MENU_DELETE_SUCCESS, payload: data, success:true });
+        }else{
+            dispatch({ type: MENU_DELETE_FAIL, payload: data.message });
         }
     }
     catch(error){

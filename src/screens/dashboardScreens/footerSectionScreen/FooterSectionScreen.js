@@ -68,17 +68,28 @@ export default function FooterSectionScreen() {
     })
 
     const addOrEdit = async (footerSection, resetForm) => {
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
         //call add item promise 
         saveItem(footerSection)
         .then(() => {
-            resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
+            // resetForm()
+            // setRecordForEdit(null)
+            // setOpenPopup(false)
             if (successSave) {
                 setNotify({
                     isOpen: true,
                     message: 'Submitted Successfully',
                     type: 'success'
+                })
+            }
+            
+            if (errorSave) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Submition Failed',
+                    type: 'warning'
                 })
             }
         })
@@ -106,6 +117,13 @@ export default function FooterSectionScreen() {
                     isOpen: true,
                     message: 'Deleted Successfully',
                     type: 'success'
+                })
+            }
+            if (errorDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Delete Failed',
+                    type: 'warning'
                 })
             }
         })

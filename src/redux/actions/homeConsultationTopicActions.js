@@ -20,8 +20,12 @@ const listHomeConsultationTopics = () => async (dispatch) => {
     try {
         dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get('/HomeConsultationTopic');
-        console.log(data)
-        dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_SUCCESS, payload: data.data ? data.data : [] });
+        // console.log(data)
+        if (data.status === true) {
+            dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_SUCCESS, payload: data.data ? data.data : [] });
+        } else {
+            dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_FAIL, payload: data.message });
+        }
     }
     catch (error) {
         dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_FAIL, payload: error.message });
@@ -41,28 +45,29 @@ const detailsHomeConsultationTopic = (id) => async (dispatch) => {
     }
 };
 
+// add/update action
 const saveHomeConsultationTopic = (item, id) => async (dispatch) => {
     try {
         dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_REQUEST, payload: item })
+
         if (!id) {
             console.log('create')
             //eslint-disable-next-line
             const formatHomePageData = delete item.id;
             const { data } = await axiosWithTokenAndMultipartData.post("/HomeConsultationTopic/Create", item)
-            console.log(data)
+
             if (data.status === true) {
                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_SUCCESS, payload: data });
-            }
-            if (data.status === false) {
+            } else {
                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_FAIL, payload: data.message });
             }
         } else {
+            console.log('update')
             const { data } = await axiosWithTokenAndMultipartData.put("/HomeConsultationTopic/Update", item);
-            console.log(data)
+
             if (data.status === true) {
                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_SUCCESS, payload: data });
-            }
-            if (data.status === false) {
+            } else {
                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_FAIL, payload: data.message });
             }
         }
@@ -76,8 +81,10 @@ const deleteHomeConsultationTopic = (id) => async (dispatch, getState) => {
     try {
         dispatch({ type: HOME_CONSULTATION_TOPIC_DELETE_REQUEST });
         const { data } = await axiosWithToken.delete("/HomeConsultationTopic/" + id);
-        if (data) {
+        if (data.status === true) {
             dispatch({ type: HOME_CONSULTATION_TOPIC_DELETE_SUCCESS, payload: data, success: true });
+        } else {
+            dispatch({ type: HOME_CONSULTATION_TOPIC_DELETE_FAIL, payload: data.message });
         }
     }
     catch (error) {

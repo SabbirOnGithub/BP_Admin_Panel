@@ -86,16 +86,27 @@ export default function SubMenuScreen() {
         formData.append('file', files)
 
         if (formData) {
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
             saveItem(formData, subMenu.id)
             .then(()=>{
-                resetForm()
-                setRecordForEdit(null)
-                setOpenPopup(false)
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
                 if (successSave) {
                     setNotify({
                         isOpen: true,
                         message: 'Submitted Successfully',
                         type: 'success'
+                    })
+                }
+                
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
                     })
                 }
             })
@@ -122,6 +133,13 @@ export default function SubMenuScreen() {
                     isOpen: true,
                     message: 'Deleted Successfully',
                     type: 'success'
+                })
+            }
+            if (errorDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Delete Failed',
+                    type: 'warning'
                 })
             }
         })

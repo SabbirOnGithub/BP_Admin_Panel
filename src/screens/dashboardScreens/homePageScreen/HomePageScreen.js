@@ -99,16 +99,27 @@ export default function HomePageScreen() {
     })
 
     const addOrEdit = async (homePageData, resetForm) => {
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
         saveItem(homePageData)
         .then(()=>{
-            resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
+            // resetForm()
+            // setRecordForEdit(null)
+            // setOpenPopup(false)
             if (successSave) {
                 setNotify({
                     isOpen: true,
                     message: 'Submitted Successfully',
                     type: 'success'
+                })
+            }
+            
+            if (errorSave) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Submition Failed',
+                    type: 'warning'
                 })
             }
         })
@@ -133,6 +144,13 @@ export default function HomePageScreen() {
                     isOpen: true,
                     message: 'Deleted Successfully',
                     type: 'success'
+                })
+            }
+            if (errorDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Delete Failed',
+                    type: 'warning'
                 })
             }
         })

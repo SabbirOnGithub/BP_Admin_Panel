@@ -69,16 +69,27 @@ export default function MenuPageScreen() {
     })
 
     const addOrEdit = async (menu, resetForm) => {
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
         saveItem(menu)
         .then(()=>{
-            resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
+            // resetForm()
+            // setRecordForEdit(null)
+            // setOpenPopup(false)
             if (successSave) {
                 setNotify({
                     isOpen: true,
                     message: 'Submitted Successfully',
                     type: 'success'
+                })
+            }
+            
+            if (errorSave) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Submition Failed',
+                    type: 'warning'
                 })
             }
         })
@@ -104,6 +115,13 @@ export default function MenuPageScreen() {
                     type: 'success'
                 })
             }
+            if (errorDelete) {
+                setNotify({
+                    isOpen: true,
+                    message: 'Delete Failed',
+                    type: 'warning'
+                })
+            }
         })
     }
 
@@ -124,7 +142,7 @@ export default function MenuPageScreen() {
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Widget
-                                    title="Sub Menu List Table"
+                                    title="Menu List Table"
                                     upperTitle
                                     noBodyPadding
                                     // bodyClass={classes.tableWidget}
