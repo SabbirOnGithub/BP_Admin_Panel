@@ -10,6 +10,7 @@ import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
+import { ResponseMessage } from "../../../themes/responseMessage";
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -36,8 +37,11 @@ export default function HomeConsultationTopicScreen() {
     const { homeConsultationTopics, loading, error } = homeConsultationTopicList;
     //eslint-disable-next-line
     const homeConsultationTopicSave = useSelector(state => state.homeConsultationTopicSave);
+
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave } = homeConsultationTopicSave;
+    const successSaveMessage = homeConsultationTopicSave.homeConsultationTopic ? homeConsultationTopicSave.homeConsultationTopic.message : ResponseMessage.successSaveMessage;
+
     const homeConsultationTopicDelete = useSelector(state => state.homeConsultationTopicDelete);
     //eslint-disable-next-line
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = homeConsultationTopicDelete;
@@ -90,7 +94,7 @@ export default function HomeConsultationTopicScreen() {
                 if (successSave) {
                     setNotify({
                         isOpen: true,
-                        message: 'Submitted Successfully',
+                        message: successSaveMessage,
                         type: 'success'
                     })
                 }
@@ -129,7 +133,7 @@ export default function HomeConsultationTopicScreen() {
             if (errorDelete) {
                 setNotify({
                     isOpen: true,
-                    message: 'Delete Failed',
+                    message:  ResponseMessage.errorDeleteMessage,
                     type: 'warning'
                 })
             }

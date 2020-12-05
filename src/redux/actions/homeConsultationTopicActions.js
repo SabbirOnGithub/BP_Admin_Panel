@@ -55,7 +55,6 @@ const saveHomeConsultationTopic = (item, id) => async (dispatch) => {
             //eslint-disable-next-line
             const formatHomePageData = delete item.id;
             const { data } = await axiosWithTokenAndMultipartData.post("/HomeConsultationTopic/Create", item)
-
             if (data.status === true) {
                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_SUCCESS, payload: data });
             } else {

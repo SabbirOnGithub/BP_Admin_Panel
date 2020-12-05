@@ -99,55 +99,55 @@ export default function HomePageForm(props) {
                 <Grid item xs={6}>
                     <Controls.Input
                         name="heroText"
-                        label="heroText"
+                        label="Hero Text"
                         value={values.heroText}
                         onChange={handleInputChange}
                         error={errors.heroText}
                     />
                     <Controls.Input
                         name="heroSectionDescription"
-                        label="heroSectionDescription"
+                        label="Hero Section Description"
                         value={values.heroSectionDescription}
                         onChange={handleInputChange}
                         error={errors.heroSectionDescription}
                     />
                     <Controls.Input
-                        label="videoUrl"
                         name="videoUrl"
+                        label="Video Url"
                         value={values.videoUrl}
                         onChange={handleInputChange}
                         error={errors.videoUrl}
                     />
                     <Controls.Input
                         name="heroSectionBackgroundImage"
-                        label="heroSectionBackgroundImage"
+                        label="Hero Section Background Image"
                         value={values.heroSectionBackgroundImage}
                         onChange={handleInputChange}
                         error={errors.heroSectionBackgroundImage}
                     />
                     <Controls.Input
-                        label="shortIntroTitle"
                         name="shortIntroTitle"
+                        label="Short Intro Title"
                         value={values.shortIntroTitle}
                         onChange={handleInputChange}
                         error={errors.shortIntroTitle}
                     />
                     <Controls.Input
-                        label="PicshortIntroSubTitleture"
                         name="shortIntroSubTitle"
+                        label="Picshort Intro Sub Title"
                         value={values.shortIntroSubTitle}
                         onChange={handleInputChange}
                         error={errors.shortIntroSubTitle}
                     /><Controls.Input
                         name="functionAreaWalkthroughTitle"
-                        label="functionAreaWalkthroughTitle"
+                        label="Function Area Walkthrough Title"
                         value={values.functionAreaWalkthroughTitle}
                         onChange={handleInputChange}
                         error={errors.functionAreaWalkthroughTitle}
                     />
                     <Controls.Input
-                        label="functionAreaWalkthroughSubTitle"
                         name="functionAreaWalkthroughSubTitle"
+                        label="Function Area Walkthrough Sub Title"
                         value={values.functionAreaWalkthroughSubTitle}
                         onChange={handleInputChange}
                         error={errors.functionAreaWalkthroughSubTitle}
@@ -155,54 +155,54 @@ export default function HomePageForm(props) {
                 </Grid>
                 <Grid item xs={6}>
                     <Controls.Input
-                        label="consultingTitle"
                         name="consultingTitle"
+                        label="Consulting Title"
                         value={values.consultingTitle}
                         onChange={handleInputChange}
                         error={errors.consultingTitle}
                     /><Controls.Input
                         name="consultingSubTitle"
-                        label="consultingSubTitle"
+                        label="Consulting Sub Title"
                         value={values.consultingSubTitle}
                         onChange={handleInputChange}
                         error={errors.consultingSubTitle}
                     />
                     <Controls.Input
-                        label="coreValueTitle"
                         name="coreValueTitle"
+                        label="Core Value Title"
                         value={values.coreValueTitle}
                         onChange={handleInputChange}
                         error={errors.coreValueTitle}
                     />
                     <Controls.Input
-                        label="coreValueSubtitle"
                         name="coreValueSubtitle"
+                        label="Core Value Sub Title"
                         value={values.coreValueSubtitle}
                         onChange={handleInputChange}
                         error={errors.coreValueSubtitle}
                     /><Controls.Input
                         name="trainingTitle"
-                        label="trainingTitle"
+                        label="Training Title"
                         value={values.trainingTitle}
                         onChange={handleInputChange}
                         error={errors.trainingTitle}
                     />
                     <Controls.Input
-                        label="trainingSubtitile"
                         name="trainingSubtitile"
+                        label="Training Sub Titile"
                         value={values.trainingSubtitile}
                         onChange={handleInputChange}
                         error={errors.trainingSubtitile}
                     />
                     <Controls.Input
-                        label="testimonialTitle"
                         name="testimonialTitle"
+                        label="Testimonial Title"
                         value={values.testimonialTitle}
                         onChange={handleInputChange}
                         error={errors.testimonialTitle}
                     /><Controls.Input
                         name="testimonialSubTitle"
-                        label="testimonialSubTitle"
+                        label="Testimonial Sub Title"
                         value={values.testimonialSubTitle}
                         onChange={handleInputChange}
                         error={errors.testimonialSubTitle}

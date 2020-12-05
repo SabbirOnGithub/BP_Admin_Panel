@@ -55,6 +55,7 @@ const saveFooterSection = (footerSection) => async (dispatch) => {
             //eslint-disable-next-line
             const formatHomePageData = delete footerSection.id;
             const { data } = await axiosWithToken.post("/FooterSection", footerSection)
+            console.log(data)
             if (data.status === true) {
                 dispatch({ type: FOOTER_SECTION_SAVE_SUCCESS, payload: data });
             } else {

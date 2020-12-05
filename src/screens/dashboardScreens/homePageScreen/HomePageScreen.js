@@ -10,6 +10,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
+import Widget from "../../../components/Widget";
+import { ResponseMessage } from "../../../themes/responseMessage";
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -36,19 +38,19 @@ const useStyles = makeStyles(theme => ({
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'heroText', label: 'Hero Text' },
-    { id: 'heroSectionDescription', label: 'heroSectionDescription' },
-    { id: 'videoUrl', label: 'videoUrl' },
-    { id: 'heroSectionBackgroundImage', label: 'heroSectionBackgroundImage' },
-    { id: 'shortIntroTitle', label: 'shortIntroTitle' },
-    { id: 'shortIntroSubTitle', label: 'shortIntroSubTitle' },
-    { id: 'functionAreaWalkthroughTitle', label: 'functionAreaWalkthroughTitle' },
-    { id: 'functionAreaWalkthroughSubTitle', label: 'functionAreaWalkthroughSubTitle' },
-    { id: 'consultingTitle', label: 'consultingTitle' },
-    { id: 'consultingSubTitle', label: 'ConsultingSubTitle' },
+    { id: 'heroSectionDescription', label: 'Hero Section Description' },
+    { id: 'videoUrl', label: 'Video Url' },
+    { id: 'heroSectionBackgroundImage', label: 'Hero Section Background Image' },
+    { id: 'shortIntroTitle', label: 'Short Intro Title' },
+    { id: 'shortIntroSubTitle', label: 'Short Intro Sub Title' },
+    { id: 'functionAreaWalkthroughTitle', label: 'Function Area Walkthrough Title' },
+    { id: 'functionAreaWalkthroughSubTitle', label: 'Function Area Walkthrough Sub Title' },
+    { id: 'consultingTitle', label: 'Consulting Title' },
+    { id: 'consultingSubTitle', label: 'Consulting  SubTitle' },
     { id: 'coreValueTitle', label: 'CoreValue Title' },
     { id: 'coreValueSubtitle', label: 'CoreValue Subtitle' },
-    { id: 'trainingTitle', label: 'TrainingTitle' },
-    { id: 'trainingSubtitile', label: 'Training Subtitile' },
+    { id: 'trainingTitle', label: 'Training Title' },
+    { id: 'trainingSubtitile', label: 'Training Sub Title' },
     { id: 'testimonialTitle', label: 'Testimonial Title' },
     { id: 'testimonialSubTitle', label: 'Testimonial Sub Title' },
     { id: 'actions', label: 'Actions', disableSorting: true }
@@ -84,7 +86,7 @@ export default function HomePageScreen() {
     } = useTable(homePageDatas, headCells, filterFn);
 
     const dispatch = useDispatch();
-    
+
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
         dispatch(saveHomePageData(item));
@@ -103,27 +105,27 @@ export default function HomePageScreen() {
         setRecordForEdit(null)
         setOpenPopup(false)
         saveItem(homePageData)
-        .then(()=>{
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            if (successSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submitted Successfully',
-                    type: 'success'
-                })
-            }
-            
-            if (errorSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submition Failed',
-                    type: 'warning'
-                })
-            }
-        })
-        
+            .then(() => {
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+
     }
 
     const openInPopup = item => {
@@ -138,22 +140,22 @@ export default function HomePageScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Delete Failed',
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message:  ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
     }
 
 
@@ -169,93 +171,104 @@ export default function HomePageScreen() {
         <>
             {
                 loading || loadingSave || loadingDelete ? "Loading" :
-                <>
-                    <PageTitle title="Basic Info" />
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                        <Toolbar>
-                                    <Controls.Button
-                                        text="Add New"
-                                        variant="outlined"
-                                        startIcon={<AddIcon />}
-                                        className={classes.newButton}
-                                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    />
-                                </Toolbar>
-                            <Paper style={{overflow:"auto",backgroundColor:"transparent"}}>
-                            
-                                <TblContainer>
-                                    <TblHead />
-                                    <TableBody>
-                                        {
-                                            recordsAfterPagingAndSorting().map(item =>
-                                                (<TableRow key={item.id}>
-                                                    <TableCell>{item.id}</TableCell>
-                                                    <TableCell>{item.heroText}</TableCell>
-                                                    <TableCell>{item.heroSectionDescription}</TableCell>
-                                                    <TableCell>{item.videoUrl}</TableCell>
-                                                    <TableCell>{item.heroSectionBackgroundImage}</TableCell>
-                                                    <TableCell>{item.shortIntroTitle}</TableCell>
-                                                    <TableCell>{item.shortIntroSubTitle}</TableCell>
-                                                    <TableCell>{item.functionAreaWalkthroughTitle}</TableCell>
-                                                    <TableCell>{item.functionAreaWalkthroughSubTitle}</TableCell>
-                                                    <TableCell>{item.consultingTitle}</TableCell>
-                                                    <TableCell>{item.consultingSubTitle}</TableCell>
-                                                    <TableCell>{item.coreValueTitle}</TableCell>
-                                                    <TableCell>{item.coreValueSubtitle}</TableCell>
-                                                    <TableCell>{item.trainingTitle}</TableCell>
-                                                    <TableCell>{item.trainingSubtitile}</TableCell>
-                                                    <TableCell>{item.testimonialTitle}</TableCell>
-                                                    <TableCell>{item.testimonialSubTitle}</TableCell>
-                                                    <TableCell>
-                                                        <Controls.ActionButton
-                                                            color="primary"
-                                                            onClick={() => { openInPopup(item) }}>
-                                                            <EditOutlinedIcon fontSize="small" />
-                                                        </Controls.ActionButton>
-                                                        <Controls.ActionButton
-                                                            color="secondary"
-                                                            onClick={() => {
-                                                                setConfirmDialog({
-                                                                    isOpen: true,
-                                                                    title: 'Are you sure to delete this record?',
-                                                                    subTitle: "You can't undo this operation",
-                                                                    onConfirm: () => { onDelete(item.id) }
-                                                                })
-                                                            }}>
-                                                            <CloseIcon fontSize="small" />
-                                                        </Controls.ActionButton>
-                                                    </TableCell>
-                                                </TableRow>)
-                                            )
-                                        }
-                                    </TableBody>
-                                </TblContainer>
-                                <TblPagination />
-                            </Paper>
-                            <Popup
-                                title="Home Page Data Form"
-                                openPopup={openPopup}
-                                setOpenPopup={setOpenPopup}
-                            >
-                                <HomePageForm
-                                    recordForEdit={recordForEdit}
-                                    addOrEdit={addOrEdit}
-                                    loadingSave={loadingSave}
-                                />
+                    <>
+                        <PageTitle title="Basic Info" />
+                        <Grid container spacing={4}>
+                            <Grid item xs={12}>
+                                <Widget
+                                    title="Basic Info List Table"
+                                    disableWidgetMenu
+                                    // upperTitle
+                                    // noBodyPadding
+                                    // bodyClass={classes.tableWidget}
+                                    // setOpenPopup={setOpenPopup}
+                                    // setRecordForEdit={setRecordForEdit}
+                                >
+                                    <Toolbar>
+                                        <Controls.Button
+                                            text="Add New"
+                                            variant="outlined"
+                                            startIcon={<AddIcon />}
+                                            className={classes.newButton}
+                                            onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        />
+                                    </Toolbar>
+                                    <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
 
-                            </Popup>
-                            <Notification
-                                notify={notify}
-                                setNotify={setNotify}
-                            />
-                            <ConfirmDialog
-                                confirmDialog={confirmDialog}
-                                setConfirmDialog={setConfirmDialog}
-                            />
+                                        <TblContainer>
+                                            <TblHead />
+                                            <TableBody>
+                                                {
+                                                    recordsAfterPagingAndSorting().map(item =>
+                                                        (<TableRow key={item.id}>
+                                                            <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{item.heroText}</TableCell>
+                                                            <TableCell>{item.heroSectionDescription}</TableCell>
+                                                            <TableCell>{item.videoUrl}</TableCell>
+                                                            <TableCell>{item.heroSectionBackgroundImage}</TableCell>
+                                                            <TableCell>{item.shortIntroTitle}</TableCell>
+                                                            <TableCell>{item.shortIntroSubTitle}</TableCell>
+                                                            <TableCell>{item.functionAreaWalkthroughTitle}</TableCell>
+                                                            <TableCell>{item.functionAreaWalkthroughSubTitle}</TableCell>
+                                                            <TableCell>{item.consultingTitle}</TableCell>
+                                                            <TableCell>{item.consultingSubTitle}</TableCell>
+                                                            <TableCell>{item.coreValueTitle}</TableCell>
+                                                            <TableCell>{item.coreValueSubtitle}</TableCell>
+                                                            <TableCell>{item.trainingTitle}</TableCell>
+                                                            <TableCell>{item.trainingSubtitile}</TableCell>
+                                                            <TableCell>{item.testimonialTitle}</TableCell>
+                                                            <TableCell>{item.testimonialSubTitle}</TableCell>
+                                                            <TableCell>
+                                                                <Controls.ActionButton
+                                                                    color="primary"
+                                                                    onClick={() => { openInPopup(item) }}>
+                                                                    <EditOutlinedIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                <Controls.ActionButton
+                                                                    color="secondary"
+                                                                    onClick={() => {
+                                                                        setConfirmDialog({
+                                                                            isOpen: true,
+                                                                            title: 'Are you sure to delete this record?',
+                                                                            subTitle: "You can't undo this operation",
+                                                                            onConfirm: () => { onDelete(item.id) }
+                                                                        })
+                                                                    }}>
+                                                                    <CloseIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                            </TableCell>
+                                                        </TableRow>)
+                                                    )
+                                                }
+                                            </TableBody>
+                                        </TblContainer>
+                                        <TblPagination />
+                                    </Paper>
+                                    <Popup
+                                        title="Home Page Data Form"
+                                        openPopup={openPopup}
+                                        setOpenPopup={setOpenPopup}
+                                    >
+                                        <HomePageForm
+                                            recordForEdit={recordForEdit}
+                                            addOrEdit={addOrEdit}
+                                            loadingSave={loadingSave}
+                                        />
+
+                                    </Popup>
+                                    <Notification
+                                        notify={notify}
+                                        setNotify={setNotify}
+                                    />
+                                    <ConfirmDialog
+                                        confirmDialog={confirmDialog}
+                                        setConfirmDialog={setConfirmDialog}
+                                    />
+                                </Widget>
+
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </> 
+                    </>
             }
         </>
     )

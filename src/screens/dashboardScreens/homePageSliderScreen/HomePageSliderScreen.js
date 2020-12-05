@@ -10,6 +10,7 @@ import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
+import { ResponseMessage } from "../../../themes/responseMessage";
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -26,7 +27,7 @@ const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'title', label: 'Title' },
     { id: 'subTitle', label: 'Sub Title' },
-    { id: 'isActive', label: 'Is Active' },
+    { id: 'isActive', label: 'Active' },
     { id: 'displayOrder', label: 'DisplayOrder' },
     { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
@@ -137,7 +138,7 @@ export default function HomePageSliderScreen() {
             if (errorDelete) {
                 setNotify({
                     isOpen: true,
-                    message: 'Delete Failed',
+                    message:  ResponseMessage.errorDeleteMessage,
                     type: 'warning'
                 })
             }

@@ -11,6 +11,7 @@ import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget";
+import { ResponseMessage } from "../../../themes/responseMessage";
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -25,9 +26,9 @@ const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
     { id: 'shortDescription', label: 'Short Description' },
+    { id: 'isActive', label: 'Active' },
+    { id: 'displayOrder', label: 'Display Order' },
     { id: 'pictureName', label: 'Picture' },
-    { id: 'isActive', label: 'isActive' },
-    { id: 'displayOrder', label: 'displayOrder' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
@@ -41,6 +42,8 @@ export default function SubMenuScreen() {
     const subMenuSave = useSelector(state => state.subMenuSave);
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave } = subMenuSave;
+    const successSaveMessage = ResponseMessage.successSaveMessage;
+
     const subMenuDelete = useSelector(state => state.subMenuDelete);
     //eslint-disable-next-line
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = subMenuDelete;
@@ -97,7 +100,7 @@ export default function SubMenuScreen() {
                 if (successSave) {
                     setNotify({
                         isOpen: true,
-                        message: 'Submitted Successfully',
+                        message: successSaveMessage,
                         type: 'success'
                     })
                 }
@@ -138,7 +141,7 @@ export default function SubMenuScreen() {
             if (errorDelete) {
                 setNotify({
                     isOpen: true,
-                    message: 'Delete Failed',
+                    message:  ResponseMessage.errorDeleteMessage,
                     type: 'warning'
                 })
             }

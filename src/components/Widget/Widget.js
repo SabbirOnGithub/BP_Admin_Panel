@@ -71,7 +71,7 @@ export default function Widget({
           {children}
         </div>
       </Paper>
-      <Menu
+       <Menu
         id="widget-menu"
         open={isMoreMenuOpen}
         anchorEl={moreButtonRef}
@@ -91,6 +91,7 @@ export default function Widget({
           <Typography>Print</Typography>
         </MenuItem> */}
       </Menu>
+      
     </div>
   );
 }

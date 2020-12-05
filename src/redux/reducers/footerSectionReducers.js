@@ -16,6 +16,7 @@ import {
 
 
 function footerSectionListReducer(state={footerSections:[]},action){
+    console.log(action.payload)
     switch(action.type){
         case FOOTER_SECTION_LIST_REQUEST:
             return { loading:true, footerSections:[] };

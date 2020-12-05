@@ -55,14 +55,14 @@ export default function MenuForm(props) {
                 <Grid item xs={12}>
                     <Controls.Input
                         name="name"
-                        label="name"
+                        label="Name"
                         value={values.name}
                         onChange={handleInputChange}
                         error={errors.name}
                     />
                     <Controls.Checkbox
                         name="isActive"
-                        label="isActive"
+                        label="Active"
                         value={values.isActive}
                         onChange={handleInputChange}
                         error={errors.isActive}

@@ -10,6 +10,7 @@ import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
+import { ResponseMessage } from "../../../themes/responseMessage";
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,7 +23,7 @@ import { listMenus, saveMenu, deleteMenu } from '../../../redux/actions/menuActi
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
-    { id: 'isActive', label: 'isActive' },
+    { id: 'isActive', label: 'Active' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
@@ -118,7 +119,7 @@ export default function MenuPageScreen() {
             if (errorDelete) {
                 setNotify({
                     isOpen: true,
-                    message: 'Delete Failed',
+                    message:  ResponseMessage.errorDeleteMessage,
                     type: 'warning'
                 })
             }

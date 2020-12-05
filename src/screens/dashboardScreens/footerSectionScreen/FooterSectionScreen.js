@@ -10,7 +10,7 @@ import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
-
+import { ResponseMessage } from "../../../themes/responseMessage";
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -31,15 +31,20 @@ export default function FooterSectionScreen() {
     //eslint-disable-next-line
     const { footerSections, loading, error } = footerSectionList;
     const footerSectionSave = useSelector(state => state.footerSectionSave);
+    console.log(footerSectionSave.footerSection)
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = footerSectionSave;
+    const { loading: loadingSave, success: successSave, error: errorSave  } = footerSectionSave;
+    
+    const successSaveMessage = footerSectionSave.footerSection ? footerSectionSave.footerSection.message : ResponseMessage.successSaveMessage;
+
     const footerSectionDelete = useSelector(state => state.footerSectionDelete);
     //eslint-disable-next-line
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = footerSectionDelete;
+    
+
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
-    // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
@@ -78,13 +83,13 @@ export default function FooterSectionScreen() {
             // setRecordForEdit(null)
             // setOpenPopup(false)
             if (successSave) {
+                console.log(successSave)
                 setNotify({
                     isOpen: true,
-                    message: 'Submitted Successfully',
+                    message: successSaveMessage,
                     type: 'success'
                 })
             }
-            
             if (errorSave) {
                 setNotify({
                     isOpen: true,
@@ -122,7 +127,7 @@ export default function FooterSectionScreen() {
             if (errorDelete) {
                 setNotify({
                     isOpen: true,
-                    message: 'Delete Failed',
+                    message: ResponseMessage.errorDeleteMessage,
                     type: 'warning'
                 })
             }
