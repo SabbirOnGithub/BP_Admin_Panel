@@ -34,19 +34,26 @@ const structure = [
       { label: "Slider", link: "/dashboard/homePageSlider" },
       { label: "Short Intro", link: "/dashboard/submenu" },
       { label: "Walk-through", link: "/dashboard/homePageFunctionAreaDetail" },
-      { label: "Consulting", link: "/dashboard/homeConsultationTopicScreen" },
+      { label: "Consulting", link: "/dashboard/homeConsultationTopic" },
       { label: "Core Values", link: "/dashboard/homePageCoreValueDetail" },
     ],
   },
   {
     id: 2, label: "Menu", link: "/dashboard/menu", icon: <TypographyIcon />,
   },
-  {
-    id: 3, label: "Sub Menu", link: "/dashboard/submenu", icon: <TypographyIcon />,
-  },
+  // {
+  //   id: 3, label: "Sub Menu", link: "/dashboard/submenu", icon: <TypographyIcon />,
+  // },
   {
     id: 4, label: "Footer Section", link: "/dashboard/footerSection", icon: <TypographyIcon />,
   },
+  {
+    id: 5, label: "Training Detail", link: "/dashboard/trainingDetail", icon: <TypographyIcon />,
+  },
+  {
+    id: 6, label: "Testimonial Detail", link: "/dashboard/testimonialDetail", icon: <TypographyIcon />,
+  },
+  
   // {
   //   id: 4,
   //   label: "UI Elements",

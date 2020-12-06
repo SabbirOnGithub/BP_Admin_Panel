@@ -10,6 +10,9 @@ import HomepageSliderScreen from '../screens/dashboardScreens/homePageSliderScre
 import HomePageCoreValueDetailScreen from "../screens/dashboardScreens/homePageCoreValueDetailScreen/HomePageCoreValueDetailScreen";
 import HomePageFunctionAreaDetailScreen from "../screens/dashboardScreens/homePageFunctionAreaDetailScreen/HomePageFunctionAreaDetailScreen";
 import HomeConsultationTopicScreen from "../screens/dashboardScreens/homeConsultationTopicScreen/HomeConsultationTopicScreen";
+import TrainingDetailScreen from "../screens/dashboardScreens/trainingDetailScreen/TrainingDetailScreen";
+import TestimonialDetailScreen from "../screens/dashboardScreens/testimonialDetailScreen/TestimonialDetailScreen";
+import UserScreen from "../screens/dashboardScreens/userScreen/UserScreen";
 
 
 const DashboardScreensRoute = (props) => {
@@ -24,7 +27,10 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/footerSection`} component={FooterSectionScreen} />
         <Route exact path={`${props.match.path}/homePageCoreValueDetail`} component={HomePageCoreValueDetailScreen} />
         <Route exact path={`${props.match.path}/homePageFunctionAreaDetail`} component={HomePageFunctionAreaDetailScreen} />
-        <Route exact path={`${props.match.path}/homeConsultationTopicScreen`} component={HomeConsultationTopicScreen} />
+        <Route exact path={`${props.match.path}/homeConsultationTopic`} component={HomeConsultationTopicScreen} />
+        <Route exact path={`${props.match.path}/trainingDetail`} component={TrainingDetailScreen} />
+        <Route exact path={`${props.match.path}/testimonialDetail`} component={TestimonialDetailScreen} />
+        <Route exact path={`${props.match.path}/user`} component={UserScreen} />
 
         
         <Route path="*">

@@ -1,40 +1,43 @@
 import { 
     USER_SIGNIN_REQUEST, 
     USER_SIGNIN_SUCCESS, 
-    USER_SIGNIN_FAILED, 
-    USER_REGISTER_REQUEST, 
-    USER_REGISTER_SUCCESS, 
-    USER_REGISTER_FAILED,
-    USER_UPDATE_REQUEST,
-    USER_UPDATE_SUCCESS,
-    USER_UPDATE_FAILED,
+    USER_SIGNIN_FAIL, 
     USER_LOGOUT,
     USER_LIST_REQUEST,
     USER_LIST_SUCCESS,
-    USER_LIST_FAILED,
+    USER_LIST_FAIL,
+    USER_SAVE_REQUEST, 
+    USER_SAVE_SUCCESS, 
+    USER_SAVE_FAIL,
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
-    USER_DETAILS_FAIL, 
+    USER_DETAILS_FAIL,
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAIL 
 } from "../constants/userConstants";
 import {config} from "../../config";
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import { axiosWithoutToken } from "../../helpers/axios";
+import { axiosWithoutToken, axiosWithToken } from "../../helpers/axios";
 
 const BASE_API_URL = config.BASE_API_URL
 
-const listUsers = () => async (dispatch)=>{
-    try{
-        dispatch({type: USER_LIST_REQUEST});
-        const { data } = await axiosWithoutToken.get('/User');
-        console.log(data)
-        dispatch({ type: USER_LIST_SUCCESS, payload: data.data ? data.data : [] });
+const listUsers = () => async (dispatch) => {
+    try {
+        dispatch({ type: USER_LIST_REQUEST });
+        const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User`);
+        if (data.status === true) {
+            dispatch({ type: USER_LIST_SUCCESS, payload: data.data ? data.data : [] });
+        } else {
+            dispatch({ type: USER_LIST_FAIL, payload: data.message });
+        }
+        console.log(data.data)
     }
-    catch(error){
-        dispatch({ type: USER_LIST_FAILED, payload: error.message });
-
+    catch (error) {
+        dispatch({ type: USER_LIST_FAIL, payload: error.message });
     }
-}
+};
 const detailsUser = (id)=> async (dispatch) =>{
     try{
         dispatch({type:USER_DETAILS_REQUEST});
@@ -46,38 +49,48 @@ const detailsUser = (id)=> async (dispatch) =>{
     }
 };
 
-
-
-const updateUser = ({ userId, name, email, password }) => async (dispatch, getState) => {
-    const { userSignin: { userInfo } } = getState();
-    dispatch({ type: USER_UPDATE_REQUEST, payload: { userId, name, email, password } });
+// register and update user
+const saveUser = (item) => async (dispatch) => {
     try {
-        const { data } = await axios.put("/api/User/Update" + userId,
-        { name, email, password }, {
-        headers: {
-            Authorization: 'Bearer ' + userInfo.token
+        dispatch({ type: USER_SAVE_REQUEST, payload: item })
+        if (!item.id) {
+            //eslint-disable-next-line
+            const formatHomePageData = delete item.id;
+            const { data } = await axiosWithToken.post("/User", item)
+            console.log(data)
+            if (data.status === true) {
+                dispatch({ type: USER_SAVE_SUCCESS, payload: data });
+            } else {
+                dispatch({ type: USER_SAVE_FAIL, payload: data.message });
+            }
+        } else {
+            const { data } = await axiosWithToken.put("/User", item);
+            if (data.status === true) {
+                dispatch({ type: USER_SAVE_SUCCESS, payload: data });
+            } else {
+                dispatch({ type: USER_SAVE_FAIL, payload: data.message });
+            }
         }
-        });
-        dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
-        Cookie.set('userInfo', JSON.stringify(data));
+
     } catch (error) {
-        dispatch({ type: USER_UPDATE_FAILED, payload: error.message });
+        console.log(error)
+        dispatch({ type: USER_SAVE_FAIL, payload: error.message });
     }
 };
-
-// register user
-const registerUser = (name, email,password) => async(dispatch) => {
-    dispatch({type:USER_REGISTER_REQUEST, payload:{name, email, password}});
-    try{
-        const {data} = await axios.post("/User", { name, email, password });
-        dispatch({type:USER_REGISTER_SUCCESS,payload:data});
-        // Cookie.set('userInfo', JSON.stringify(data));
+const deleteUser = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_DELETE_REQUEST });
+        const { data } = await axiosWithToken.delete("/TrainingDetail/" + id);
+        if (data) {
+            dispatch({ type: USER_DELETE_SUCCESS, payload: data, success: true });
+        } else {
+            dispatch({ type: USER_DELETE_FAIL, payload: data.message });
+        }
     }
-    catch(error){
-        dispatch({ type:USER_REGISTER_FAILED, payload:error.message })
+    catch (error) {
+        dispatch({ type: USER_DELETE_FAIL, payload: error.message });
     }
 };
-
 // sign in method
 const signin = (email,password) => async(dispatch) => {
     const username = email
@@ -91,12 +104,12 @@ const signin = (email,password) => async(dispatch) => {
             Cookie.set('userInfo', JSON.stringify(data.data));
             Cookie.set('userToken', data.data.token);
         }else{
-            dispatch({type:USER_SIGNIN_FAILED,payload:data.message})
+            dispatch({type:USER_SIGNIN_FAIL,payload:data.message})
         }
        
     }
     catch(error){
-        dispatch({type:USER_SIGNIN_FAILED,payload:error.message})
+        dispatch({type:USER_SIGNIN_FAIL,payload:error.message})
     }
 };
 
@@ -110,4 +123,4 @@ const logout = () => (dispatch) => {
 
 
 
-export { signin, registerUser, updateUser, logout, listUsers, detailsUser } ;
+export { signin, logout, listUsers, saveUser, detailsUser, deleteUser } ;

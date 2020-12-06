@@ -4,12 +4,15 @@ import { homePageDataListReducer, homePageDataDetailsReducer, homePageDataSaveRe
 import { menuListReducer, menuDetailsReducer, menuSaveReducer,menuDeleteReducer } from './reducers/menuReducers';
 import thunk from 'redux-thunk';
 import Cookie from "js-cookie";
-import { userSigninReducer, userRegisterReducer, userUpdateReducer, userListReducer, userDeleteReducer, userDetailsReducer } from './reducers/userReducers';
+import { userSigninReducer, userListReducer, userDeleteReducer, userDetailsReducer, userSaveReducer } from './reducers/userReducers';
 import { homePageSliderDeleteReducer, homePageSliderDetailsReducer, homePageSliderListReducer, homePageSliderSaveReducer } from './reducers/homePageSliderReducers';
 import { footerSectionDeleteReducer, footerSectionDetailsReducer, footerSectionListReducer, footerSectionSaveReducer } from './reducers/footerSectionReducers';
 import { homePageCoreValueDetailDeleteReducer, homePageCoreValueDetailDetailsReducer, homePageCoreValueDetailListReducer, homePageCoreValueDetailSaveReducer } from './reducers/homePageCoreValueDetailReducers';
 import { homePageFunctionAreaDetailDeleteReducer, homePageFunctionAreaDetailDetailsReducer, homePageFunctionAreaDetailListReducer, homePageFunctionAreaDetailSaveReducer } from './reducers/homePageFunctionAreaDetailReducers';
 import { homeConsultationTopicDeleteReducer, homeConsultationTopicDetailsReducer, homeConsultationTopicListReducer, homeConsultationTopicSaveReducer } from './reducers/homeConsultationTopicReducers';
+import { trainingDetailDeleteReducer, trainingDetailDetailsReducer, trainingDetailListReducer, trainingDetailSaveReducer } from './reducers/trainingDetailReducers';
+import { testimonialDetailDeleteReducer, testimonialDetailDetailsReducer, testimonialDetailListReducer, testimonialDetailSaveReducer } from './reducers/testimonialDetailReducers';
+import { roleDeleteReducer, roleDetailsReducer, roleListReducer, roleSaveReducer } from './reducers/roleReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -18,11 +21,10 @@ const initialState={
     userSignin:{ userInfo }
 };
 const reducer = combineReducers({
-    userList:userListReducer,
-    userDetails: userDetailsReducer,
     userSignin:userSigninReducer,
-    userRegister: userRegisterReducer,
-    userUpdate: userUpdateReducer,
+    userList:userListReducer,
+    userSave: userSaveReducer,
+    userDetails: userDetailsReducer,
     userDelete: userDeleteReducer,
     subMenuList:subMenuListReducer,
     subMenuDetails: subMenuDetailsReducer,
@@ -56,7 +58,18 @@ const reducer = combineReducers({
     homeConsultationTopicDetails: homeConsultationTopicDetailsReducer,
     homeConsultationTopicSave: homeConsultationTopicSaveReducer,
     homeConsultationTopicDelete: homeConsultationTopicDeleteReducer,
-
+    trainingDetailList:trainingDetailListReducer,
+    trainingDetailDetails: trainingDetailDetailsReducer,
+    trainingDetailSave: trainingDetailSaveReducer,
+    trainingDetailDelete: trainingDetailDeleteReducer,
+    testimonialDetailList:testimonialDetailListReducer,
+    testimonialDetailDetails: testimonialDetailDetailsReducer,
+    testimonialDetailSave: testimonialDetailSaveReducer,
+    testimonialDetailDelete: testimonialDetailDeleteReducer,
+    roleList:roleListReducer,
+    roleDetails: roleDetailsReducer,
+    roleSave: roleSaveReducer,
+    roleDelete: roleDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

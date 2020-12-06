@@ -80,9 +80,10 @@ axiosWithTokenAndMultipartData.interceptors.response.use(function (response) {
 // ------------------------------------------------------------------------------
 // Now all requests using this instance will wait 2.5 seconds before timing out
 // ------------------------------------------------------------------------------
-axiosWithoutToken.defaults.timeout = 2500;
-axiosWithToken.defaults.timeout = 2500;
-axiosWithTokenAndMultipartData.defaults.timeout = 2500;
+
+// axiosWithoutToken.defaults.timeout = 2500;
+// axiosWithToken.defaults.timeout = 2500;
+// axiosWithTokenAndMultipartData.defaults.timeout = 2500;
 
 
 
