@@ -155,12 +155,12 @@ export default function TestimonialDetailScreen() {
         <div>
             {loading || loadingSave || loadingDelete ? "Loading ...." :
                 <>
-                    <PageTitle title="Training Details" />
+                    <PageTitle title="Testimonial Details" />
 
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="Training Details List Table"
+                                title="Testimonial Details List Table"
                                 upperTitle
                                 noBodyPadding
                                 // bodyClass={classes.tableWidget}
