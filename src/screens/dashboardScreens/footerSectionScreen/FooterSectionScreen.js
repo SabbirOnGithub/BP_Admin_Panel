@@ -31,7 +31,7 @@ export default function FooterSectionScreen() {
     //eslint-disable-next-line
     const { footerSections, loading, error } = footerSectionList;
     const footerSectionSave = useSelector(state => state.footerSectionSave);
-    console.log(footerSectionSave.footerSection)
+    // console.log(footerSectionSave.footerSection)
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave  } = footerSectionSave;
     

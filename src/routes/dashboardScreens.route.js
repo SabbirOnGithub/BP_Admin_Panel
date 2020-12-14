@@ -13,6 +13,7 @@ import HomeConsultationTopicScreen from "../screens/dashboardScreens/homeConsult
 import TrainingDetailScreen from "../screens/dashboardScreens/trainingDetailScreen/TrainingDetailScreen";
 import TestimonialDetailScreen from "../screens/dashboardScreens/testimonialDetailScreen/TestimonialDetailScreen";
 import UserScreen from "../screens/dashboardScreens/userScreen/UserScreen";
+import SubmenuBestPracticeScreen from "../screens/dashboardScreens/submenuBestPracticeScreen/SubmenuBestPracticeScreen";
 
 
 const DashboardScreensRoute = (props) => {
@@ -31,6 +32,8 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/trainingDetail`} component={TrainingDetailScreen} />
         <Route exact path={`${props.match.path}/testimonialDetail`} component={TestimonialDetailScreen} />
         <Route exact path={`${props.match.path}/user`} component={UserScreen} />
+        <Route exact path={`${props.match.path}/submenuBestPractice`} component={SubmenuBestPracticeScreen} />
+
 
         
         <Route path="*">

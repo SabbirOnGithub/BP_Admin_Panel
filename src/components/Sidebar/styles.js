@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap",
+    // whiteSpace: "nowrap",
   },
   drawerOpen: {
     width: drawerWidth,
@@ -55,5 +55,6 @@ export default makeStyles(theme => ({
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
+    
   },
 }));

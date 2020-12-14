@@ -29,7 +29,7 @@ const listFooterSections = () => async (dispatch) => {
         } else {
             dispatch({ type: FOOTER_SECTION_LIST_FAIL, payload: data.message });
         }
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch (error) {
         dispatch({ type: FOOTER_SECTION_LIST_FAIL, payload: error.message });

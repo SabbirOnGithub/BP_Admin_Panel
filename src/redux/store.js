@@ -13,6 +13,7 @@ import { homeConsultationTopicDeleteReducer, homeConsultationTopicDetailsReducer
 import { trainingDetailDeleteReducer, trainingDetailDetailsReducer, trainingDetailListReducer, trainingDetailSaveReducer } from './reducers/trainingDetailReducers';
 import { testimonialDetailDeleteReducer, testimonialDetailDetailsReducer, testimonialDetailListReducer, testimonialDetailSaveReducer } from './reducers/testimonialDetailReducers';
 import { roleDeleteReducer, roleDetailsReducer, roleListReducer, roleSaveReducer } from './reducers/roleReducers';
+import { submenuBestPracticeDeleteReducer, submenuBestPracticeDetailsReducer, submenuBestPracticeListReducer, submenuBestPracticeSaveReducer } from './reducers/submenuBestPracticeReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -70,6 +71,10 @@ const reducer = combineReducers({
     roleDetails: roleDetailsReducer,
     roleSave: roleSaveReducer,
     roleDelete: roleDeleteReducer,
+    submenuBestPracticeList:submenuBestPracticeListReducer,
+    submenuBestPracticeDetails: submenuBestPracticeDetailsReducer,
+    submenuBestPracticeSave: submenuBestPracticeSaveReducer,
+    submenuBestPracticeDelete: submenuBestPracticeDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

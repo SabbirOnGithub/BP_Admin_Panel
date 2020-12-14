@@ -53,6 +53,9 @@ const structure = [
   {
     id: 6, label: "Testimonial Detail", link: "/dashboard/testimonialDetail", icon: <TypographyIcon />,
   },
+  {
+    id: 7, label: "Submenu Best Practice", link: "/dashboard/submenuBestPractice", icon: <TypographyIcon />,
+  },
   
   // {
   //   id: 4,
@@ -134,6 +137,7 @@ function Sidebar({ location }) {
       setPermanent(false);
     } else if (!isSmallScreen && !isPermanent) {
       setPermanent(true);
+
     }
   }
 }
