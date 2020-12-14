@@ -11,6 +11,7 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
     const handleInputChange = e => {
         // e.target.name === "file" && console.log(e.target.files[0]) 
         const { name, value } = e.target
+        console.log(typeof(e.target.value))
             setValues({
                 ...values,
                 [name]: value
@@ -19,6 +20,26 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         if (validateOnChange)
             validate({ [name]: value })
     }
+    const handleInputNumberChange = e => {
+        // e.target.name === "file" && console.log(e.target.files[0]) 
+        const { name, value } = e.target
+
+        if(e.target.value){
+            setValues({
+                ...values,
+                [name]: parseInt(value)
+            })
+        }else{
+            setValues({
+                ...values,
+                [name]: ''
+            })
+        }
+       
+        if (validateOnChange)
+            validate({ [name]: value })
+    }
+
     const handleFileChange = e => {
         e.target.files[0] && setFiles(e.target.files[0])
     }
@@ -36,6 +57,7 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         handleFileChange,
         resetForm
     }

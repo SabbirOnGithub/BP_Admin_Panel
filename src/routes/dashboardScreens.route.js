@@ -15,6 +15,7 @@ import TestimonialDetailScreen from "../screens/dashboardScreens/testimonialDeta
 import UserScreen from "../screens/dashboardScreens/userScreen/UserScreen";
 import SubmenuBestPracticeScreen from "../screens/dashboardScreens/submenuBestPracticeScreen/SubmenuBestPracticeScreen";
 import SubMenuOverViewScreen from "../screens/dashboardScreens/subMenuOverViewScreen/SubMenuOverViewScreen";
+import MenuSubMenuMapItemScreen from '../screens/dashboardScreens/menuSubMenuMapItemScreen/MenuSubMenuMapItemScreen';
 
 
 const DashboardScreensRoute = (props) => {
@@ -35,6 +36,8 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/user`} component={UserScreen} />
         <Route exact path={`${props.match.path}/submenuBestPractice`} component={SubmenuBestPracticeScreen} />
         <Route exact path={`${props.match.path}/subMenuOverView`} component={SubMenuOverViewScreen} />
+        <Route exact path={`${props.match.path}/menuSubMenuMapItem`} component={MenuSubMenuMapItemScreen} />
+
 
 
         
