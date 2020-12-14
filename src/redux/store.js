@@ -14,6 +14,7 @@ import { trainingDetailDeleteReducer, trainingDetailDetailsReducer, trainingDeta
 import { testimonialDetailDeleteReducer, testimonialDetailDetailsReducer, testimonialDetailListReducer, testimonialDetailSaveReducer } from './reducers/testimonialDetailReducers';
 import { roleDeleteReducer, roleDetailsReducer, roleListReducer, roleSaveReducer } from './reducers/roleReducers';
 import { submenuBestPracticeDeleteReducer, submenuBestPracticeDetailsReducer, submenuBestPracticeListReducer, submenuBestPracticeSaveReducer } from './reducers/submenuBestPracticeReducers';
+import { subMenuOverViewDeleteReducer, subMenuOverViewDetailsReducer, subMenuOverViewListReducer, subMenuOverViewSaveReducer } from './reducers/subMenuOverViewReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -75,6 +76,10 @@ const reducer = combineReducers({
     submenuBestPracticeDetails: submenuBestPracticeDetailsReducer,
     submenuBestPracticeSave: submenuBestPracticeSaveReducer,
     submenuBestPracticeDelete: submenuBestPracticeDeleteReducer,
+    subMenuOverViewList:subMenuOverViewListReducer,
+    subMenuOverViewDetails: subMenuOverViewDetailsReducer,
+    subMenuOverViewSave: subMenuOverViewSaveReducer,
+    subMenuOverViewDelete: subMenuOverViewDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

@@ -56,7 +56,9 @@ const structure = [
   {
     id: 7, label: "Submenu Best Practice", link: "/dashboard/submenuBestPractice", icon: <TypographyIcon />,
   },
-  
+  {
+    id: 8, label: "SubMenu Overview", link: "/dashboard/SubMenuOverView", icon: <TypographyIcon />,
+  },
   // {
   //   id: 4,
   //   label: "UI Elements",
