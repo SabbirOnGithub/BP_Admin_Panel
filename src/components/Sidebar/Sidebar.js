@@ -41,9 +41,6 @@ const structure = [
   {
     id: 2, label: "Menu", link: "/dashboard/menu", icon: <TypographyIcon />,
   },
-  // {
-  //   id: 3, label: "Sub Menu", link: "/dashboard/submenu", icon: <TypographyIcon />,
-  // },
   {
     id: 4, label: "Footer Section", link: "/dashboard/footerSection", icon: <TypographyIcon />,
   },
@@ -61,6 +58,9 @@ const structure = [
   },
   {
     id: 9, label: "Menu SubMenu Map Item", link: "/dashboard/menuSubMenuMapItem", icon: <TypographyIcon />,
+  },
+  {
+    id: 10, label: "Menu Sub Menu Map Item List Item", link: "/dashboard/menuSubMenuMapItemListItem", icon: <TypographyIcon />,
   },
   // {
   //   id: 4,

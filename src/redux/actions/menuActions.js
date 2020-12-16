@@ -38,10 +38,10 @@ const listMenus = () => async (dispatch)=>{
 };
 
 
-const detailsMenu = (id)=> async (dispatch) =>{
+const detailsMenu = (menuId)=> async (dispatch) =>{
     try{
         dispatch({type:MENU_DETAILS_REQUEST});
-        const { data } = await axiosWithoutToken.get("/Menu/" + id); 
+        const { data } = await axiosWithoutToken.get("/Menu/" + menuId); 
         dispatch({type:MENU_DETAILS_SUCCESS, payload: data });
     }
     catch(error){
@@ -49,21 +49,21 @@ const detailsMenu = (id)=> async (dispatch) =>{
     }
 };
 
-const saveMenu = (item) => async (dispatch) =>{
+const saveMenu = (menu) => async (dispatch) =>{
     try{
-        dispatch({type: MENU_SAVE_REQUEST, payload:item })
-        if(!item.id){
+        dispatch({type: MENU_SAVE_REQUEST, payload:menu })
+        if(!menu.id){
             //eslint-disable-next-line
-            const formatHomePageData = delete item.id;
+            const formatHomePageData = delete menu.id;
             // console.log(homePageData)
-            const { data } = await axiosWithToken.post("/Menu", item)
+            const { data } = await axiosWithToken.post("/Menu", menu)
             if (data.status === true) {
                 dispatch({type: MENU_SAVE_SUCCESS, payload: data });
             }else{
                 dispatch({ type: MENU_SAVE_FAIL, payload: data.message });
             }
         }else{
-            const { data } = await axiosWithToken.put("/Menu/", item);
+            const { data } = await axiosWithToken.put("/Menu/", menu);
             if (data.status === true) {
                 dispatch({type: MENU_SAVE_SUCCESS, payload: data });            
             }else{
@@ -76,10 +76,12 @@ const saveMenu = (item) => async (dispatch) =>{
     }
 };
 
-const deleteMenu = (id) => async (dispatch) =>{
+const deleteMenu = (menuId)=> async (dispatch, getState) =>{
+    // console.log(menuId);
+    // console.log(typeof(menuId));
     try{
         dispatch({type:MENU_DELETE_REQUEST});
-        const { data } = await axiosWithToken.delete("/Menu/" + id); 
+        const { data } = await axiosWithToken.delete("/Menu/" + menuId); 
         if (data.status === true) {
             dispatch({type:MENU_DELETE_SUCCESS, payload: data, success:true });
         }else{

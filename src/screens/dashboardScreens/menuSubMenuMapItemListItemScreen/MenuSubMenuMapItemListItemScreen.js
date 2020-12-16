@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import UserForm from "./UserForm";
+import MenuSubMenuMapItemListItemForm from "./MenuSubMenuMapItemListItemForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -15,39 +15,36 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { listUsers, saveUser, deleteUser } from '../../../redux/actions/userActions';
-import { listRoles } from '../../../redux/actions/roleActions';
+import { listMenuSubMenuMapItemListItems, saveMenuSubMenuMapItemListItem, deleteMenuSubMenuMapItemListItem } from '../../../redux/actions/menuSubMenuMapItemListItemActions';
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'username', label: 'User Name' },
-    { id: 'roleName', label: 'Role Name' },
-    { id: 'isActive', label: 'Is Active' },
+    { id: 'menuSubMenuMapItemId', label: 'Menu Sub Menu Map Item Id' },
+    { id: 'text', label: 'Text' },
+    { id: 'isActive', label: 'Active' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function UserScreen() {
-    const roleList = useSelector(state => state.roleList);
-    //eslint-disable-next-line
-    const { roles, loading:roleListLoading, error:roleListError } = roleList;
-    console.log(roles)
-    const userList = useSelector(state => state.userList);
-    //eslint-disable-next-line
-    const { users, loading, error } = userList;
-    const userSave = useSelector(state => state.userSave);
-    //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave  } = userSave;
-    
-    const successSaveMessage = userSave.user ? userSave.user.message : ResponseMessage.successSaveMessage;
+export default function MenuSubMenuMapItemListItemScreen() {
 
-    const userDelete = useSelector(state => state.userDelete);
+    const menuSubMenuMapItemListItemList = useSelector(state => state.menuSubMenuMapItemListItemList);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = userDelete;
+    const { menuSubMenuMapItemListItems, loading, error } = menuSubMenuMapItemListItemList;
+    const menuSubMenuMapItemListItemSave = useSelector(state => state.menuSubMenuMapItemListItemSave);
+    // console.log(menuSubMenuMapItemListItemSave.menuSubMenuMapItemListItem)
+    //eslint-disable-next-line
+    const { loading: loadingSave, success: successSave, error: errorSave  } = menuSubMenuMapItemListItemSave;
+    
+    const successSaveMessage = menuSubMenuMapItemListItemSave.menuSubMenuMapItemListItem ? menuSubMenuMapItemListItemSave.menuSubMenuMapItemListItem.message : ResponseMessage.successSaveMessage;
+
+    const menuSubMenuMapItemListItemDelete = useSelector(state => state.menuSubMenuMapItemListItemDelete);
+    //eslint-disable-next-line
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = menuSubMenuMapItemListItemDelete;
     
 
 
-    //eslint-disable-next-line
+
     const [recordForEdit, setRecordForEdit] = useState(null)
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
@@ -60,28 +57,28 @@ export default function UserScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(users, headCells, filterFn);
+    } = useTable(menuSubMenuMapItemListItems, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveUser(item));
+        dispatch(saveMenuSubMenuMapItemListItem(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteUser(id));
+        dispatch(deleteMenuSubMenuMapItemListItem(id));
         resolve();
     })
-    //eslint-disable-next-line
-    const addOrEdit = async (user, resetForm) => {
+
+    const addOrEdit = async (item, resetForm) => {
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
         //call add item promise 
-        saveItem(user)
+        saveItem(item)
         .then(() => {
             // resetForm()
             // setRecordForEdit(null)
@@ -107,14 +104,7 @@ export default function UserScreen() {
         })
 
     }
-    const getUserRoleName = (id) =>{
-        const roleDetails = roles.find(item=>item.id===id);
-        if(roleDetails){
-            return roleDetails.name
-        }else{
-            return 'role not found'
-        }
-    }
+
     const openInPopup = item => {
         setRecordForEdit(item)
         setOpenPopup(true)
@@ -146,8 +136,7 @@ export default function UserScreen() {
     }
 
     useEffect(() => {
-        dispatch(listUsers());
-        dispatch(listRoles());
+        dispatch(listMenuSubMenuMapItemListItems());
         return () => {
             // 
         }
@@ -157,12 +146,12 @@ export default function UserScreen() {
             {
                 loading || loadingSave || loadingDelete ? "Loading" :
                     <>
-                        <PageTitle title="Users" />
+                        <PageTitle title="Menu SubMenu Map Item List Item" />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Widget
-                                    title="User List Table"
+                                    title="Menu SubMenu Map Item List Item List Table"
                                     upperTitle
                                     noBodyPadding
                                     setOpenPopup={setOpenPopup}
@@ -177,8 +166,8 @@ export default function UserScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.username}</TableCell>
-                                                            <TableCell>{getUserRoleName(item.roleId) }</TableCell>
+                                                            <TableCell>{item.menuSubMenuMapItemId}</TableCell>
+                                                            <TableCell>{item.text}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
                                                                 <Controls.ActionButton
@@ -207,15 +196,15 @@ export default function UserScreen() {
                                         <TblPagination />
                                     </Paper>
                                     <Popup
-                                        title="User Form"
+                                        title="Menu SubMenu Map Item List Item Form"
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >
-                                        {/* <UserForm
+                                        <MenuSubMenuMapItemListItemForm
                                             recordForEdit={recordForEdit}
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
-                                        /> */}
+                                        />
 
                                     </Popup>
                                     <Notification
