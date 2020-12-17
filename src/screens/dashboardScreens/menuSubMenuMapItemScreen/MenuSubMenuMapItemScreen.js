@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import MenuForm from "./MenuSubMenuMapItemForm";
+import MenuSubMenuMapItemForm from "./MenuSubMenuMapItemForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -11,18 +11,20 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import { searchTitleByIdFromArray } from '../../../helpers/search';
 
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { listMenuSubMenuMapItems, saveMenuSubMenuMapItem, deleteMenuSubMenuMapItem } from '../../../redux/actions/menuSubMenuMapItemActions';
+import {  listMenuSubMenuMaps } from '../../../redux/actions/menuSubMenuMapActions';
 
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'menuSubMenuMapId', label: 'Menu SubMenu Map Id' },
+    { id: 'menuSubMenuMapId', label: 'Menu SubMenu Map Title' },
     { id: 'title', label: 'Title' },
     { id: 'description', label: 'Description' },
     { id: 'displayOrder', label: 'DisplayOrder' },
@@ -31,6 +33,10 @@ const headCells = [
 ]
 
 export default function MenuSubMenuMapItemScreen() {
+    const menuSubMenuMapList = useSelector(state => state.menuSubMenuMapList)
+    //eslint-disable-next-line
+    const { menuSubMenuMaps, loading: loadingMenuSubMenuMaps } = menuSubMenuMapList;
+    console.log(menuSubMenuMaps)
 
     const menuSubMenuMapItemList = useSelector(state => state.menuSubMenuMapItemList);
     //eslint-disable-next-line
@@ -130,6 +136,7 @@ export default function MenuSubMenuMapItemScreen() {
     }
 
     useEffect(() => {
+        dispatch(listMenuSubMenuMaps());
         dispatch(listMenuSubMenuMapItems());
         return () => {
             // 
@@ -139,7 +146,7 @@ export default function MenuSubMenuMapItemScreen() {
 
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
+                loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps ? "Loading" :
                     <>
                         <PageTitle title="Menu Sub Menu Map Items" />
 
@@ -171,7 +178,7 @@ export default function MenuSubMenuMapItemScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.menuSubMenuMapId}</TableCell>
+                                                            <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell>
                                                             <TableCell>{item.title}</TableCell>
                                                             <TableCell>{item.description}</TableCell>
                                                             <TableCell>{item.displayOrder}</TableCell>
@@ -207,10 +214,11 @@ export default function MenuSubMenuMapItemScreen() {
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >
-                                        <MenuForm
+                                        <MenuSubMenuMapItemForm
                                             recordForEdit={recordForEdit}
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
+                                            menuSubMenuMaps = {menuSubMenuMaps}
                                         />
 
                                     </Popup>

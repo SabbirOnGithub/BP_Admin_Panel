@@ -13,8 +13,8 @@ const initialFValues = {
     isActive: false,
 }
 
-export default function MenuForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave } = props
+export default function MenuSubMenuMapItemForm(props) {
+    const { addOrEdit, recordForEdit, loadingSave, menuSubMenuMaps } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -63,22 +63,22 @@ export default function MenuForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                <Controls.Input
+                {/* <Controls.Input
                         label="Menu Sub Menu Map Id"
                         name="menuSubMenuMapId"
                         type="number"
                         value={values.menuSubMenuMapId}
                         onChange={handleInputNumberChange}
                         error={errors.menuSubMenuMapId}
-                    />
-                {/* <Controls.Select
+                    /> */}
+                <Controls.Select
+                        label="Menu Sub Menu Map Name" 
                         name="menuSubMenuMapId"
-                        label="Menu Sub Menu Map Id"
                         value={values.menuSubMenuMapId}
                         onChange={handleInputChange}
                         error={errors.menuSubMenuMapId}
                         options={menuSubMenuMaps ? menuSubMenuMaps : []}
-                    /> */}
+                    />
                 <Controls.Input
                         label="Title"
                         name="title"

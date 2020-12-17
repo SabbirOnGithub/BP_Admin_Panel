@@ -11,7 +11,8 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-
+import { searchNameByIdFromArray } from '../../../helpers/search';
+// 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
@@ -157,11 +158,6 @@ export default function MenuSubMenuMapScreen() {
                 })
             }
         })
-
-    }
-
-    const getNameFromId = (arr, id) =>{
-        return arr.find( item => item.id === id).name;
     }
 
     useEffect(() => {
@@ -198,8 +194,8 @@ export default function MenuSubMenuMapScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{getNameFromId(menus, item.menuId)}</TableCell>
-                                                        <TableCell>{getNameFromId(subMenus, item.subMenuId)}</TableCell>
+                                                        <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
+                                                        <TableCell>{searchNameByIdFromArray(subMenus, item.subMenuId)}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.subTitle}</TableCell>
                                                         <TableCell>{item.header}</TableCell>
