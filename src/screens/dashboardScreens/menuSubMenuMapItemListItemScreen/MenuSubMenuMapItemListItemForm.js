@@ -4,6 +4,7 @@ import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 
 
+
 const initialFValues = {
     id: '',
     menuSubMenuMapItemId: '',
@@ -12,7 +13,7 @@ const initialFValues = {
 }
 
 export default function MenuSubMenuMapItemListItemForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave } = props
+    const { addOrEdit, recordForEdit, loadingSave, menuSubMenuMapItems } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -33,8 +34,7 @@ export default function MenuSubMenuMapItemListItemForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        handleInputNumberChange,
-        resetForm
+        resetForm,
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -51,20 +51,28 @@ export default function MenuSubMenuMapItemListItemForm(props) {
             setValues({
                 ...recordForEdit
             })
-    }, [recordForEdit, setValues])
+    }, [ recordForEdit, setValues])
 
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                    <Controls.Input
+                    <Controls.Select
+                        name="menuSubMenuMapItemId"
+                        label="Menu Sub Menu Map Item Id"
+                        value={values.menuSubMenuMapItemId}
+                        onChange={handleInputChange}
+                        error={errors.menuSubMenuMapItemId}
+                        options={menuSubMenuMapItems ? menuSubMenuMapItems : []}
+                    />
+                    {/* <Controls.Input
                         name="menuSubMenuMapItemId"
                         label="Menu Sub Menu Map Item Id"
                         type="number"
                         value={values.menuSubMenuMapItemId}
                         onChange={handleInputNumberChange}
                         error={errors.menuSubMenuMapItemId}
-                    />
+                    /> */}
                     <Controls.Input
                         name="text"
                         label="Text"

@@ -17,6 +17,7 @@ import SubmenuBestPracticeScreen from "../screens/dashboardScreens/submenuBestPr
 import SubMenuOverViewScreen from "../screens/dashboardScreens/subMenuOverViewScreen/SubMenuOverViewScreen";
 import MenuSubMenuMapItemScreen from '../screens/dashboardScreens/menuSubMenuMapItemScreen/MenuSubMenuMapItemScreen';
 import MenuSubMenuMapItemListItemScreen from '../screens/dashboardScreens/menuSubMenuMapItemListItemScreen/MenuSubMenuMapItemListItemScreen';
+import MenuSubMenuMapScreen from '../screens/dashboardScreens/menuSubMenuMapScreen/MenuSubMenuMapScreen';
 
 
 const DashboardScreensRoute = (props) => {
@@ -39,6 +40,8 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/subMenuOverView`} component={SubMenuOverViewScreen} />
         <Route exact path={`${props.match.path}/menuSubMenuMapItem`} component={MenuSubMenuMapItemScreen} />
         <Route exact path={`${props.match.path}/menuSubMenuMapItemListItem`} component={MenuSubMenuMapItemListItemScreen} />
+        <Route exact path={`${props.match.path}/menuSubMenuMap`} component={MenuSubMenuMapScreen} />
+
         
         <Route path="*">
           <Redirect to="/notFound" />

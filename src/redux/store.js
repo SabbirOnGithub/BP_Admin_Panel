@@ -17,6 +17,7 @@ import { submenuBestPracticeDeleteReducer, submenuBestPracticeDetailsReducer, su
 import { subMenuOverViewDeleteReducer, subMenuOverViewDetailsReducer, subMenuOverViewListReducer, subMenuOverViewSaveReducer } from './reducers/subMenuOverViewReducers';
 import { menuSubMenuMapItemDeleteReducer, menuSubMenuMapItemDetailsReducer, menuSubMenuMapItemListReducer, menuSubMenuMapItemSaveReducer } from './reducers/menuSubMenuMapItemReducers';
 import { menuSubMenuMapItemListItemDeleteReducer, menuSubMenuMapItemListItemDetailsReducer, menuSubMenuMapItemListItemListReducer, menuSubMenuMapItemListItemSaveReducer } from './reducers/menuSubMenuMapItemListItemReducers';
+import { menuSubMenuMapDeleteReducer, menuSubMenuMapDetailsReducer, menuSubMenuMapListReducer, menuSubMenuMapSaveReducer } from './reducers/menuSubMenuMapReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -90,6 +91,10 @@ const reducer = combineReducers({
     menuSubMenuMapItemListItemDetails: menuSubMenuMapItemListItemDetailsReducer,
     menuSubMenuMapItemListItemSave: menuSubMenuMapItemListItemSaveReducer,
     menuSubMenuMapItemListItemDelete: menuSubMenuMapItemListItemDeleteReducer,
+    menuSubMenuMapList:menuSubMenuMapListReducer,
+    menuSubMenuMapDetails: menuSubMenuMapDetailsReducer,
+    menuSubMenuMapSave: menuSubMenuMapSaveReducer,
+    menuSubMenuMapDelete: menuSubMenuMapDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

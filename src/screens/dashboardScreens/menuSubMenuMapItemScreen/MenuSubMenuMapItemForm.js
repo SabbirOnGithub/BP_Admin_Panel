@@ -71,6 +71,14 @@ export default function MenuForm(props) {
                         onChange={handleInputNumberChange}
                         error={errors.menuSubMenuMapId}
                     />
+                {/* <Controls.Select
+                        name="menuSubMenuMapId"
+                        label="Menu Sub Menu Map Id"
+                        value={values.menuSubMenuMapId}
+                        onChange={handleInputChange}
+                        error={errors.menuSubMenuMapId}
+                        options={menuSubMenuMaps ? menuSubMenuMaps : []}
+                    /> */}
                 <Controls.Input
                         label="Title"
                         name="title"

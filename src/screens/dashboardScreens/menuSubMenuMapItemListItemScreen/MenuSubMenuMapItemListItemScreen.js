@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { listMenuSubMenuMapItemListItems, saveMenuSubMenuMapItemListItem, deleteMenuSubMenuMapItemListItem } from '../../../redux/actions/menuSubMenuMapItemListItemActions';
+import { listMenuSubMenuMapItems } from '../../../redux/actions/menuSubMenuMapItemActions';
 
 
 const headCells = [
@@ -27,6 +28,9 @@ const headCells = [
 ]
 
 export default function MenuSubMenuMapItemListItemScreen() {
+    const menuSubMenuMapItemList = useSelector(state => state.menuSubMenuMapItemList);
+    //eslint-disable-next-line
+    const { menuSubMenuMapItems, loading:loadingMenuSubMenuMapItem } = menuSubMenuMapItemList;
 
     const menuSubMenuMapItemListItemList = useSelector(state => state.menuSubMenuMapItemListItemList);
     //eslint-disable-next-line
@@ -136,7 +140,15 @@ export default function MenuSubMenuMapItemListItemScreen() {
     }
 
     useEffect(() => {
-        dispatch(listMenuSubMenuMapItemListItems());
+        dispatch(listMenuSubMenuMapItems())
+        dispatch(listMenuSubMenuMapItemListItems())
+
+        // .then(()=>{
+        //     if(!loadingMenuSubMenuMapItem){
+        //         dispatch(listMenuSubMenuMapItemListItems());
+        //     }
+        // })
+        
         return () => {
             // 
         }
@@ -144,7 +156,7 @@ export default function MenuSubMenuMapItemListItemScreen() {
     return (
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
+                loading || loadingSave || loadingDelete || loadingMenuSubMenuMapItem ? "Loading" :
                     <>
                         <PageTitle title="Menu SubMenu Map Item List Item" />
 
@@ -204,6 +216,7 @@ export default function MenuSubMenuMapItemListItemScreen() {
                                             recordForEdit={recordForEdit}
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
+                                            menuSubMenuMapItems={menuSubMenuMapItems}
                                         />
 
                                     </Popup>
