@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import MenuSectionForm from "./MenuSectionForm";
+import MenuHeroSliderForm from "./MenuHeroSliderForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -13,10 +13,11 @@ import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
 
+
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { deleteMenuSection, listMenuSections, saveMenuSection } from '../../../redux/actions/menuSectionActions';
+import { deleteMenuHeroSlider, listMenuHeroSliders, saveMenuHeroSlider } from '../../../redux/actions/menuHeroSliderActions';
 import { listMenus } from '../../../redux/actions/menuActions';
 
 import { config } from "../../../config";
@@ -29,25 +30,26 @@ const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'menuId', label: 'Menu Title' },
     { id: 'title', label: 'Title' },
+    { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function MenuSectionScreen() {
+export default function MenuHeroSliderScreen() {
     const menuList = useSelector(state => state.menuList);
     //eslint-disable-next-line
     const { menus, loading:loadingMenus } = menuList;
 
-    const menuSectionList = useSelector(state => state.menuSectionList)
+    const menuHeroSliderList = useSelector(state => state.menuHeroSliderList)
     //eslint-disable-next-line
-    const { menuSections, loading, error } = menuSectionList;
+    const { menuHeroSliders, loading, error } = menuHeroSliderList;
     //eslint-disable-next-line
-    const menuSectionSave = useSelector(state => state.menuSectionSave);
+    const menuHeroSliderSave = useSelector(state => state.menuHeroSliderSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = menuSectionSave;
-    const menuSectionDelete = useSelector(state => state.menuSectionDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = menuHeroSliderSave;
+    const menuHeroSliderDelete = useSelector(state => state.menuHeroSliderDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = menuSectionDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = menuHeroSliderDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -62,28 +64,29 @@ export default function MenuSectionScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(menuSections, headCells, filterFn);
+    } = useTable(menuHeroSliders, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveMenuSection(item,id));
+        dispatch(saveMenuHeroSlider(item,id));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteMenuSection(id));
+        dispatch(deleteMenuHeroSlider(id));
         resolve();
     })
     const addOrEdit = (item, files, resetForm) => {
 
         const formData = new FormData();
-        console.log(item.id)
+        // append form data
         item.id && formData.append('Id', item.id)
-        formData.append('Title', item.title)
         formData.append('MenuId', item.menuId)
+        formData.append('Title', item.title)
+        formData.append('Description', item.description)
         formData.append('file', files)
 
         if (formData) {
@@ -149,7 +152,7 @@ export default function MenuSectionScreen() {
 
     useEffect(() => {
         dispatch(listMenus());
-        dispatch(listMenuSections());
+        dispatch(listMenuHeroSliders());
         return () => {
             // 
         }
@@ -160,15 +163,14 @@ export default function MenuSectionScreen() {
         <div>
             {loading || loadingSave || loadingDelete || loadingMenus ? "Loading ...." :
                 <>
-                    <PageTitle title="Menu Section" />
+                    <PageTitle title="Menu Hero Slider" />
 
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="Menu Section Table"
+                                title="Menu Hero Slider Table"
                                 upperTitle
                                 noBodyPadding
-                                // bodyClass={classes.tableWidget}
                                 setOpenPopup={setOpenPopup}
                                 setRecordForEdit={setRecordForEdit}
                             >
@@ -191,6 +193,7 @@ export default function MenuSectionScreen() {
                                                         <TableCell>{item.id}</TableCell>
                                                         <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
+                                                        <TableCell>{item.description}</TableCell>
                                                         <TableCell>
                                                             {
                                                                 item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
@@ -223,14 +226,14 @@ export default function MenuSectionScreen() {
                                     <TblPagination />
                                 </Paper>
                                 <Popup
-                                    title="Menu Section Form"
+                                    title="Menu Hero Slider Slider Form"
                                     openPopup={openPopup}
                                     setOpenPopup={setOpenPopup}
                                 >
-                                    <MenuSectionForm
+                                    <MenuHeroSliderForm
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit}
-                                        menus={menus} 
+                                        menus={menus}
                                     />
                                 </Popup>
                                 <Notification

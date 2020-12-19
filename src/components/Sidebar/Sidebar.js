@@ -68,6 +68,9 @@ const structure = [
   {
     id: 12, label: "Menu Section", link: "/dashboard/menuSection", icon: <TypographyIcon />,
   },
+  {
+    id: 13, label: "Menu Hero Slider", link: "/dashboard/menuHeroSlider", icon: <TypographyIcon />,
+  },
   // {
   //   id: 4,
   //   label: "UI Elements",

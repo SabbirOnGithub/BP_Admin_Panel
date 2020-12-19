@@ -77,8 +77,7 @@ export default function HomePageSliderScreen() {
     const addOrEdit = (item, files, resetForm) => {
 
         const formData = new FormData();
-        console.log(item.id)
-        console.log(item.displayOrder)
+        // append form data
         item.id && formData.append('Id', item.id)
         formData.append('Title', item.title)
         formData.append('SubTitle', item.subTitle)

@@ -29,7 +29,6 @@ const listHomePageSliders = () => async (dispatch) => {
         } else {
             dispatch({ type: HOMEPAGE_SLIDER_LIST_FAIL, payload: data.message });
         }
-        // console.log(data.data)
     }
     catch (error) {
         dispatch({ type: HOMEPAGE_SLIDER_LIST_FAIL, payload: error.message });
@@ -57,7 +56,6 @@ const saveHomePageSlider = (item, id) => async (dispatch, getState) => {
             //eslint-disable-next-line
             const formatHomePageData = delete item.id;
             const { data } = await axiosWithToken.post("/HomepageSlider/Create", item)
-            // console.log(data)
             if (data.status === true) {
                 dispatch({ type: HOMEPAGE_SLIDER_SAVE_SUCCESS, payload: data });
             } else {
@@ -78,8 +76,6 @@ const saveHomePageSlider = (item, id) => async (dispatch, getState) => {
 };
 
 const deleteHomePageSlider = (id) => async (dispatch, getState) => {
-    // console.log(homePageSliderId);
-    // console.log(typeof (homePageSliderId));
     try {
         dispatch({ type: HOMEPAGE_SLIDER_DELETE_REQUEST });
         const { data } = await axiosWithToken.delete("/HomepageSlider/" + id);

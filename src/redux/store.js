@@ -19,6 +19,7 @@ import { menuSubMenuMapItemDeleteReducer, menuSubMenuMapItemDetailsReducer, menu
 import { menuSubMenuMapItemListItemDeleteReducer, menuSubMenuMapItemListItemDetailsReducer, menuSubMenuMapItemListItemListReducer, menuSubMenuMapItemListItemSaveReducer } from './reducers/menuSubMenuMapItemListItemReducers';
 import { menuSubMenuMapDeleteReducer, menuSubMenuMapDetailsReducer, menuSubMenuMapListReducer, menuSubMenuMapSaveReducer } from './reducers/menuSubMenuMapReducers';
 import { menuSectionDeleteReducer, menuSectionDetailsReducer, menuSectionListReducer, menuSectionSaveReducer } from './reducers/menuSectionReducers';
+import { menuHeroSliderDeleteReducer, menuHeroSliderDetailsReducer, menuHeroSliderListReducer, menuHeroSliderSaveReducer } from './reducers/menuHeroSliderReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -100,6 +101,10 @@ const reducer = combineReducers({
     menuSectionDetails: menuSectionDetailsReducer,
     menuSectionSave: menuSectionSaveReducer,
     menuSectionDelete: menuSectionDeleteReducer,
+    menuHeroSliderList:menuHeroSliderListReducer,
+    menuHeroSliderDetails: menuHeroSliderDetailsReducer,
+    menuHeroSliderSave: menuHeroSliderSaveReducer,
+    menuHeroSliderDelete: menuHeroSliderDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

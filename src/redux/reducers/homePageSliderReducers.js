@@ -74,5 +74,4 @@ export {
     homePageSliderDetailsReducer,
     homePageSliderSaveReducer,
     homePageSliderDeleteReducer
-
  }; 

@@ -19,6 +19,7 @@ import MenuSubMenuMapItemScreen from '../screens/dashboardScreens/menuSubMenuMap
 import MenuSubMenuMapItemListItemScreen from '../screens/dashboardScreens/menuSubMenuMapItemListItemScreen/MenuSubMenuMapItemListItemScreen';
 import MenuSubMenuMapScreen from '../screens/dashboardScreens/menuSubMenuMapScreen/MenuSubMenuMapScreen';
 import MenuSectionScreen from '../screens/dashboardScreens/menuSectionScreen/MenuSectionScreen';
+import MenuHeroSliderScreen from '../screens/dashboardScreens/menuHeroSliderScreen/MenuHeroSliderScreen';
 
 
 const DashboardScreensRoute = (props) => {
@@ -43,6 +44,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/menuSubMenuMapItemListItem`} component={MenuSubMenuMapItemListItemScreen} />
         <Route exact path={`${props.match.path}/menuSubMenuMap`} component={MenuSubMenuMapScreen} />
         <Route exact path={`${props.match.path}/menuSection`} component={MenuSectionScreen} />
+        <Route exact path={`${props.match.path}/menuHeroSlider`} component={MenuHeroSliderScreen} />
 
         
         <Route path="*">

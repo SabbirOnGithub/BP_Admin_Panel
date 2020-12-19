@@ -8,20 +8,21 @@ const initialFValues = {
     id: '',
     menuId: '',
     title: '',
+    description:'',
     pictureUrl: '',
 }
 
-export default function MenuSectionForm(props) {
+export default function MenuHeroSliderForm(props) {
     const { addOrEdit, recordForEdit, menus } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if ('title' in fieldValues)
             temp.title = fieldValues.title ? "" : "This field is required."
+        if ('description' in fieldValues)
+            temp.description = fieldValues.description ? "" : "This field is required."
         if ('menuId' in fieldValues)
             temp.menuId = fieldValues.menuId ? "" : "This field is required."
-        
-        
         setErrors({
             ...temp
         })
@@ -74,7 +75,15 @@ export default function MenuSectionForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
+                    <Controls.Input
+                        name="description"
+                        label="Description"
+                        value={values.description}
+                        onChange={handleInputChange}
+                        error={errors.description}
+                    />
                     
+                   
                     <div style={{margin:5}}>
                     <Button
                         variant="contained"
