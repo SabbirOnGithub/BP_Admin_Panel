@@ -71,6 +71,9 @@ const structure = [
   {
     id: 13, label: "Menu Hero Slider", link: "/dashboard/menuHeroSlider", icon: <TypographyIcon />,
   },
+  {
+    id: 14, label: "Menu Section Details", link: "/dashboard/menuSectionDetail", icon: <TypographyIcon />,
+  },
   // {
   //   id: 4,
   //   label: "UI Elements",
