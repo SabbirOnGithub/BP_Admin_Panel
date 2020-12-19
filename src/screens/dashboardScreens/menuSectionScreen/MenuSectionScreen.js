@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import HomepageSliderForm from "./HomePageSliderForm";
+import MenuSectionForm from "./MenuSectionForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -11,11 +11,13 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+// import { searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { deleteHomePageSlider, listHomePageSliders, saveHomePageSlider } from '../../../redux/actions/homePageSliderActions';
+import { deleteMenuSection, listMenuSections, saveMenuSection } from '../../../redux/actions/menuSectionActions';
+import { listMenus } from '../../../redux/actions/menuActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -25,26 +27,27 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'menuId', label: 'menuId' },
     { id: 'title', label: 'Title' },
-    { id: 'subTitle', label: 'Sub Title' },
-    { id: 'isActive', label: 'Active' },
-    { id: 'displayOrder', label: 'DisplayOrder' },
     { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function HomePageSliderScreen() {
+export default function MenuSectionScreen() {
+    const menuList = useSelector(state => state.menuList);
+    //eslint-disable-next-line
+    const { menus, loading:loadingMenus } = menuList;
 
-    const homePageSliderList = useSelector(state => state.homePageSliderList)
+    const menuSectionList = useSelector(state => state.menuSectionList)
     //eslint-disable-next-line
-    const { homePageSliders, loading, error } = homePageSliderList;
+    const { menuSections, loading, error } = menuSectionList;
     //eslint-disable-next-line
-    const homePageSliderSave = useSelector(state => state.homePageSliderSave);
+    const menuSectionSave = useSelector(state => state.menuSectionSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = homePageSliderSave;
-    const homePageSliderDelete = useSelector(state => state.homePageSliderDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = menuSectionSave;
+    const menuSectionDelete = useSelector(state => state.menuSectionDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = homePageSliderDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = menuSectionDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -59,19 +62,19 @@ export default function HomePageSliderScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(homePageSliders, headCells, filterFn);
+    } = useTable(menuSections, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveHomePageSlider(item,id));
+        dispatch(saveMenuSection(item,id));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteHomePageSlider(id));
+        dispatch(deleteMenuSection(id));
         resolve();
     })
     const addOrEdit = (item, files, resetForm) => {
@@ -81,9 +84,7 @@ export default function HomePageSliderScreen() {
         console.log(item.displayOrder)
         item.id && formData.append('Id', item.id)
         formData.append('Title', item.title)
-        formData.append('SubTitle', item.subTitle)
-        formData.append('DisplayOrder', item.displayOrder)
-        formData.append('IsActive', item.isActive)
+        formData.append('MenuId', item.MenuId)
         formData.append('file', files)
 
         if (formData) {
@@ -148,7 +149,8 @@ export default function HomePageSliderScreen() {
 
 
     useEffect(() => {
-        dispatch(listHomePageSliders());
+        dispatch(listMenus());
+        dispatch(listMenuSections());
         return () => {
             // 
         }
@@ -159,12 +161,12 @@ export default function HomePageSliderScreen() {
         <div>
             {loading || loadingSave || loadingDelete ? "Loading ...." :
                 <>
-                    <PageTitle title="Home Page Slider" />
+                    <PageTitle title="Menu Section" />
 
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="Home Page Slider Table"
+                                title="Menu Section Table"
                                 upperTitle
                                 noBodyPadding
                                 // bodyClass={classes.tableWidget}
@@ -188,10 +190,8 @@ export default function HomePageSliderScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
+                                                        <TableCell>{item.menuId}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
-                                                        <TableCell>{item.subTitle}</TableCell>
-                                                        <TableCell>{item.isActive ? 'Yes': 'No'}</TableCell>
-                                                        <TableCell>{item.displayOrder ? item.displayOrder: 'no input given'}</TableCell>
                                                         <TableCell>
                                                             {
                                                                 item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
@@ -224,13 +224,14 @@ export default function HomePageSliderScreen() {
                                     <TblPagination />
                                 </Paper>
                                 <Popup
-                                    title="Home Page Slider Form"
+                                    title="Menu Section Form"
                                     openPopup={openPopup}
                                     setOpenPopup={setOpenPopup}
                                 >
-                                    <HomepageSliderForm
+                                    <MenuSectionForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit}
+                                        menus={menus} />
                                 </Popup>
                                 <Notification
                                     notify={notify}

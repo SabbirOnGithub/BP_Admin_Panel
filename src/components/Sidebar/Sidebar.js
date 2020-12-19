@@ -63,7 +63,10 @@ const structure = [
     id: 10, label: "Menu Sub Menu Map Item List Item", link: "/dashboard/menuSubMenuMapItemListItem", icon: <TypographyIcon />,
   },
   {
-    id: 11, label: "MenuSubMenuMap", link: "/dashboard/menuSubMenuMap", icon: <TypographyIcon />,
+    id: 11, label: "Menu SubMenu Map", link: "/dashboard/menuSubMenuMap", icon: <TypographyIcon />,
+  },
+  {
+    id: 12, label: "Menu Section", link: "/dashboard/menuSection", icon: <TypographyIcon />,
   },
   // {
   //   id: 4,

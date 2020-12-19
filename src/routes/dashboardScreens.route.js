@@ -18,6 +18,7 @@ import SubMenuOverViewScreen from "../screens/dashboardScreens/subMenuOverViewSc
 import MenuSubMenuMapItemScreen from '../screens/dashboardScreens/menuSubMenuMapItemScreen/MenuSubMenuMapItemScreen';
 import MenuSubMenuMapItemListItemScreen from '../screens/dashboardScreens/menuSubMenuMapItemListItemScreen/MenuSubMenuMapItemListItemScreen';
 import MenuSubMenuMapScreen from '../screens/dashboardScreens/menuSubMenuMapScreen/MenuSubMenuMapScreen';
+import MenuSectionScreen from '../screens/dashboardScreens/menuSectionScreen/MenuSectionScreen';
 
 
 const DashboardScreensRoute = (props) => {
@@ -41,6 +42,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/menuSubMenuMapItem`} component={MenuSubMenuMapItemScreen} />
         <Route exact path={`${props.match.path}/menuSubMenuMapItemListItem`} component={MenuSubMenuMapItemListItemScreen} />
         <Route exact path={`${props.match.path}/menuSubMenuMap`} component={MenuSubMenuMapScreen} />
+        <Route exact path={`${props.match.path}/menuSection`} component={MenuSectionScreen} />
 
         
         <Route path="*">

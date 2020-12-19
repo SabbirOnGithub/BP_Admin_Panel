@@ -37,10 +37,10 @@ const listHomePageSliders = () => async (dispatch) => {
 };
 
 
-const detailsHomePageSlider = (homePageSliderId) => async (dispatch) => {
+const detailsHomePageSlider = (id) => async (dispatch) => {
     try {
         dispatch({ type: HOMEPAGE_SLIDER_DETAILS_REQUEST });
-        const { data } = await axiosWithoutToken.get("/HomepageSlider/" + homePageSliderId);
+        const { data } = await axiosWithoutToken.get("/HomepageSlider/" + id);
         dispatch({ type: HOMEPAGE_SLIDER_DETAILS_SUCCESS, payload: data });
     }
     catch (error) {
@@ -48,15 +48,15 @@ const detailsHomePageSlider = (homePageSliderId) => async (dispatch) => {
     }
 };
 
-const saveHomePageSlider = (homePageSlider, homePageSliderId) => async (dispatch, getState) => {
+const saveHomePageSlider = (item, id) => async (dispatch, getState) => {
     try {
-        dispatch({ type: HOMEPAGE_SLIDER_SAVE_REQUEST, payload: homePageSlider })
+        dispatch({ type: HOMEPAGE_SLIDER_SAVE_REQUEST, payload: item })
         // const { userSignin: { userInfo } } = getState();
 
-        if (!homePageSliderId) {
+        if (!id) {
             //eslint-disable-next-line
-            const formatHomePageData = delete homePageSlider.id;
-            const { data } = await axiosWithToken.post("/HomepageSlider/Create", homePageSlider)
+            const formatHomePageData = delete item.id;
+            const { data } = await axiosWithToken.post("/HomepageSlider/Create", item)
             // console.log(data)
             if (data.status === true) {
                 dispatch({ type: HOMEPAGE_SLIDER_SAVE_SUCCESS, payload: data });
@@ -64,7 +64,7 @@ const saveHomePageSlider = (homePageSlider, homePageSliderId) => async (dispatch
                 dispatch({ type: HOMEPAGE_SLIDER_SAVE_FAIL, payload: data.message });
             }
         } else {
-            const { data } = await axiosWithToken.put("/HomepageSlider/Update", homePageSlider);
+            const { data } = await axiosWithToken.put("/HomepageSlider/Update", item);
             if (data.status === true) {
                 dispatch({ type: HOMEPAGE_SLIDER_SAVE_SUCCESS, payload: data });
             } else {
@@ -77,12 +77,12 @@ const saveHomePageSlider = (homePageSlider, homePageSliderId) => async (dispatch
     }
 };
 
-const deleteHomePageSlider = (homePageSliderId) => async (dispatch, getState) => {
+const deleteHomePageSlider = (id) => async (dispatch, getState) => {
     // console.log(homePageSliderId);
     // console.log(typeof (homePageSliderId));
     try {
         dispatch({ type: HOMEPAGE_SLIDER_DELETE_REQUEST });
-        const { data } = await axiosWithToken.delete("/HomepageSlider/" + homePageSliderId);
+        const { data } = await axiosWithToken.delete("/HomepageSlider/" + id);
         if (data.status === true) {
             dispatch({ type: HOMEPAGE_SLIDER_DELETE_SUCCESS, payload: data, success: true });
         } else {
