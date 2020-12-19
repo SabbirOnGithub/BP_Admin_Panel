@@ -74,6 +74,9 @@ const structure = [
   {
     id: 14, label: "Menu Section Details", link: "/dashboard/menuSectionDetail", icon: <TypographyIcon />,
   },
+  {
+    id: 15, label: "Menu Sub Menu Map Detail", link: "/dashboard/menuSubMenuMapDetail", icon: <TypographyIcon />,
+  },
   // {
   //   id: 4,
   //   label: "UI Elements",
