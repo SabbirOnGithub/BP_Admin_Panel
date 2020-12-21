@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from 'react'
 import HomePageForm from "./HomePageForm";
-import { Grid, Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
-import AddIcon from '@material-ui/icons/Add';
 import Popup from "../../../components/Popup/Popup";
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+// material ui
+import { Grid, Paper, makeStyles, Toolbar } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import clsx from 'clsx';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import { red } from '@material-ui/core/colors';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@material-ui/core/Button';
 
-
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+// react redux
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
@@ -31,30 +47,33 @@ const useStyles = makeStyles(theme => ({
     newButton: {
         position: 'absolute',
         right: '10px'
-    }
+    },
+    media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+    },
+    expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+    }),
+    },
+    expandOpen: {
+    transform: 'rotate(180deg)',
+    },
+    avatar: {
+    backgroundColor: red[500],
+    },
+    customPharagraph:{
+        fontSize:'1.5rem',
+        "& b": {
+            color:'#536DFE'
+          }
+    },
+    
+    
 }))
-
-
-const headCells = [
-    { id: 'id', label: 'Id' },
-    { id: 'heroText', label: 'Hero Text' },
-    { id: 'heroSectionDescription', label: 'Hero Section Description' },
-    { id: 'videoUrl', label: 'Video Url' },
-    { id: 'heroSectionBackgroundImage', label: 'Hero Section Background Image' },
-    { id: 'shortIntroTitle', label: 'Short Intro Title' },
-    { id: 'shortIntroSubTitle', label: 'Short Intro Sub Title' },
-    { id: 'functionAreaWalkthroughTitle', label: 'Function Area Walkthrough Title' },
-    { id: 'functionAreaWalkthroughSubTitle', label: 'Function Area Walkthrough Sub Title' },
-    { id: 'consultingTitle', label: 'Consulting Title' },
-    { id: 'consultingSubTitle', label: 'Consulting  SubTitle' },
-    { id: 'coreValueTitle', label: 'CoreValue Title' },
-    { id: 'coreValueSubtitle', label: 'CoreValue Subtitle' },
-    { id: 'trainingTitle', label: 'Training Title' },
-    { id: 'trainingSubtitile', label: 'Training Sub Title' },
-    { id: 'testimonialTitle', label: 'Testimonial Title' },
-    { id: 'testimonialSubTitle', label: 'Testimonial Sub Title' },
-    { id: 'actions', label: 'Actions', disableSorting: true }
-]
 
 export default function HomePageScreen() {
 
@@ -70,20 +89,20 @@ export default function HomePageScreen() {
 
 
     const classes = useStyles();
+    const [expanded, setExpanded] = React.useState(false);
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
+
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
-    const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
-    const {
-        TblContainer,
-        TblHead,
-        TblPagination,
-        recordsAfterPagingAndSorting
-    } = useTable(homePageDatas, headCells, filterFn);
+  
 
     const dispatch = useDispatch();
 
@@ -176,7 +195,7 @@ export default function HomePageScreen() {
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Widget
-                                    title="Basic Info List Table"
+                                    title="Basic Info List"
                                     disableWidgetMenu
                                     // upperTitle
                                     // noBodyPadding
@@ -194,55 +213,80 @@ export default function HomePageScreen() {
                                         />
                                     </Toolbar>
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-
-                                        <TblContainer>
-                                            <TblHead />
-                                            <TableBody>
-                                                {
-                                                    recordsAfterPagingAndSorting().map(item =>
-                                                        (<TableRow key={item.id}>
-                                                            <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.heroText}</TableCell>
-                                                            <TableCell>{item.heroSectionDescription}</TableCell>
-                                                            <TableCell>{item.videoUrl}</TableCell>
-                                                            <TableCell>{item.heroSectionBackgroundImage}</TableCell>
-                                                            <TableCell>{item.shortIntroTitle}</TableCell>
-                                                            <TableCell>{item.shortIntroSubTitle}</TableCell>
-                                                            <TableCell>{item.functionAreaWalkthroughTitle}</TableCell>
-                                                            <TableCell>{item.functionAreaWalkthroughSubTitle}</TableCell>
-                                                            <TableCell>{item.consultingTitle}</TableCell>
-                                                            <TableCell>{item.consultingSubTitle}</TableCell>
-                                                            <TableCell>{item.coreValueTitle}</TableCell>
-                                                            <TableCell>{item.coreValueSubtitle}</TableCell>
-                                                            <TableCell>{item.trainingTitle}</TableCell>
-                                                            <TableCell>{item.trainingSubtitile}</TableCell>
-                                                            <TableCell>{item.testimonialTitle}</TableCell>
-                                                            <TableCell>{item.testimonialSubTitle}</TableCell>
-                                                            <TableCell>
-                                                                <Controls.ActionButton
-                                                                    color="primary"
-                                                                    onClick={() => { openInPopup(item) }}>
-                                                                    <EditOutlinedIcon fontSize="small" />
-                                                                </Controls.ActionButton>
-                                                                <Controls.ActionButton
-                                                                    color="secondary"
-                                                                    onClick={() => {
-                                                                        setConfirmDialog({
-                                                                            isOpen: true,
-                                                                            title: 'Are you sure to delete this record?',
-                                                                            subTitle: "You can't undo this operation",
-                                                                            onConfirm: () => { onDelete(item.id) }
-                                                                        })
-                                                                    }}>
-                                                                    <CloseIcon fontSize="small" />
-                                                                </Controls.ActionButton>
-                                                            </TableCell>
-                                                        </TableRow>)
+                                    {
+                                                    homePageDatas && homePageDatas.map(item =>
+                                                        ( <Card className={classes.root} key={item.id}>
+                                                            <CardHeader
+                                                              avatar={
+                                                                <Avatar aria-label="recipe" className={classes.avatar}>
+                                                                  {item.id}
+                                                                </Avatar>
+                                                              }
+                                                            //   title="Shrimp and Chorizo Paella"
+                                                            //   subheader="September 14, 2016"
+                                                            />
+                                                            <CardContent>
+                                                              <Typography variant="body2" color="textSecondary" component="p">
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Hero Text:</b> {item.heroText} </Typography>
+                                                              </Typography>
+                                                            </CardContent>
+                                                            <CardActions disableSpacing>
+                                                                <Button size="small" 
+                                                                        color="primary"
+                                                                        onClick={() => { openInPopup(item) }}
+                                                                    >
+                                                                    Edit
+                                                                </Button>
+                                                                <Button size="small" 
+                                                                        color="primary"
+                                                                        onClick={() => {
+                                                                            setConfirmDialog({
+                                                                                isOpen: true,
+                                                                                title: 'Are you sure to delete this record?',
+                                                                                subTitle: "You can't undo this operation",
+                                                                                onConfirm: () => { onDelete(item.id) }
+                                                                            })
+                                                                        }}
+                                                                        >
+                                                                    Delete
+                                                                </Button>
+                                                                <IconButton
+                                                                    className={clsx(classes.expand, {
+                                                                        [classes.expandOpen]: expanded,
+                                                                    })}
+                                                                    onClick={handleExpandClick}
+                                                                    aria-expanded={expanded}
+                                                                    aria-label="show more"
+                                                                    >
+                                                                    <ExpandMoreIcon />
+                                                                    </IconButton>
+                                                            </CardActions>
+                                                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                                              <CardContent>
+                                                              
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Hero Description:</b> {item.heroSectionDescription} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Video Url:</b> {item.videoUrl} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Hero Section Background Image:</b> {item.heroSectionBackgroundImage} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Short Intro Title:</b> {item.shortIntroTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Short Intro Subtitle:</b> {item.shortIntroSubTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Function Area Walkthrough Title:</b> {item.functionAreaWalkthroughTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Function Area Walkthrough Subtitle:</b> {item.functionAreaWalkthroughSubTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Consulting Title:</b> {item.consultingTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Consulting Subtitle:</b> {item.consultingSubTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Core Value Title:</b> {item.coreValueTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Core Value Subtitle:</b> {item.coreValueSubtitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Training Title:</b> {item.trainingTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Training Subtitle:</b> {item.trainingSubtitile} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Testimonial Title:</b> {item.testimonialTitle} </Typography>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Testimonial Subtitle:</b> {item.testimonialSubTitle} </Typography>
+                                                                {/* <Typography>
+                                                                  Set aside off of the heat to let rest for 10 minutes, and then serve.
+                                                                </Typography> */}
+                                                              </CardContent>
+                                                            </Collapse>
+                                                          </Card>)
                                                     )
                                                 }
-                                            </TableBody>
-                                        </TblContainer>
-                                        <TblPagination />
                                     </Paper>
                                     <Popup
                                         title="Home Page Data Form"
