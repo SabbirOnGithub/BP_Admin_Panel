@@ -14,7 +14,7 @@ import {
 
 } from '../constants/testimonialDetailConstants';
 // import axios from 'axios';
-import { axiosWithoutToken, axiosWithToken, axiosWithTokenAndMultipartData } from '../../helpers/axios';
+import { axiosWithoutToken, axiosWithToken } from '../../helpers/axios';
 
 
 const listTestimonialDetails = () => async (dispatch) => {
@@ -45,14 +45,14 @@ const detailsTestimonialDetail = (id) => async (dispatch) => {
     }
 };
 
-const saveTestimonialDetail = (item, id) => async (dispatch) => {
+const saveTestimonialDetail = (item) => async (dispatch) => {
     try {
         dispatch({ type: TESTIMONIAL_DETAIL_SAVE_REQUEST, payload: item })
-        if (!id) {
+        if (!item.id) {
             console.log('create')
             //eslint-disable-next-line
             const formatHomePageData = delete item.id;
-            const { data } = await axiosWithTokenAndMultipartData.post("/TestimonialDetail/Create", item)
+            const { data } = await axiosWithToken.post("/TestimonialDetail", item)
             console.log(data)
             if (data.status === true) {
                 dispatch({ type: TESTIMONIAL_DETAIL_SAVE_SUCCESS, payload: data });
@@ -61,7 +61,7 @@ const saveTestimonialDetail = (item, id) => async (dispatch) => {
                 dispatch({ type: TESTIMONIAL_DETAIL_SAVE_FAIL, payload: data.message });
             }
         } else {
-            const { data } = await axiosWithTokenAndMultipartData.put("/TestimonialDetail/Update", item);
+            const { data } = await axiosWithToken.put("/TestimonialDetail", item);
             // console.log(data)
             if (data.status === true) {
                 dispatch({ type: TESTIMONIAL_DETAIL_SAVE_SUCCESS, payload: data });

@@ -6,20 +6,29 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 const initialFValues = {
     id: '',
-    title: '',
-    description: '',
-    pictureUrl: '',
+    homepageId:'',
+    userId:'',
+    userName:'',
+    isActive: false,
+    displayOrder: '',
+    message:'',
 }
 
 export default function TestimonialDetailForm(props) {
-    const { addOrEdit, recordForEdit } = props
+    const { addOrEdit, recordForEdit, homePageDatas } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        if ('title' in fieldValues)
-            temp.title = fieldValues.title ? "" : "This field is required."
-        if ('description' in fieldValues)
-            temp.description = fieldValues.description ? "" : "This field is required."
+        if ('homepageId' in fieldValues)
+            temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
+        if ('userId' in fieldValues)
+            temp.userId = fieldValues.userId ? "" : "This field is required."
+         if ('userName' in fieldValues)
+            temp.userName = fieldValues.userName ? "" : "This field is required."
+        if ('displayOrder' in fieldValues)
+            temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
+        if ('message' in fieldValues)
+            temp.message = fieldValues.message ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -34,18 +43,19 @@ export default function TestimonialDetailForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        handleFileChange,
+        handleInputNumberChange,
         resetForm,
         files
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
+        console.log(values)
         if (validate()) {
-            addOrEdit(values, files, resetForm);
+            console.log(values)
+            addOrEdit(values, resetForm);
         }
     }
-
     useEffect(() => {
         if (recordForEdit != null)
             setValues({
@@ -57,34 +67,51 @@ export default function TestimonialDetailForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                    <Controls.Input
-                        label="Title"
-                        name="title"
-                        value={values.title}
+                    <Controls.Select
+                        name="homepageId"
+                        label="Homepage Id"
+                        value={values.homepageId}
                         onChange={handleInputChange}
-                        error={errors.title}
+                        error={errors.homepageId}
+                        options={homePageDatas ? homePageDatas : []}
                     />
                     <Controls.Input
-                        label="Description"
-                        name="description"
-                        value={values.description}
+                        label="User Id"
+                        name="userId"
+                        type="number"
+                        value={values.userId}
+                        onChange={handleInputNumberChange}
+                        error={errors.userId}
+                    />
+                    <Controls.Input
+                        label="User Name"
+                        name="userName"
+                        value={values.userName}
                         onChange={handleInputChange}
-                        error={errors.description}
+                        error={errors.userName}
                     />
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
-                        >
-                        Upload File
-                         <input
-                        type="file"
-                        onChange={handleFileChange}
-                        hidden
+                    <Controls.Input
+                        label="Message"
+                        name="message"
+                        value={values.message}
+                        onChange={handleInputChange}
+                        error={errors.message}
                     />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
-                    </div>
+                    <Controls.Input
+                        label="Display Order"
+                        name="displayOrder"
+                        type="number"
+                        value={values.displayOrder}
+                        onChange={handleInputNumberChange}
+                        error={errors.displayOrder}
+                    />
+                     <Controls.Checkbox
+                        name="isActive"
+                        label="Is Active"
+                        value={values.isActive}
+                        onChange={handleInputChange}
+                        error={errors.isActive}
+                    />
                     
                     <div>
                         <Controls.Button

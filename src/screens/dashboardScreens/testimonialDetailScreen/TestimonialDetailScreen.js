@@ -16,24 +16,27 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteTestimonialDetail, listTestimonialDetails, saveTestimonialDetail } from '../../../redux/actions/testimonialDetailActions';
+import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 
-
-
-
-
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'title', label: 'Title' },
-    { id: 'description', label: 'Description' },
-    { id: 'pictureUrl', label: 'Picture' },
+    { id: 'homepageId', label: 'homepageId' },
+    { id: 'userId', label: 'userId' },
+    { id: 'userName', label: 'User Name' },
+    { id: 'isActive', label: 'Is Active' },
+    { id: 'displayOrder', label: 'DisplayOrder' },
+    { id: 'message', label: 'Message' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
 export default function TestimonialDetailScreen() {
+    const homePageDataList = useSelector(state => state.homePageDataList);
+    //eslint-disable-next-line
+    const { homePageDatas, loading:loadingHomePageDatas } = homePageDataList;
 
     const testimonialDetailList = useSelector(state => state.testimonialDetailList)
     //eslint-disable-next-line
@@ -64,8 +67,8 @@ export default function TestimonialDetailScreen() {
     const dispatch = useDispatch();
 
     // add/update promise
-    const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveTestimonialDetail(item, id));
+    const saveItem = (item) => new Promise((resolve, reject) => {
+        dispatch(saveTestimonialDetail(item));
         resolve();
     })
 
@@ -74,19 +77,11 @@ export default function TestimonialDetailScreen() {
         dispatch(deleteTestimonialDetail(id));
         resolve();
     })
-    const addOrEdit = (item, files, resetForm) => {
-        const formData = new FormData();
-        console.log(item.id)
-        formData.append('HompageId', item.id)
-        formData.append('Title', item.title)
-        formData.append('Description', item.description)
-        formData.append('file', files)
-        
-        if (formData) {
+    const addOrEdit = (item, resetForm) => {
             resetForm()
             setRecordForEdit(null)
             setOpenPopup(false)
-            saveItem(formData, item.id)
+            saveItem(item)
             .then(()=>{
                 // resetForm()
                 // setRecordForEdit(null)
@@ -107,7 +102,6 @@ export default function TestimonialDetailScreen() {
                 }
             })
           
-        }
     }
 
     const openInPopup = item => {
@@ -144,6 +138,7 @@ export default function TestimonialDetailScreen() {
 
 
     useEffect(() => {
+        dispatch(listHomePageDatas());
         dispatch(listTestimonialDetails());
         return () => {
             // 
@@ -153,7 +148,7 @@ export default function TestimonialDetailScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Testimonial Details" />
 
@@ -184,12 +179,12 @@ export default function TestimonialDetailScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
-                                                        <TableCell>{item.description}</TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }</TableCell>
+                                                        <TableCell>{item.homepageId}</TableCell>
+                                                        <TableCell>{item.userId}</TableCell>
+                                                        <TableCell>{item.userName}</TableCell>
+                                                        <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
+                                                        <TableCell>{item.displayOrder}</TableCell>
+                                                        <TableCell>{item.message}</TableCell>
                                                         <TableCell>
                                                             <Controls.ActionButton
                                                                 color="primary"
@@ -223,7 +218,9 @@ export default function TestimonialDetailScreen() {
                                 >
                                     <TestimonialDetailForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        homePageDatas = {homePageDatas}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}
