@@ -18,10 +18,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteTestimonialDetail, listTestimonialDetails, saveTestimonialDetail } from '../../../redux/actions/testimonialDetailActions';
 import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
-import { config } from "../../../config";
-const BASE_ROOT_URL = config.BASE_ROOT_URL
-
-
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'homepageId', label: 'homepageId' },

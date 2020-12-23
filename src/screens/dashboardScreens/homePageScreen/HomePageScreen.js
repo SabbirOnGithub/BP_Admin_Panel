@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import HomePageForm from "./HomePageForm";
-import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
 import Popup from "../../../components/Popup/Popup";
 import Notification from "../../../components/Notification/Notification";
@@ -24,11 +23,6 @@ import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 // react redux
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -226,7 +220,7 @@ export default function HomePageScreen() {
                                                             //   subheader="September 14, 2016"
                                                             />
                                                             <CardContent>
-                                                              <Typography variant="body2" color="textSecondary" component="p">
+                                                              <Typography variant="body2" color="textSecondary" component="span">
                                                                 <Typography paragraph className={classes.customPharagraph}><b>Hero Text:</b> {item.heroText} </Typography>
                                                               </Typography>
                                                             </CardContent>
