@@ -8,6 +8,8 @@ import {
 } from "@material-ui/core";
 import { MoreVert as MoreIcon } from "@material-ui/icons";
 import classnames from "classnames";
+import Controls from "../controls/Controls";
+import AddIcon from '@material-ui/icons/Add';
 
 // styles
 import useStyles from "./styles";
@@ -59,6 +61,15 @@ export default function Widget({
                   <MoreIcon />
                 </IconButton>
               )}
+             {
+               props.addNew && <Controls.Button
+               text="Add New"
+               variant="outlined"
+               startIcon={<AddIcon />}
+               onClick = {props.addNew}
+           />
+             }
+
             </React.Fragment>
           )}
         </div>

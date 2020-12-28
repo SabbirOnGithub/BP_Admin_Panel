@@ -160,19 +160,11 @@ export default function SubmenuBestPracticeScreen() {
                                 title="Submenu Best Practice List Table"
                                 upperTitle
                                 noBodyPadding
-                                // bodyClass={classes.tableWidget}
                                 setOpenPopup={setOpenPopup}
                                 setRecordForEdit={setRecordForEdit}
+                                disableWidgetMenu
+                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
                             >
-                                {/* <Toolbar>
-                                <Controls.Button
-                                    text="Add New"
-                                    variant="outlined"
-                                    startIcon={<AddIcon />}
-                                    className={classes.newButton}
-                                    onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                />
-                            </Toolbar> */}
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                     <TblContainer>
                                         <TblHead />

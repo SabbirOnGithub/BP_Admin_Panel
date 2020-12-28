@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Drawer, IconButton, List } from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
+import SubjectIcon from '@material-ui/icons/Subject';
+import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import DescriptionIcon from '@material-ui/icons/Description';
+import AppsIcon from '@material-ui/icons/Apps';
 import {
   Home as HomeIcon,
   FormatSize as TypographyIcon,
@@ -23,7 +29,7 @@ import {
 } from "../../context/LayoutContext";
 
 const structure = [
-  { id: 0, label: "Dashboard", link: "/dashboard", icon: <HomeIcon /> },
+  { id: 0, label: "Dashboard", link: "/dashboard/homepage", icon: <AppsIcon /> },
   {
     id: 1,
     label: "Home Page",
@@ -39,55 +45,49 @@ const structure = [
     ],
   },
   {
-    id: 2, label: "Menu", link: "/dashboard/menu", icon: <TypographyIcon />,
+    id: 2,
+    label: "Menu",
+    link: "/dashboard/menu",
+    icon: <MenuIcon />,
+    children: [
+      { label: "Menu", link: "/dashboard/menu" },
+      { label: "Menu Section", link: "/dashboard/menuSection" },
+      { label: "Menu Section Details", link: "/dashboard/menuSectionDetail" },
+      { label: "Menu Hero Slider", link: "/dashboard/menuHeroSlider" },
+    ],
   },
   {
-    id: 4, label: "Footer Section", link: "/dashboard/footerSection", icon: <TypographyIcon />,
+    id: 3,
+    label: "Menu SubMenu",
+    link: "/dashboard/menuSubMenuMap",
+    icon: <FeaturedPlayListIcon />,
+    children: [
+      { label: "Menu SubMenu Map", link: "/dashboard/menuSubMenuMap" },
+      { label: "Menu Sub Menu Map Detail", link: "/dashboard/menuSubMenuMapDetail" },
+      { label: "Menu SubMenu Map Item", link: "/dashboard/menuSubMenuMapItem" },
+      { label: "Menu Sub Menu Map Item List Item", link: "/dashboard/menuSubMenuMapItemListItem" },
+    ],
   },
   {
-    id: 5, label: "Training Detail", link: "/dashboard/trainingDetail", icon: <TypographyIcon />,
+    id: 4,
+    label: "SubMenu",
+    link: "/dashboard/menu",
+    icon: <SubjectIcon />,
+    children: [
+      { label: "Submenu", link: "/dashboard/submenu" },
+      { label: "Submenu Best Practice", link: "/dashboard/submenuBestPractice" },
+      { label: "SubMenu Overview", link: "/dashboard/SubMenuOverView" },
+    ],
   },
   {
-    id: 6, label: "Testimonial Detail", link: "/dashboard/testimonialDetail", icon: <TypographyIcon />,
+    id: 5, label: "Training Detail", link: "/dashboard/trainingDetail", icon: <TrendingUpIcon />,
   },
   {
-    id: 7, label: "Submenu Best Practice", link: "/dashboard/submenuBestPractice", icon: <TypographyIcon />,
+    id: 6, label: "Testimonial Detail", link: "/dashboard/testimonialDetail", icon: <DescriptionIcon />,
   },
   {
-    id: 8, label: "SubMenu Overview", link: "/dashboard/SubMenuOverView", icon: <TypographyIcon />,
+    id: 7, label: "Footer Section", link: "/dashboard/footerSection", icon: <TypographyIcon />,
   },
-  {
-    id: 9, label: "Menu SubMenu Map Item", link: "/dashboard/menuSubMenuMapItem", icon: <TypographyIcon />,
-  },
-  {
-    id: 10, label: "Menu Sub Menu Map Item List Item", link: "/dashboard/menuSubMenuMapItemListItem", icon: <TypographyIcon />,
-  },
-  {
-    id: 11, label: "Menu SubMenu Map", link: "/dashboard/menuSubMenuMap", icon: <TypographyIcon />,
-  },
-  {
-    id: 12, label: "Menu Section", link: "/dashboard/menuSection", icon: <TypographyIcon />,
-  },
-  {
-    id: 13, label: "Menu Hero Slider", link: "/dashboard/menuHeroSlider", icon: <TypographyIcon />,
-  },
-  {
-    id: 14, label: "Menu Section Details", link: "/dashboard/menuSectionDetail", icon: <TypographyIcon />,
-  },
-  {
-    id: 15, label: "Menu Sub Menu Map Detail", link: "/dashboard/menuSubMenuMapDetail", icon: <TypographyIcon />,
-  },
-  // {
-  //   id: 4,
-  //   label: "UI Elements",
-  //   link: "/app/ui",
-  //   icon: <UIElementsIcon />,
-  //   children: [
-  //     { label: "Icons", link: "/app/ui/icons" },
-  //     { label: "Charts", link: "/app/ui/charts" },
-  //     { label: "Maps", link: "/app/ui/maps" },
-  //   ],
-  // },
 ];
 
 function Sidebar({ location }) {

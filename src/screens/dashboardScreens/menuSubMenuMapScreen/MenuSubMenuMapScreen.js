@@ -182,9 +182,10 @@ export default function MenuSubMenuMapScreen() {
                                 title="MenuSubMenuMap Table"
                                 upperTitle
                                 noBodyPadding
-                                // bodyClass={classes.tableWidget}
                                 setOpenPopup={setOpenPopup}
                                 setRecordForEdit={setRecordForEdit}
+                                disableWidgetMenu
+                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
                             >
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                     <TblContainer>

@@ -156,6 +156,9 @@ export default function FooterSectionScreen() {
                                     setOpenPopup={setOpenPopup}
                                     setRecordForEdit={setRecordForEdit}
                                     threeDotDisplay={true}
+                                    disableWidgetMenu
+                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+
                                 >
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                         <TblContainer>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import HomePageForm from "./HomePageForm";
-import Controls from "../../../components/controls/Controls";
 import Popup from "../../../components/Popup/Popup";
 import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
@@ -8,8 +7,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 // material ui
-import { Grid, Paper, makeStyles, Toolbar } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Grid, Paper, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -191,21 +189,8 @@ export default function HomePageScreen() {
                                 <Widget
                                     title="Basic Info List"
                                     disableWidgetMenu
-                                    // upperTitle
-                                    // noBodyPadding
-                                    // bodyClass={classes.tableWidget}
-                                    // setOpenPopup={setOpenPopup}
-                                    // setRecordForEdit={setRecordForEdit}
+                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
                                 >
-                                    <Toolbar>
-                                        <Controls.Button
-                                            text="Add New"
-                                            variant="outlined"
-                                            startIcon={<AddIcon />}
-                                            className={classes.newButton}
-                                            onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                        />
-                                    </Toolbar>
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                     {
                                                     homePageDatas && homePageDatas.map(item =>
