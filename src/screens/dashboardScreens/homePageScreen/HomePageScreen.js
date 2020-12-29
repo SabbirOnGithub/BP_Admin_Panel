@@ -268,7 +268,7 @@ export default function HomePageScreen() {
                                                 }
                                     </Paper>
                                     <Popup
-                                        title="Home Page Data Form"
+                                        title="Basic Info Form"
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >

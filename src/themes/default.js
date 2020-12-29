@@ -134,6 +134,7 @@ export default {
       root: {
         marginLeft: 10
       }
-    }
+    },
+    
   },
 };

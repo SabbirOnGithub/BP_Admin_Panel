@@ -60,6 +60,7 @@ export default function MenuForm(props) {
                         onChange={handleInputChange}
                         error={errors.name}
                     />
+                    
                     <Controls.Checkbox
                         name="isActive"
                         label="Active"

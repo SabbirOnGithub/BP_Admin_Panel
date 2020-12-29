@@ -67,9 +67,24 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 const useStyles = makeStyles(theme => ({
     root: {
         '& .MuiFormControl-root': {
-            width: '80%',
+            width: '90%',
             margin: theme.spacing(1)
+        },
+        "& .MuiInputBase-root":{
+            fontSize:18
+        },
+        "& .MuiFormLabel-root" :{
+            fontSize:16
+        },
+        "& .MuiInputBase-input" :{
+            fontSize:16
+        },
+        "& .MuiTypography-body1":{
+            fontSize:16
         }
+        // minWidth:420,
+        // fontSize:30
+        
     }
 }))
 
