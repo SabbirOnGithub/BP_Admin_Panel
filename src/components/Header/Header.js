@@ -32,7 +32,7 @@ export default function Header(props) {
   var classes = useStyles();
   const userSignIn = useSelector( state => state.userSignin );
   //eslint-disable-next-line
-  const { loading , userInfo , error } = userSignIn;
+  const { userInfo  } = userSignIn;
   // global
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
@@ -104,7 +104,7 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              {userInfo.userName}
+              {userInfo && userInfo.userName}
             </Typography>
             <Typography
               className={classes.profileMenuLink}
