@@ -81,8 +81,8 @@ const useStyles = makeStyles(theme => ({
         },
         "& .MuiTypography-body1":{
             fontSize:16
-        }
-        // minWidth:420,
+        },
+        minWidth:'80%',
         // fontSize:30
         
     }

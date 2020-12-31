@@ -19,7 +19,8 @@ import { useSelector, useDispatch } from 'react-redux';
 // redux actions
 import { listMenuSubMenuMapItems, saveMenuSubMenuMapItem, deleteMenuSubMenuMapItem } from '../../../redux/actions/menuSubMenuMapItemActions';
 import {  listMenuSubMenuMaps } from '../../../redux/actions/menuSubMenuMapActions';
-
+import { listMenus } from '../../../redux/actions/menuActions';
+import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 
 const headCells = [
@@ -33,10 +34,19 @@ const headCells = [
 ]
 
 export default function MenuSubMenuMapItemScreen() {
+    const menuList = useSelector(state => state.menuList);
+    //eslint-disable-next-line
+    const { menus, loading:loadingMenus } = menuList;
+
+    const subMenuList = useSelector(state => state.subMenuList)
+
+    //eslint-disable-next-line
+    const { subMenus, loading:loadingSubMenus } = subMenuList;
+
+
     const menuSubMenuMapList = useSelector(state => state.menuSubMenuMapList)
     //eslint-disable-next-line
     const { menuSubMenuMaps, loading: loadingMenuSubMenuMaps } = menuSubMenuMapList;
-    console.log(menuSubMenuMaps)
 
     const menuSubMenuMapItemList = useSelector(state => state.menuSubMenuMapItemList);
     //eslint-disable-next-line
@@ -107,6 +117,11 @@ export default function MenuSubMenuMapItemScreen() {
     }
 
     const openInPopup = item => {
+        let menuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId;
+        let subMenuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId;
+        item["menuId"] = menuId
+        item["subMenuId"] = subMenuId
+
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -136,6 +151,8 @@ export default function MenuSubMenuMapItemScreen() {
     }
 
     useEffect(() => {
+        dispatch(listMenus());
+        dispatch(listSubMenus());
         dispatch(listMenuSubMenuMaps());
         dispatch(listMenuSubMenuMapItems());
         return () => {
@@ -146,7 +163,7 @@ export default function MenuSubMenuMapItemScreen() {
 
         <>
             {
-                loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps ? "Loading" :
+                loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps || loadingMenus || loadingSubMenus  ? "Loading" :
                     <>
                         <PageTitle title="Menu Sub Menu Map Items" />
 
@@ -212,6 +229,8 @@ export default function MenuSubMenuMapItemScreen() {
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
                                             menuSubMenuMaps = {menuSubMenuMaps}
+                                            menus = {menus}
+                                            subMenus = {subMenus}
                                         />
 
                                     </Popup>
