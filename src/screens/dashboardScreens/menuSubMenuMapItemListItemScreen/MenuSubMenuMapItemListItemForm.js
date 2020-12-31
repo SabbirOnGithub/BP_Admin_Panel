@@ -10,10 +10,13 @@ const initialFValues = {
     menuSubMenuMapItemId: '',
     text: "",
     isActive: false,
+    menuId:'',
+    subMenuId:'',
+    menuSubMenuMapId:'',
 }
 
 export default function MenuSubMenuMapItemListItemForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave, menuSubMenuMapItems } = props
+    const { addOrEdit, recordForEdit, loadingSave, menuSubMenuMapItems, menuSubMenuMaps, menus, subMenus } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -37,6 +40,9 @@ export default function MenuSubMenuMapItemListItemForm(props) {
         resetForm,
     } = useForm(initialFValues, true, validate);
 
+    const felteredMenuSubMenuMaps = menuSubMenuMaps.filter(item=>item.menuId === values.menuId && item.subMenuId === values.subMenuId)
+    const felteredMenuSubMenuMapItems = menuSubMenuMapItems.filter(item=>item.menuSubMenuMapId === values.menuSubMenuMapId)
+
     const handleSubmit = e => {
         e.preventDefault()
         console.log(values)
@@ -57,22 +63,39 @@ export default function MenuSubMenuMapItemListItemForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                <Controls.Select
+                        name="menuId"
+                        label="Menu Title"
+                        value={values.menuId}
+                        onChange={handleInputChange}
+                        error={errors.menuId}
+                        options={menus ? menus : []}
+                    />
+                    <Controls.Select
+                        name="subMenuId"
+                        label="Sub Menu Title"
+                        value={values.subMenuId}
+                        onChange={handleInputChange}
+                        error={errors.subMenuId}
+                        options={subMenus ? subMenus : []}
+                    />
+                
+                <Controls.Select
+                        label="Menu Sub Menu Map Name" 
+                        name="menuSubMenuMapId"
+                        value={values.menuSubMenuMapId}
+                        onChange={handleInputChange}
+                        error={errors.menuSubMenuMapId}
+                        options={menuSubMenuMaps && felteredMenuSubMenuMaps ? felteredMenuSubMenuMaps : []}
+                    />
                     <Controls.Select
                         name="menuSubMenuMapItemId"
-                        label="Menu Sub Menu Map Item Id"
+                        label="Menu Sub Menu Map Item"
                         value={values.menuSubMenuMapItemId}
                         onChange={handleInputChange}
                         error={errors.menuSubMenuMapItemId}
-                        options={menuSubMenuMapItems ? menuSubMenuMapItems : []}
+                        options={menuSubMenuMapItems && felteredMenuSubMenuMapItems ? felteredMenuSubMenuMapItems : []}
                     />
-                    {/* <Controls.Input
-                        name="menuSubMenuMapItemId"
-                        label="Menu Sub Menu Map Item Id"
-                        type="number"
-                        value={values.menuSubMenuMapItemId}
-                        onChange={handleInputNumberChange}
-                        error={errors.menuSubMenuMapItemId}
-                    /> */}
                     <Controls.Input
                         name="text"
                         label="Text"

@@ -11,13 +11,16 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import { searchTitleByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { listMenuSubMenuMapItemListItems, saveMenuSubMenuMapItemListItem, deleteMenuSubMenuMapItemListItem } from '../../../redux/actions/menuSubMenuMapItemListItemActions';
 import { listMenuSubMenuMapItems } from '../../../redux/actions/menuSubMenuMapItemActions';
-
+import {  listMenuSubMenuMaps } from '../../../redux/actions/menuSubMenuMapActions';
+import { listMenus } from '../../../redux/actions/menuActions';
+import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -28,6 +31,21 @@ const headCells = [
 ]
 
 export default function MenuSubMenuMapItemListItemScreen() {
+    const menuList = useSelector(state => state.menuList);
+    //eslint-disable-next-line
+    const { menus, loading:loadingMenus } = menuList;
+
+    const subMenuList = useSelector(state => state.subMenuList)
+
+    //eslint-disable-next-line
+    const { subMenus, loading:loadingSubMenus } = subMenuList;
+
+
+    const menuSubMenuMapList = useSelector(state => state.menuSubMenuMapList)
+    //eslint-disable-next-line
+    const { menuSubMenuMaps, loading: loadingMenuSubMenuMaps } = menuSubMenuMapList;
+
+
     const menuSubMenuMapItemList = useSelector(state => state.menuSubMenuMapItemList);
     //eslint-disable-next-line
     const { menuSubMenuMapItems, loading:loadingMenuSubMenuMapItem } = menuSubMenuMapItemList;
@@ -110,6 +128,15 @@ export default function MenuSubMenuMapItemListItemScreen() {
     }
 
     const openInPopup = item => {
+        // console.log(item)
+        let menuSubMenuMapId = menuSubMenuMapItems.find(menuSubMenuMapItem =>menuSubMenuMapItem.id = item.menuSubMenuMapItemId).menuSubMenuMapId;
+        let menuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === menuSubMenuMapId).menuId;
+        let subMenuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === menuSubMenuMapId).subMenuId;
+
+        item["menuSubMenuMapId"] = menuSubMenuMapId
+        item["menuId"] = menuId
+        item["subMenuId"] = subMenuId
+
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -140,15 +167,12 @@ export default function MenuSubMenuMapItemListItemScreen() {
     }
 
     useEffect(() => {
+        dispatch(listMenus());
+        dispatch(listSubMenus());
+        dispatch(listMenuSubMenuMaps());
         dispatch(listMenuSubMenuMapItems())
         dispatch(listMenuSubMenuMapItemListItems())
 
-        // .then(()=>{
-        //     if(!loadingMenuSubMenuMapItem){
-        //         dispatch(listMenuSubMenuMapItemListItems());
-        //     }
-        // })
-        
         return () => {
             // 
         }
@@ -180,7 +204,8 @@ export default function MenuSubMenuMapItemListItemScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.menuSubMenuMapItemId}</TableCell>
+                                                            {/* <TableCell>{item.menuSubMenuMapItemId}</TableCell> */}
+                                                            <TableCell>{searchTitleByIdFromArray(menuSubMenuMapItems, item.menuSubMenuMapItemId)}</TableCell>
                                                             <TableCell>{item.text}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
@@ -219,6 +244,9 @@ export default function MenuSubMenuMapItemListItemScreen() {
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
                                             menuSubMenuMapItems={menuSubMenuMapItems}
+                                            menuSubMenuMaps = {menuSubMenuMaps}
+                                            menus = {menus}
+                                            subMenus = {subMenus}
                                         />
 
                                     </Popup>
