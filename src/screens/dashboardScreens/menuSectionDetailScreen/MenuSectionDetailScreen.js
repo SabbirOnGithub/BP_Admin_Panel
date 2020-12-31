@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // redux actions
 import { deleteMenuSectionDetail, listMenuSectionDetails, saveMenuSectionDetail } from '../../../redux/actions/menuSectionDetailActions';
 import { listMenuSections } from '../../../redux/actions/menuSectionActions';
+import { listMenus } from '../../../redux/actions/menuActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -35,6 +36,10 @@ const headCells = [
 ]
 
 export default function MenuSectionDetailScreen() {
+    const menuList = useSelector(state => state.menuList);
+    //eslint-disable-next-line
+    const { menus, loading:loadingMenus } = menuList;
+
     const menuSectionList = useSelector(state => state.menuSectionList)
     //eslint-disable-next-line
     const { menuSections, loading:loadingMenuSections } = menuSectionList;
@@ -118,6 +123,8 @@ export default function MenuSectionDetailScreen() {
     }
 
     const openInPopup = item => {
+        let menuId =  menuSections.find( menuSectionItem => menuSectionItem.id === item.menuSectionId).menuId;
+        item["menuId"] = menuId;
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -150,6 +157,7 @@ export default function MenuSectionDetailScreen() {
 
 
     useEffect(() => {
+        dispatch(listMenus());
         dispatch(listMenuSections());
         dispatch(listMenuSectionDetails());
         return () => {
@@ -160,7 +168,7 @@ export default function MenuSectionDetailScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingMenuSections ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingMenuSections || loadingMenus ? "Loading ...." :
                 <>
                     <PageTitle title="Menu Section Detail" />
 
@@ -226,6 +234,7 @@ export default function MenuSectionDetailScreen() {
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit} 
                                         menuSections= {menuSections}
+                                        menus= {menus}
                                     />
                                 </Popup>
                                 <Notification

@@ -10,10 +10,13 @@ const initialFValues = {
     title: '',
     description: '',
     pictureUrl: '',
+    menuId:'',
 }
 
 export default function MenuSectionDetailForm(props) {
-    const { addOrEdit, recordForEdit, menuSections } = props
+    const { addOrEdit, recordForEdit, menuSections, menus } = props
+
+ 
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -43,6 +46,7 @@ export default function MenuSectionDetailForm(props) {
         resetForm,
         files
     } = useForm(initialFValues, true, validate);
+    const felteredMenuSections = menuSections.filter(item=>item.menuId === values.menuId)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -63,12 +67,21 @@ export default function MenuSectionDetailForm(props) {
             <Grid container>
                 <Grid item xs={12}>
                     <Controls.Select
+                        name="menuId"
+                        label="Menu Title"
+                        value={values.menuId}
+                        onChange={handleInputChange}
+                        error={errors.menuId}
+                        options={menus ? menus : []}
+                    />
+                    <Controls.Select
                         name="menuSectionId"
                         label="Menu Section Title"
                         value={values.menuSectionId}
                         onChange={handleInputChange}
                         error={errors.menuSectionId}
-                        options={menuSections ? menuSections : []}
+                        // options={menuSections ? menuSections : []}
+                        options={menuSections && felteredMenuSections ? felteredMenuSections : []}
                     />
                     <Controls.Input
                         name="title"

@@ -3,7 +3,6 @@ const searchNameByIdFromArray = (arr, id) =>{
     return name ? name : 'no name found'
 }
 const searchTitleByIdFromArray = (arr, id) =>{
-    console.log(arr)
     const title = arr.find( item => item.id === id).title;
     return title ? title : 'no name found'
 }
