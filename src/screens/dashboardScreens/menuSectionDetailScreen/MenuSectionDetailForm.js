@@ -46,6 +46,7 @@ export default function MenuSectionDetailForm(props) {
         resetForm,
         files
     } = useForm(initialFValues, true, validate);
+    
     const felteredMenuSections = menuSections.filter(item=>item.menuId === values.menuId)
 
     const handleSubmit = e => {

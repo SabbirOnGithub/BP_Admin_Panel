@@ -18,6 +18,8 @@ import { useSelector, useDispatch } from 'react-redux';
 // redux actions
 import { deleteMenuSubMenuMapDetail, listMenuSubMenuMapDetails, saveMenuSubMenuMapDetail } from '../../../redux/actions/menuSubMenuMapDetailActions';
 import {  listMenuSubMenuMaps } from '../../../redux/actions/menuSubMenuMapActions';
+import { listMenus } from '../../../redux/actions/menuActions';
+import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -36,6 +38,15 @@ const headCells = [
 ]
 
 export default function MenuSubMenuMapDetailScreen() {
+    const menuList = useSelector(state => state.menuList);
+    //eslint-disable-next-line
+    const { menus, loading:loadingMenus } = menuList;
+
+    const subMenuList = useSelector(state => state.subMenuList)
+
+    //eslint-disable-next-line
+    const { subMenus, loading:loadingSubMenus } = subMenuList;
+
     const menuSubMenuMapList = useSelector(state => state.menuSubMenuMapList)
     //eslint-disable-next-line
     const { menuSubMenuMaps, loading:loadingMenuSubMenuMaps } = menuSubMenuMapList;
@@ -120,6 +131,10 @@ export default function MenuSubMenuMapDetailScreen() {
     }
 
     const openInPopup = item => {
+        let menuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId;
+        let subMenuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId;
+        item["menuId"] = menuId
+        item["subMenuId"] = subMenuId
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -149,9 +164,9 @@ export default function MenuSubMenuMapDetailScreen() {
 
     }
 
-
-
     useEffect(() => {
+        dispatch(listMenus());
+        dispatch(listSubMenus());
         dispatch(listMenuSubMenuMaps());
         dispatch(listMenuSubMenuMapDetails());
         return () => {
@@ -162,7 +177,7 @@ export default function MenuSubMenuMapDetailScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps || loadingMenus || loadingSubMenus ? "Loading ...." :
                 <>
                     <PageTitle title="Menu Sub Menu Map Detail" />
 
@@ -229,6 +244,8 @@ export default function MenuSubMenuMapDetailScreen() {
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit}
                                         menuSubMenuMaps={menuSubMenuMaps}
+                                        menus = {menus}
+                                        subMenus = {subMenus}
                                     />
                                 </Popup>
                                 <Notification

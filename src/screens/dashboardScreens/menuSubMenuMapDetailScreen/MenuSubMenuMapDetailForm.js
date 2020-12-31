@@ -11,10 +11,12 @@ const initialFValues = {
     subTitle: '',
     description:'',
     pictureUrl: '',
+    menuId:'',
+    subMenuId:'',
 }
 
 export default function MenuSubMenuMapDetailForm(props) {
-    const { addOrEdit, recordForEdit, menuSubMenuMaps } = props
+    const { addOrEdit, recordForEdit, menuSubMenuMaps, menus, subMenus } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -46,6 +48,9 @@ export default function MenuSubMenuMapDetailForm(props) {
         files
     } = useForm(initialFValues, true, validate);
 
+    const felteredMenuSubMenuMaps = menuSubMenuMaps.filter(item=>item.menuId === values.menuId && item.subMenuId === values.subMenuId)
+
+
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
@@ -65,12 +70,28 @@ export default function MenuSubMenuMapDetailForm(props) {
             <Grid container>
                 <Grid item xs={12}>
                 <Controls.Select
+                        name="menuId"
+                        label="Menu Title"
+                        value={values.menuId}
+                        onChange={handleInputChange}
+                        error={errors.menuId}
+                        options={menus ? menus : []}
+                    />
+                    <Controls.Select
+                        name="subMenuId"
+                        label="Sub Menu Title"
+                        value={values.subMenuId}
+                        onChange={handleInputChange}
+                        error={errors.subMenuId}
+                        options={subMenus ? subMenus : []}
+                    />
+                <Controls.Select
                         name="menuSubMenuMapId"
                         label="Menu Sub Menu Map Title"
                         value={values.menuSubMenuMapId}
                         onChange={handleInputChange}
                         error={errors.menuSubMenuMapId}
-                        options={menuSubMenuMaps ? menuSubMenuMaps : []}
+                        options={menuSubMenuMaps && felteredMenuSubMenuMaps ? felteredMenuSubMenuMaps : []}
                     />
                     <Controls.Input
                         name="title"

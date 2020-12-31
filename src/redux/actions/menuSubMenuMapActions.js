@@ -29,7 +29,7 @@ const listMenuSubMenuMaps = () => async (dispatch) => {
         } else {
             dispatch({ type: MENU_SUBMENU_MAP_LIST_FAIL, payload: data.message });
         }
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch (error) {
         dispatch({ type: MENU_SUBMENU_MAP_LIST_FAIL, payload: error.message });
