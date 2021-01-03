@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Menu,
+  MenuItem
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -115,14 +117,25 @@ export default function Header(props) {
               {/* {userInfo.role} */}
             </Typography>
           </div>
-          {/* <MenuItem
+          <MenuItem
             className={classNames(
               classes.profileMenuItem,
               classes.headerMenuItem,
             )}
           >
-            <AccountIcon className={classes.profileMenuIcon} /> Profile
-          </MenuItem> */}
+             <Link to="/dashboard/role">  <AccountIcon className={classes.profileMenuIcon} /> Users </Link>
+           
+          </MenuItem>
+          <div className={classes.profileMenuUser}>
+            <Typography
+              className={classes.profileMenuLink}
+              component="a"
+              color="primary"
+              href="/dashboard/user"
+            >
+             Users
+            </Typography>
+          </div>
           <div className={classes.profileMenuUser}>
             <Typography
               className={classes.profileMenuLink}

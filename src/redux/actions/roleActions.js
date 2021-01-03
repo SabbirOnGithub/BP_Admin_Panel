@@ -77,8 +77,6 @@ const saveRole = (item) => async (dispatch) => {
 };
 
 const deleteRole = (roleId) => async (dispatch, getState) => {
-    // console.log(roleId);
-    // console.log(typeof(roleId));
     try {
         dispatch({ type: ROLE_DELETE_REQUEST });
         const { data } = await axiosWithToken.delete("/Role/" + roleId);
