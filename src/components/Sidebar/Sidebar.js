@@ -91,6 +91,13 @@ const structure = [
   {
     id: 8, label: "Resource", link: "/dashboard/resource", icon: <TypographyIcon />,
   },
+  {
+    id: 9, label: "Blog Category", link: "/dashboard/blogCategory", icon: <TypographyIcon />,
+  },
+  {
+    id: 10, label: "Blog Sub Category", link: "/dashboard/blogSubCategory", icon: <TypographyIcon />,
+  },
+
 ];
 
 function Sidebar({ location }) {

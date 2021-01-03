@@ -20,8 +20,8 @@ import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'homepageId', label: 'homepageId' },
-    { id: 'userId', label: 'userId' },
+    { id: 'homepageId', label: 'Homepage Id' },
+    { id: 'userId', label: 'User Id' },
     { id: 'userName', label: 'User Name' },
     { id: 'isActive', label: 'Is Active' },
     { id: 'displayOrder', label: 'DisplayOrder' },

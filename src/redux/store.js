@@ -23,6 +23,8 @@ import { menuHeroSliderDeleteReducer, menuHeroSliderDetailsReducer, menuHeroSlid
 import { menuSectionDetailDeleteReducer, menuSectionDetailDetailsReducer, menuSectionDetailListReducer, menuSectionDetailSaveReducer } from './reducers/menuSectionDetailReducers';
 import { menuSubMenuMapDetailDeleteReducer, menuSubMenuMapDetailDetailsReducer, menuSubMenuMapDetailListReducer, menuSubMenuMapDetailSaveReducer } from './reducers/menuSubMenuMapDetailReducers';
 import { resourceDeleteReducer, resourceDetailsReducer, resourceListReducer, resourceSaveReducer } from './reducers/resourceReducers';
+import { blogCategoryDeleteReducer, blogCategoryDetailsReducer, blogCategoryListReducer, blogCategorySaveReducer } from './reducers/blogCategoryReducers';
+import { blogSubCategoryDeleteReducer, blogSubCategoryDetailsReducer, blogSubCategoryListReducer, blogSubCategorySaveReducer } from './reducers/blogSubCategoryReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -120,6 +122,14 @@ const reducer = combineReducers({
     resourceDetails: resourceDetailsReducer,
     resourceSave: resourceSaveReducer,
     resourceDelete: resourceDeleteReducer,
+    blogCategoryList:blogCategoryListReducer,
+    blogCategoryDetails: blogCategoryDetailsReducer,
+    blogCategorySave: blogCategorySaveReducer,
+    blogCategoryDelete: blogCategoryDeleteReducer,
+    blogSubCategoryList:blogSubCategoryListReducer,
+    blogSubCategoryDetails: blogSubCategoryDetailsReducer,
+    blogSubCategorySave: blogSubCategorySaveReducer,
+    blogSubCategoryDelete: blogSubCategoryDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

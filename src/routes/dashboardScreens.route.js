@@ -24,6 +24,8 @@ import MenuSectionDetailScreen from '../screens/dashboardScreens/menuSectionDeta
 import MenuSubMenuMapDetailScreen from '../screens/dashboardScreens/menuSubMenuMapDetailScreen/MenuSubMenuMapDetailScreen';
 import RoleScreen from '../screens/dashboardScreens/roleScreen/RoleScreen';
 import ResourceScreen from '../screens/dashboardScreens/resourceScreen/ResourceScreen';
+import BlogCategoryScreen from '../screens/dashboardScreens/blogCategoryScreen/BlogCategoryScreen';
+import BlogSubCategoryScreen from '../screens/dashboardScreens/blogSubCategoryScreen/BlogSubCategoryScreen';
 
 
 const DashboardScreensRoute = (props) => {
@@ -53,6 +55,8 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/menuSubMenuMapDetail`} component={MenuSubMenuMapDetailScreen} />
         <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
         <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
+        <Route exact path={`${props.match.path}/blogCategory`} component={BlogCategoryScreen} />
+        <Route exact path={`${props.match.path}/blogSubCategory`} component={BlogSubCategoryScreen} />
 
         
         <Route path="*">
