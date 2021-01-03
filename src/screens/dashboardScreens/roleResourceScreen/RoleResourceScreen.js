@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ResourceForm from "./ResourceForm";
+import RoleResourceForm from "./RoleResourceForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -11,41 +11,45 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import { searchNameByIdFromArray } from '../../../helpers/search';
 
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { listResources, saveResource, deleteResource } from '../../../redux/actions/resourceActions';
-
-
+import { listRoleResources, saveRoleResource, deleteRoleResource } from '../../../redux/actions/roleResourceActions';
+import { listRoles } from '../../../redux/actions/roleActions';
+import { listResources } from '../../../redux/actions/resourceActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'name', label: 'Name' },
-    { id: 'systemName', label: 'System Name' },
-    { id: 'urlPath', label: 'Url Path' },
-    { id: 'ordering', label: 'Ordering' },
-    { id: 'isBaseItem', label: 'Is Base Item' },
-    { id: 'isActive', label: 'Active' },
-    { id: 'baseItemId', label: 'Base Item Id' },
-    { id: 'isWfasettingsRequired', label: 'Is Wfasettings Required' },
-    { id: 'isNotificationSettingsRequired', label: 'Is Notification Settings Required' },
+    { id: 'roleId', label: 'Role' },
+    { id: 'resourceId', label: 'Resource' },
+    { id: 'createOperation', label: 'Create Operation' },
+    { id: 'readOperation', label: 'Read Operation' },
+    { id: 'updateOperation', label: 'Update Operation' },
+    { id: 'deleteOperation', label: 'Delete Operation' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function ResourceScreen() {
-
+export default function RoleResourceScreen() {
     const resourceList = useSelector(state => state.resourceList);
     //eslint-disable-next-line
-    const { resources, loading, error } = resourceList;
-    
-    const resourceSave = useSelector(state => state.resourceSave);
+    const { resources, loading:loadingResources } = resourceList;
+
+    const roleList = useSelector(state => state.roleList);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = resourceSave;
-    const resourceDelete = useSelector(state => state.resourceDelete);
+    const { roles, loading:loadingRoles } = roleList;
+
+    const roleResourceList = useSelector(state => state.roleResourceList);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = resourceDelete;
+    const { roleResources, loading, error } = roleResourceList;
+    const roleResourceSave = useSelector(state => state.roleResourceSave);
+    //eslint-disable-next-line
+    const { loading: loadingSave, success: successSave, error: errorSave } = roleResourceSave;
+    const roleResourceDelete = useSelector(state => state.roleResourceDelete);
+    //eslint-disable-next-line
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = roleResourceDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -61,19 +65,19 @@ export default function ResourceScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(resources, headCells, filterFn);
+    } = useTable(roleResources, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveResource(item));
+        dispatch(saveRoleResource(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteResource(id));
+        dispatch(deleteRoleResource(id));
         resolve();
     })
 
@@ -136,6 +140,8 @@ export default function ResourceScreen() {
 
     useEffect(() => {
         dispatch(listResources());
+        dispatch(listRoles());
+        dispatch(listRoleResources());
         return () => {
             // 
         }
@@ -144,14 +150,14 @@ export default function ResourceScreen() {
 
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
+                loading || loadingSave || loadingDelete || loadingRoles || loadingResources ? "Loading" :
                     <>
-                        <PageTitle title="Resources" />
+                        <PageTitle title="Role Resources" />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Widget
-                                    title="Resource List Table"
+                                    title="Role Resource List Table"
                                     upperTitle
                                     noBodyPadding
                                     setOpenPopup={setOpenPopup}
@@ -169,15 +175,13 @@ export default function ResourceScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.name}</TableCell>
-                                                            <TableCell>{item.systemName}</TableCell>
-                                                            <TableCell>{item.urlPath}</TableCell>
-                                                            <TableCell>{item.ordering}</TableCell>
-                                                            <TableCell>{item.isBaseItem ? "yes" : "no"}</TableCell>
-                                                            <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
-                                                            <TableCell>{item.baseItemId}</TableCell>
-                                                            <TableCell>{item.isWfasettingsRequired ? "yes" : "no"}</TableCell>
-                                                            <TableCell>{item.isNotificationSettingsRequired ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{roles ? searchNameByIdFromArray(roles, item.roleId) : ""}</TableCell>
+                                                            <TableCell>{resources ? searchNameByIdFromArray(resources, item.resourceId) : ""}</TableCell>
+
+                                                            <TableCell>{item.createOperation ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{item.readOperation ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{item.updateOperation ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{item.deleteOperation ? "yes" : "no"}</TableCell>
                                                             <TableCell>
                                                                 <Controls.ActionButton
                                                                     color="primary"
@@ -205,14 +209,16 @@ export default function ResourceScreen() {
                                         <TblPagination />
                                     </Paper>
                                     <Popup
-                                        title="Resource Form"
+                                        title="Role Resource Form"
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >
-                                        <ResourceForm
+                                        <RoleResourceForm
                                             recordForEdit={recordForEdit}
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
+                                            roles = {roles}
+                                            resources = {resources}
                                         />
 
                                     </Popup>

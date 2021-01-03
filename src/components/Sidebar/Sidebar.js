@@ -97,6 +97,9 @@ const structure = [
   {
     id: 10, label: "Blog Sub Category", link: "/dashboard/blogSubCategory", icon: <TypographyIcon />,
   },
+  {
+    id: 11, label: "Role Resource", link: "/dashboard/roleResource", icon: <TypographyIcon />,
+  },
 
 ];
 

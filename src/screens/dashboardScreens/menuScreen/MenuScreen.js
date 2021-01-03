@@ -27,7 +27,7 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function MenuPageScreen() {
+export default function MenuScreen() {
 
     const menuList = useSelector(state => state.menuList);
     //eslint-disable-next-line
