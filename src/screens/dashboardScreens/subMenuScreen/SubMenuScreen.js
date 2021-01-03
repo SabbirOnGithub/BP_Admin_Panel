@@ -76,23 +76,23 @@ export default function SubMenuScreen() {
         dispatch(deleteSubMenu(id));
         resolve();
     })
-    const addOrEdit = (subMenu, files, resetForm) => {
+    const addOrEdit = (item, files, resetForm) => {
 
         const formData = new FormData();
-        console.log(subMenu.id)
-        console.log(subMenu.displayOrder)
-        subMenu.id && formData.append('Id', subMenu.id)
-        formData.append('Name', subMenu.name)
-        formData.append('ShortDescription', subMenu.shortDescription)
-        formData.append('DisplayOrder', subMenu.displayOrder)
-        formData.append('isActive', subMenu.isActive)
+        // console.log(item.id)
+        // console.log(item.displayOrder)
+        item.id && formData.append('Id', item.id)
+        formData.append('Name', item.name)
+        formData.append('ShortDescription', item.shortDescription)
+        formData.append('DisplayOrder', item.displayOrder)
+        formData.append('isActive', item.isActive)
         formData.append('file', files)
 
         if (formData) {
             resetForm()
             setRecordForEdit(null)
             setOpenPopup(false)
-            saveItem(formData, subMenu.id)
+            saveItem(formData, item.id)
             .then(()=>{
                 // resetForm()
                 // setRecordForEdit(null)

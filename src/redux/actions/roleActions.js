@@ -37,10 +37,10 @@ const listRoles = () => async (dispatch) => {
 };
 
 
-const detailsRole = (roleId) => async (dispatch) => {
+const detailsRole = (id) => async (dispatch) => {
     try {
         dispatch({ type: ROLE_DETAILS_REQUEST });
-        const { data } = await axiosWithoutToken.get("/Role/detail/" + roleId);
+        const { data } = await axiosWithoutToken.get("/Role/detail/" + id);
         dispatch({ type: ROLE_DETAILS_SUCCESS, payload: data });
     }
     catch (error) {
@@ -76,10 +76,10 @@ const saveRole = (item) => async (dispatch) => {
     }
 };
 
-const deleteRole = (roleId) => async (dispatch, getState) => {
+const deleteRole = (id) => async (dispatch, getState) => {
     try {
         dispatch({ type: ROLE_DELETE_REQUEST });
-        const { data } = await axiosWithToken.delete("/Role/" + roleId);
+        const { data } = await axiosWithToken.delete("/Role/" + id);
         if (data.status === true) {
             dispatch({ type: ROLE_DELETE_SUCCESS, payload: data, success: true });
         } else {

@@ -111,11 +111,11 @@ export default function HomePageScreen() {
         resolve();
     })
 
-    const addOrEdit = async (homePageData, resetForm) => {
+    const addOrEdit = async (item, resetForm) => {
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
-        saveItem(homePageData)
+        saveItem(item)
             .then(() => {
                 // resetForm()
                 // setRecordForEdit(null)

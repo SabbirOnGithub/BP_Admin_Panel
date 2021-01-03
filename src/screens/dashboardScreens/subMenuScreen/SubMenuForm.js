@@ -41,6 +41,7 @@ export default function SubMenuForm(props) {
         setErrors,
         handleInputChange,
         handleFileChange,
+        handleInputNumberChange,
         resetForm,
         files
     } = useForm(initialFValues, true, validate);
@@ -82,7 +83,7 @@ export default function SubMenuForm(props) {
                         name="displayOrder"
                         type="number"
                         value={values.displayOrder}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.displayOrder}
                     />
                     <Controls.Checkbox

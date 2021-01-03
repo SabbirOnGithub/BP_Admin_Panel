@@ -22,6 +22,7 @@ import { menuSectionDeleteReducer, menuSectionDetailsReducer, menuSectionListRed
 import { menuHeroSliderDeleteReducer, menuHeroSliderDetailsReducer, menuHeroSliderListReducer, menuHeroSliderSaveReducer } from './reducers/menuHeroSliderReducers';
 import { menuSectionDetailDeleteReducer, menuSectionDetailDetailsReducer, menuSectionDetailListReducer, menuSectionDetailSaveReducer } from './reducers/menuSectionDetailReducers';
 import { menuSubMenuMapDetailDeleteReducer, menuSubMenuMapDetailDetailsReducer, menuSubMenuMapDetailListReducer, menuSubMenuMapDetailSaveReducer } from './reducers/menuSubMenuMapDetailReducers';
+import { resourceDeleteReducer, resourceDetailsReducer, resourceListReducer, resourceSaveReducer } from './reducers/resourceReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -115,6 +116,10 @@ const reducer = combineReducers({
     menuSubMenuMapDetailDetails: menuSubMenuMapDetailDetailsReducer,
     menuSubMenuMapDetailSave: menuSubMenuMapDetailSaveReducer,
     menuSubMenuMapDetailDelete: menuSubMenuMapDetailDeleteReducer,
+    resourceList:resourceListReducer,
+    resourceDetails: resourceDetailsReducer,
+    resourceSave: resourceSaveReducer,
+    resourceDelete: resourceDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

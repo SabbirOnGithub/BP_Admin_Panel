@@ -72,12 +72,12 @@ export default function FooterSectionScreen() {
         resolve();
     })
 
-    const addOrEdit = async (footerSection, resetForm) => {
+    const addOrEdit = async (item, resetForm) => {
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
         //call add item promise 
-        saveItem(footerSection)
+        saveItem(item)
         .then(() => {
             // resetForm()
             // setRecordForEdit(null)

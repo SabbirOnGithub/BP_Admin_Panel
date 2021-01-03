@@ -40,10 +40,10 @@ const listHomePageDatas = () => async (dispatch) => {
 };
 
 
-const detailsHomePageData = (homePageDataId) => async (dispatch) => {
+const detailsHomePageData = (id) => async (dispatch) => {
     try {
         dispatch({ type: HOMEPAGE_DETAILS_REQUEST });
-        const { data } = await axiosWithoutToken.get("/HomePage/" + homePageDataId);
+        const { data } = await axiosWithoutToken.get("/HomePage/" + id);
         if (data.status === true) {
             dispatch({ type: HOMEPAGE_DETAILS_SUCCESS, payload: data });
         } else {
@@ -55,23 +55,23 @@ const detailsHomePageData = (homePageDataId) => async (dispatch) => {
     }
 };
 
-const saveHomePageData = (homePageData) => async (dispatch, getState) => {
+const saveHomePageData = (item) => async (dispatch, getState) => {
     try {
-        dispatch({ type: HOMEPAGE_SAVE_REQUEST, payload: homePageData })
+        dispatch({ type: HOMEPAGE_SAVE_REQUEST, payload: item })
         // const { userSignin: { userInfo } } = getState();
 
-        if (!homePageData.id) {
+        if (!item.id) {
             //eslint-disable-next-line
-            const formatHomePageData = delete homePageData.id;
+            const formatHomePageData = delete item.id;
             // console.log(homePageData)
-            const { data } = await axiosWithToken.post("/HomePage", homePageData)
+            const { data } = await axiosWithToken.post("/HomePage", item)
             if (data.status === true) {
                 dispatch({ type: HOMEPAGE_SAVE_SUCCESS, payload: data });
             } else {
                 dispatch({ type: HOMEPAGE_SAVE_FAIL, payload: data.message });
             }
         } else {
-            const { data } = await axiosWithToken.put("/HomePage/", homePageData);
+            const { data } = await axiosWithToken.put("/HomePage/", item);
             if (data.status === true) {
                 dispatch({ type: HOMEPAGE_SAVE_SUCCESS, payload: data });
             } else {
@@ -85,12 +85,12 @@ const saveHomePageData = (homePageData) => async (dispatch, getState) => {
     }
 };
 
-const deleteHomePageData = (homePageDataId) => async (dispatch, getState) => {
+const deleteHomePageData = (id) => async (dispatch, getState) => {
     // console.log(homePageDataId);
     // console.log(typeof(homePageDataId));
     try {
         dispatch({ type: HOMEPAGE_DELETE_REQUEST });
-        const { data } = await axiosWithToken.delete("/HomePage/" + homePageDataId);
+        const { data } = await axiosWithToken.delete("/HomePage/" + id);
         if (data.status === true) {
             dispatch({ type: HOMEPAGE_DELETE_SUCCESS, payload: data, success: true });
         } else {

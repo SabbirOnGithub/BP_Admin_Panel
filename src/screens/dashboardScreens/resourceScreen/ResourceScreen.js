@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import MenuForm from "./MenuForm";
+import ResourceForm from "./ResourceForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -16,28 +16,35 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { listMenus, saveMenu, deleteMenu } from '../../../redux/actions/menuActions';
+import { listResources, saveResource, deleteResource } from '../../../redux/actions/resourceActions';
 
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
+    { id: 'systemName', label: 'System Name' },
+    { id: 'urlPath', label: 'Url Path' },
+    { id: 'ordering', label: 'Ordering' },
+    { id: 'isBaseItem', label: 'Is Base Item' },
     { id: 'isActive', label: 'Active' },
+    { id: 'baseItemId', label: 'Base Item Id' },
+    { id: 'isWfasettingsRequired', label: 'Is Wfasettings Required' },
+    { id: 'isNotificationSettingsRequired', label: 'Is Notification Settings Required' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function MenuPageScreen() {
+export default function ResourceScreen() {
 
-    const menuList = useSelector(state => state.menuList);
+    const resourceList = useSelector(state => state.resourceList);
     //eslint-disable-next-line
-    const { menus, loading, error } = menuList;
-    const menuSave = useSelector(state => state.menuSave);
+    const { resources, loading, error } = resourceList;
+    const resourceSave = useSelector(state => state.resourceSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = menuSave;
-    const menuDelete = useSelector(state => state.menuDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = resourceSave;
+    const resourceDelete = useSelector(state => state.resourceDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = menuDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = resourceDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -53,19 +60,19 @@ export default function MenuPageScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(menus, headCells, filterFn);
+    } = useTable(resources, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveMenu(item));
+        dispatch(saveResource(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteMenu(id));
+        dispatch(deleteResource(id));
         resolve();
     })
 
@@ -127,7 +134,7 @@ export default function MenuPageScreen() {
     }
 
     useEffect(() => {
-        dispatch(listMenus());
+        dispatch(listResources());
         return () => {
             // 
         }
@@ -138,12 +145,12 @@ export default function MenuPageScreen() {
             {
                 loading || loadingSave || loadingDelete ? "Loading" :
                     <>
-                        <PageTitle title="Menus" />
+                        <PageTitle title="Resources" />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Widget
-                                    title="Menu List Table"
+                                    title="Resource List Table"
                                     upperTitle
                                     noBodyPadding
                                     setOpenPopup={setOpenPopup}
@@ -162,7 +169,14 @@ export default function MenuPageScreen() {
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{item.name}</TableCell>
+                                                            <TableCell>{item.systemName}</TableCell>
+                                                            <TableCell>{item.urlPath}</TableCell>
+                                                            <TableCell>{item.ordering}</TableCell>
+                                                            <TableCell>{item.isBaseItem ? "yes" : "no"}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{item.baseItemId}</TableCell>
+                                                            <TableCell>{item.isWfasettingsRequired ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{item.isNotificationSettingsRequired ? "yes" : "no"}</TableCell>
                                                             <TableCell>
                                                                 <Controls.ActionButton
                                                                     color="primary"
@@ -190,11 +204,11 @@ export default function MenuPageScreen() {
                                         <TblPagination />
                                     </Paper>
                                     <Popup
-                                        title="Menu Form"
+                                        title="Resource Form"
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >
-                                        <MenuForm
+                                        <ResourceForm
                                             recordForEdit={recordForEdit}
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}

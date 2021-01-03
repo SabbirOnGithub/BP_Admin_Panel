@@ -23,6 +23,7 @@ import MenuHeroSliderScreen from '../screens/dashboardScreens/menuHeroSliderScre
 import MenuSectionDetailScreen from '../screens/dashboardScreens/menuSectionDetailScreen/MenuSectionDetailScreen';
 import MenuSubMenuMapDetailScreen from '../screens/dashboardScreens/menuSubMenuMapDetailScreen/MenuSubMenuMapDetailScreen';
 import RoleScreen from '../screens/dashboardScreens/roleScreen/RoleScreen';
+import ResourceScreen from '../screens/dashboardScreens/resourceScreen/ResourceScreen';
 
 
 const DashboardScreensRoute = (props) => {
@@ -51,6 +52,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/menuSectionDetail`} component={MenuSectionDetailScreen} />
         <Route exact path={`${props.match.path}/menuSubMenuMapDetail`} component={MenuSubMenuMapDetailScreen} />
         <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
+        <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
 
         
         <Route path="*">

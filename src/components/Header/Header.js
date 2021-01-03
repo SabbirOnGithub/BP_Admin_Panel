@@ -122,20 +122,19 @@ export default function Header(props) {
               classes.profileMenuItem,
               classes.headerMenuItem,
             )}
+            component={Link} to={'/dashboard/user'}
           >
-             <Link to="/dashboard/role">  <AccountIcon className={classes.profileMenuIcon} /> Users </Link>
-           
+             <AccountIcon className={classes.profileMenuIcon} /> Users
           </MenuItem>
-          <div className={classes.profileMenuUser}>
-            <Typography
-              className={classes.profileMenuLink}
-              component="a"
-              color="primary"
-              href="/dashboard/user"
-            >
-             Users
-            </Typography>
-          </div>
+          <MenuItem
+            className={classNames(
+              classes.profileMenuItem,
+              classes.headerMenuItem,
+            )}
+            component={Link} to={'/dashboard/role'}
+          >
+             <AccountIcon className={classes.profileMenuIcon} /> User Role 
+          </MenuItem>
           <div className={classes.profileMenuUser}>
             <Typography
               className={classes.profileMenuLink}

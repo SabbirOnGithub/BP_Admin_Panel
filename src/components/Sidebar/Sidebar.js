@@ -88,6 +88,9 @@ const structure = [
   {
     id: 7, label: "Footer Section", link: "/dashboard/footerSection", icon: <TypographyIcon />,
   },
+  {
+    id: 8, label: "Resource", link: "/dashboard/resource", icon: <TypographyIcon />,
+  },
 ];
 
 function Sidebar({ location }) {

@@ -83,12 +83,12 @@ export default function UserScreen() {
         resolve();
     })
     //eslint-disable-next-line
-    const addOrEdit = async (user, resetForm) => {
+    const addOrEdit = async (item, resetForm) => {
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
         //call add item promise 
-        saveItem(user)
+        saveItem(item)
             .then(() => {
                 // resetForm()
                 // setRecordForEdit(null)

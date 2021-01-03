@@ -37,10 +37,10 @@ const listFooterSections = () => async (dispatch) => {
 };
 
 
-const detailsFooterSection = (footerSectionId) => async (dispatch) => {
+const detailsFooterSection = (id) => async (dispatch) => {
     try {
         dispatch({ type: FOOTER_SECTION_DETAILS_REQUEST });
-        const { data } = await axiosWithoutToken.get("/FooterSection/detail/" + footerSectionId);
+        const { data } = await axiosWithoutToken.get("/FooterSection/detail/" + id);
         dispatch({ type: FOOTER_SECTION_DETAILS_SUCCESS, payload: data });
     }
     catch (error) {
@@ -48,13 +48,13 @@ const detailsFooterSection = (footerSectionId) => async (dispatch) => {
     }
 };
 
-const saveFooterSection = (footerSection) => async (dispatch) => {
+const saveFooterSection = (item) => async (dispatch) => {
     try {
-        dispatch({ type: FOOTER_SECTION_SAVE_REQUEST, payload: footerSection })
-        if (!footerSection.id) {
+        dispatch({ type: FOOTER_SECTION_SAVE_REQUEST, payload: item })
+        if (!item.id) {
             //eslint-disable-next-line
-            const formatHomePageData = delete footerSection.id;
-            const { data } = await axiosWithToken.post("/FooterSection", footerSection)
+            const formatHomePageData = delete item.id;
+            const { data } = await axiosWithToken.post("/FooterSection", item)
             console.log(data)
             if (data.status === true) {
                 dispatch({ type: FOOTER_SECTION_SAVE_SUCCESS, payload: data });
@@ -62,7 +62,7 @@ const saveFooterSection = (footerSection) => async (dispatch) => {
                 dispatch({ type: FOOTER_SECTION_SAVE_FAIL, payload: data.message });
             }
         } else {
-            const { data } = await axiosWithToken.put("/FooterSection", footerSection);
+            const { data } = await axiosWithToken.put("/FooterSection", item);
             if (data.status === true) {
                 dispatch({ type: FOOTER_SECTION_SAVE_SUCCESS, payload: data });
             } else {
@@ -76,12 +76,12 @@ const saveFooterSection = (footerSection) => async (dispatch) => {
     }
 };
 
-const deleteFooterSection = (footerSectionId) => async (dispatch, getState) => {
+const deleteFooterSection = (id) => async (dispatch, getState) => {
     // console.log(footerSectionId);
     // console.log(typeof(footerSectionId));
     try {
         dispatch({ type: FOOTER_SECTION_DELETE_REQUEST });
-        const { data } = await axiosWithToken.delete("/FooterSection/" + footerSectionId);
+        const { data } = await axiosWithToken.delete("/FooterSection/" + id);
         if (data.status === true) {
             dispatch({ type: FOOTER_SECTION_DELETE_SUCCESS, payload: data, success: true });
         } else {
