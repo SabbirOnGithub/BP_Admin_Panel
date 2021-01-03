@@ -26,10 +26,10 @@ const BASE_API_URL = config.BASE_API_URL
 const listUsers = () => async (dispatch) => {
     try {
         dispatch({ type: USER_LIST_REQUEST });
-        const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User`);
+        const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User/searchAll`);
         if (data.status === true) {
-            dispatch({ type: USER_LIST_SUCCESS, payload: data.data ? data.data : [] });
-            console.log(data)
+            dispatch({ type: USER_LIST_SUCCESS, payload: data.data ? data.data.item1 : [] });
+            // console.log(data)
         } else {
             dispatch({ type: USER_LIST_FAIL, payload: data.message });
         }
@@ -51,13 +51,14 @@ const detailsUser = (id)=> async (dispatch) =>{
 };
 
 // register and update user
-const saveUser = (item) => async (dispatch) => {
+const saveUser = (item, id) => async (dispatch) => {
     try {
         dispatch({ type: USER_SAVE_REQUEST, payload: item })
-        if (!item.id) {
+        if (!id) {
+            console.log('create')
             //eslint-disable-next-line
-            const formatHomePageData = delete item.id;
-            const { data } = await axiosWithToken.post("/User", item)
+            const formatData = delete item.id;
+            const { data } = await axiosWithToken.post("/User/AddUser", item)
             console.log(data)
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
@@ -65,7 +66,8 @@ const saveUser = (item) => async (dispatch) => {
                 dispatch({ type: USER_SAVE_FAIL, payload: data.message });
             }
         } else {
-            const { data } = await axiosWithToken.put("/User", item);
+            console.log('update')
+            const { data } = await axiosWithToken.put("/User/UpdateUser", item);
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
             } else {
@@ -81,7 +83,7 @@ const saveUser = (item) => async (dispatch) => {
 const deleteUser = (id) => async (dispatch, getState) => {
     try {
         dispatch({ type: USER_DELETE_REQUEST });
-        const { data } = await axiosWithToken.delete("/TrainingDetail/" + id);
+        const { data } = await axiosWithToken.delete("/User/" + id);
         if (data) {
             dispatch({ type: USER_DELETE_SUCCESS, payload: data, success: true });
         } else {

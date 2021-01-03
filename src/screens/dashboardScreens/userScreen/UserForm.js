@@ -1,22 +1,41 @@
 import React, { useEffect } from 'react'
-import { Grid, CircularProgress } from '@material-ui/core';
+import { Grid, CircularProgress, Button } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 
 
 const initialFValues = {
     id: '',
-    sectionName: "",
-    showSection: false,
+    username: "",
+    password: "",
+    roleId: "",
+    name: "",
+    isActive: false,
+    email: "",
+    mobile: "",
+    address: "",
 }
 
 export default function UserForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave } = props
+    const { addOrEdit, recordForEdit, loadingSave, roles } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        if ('sectionName' in fieldValues)
-            temp.sectionName = fieldValues.sectionName ? "" : "This field is required."
+        if ('username' in fieldValues)
+            temp.username = fieldValues.username ? "" : "This field is required."
+        // if ('password' in fieldValues)
+        //     temp.password = fieldValues.password ? "" : "This field is required."
+        if ('roleId' in fieldValues)
+            temp.roleId = fieldValues.roleId ? "" : "This field is required."
+        if ('name' in fieldValues)
+            temp.name = fieldValues.name ? "" : "This field is required."
+        if ('email' in fieldValues)
+            temp.email = fieldValues.email ? "" : "This field is required."
+        if ('mobile' in fieldValues)
+            temp.mobile = fieldValues.mobile ? "" : "This field is required."
+        if ('address' in fieldValues)
+            temp.address = fieldValues.address ? "" : "This field is required."
+        
         setErrors({
             ...temp
         })
@@ -30,20 +49,23 @@ export default function UserForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        handleFileChange,
+        resetForm,
+        files
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(values)
         if (validate()) {
-            console.log(values)
-            addOrEdit(values, resetForm);
+            addOrEdit(values, files, resetForm);
         }
     }
 
     useEffect(() => {
         if (recordForEdit != null)
+            !recordForEdit.password ? setValues({
+                ...recordForEdit, password:''
+            }) :
             setValues({
                 ...recordForEdit
             })
@@ -54,19 +76,80 @@ export default function UserForm(props) {
             <Grid container>
                 <Grid item xs={12}>
                     <Controls.Input
-                        name="sectionName"
-                        label="Section Name"
-                        value={values.sectionName}
+                        name="username"
+                        label="User Name"
+                        value={values.username}
                         onChange={handleInputChange}
-                        error={errors.sectionName}
+                        error={errors.username}
+                    />
+                    <Controls.Input
+                        name="password"
+                        label="Password"
+                        type="password"
+                        value={values.password}
+                        onChange={handleInputChange}
+                        error={errors.password}
+                    />
+                    <Controls.Select
+                        name="roleId"
+                        label="Role"
+                        value={values.roleId}
+                        onChange={handleInputChange}
+                        error={errors.roleId}
+                        options={roles ? roles : []}
+                    />
+                    <Controls.Input
+                        name="name"
+                        label="Name"
+                        value={values.name}
+                        onChange={handleInputChange}
+                        error={errors.name}
+                    />
+                    <Controls.Input
+                        name="email"
+                        label="Email"
+                        type="email"
+                        value={values.email}
+                        onChange={handleInputChange}
+                        error={errors.email}
+                    />
+                    <Controls.Input
+                        name="mobile"
+                        label="Mobile"
+                        type="tel"
+                        value={values.mobile}
+                        onChange={handleInputChange}
+                        error={errors.mobile}
+                    />
+                    <Controls.Input
+                        name="address"
+                        label="Address"
+                        value={values.address}
+                        onChange={handleInputChange}
+                        error={errors.address}
                     />
                     <Controls.Checkbox
-                        name="showSection"
-                        label="Show Section"
-                        value={values.showSection}
+                        name="isActive"
+                        label="Is Active"
+                        value={values.isActive}
                         onChange={handleInputChange}
-                        error={errors.showSection}
+                        error={errors.isActive}
                     />
+                    <div style={{margin:5}}>
+                    <Button
+                        variant="contained"
+                        component="label"
+                        >
+                        Upload File
+                         <input
+                        type="file"
+                        onChange={handleFileChange}
+                        hidden
+                    />
+                    </Button>
+                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
+                    </div>
+
 
                     <div>
                         {loadingSave ? (

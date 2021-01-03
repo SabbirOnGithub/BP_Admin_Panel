@@ -77,10 +77,7 @@ export default function SubMenuScreen() {
         resolve();
     })
     const addOrEdit = (item, files, resetForm) => {
-
         const formData = new FormData();
-        // console.log(item.id)
-        // console.log(item.displayOrder)
         item.id && formData.append('Id', item.id)
         formData.append('Name', item.name)
         formData.append('ShortDescription', item.shortDescription)

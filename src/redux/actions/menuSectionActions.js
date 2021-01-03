@@ -55,7 +55,7 @@ const saveMenuSection = (item, id) => async (dispatch, getState) => {
 
         if (!id) {
             //eslint-disable-next-line
-            const formatHomePageData = delete item.id;
+            const formatData = delete item.id;
             const { data } = await axiosWithToken.post("/MenuSection/Create", item)
             // console.log(data)
             if (data.status === true) {

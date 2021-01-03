@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import UserForm from "./UserForm";
+import UserForm from "./UserForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -37,8 +37,8 @@ const headCells = [
 export default function UserScreen() {
     const roleList = useSelector(state => state.roleList);
     //eslint-disable-next-line
-    const { roles, loading: roleListLoading, error: roleListError } = roleList;
-    console.log(roles)
+    const { roles, loading: roleListLoading } = roleList;
+
     const userList = useSelector(state => state.userList);
     //eslint-disable-next-line
     const { users, loading, error } = userList;
@@ -72,8 +72,8 @@ export default function UserScreen() {
     const dispatch = useDispatch();
 
     // add/update promise
-    const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveUser(item));
+    const saveItem = (item, id) => new Promise((resolve, reject) => {
+        dispatch(saveUser(item, id));
         resolve();
     })
 
@@ -83,24 +83,37 @@ export default function UserScreen() {
         resolve();
     })
     //eslint-disable-next-line
-    const addOrEdit = async (item, resetForm) => {
-        resetForm()
-        setRecordForEdit(null)
-        setOpenPopup(false)
-        //call add item promise 
-        saveItem(item)
-            .then(() => {
+    const addOrEdit = (item, files, resetForm) => {
+        console.log(item.id)
+        const formData = new FormData();
+        item.id && formData.append('Id', item.id)
+        formData.append('Username', item.username)
+        formData.append('Password', item.password)
+        formData.append('RoleId', item.roleId)
+        formData.append('Name', item.name)
+        formData.append('IsActive', item.isActive)
+        formData.append('Mobile', item.mobile)
+        formData.append('Email', item.email)
+        formData.append('Address', item.address)
+        formData.append('file', files)
+
+        if (formData) {
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
+            saveItem(formData, item.id)
+            .then(()=>{
                 // resetForm()
                 // setRecordForEdit(null)
                 // setOpenPopup(false)
                 if (successSave) {
-                    console.log(successSave)
                     setNotify({
                         isOpen: true,
                         message: successSaveMessage,
                         type: 'success'
                     })
                 }
+                
                 if (errorSave) {
                     setNotify({
                         isOpen: true,
@@ -109,11 +122,11 @@ export default function UserScreen() {
                     })
                 }
             })
-            .catch(() => {
-
-            })
+          
+        }
 
     }
+   
     const getUserRoleName = (id) => {
         const roleDetails = roles.find(item => item.id === id);
         if (roleDetails) {
@@ -162,7 +175,7 @@ export default function UserScreen() {
     return (
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
+                loading || loadingSave || loadingDelete || roleListLoading ? "Loading" :
                     <>
                         <PageTitle title="Users" />
 
@@ -229,11 +242,12 @@ export default function UserScreen() {
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >
-                                        {/* <UserForm
+                                        <UserForm
                                             recordForEdit={recordForEdit}
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
-                                        /> */}
+                                            roles = {roles}
+                                        />
 
                                     </Popup>
                                     <Notification

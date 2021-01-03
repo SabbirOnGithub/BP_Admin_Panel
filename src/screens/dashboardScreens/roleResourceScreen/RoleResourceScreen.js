@@ -220,7 +220,6 @@ export default function RoleResourceScreen() {
                                             roles = {roles}
                                             resources = {resources}
                                         />
-
                                     </Popup>
                                     <Notification
                                         notify={notify}
