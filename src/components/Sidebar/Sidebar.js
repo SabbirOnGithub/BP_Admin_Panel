@@ -29,7 +29,7 @@ import {
 } from "../../context/LayoutContext";
 
 const structure = [
-  { id: 0, label: "Dashboard", link: "/dashboard/homepage", icon: <AppsIcon /> },
+  { id: 0, label: "Dashboard", link: "/dashboard", icon: <AppsIcon /> },
   {
     id: 1,
     label: "Home Page",

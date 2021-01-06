@@ -6,13 +6,14 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 const initialFValues = {
     id: '',
+    homepageId:'',
     name: '',
     description: '',
     pictureUrl: '',
 }
 
 export default function HomeConsultationTopicForm(props) {
-    const { addOrEdit, recordForEdit } = props
+    const { addOrEdit, recordForEdit, homePageDatas } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -20,6 +21,8 @@ export default function HomeConsultationTopicForm(props) {
             temp.name = fieldValues.name ? "" : "This field is required."
         if ('description' in fieldValues)
             temp.description = fieldValues.description ? "" : "This field is required."
+        if ('homepageId' in fieldValues)
+            temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -57,6 +60,14 @@ export default function HomeConsultationTopicForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                <Controls.Select
+                        name="homepageId"
+                        label="Homepage"
+                        value={values.homepageId}
+                        onChange={handleInputChange}
+                        error={errors.homepageId}
+                        options={homePageDatas ? homePageDatas : []}
+                    />
                     <Controls.Input
                         label="Name"
                         name="name"

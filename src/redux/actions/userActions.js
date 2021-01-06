@@ -102,7 +102,7 @@ const signin = (email,password) => async(dispatch) => {
         const {data} = await axios.post(`${BASE_API_URL}/Auth/Login`, { username, password });
         if(data && data.data !== null){
             dispatch({type:USER_SIGNIN_SUCCESS,payload:data.data});
-            console.log(data.data);
+            // console.log(data.data);
             // console.log(data.data.token);
             Cookie.set('userInfo', JSON.stringify(data.data));
             Cookie.set('userToken', data.data.token);

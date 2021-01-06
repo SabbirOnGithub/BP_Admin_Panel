@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteHomeConsultationTopic, listHomeConsultationTopics, saveHomeConsultationTopic } from '../../../redux/actions/homeConsultationTopicActions';
+import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -24,6 +25,7 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'homepageId', label: 'Homepage Id' },
     { id: 'name', label: 'Name' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
@@ -31,6 +33,9 @@ const headCells = [
 ]
 
 export default function HomeConsultationTopicScreen() {
+    const homePageDataList = useSelector(state => state.homePageDataList);
+    //eslint-disable-next-line
+    const { homePageDatas, loading:loadingHomePageDatas } = homePageDataList;
 
     const homeConsultationTopicList = useSelector(state => state.homeConsultationTopicList)
     //eslint-disable-next-line
@@ -76,10 +81,11 @@ export default function HomeConsultationTopicScreen() {
     })
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
-        console.log(item.id)
-        formData.append('HompageId', item.id)
+        console.log(item.homepageId)
+        item.id && formData.append('Id', item.id)
         formData.append('Name', item.name)
         formData.append('Description', item.description)
+        formData.append('HomepageId', item.homepageId)
         formData.append('file', files)
         
         if (formData) {
@@ -144,6 +150,7 @@ export default function HomeConsultationTopicScreen() {
 
 
     useEffect(() => {
+        dispatch(listHomePageDatas());
         dispatch(listHomeConsultationTopics());
         return () => {
             // 
@@ -153,7 +160,7 @@ export default function HomeConsultationTopicScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Home Consultation Topic" />
 
@@ -177,6 +184,7 @@ export default function HomeConsultationTopicScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
+                                                        <TableCell>{item.homepageId}</TableCell>
                                                         <TableCell>{item.name}</TableCell>
                                                         <TableCell>{item.description}</TableCell>
                                                         <TableCell>
@@ -216,7 +224,9 @@ export default function HomeConsultationTopicScreen() {
                                 >
                                     <HomeConsultationTopicForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit}
+                                        homePageDatas = {homePageDatas}
+                                     />
                                 </Popup>
                                 <Notification
                                     notify={notify}
