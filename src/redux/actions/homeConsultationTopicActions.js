@@ -46,37 +46,6 @@ const detailsHomeConsultationTopic = (id) => async (dispatch) => {
 };
 
 // add/update action
-// const saveHomeConsultationTopic = (item, id) => async (dispatch) => {
-//     try {
-//         dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_REQUEST, payload: item })
-//         console.log(item)
-//         console.log(id)
-//         if (!id) {
-//             console.log('create')
-//             //eslint-disable-next-line
-//             const formatHomePageData = delete item.id;
-//             const { data } = await axiosWithToken.post("/HomeConsultationTopic/Create", item)
-//             console.log(data)
-//             if (data.status === true) {
-//                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_SUCCESS, payload: data });
-//             } else {
-//                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_FAIL, payload: data.message });
-//             }
-//         } else {
-//             console.log('update')
-//             const { data } = await axiosWithToken.put("/HomeConsultationTopic/Update", item);
-
-//             if (data.status === true) {
-//                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_SUCCESS, payload: data });
-//             } else {
-//                 dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_FAIL, payload: data.message });
-//             }
-//         }
-//     } catch (error) {
-//         console.log(error)
-//         dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_FAIL, payload: error.message });
-//     }
-// };
 const saveHomeConsultationTopic = (item, id) => async (dispatch, getState) => {
     try {
         dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_REQUEST, payload: item })
@@ -105,7 +74,6 @@ const saveHomeConsultationTopic = (item, id) => async (dispatch, getState) => {
         dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_FAIL, payload: error.message });
     }
 };
-
 
 const deleteHomeConsultationTopic = (id) => async (dispatch, getState) => {
     try {

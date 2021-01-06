@@ -21,7 +21,7 @@ const listSubmenuBestPractices = () => async (dispatch) => {
     try {
         dispatch({ type: SUBMENU_BEST_PRACTICE_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get('/SubmenuBestPractice');
-        // console.log(data)
+        console.log(data)
         if (data.status === true) {
             dispatch({ type: SUBMENU_BEST_PRACTICE_LIST_SUCCESS, payload: data.data ? data.data : [] });
         } else {

@@ -11,11 +11,13 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import { searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteSubmenuBestPractice, listSubmenuBestPractices, saveSubmenuBestPractice } from '../../../redux/actions/submenuBestPracticeActions';
+import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -24,6 +26,7 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'subMenuId', label: 'SubMenu' },
     { id: 'title', label: 'Title' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
@@ -31,6 +34,10 @@ const headCells = [
 ]
 
 export default function SubmenuBestPracticeScreen() {
+    const subMenuList = useSelector(state => state.subMenuList)
+
+    //eslint-disable-next-line
+    const { subMenus, loading: loadingSubMenus } = subMenuList;
 
     const submenuBestPracticeList = useSelector(state => state.submenuBestPracticeList)
     //eslint-disable-next-line
@@ -74,7 +81,8 @@ export default function SubmenuBestPracticeScreen() {
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
         console.log(item.id)
-        formData.append('SubMenuId', item.id)
+        item.id && formData.append('Id', item.id)
+        formData.append('SubMenuId', item.subMenuId)
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         formData.append('file', files)
@@ -141,6 +149,7 @@ export default function SubmenuBestPracticeScreen() {
 
 
     useEffect(() => {
+        dispatch(listSubMenus());
         dispatch(listSubmenuBestPractices());
         return () => {
             // 
@@ -150,7 +159,7 @@ export default function SubmenuBestPracticeScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingSubMenus ? "Loading ...." :
                 <>
                     <PageTitle title="Submenu Best Practice" />
 
@@ -173,6 +182,7 @@ export default function SubmenuBestPracticeScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
+                                                        <TableCell>{searchNameByIdFromArray(subMenus, item.subMenuId)}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.description}</TableCell>
                                                         <TableCell>
@@ -212,7 +222,9 @@ export default function SubmenuBestPracticeScreen() {
                                 >
                                     <SubmenuBestPracticeForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        subMenus={subMenus}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}
