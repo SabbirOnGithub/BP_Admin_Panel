@@ -182,7 +182,7 @@ export default function SubmenuBestPracticeScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{searchNameByIdFromArray(subMenus, item.subMenuId)}</TableCell>
+                                                        <TableCell>{subMenus ? searchNameByIdFromArray(subMenus, item.subMenuId) : item.subMenuId}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.description}</TableCell>
                                                         <TableCell>

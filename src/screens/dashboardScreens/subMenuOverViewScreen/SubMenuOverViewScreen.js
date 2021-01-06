@@ -11,11 +11,13 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import { searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteSubMenuOverView, listSubMenuOverViews, saveSubMenuOverView } from '../../../redux/actions/subMenuOverViewActions';
+import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -24,6 +26,7 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'subMenuId', label: 'SubMenu' },
     { id: 'title', label: 'Title' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
@@ -31,6 +34,9 @@ const headCells = [
 ]
 
 export default function SubMenuOverViewScreen() {
+    const subMenuList = useSelector(state => state.subMenuList)
+    //eslint-disable-next-line
+    const { subMenus, loading: loadingSubMenus } = subMenuList;
 
     const subMenuOverViewList = useSelector(state => state.subMenuOverViewList)
     //eslint-disable-next-line
@@ -74,7 +80,8 @@ export default function SubMenuOverViewScreen() {
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
         console.log(item.id)
-        formData.append('SubMenuId', item.id)
+        item.id && formData.append('Id', item.id)
+        formData.append('SubMenuId', item.subMenuId)
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         formData.append('file', files)
@@ -141,6 +148,7 @@ export default function SubMenuOverViewScreen() {
 
 
     useEffect(() => {
+        dispatch(listSubMenus());
         dispatch(listSubMenuOverViews());
         return () => {
             // 
@@ -150,7 +158,7 @@ export default function SubMenuOverViewScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingSubMenus ? "Loading ...." :
                 <>
                     <PageTitle title="Submenu Overview" />
 
@@ -174,6 +182,8 @@ export default function SubMenuOverViewScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
+                                                        {/* <TableCell>{item.subMenuId}</TableCell> */}
+                                                        <TableCell>{subMenus ? searchNameByIdFromArray(subMenus, item.subMenuId) : item.subMenuId}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.description}</TableCell>
                                                         <TableCell>
@@ -213,7 +223,9 @@ export default function SubMenuOverViewScreen() {
                                 >
                                     <SubMenuOverViewForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        subMenus={subMenus}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}
