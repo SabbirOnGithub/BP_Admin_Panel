@@ -16,17 +16,14 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteHomePageCoreValueDetail, listHomePageCoreValueDetails, saveHomePageCoreValueDetail } from '../../../redux/actions/homePageCoreValueDetailActions';
+import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
 
-
-
-
-
-
 const headCells = [
     { id: 'id', label: 'Id' },
+    // { id: 'homepageId', label: 'Homepage Id' },
     { id: 'title', label: 'Title' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
@@ -34,6 +31,9 @@ const headCells = [
 ]
 
 export default function HomePageCoreValueDetailScreen() {
+    const homePageDataList = useSelector(state => state.homePageDataList);
+    //eslint-disable-next-line
+    const { homePageDatas, loading:loadingHomePageDatas } = homePageDataList;
 
     const homePageCoreValueDetailList = useSelector(state => state.homePageCoreValueDetailList)
     //eslint-disable-next-line
@@ -77,7 +77,8 @@ export default function HomePageCoreValueDetailScreen() {
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
         console.log(item.id)
-        formData.append('HompageId', item.id)
+        item.id && formData.append('Id', item.id)
+        formData.append('HomepageId', item.homepageId)
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         formData.append('file', files)
@@ -144,6 +145,7 @@ export default function HomePageCoreValueDetailScreen() {
 
 
     useEffect(() => {
+        dispatch(listHomePageDatas());
         dispatch(listHomePageCoreValueDetails());
         return () => {
             // 
@@ -178,6 +180,7 @@ export default function HomePageCoreValueDetailScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
+                                                        {/* <TableCell>{item.homepageId}</TableCell> */}
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.description}</TableCell>
                                                         <TableCell>

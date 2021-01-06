@@ -26,6 +26,7 @@ import { resourceDeleteReducer, resourceDetailsReducer, resourceListReducer, res
 import { blogCategoryDeleteReducer, blogCategoryDetailsReducer, blogCategoryListReducer, blogCategorySaveReducer } from './reducers/blogCategoryReducers';
 import { blogSubCategoryDeleteReducer, blogSubCategoryDetailsReducer, blogSubCategoryListReducer, blogSubCategorySaveReducer } from './reducers/blogSubCategoryReducers';
 import { roleResourceDeleteReducer, roleResourceDetailsReducer, roleResourceListReducer, roleResourceSaveReducer } from './reducers/roleResourceReducers';
+import { blogPostDeleteReducer, blogPostDetailsReducer, blogPostListReducer, blogPostSaveReducer } from './reducers/blogPostReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -135,6 +136,10 @@ const reducer = combineReducers({
     roleResourceDetails: roleResourceDetailsReducer,
     roleResourceSave: roleResourceSaveReducer,
     roleResourceDelete: roleResourceDeleteReducer,
+    blogPostList:blogPostListReducer,
+    blogPostDetails: blogPostDetailsReducer,
+    blogPostSave: blogPostSaveReducer,
+    blogPostDelete: blogPostDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

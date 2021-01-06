@@ -11,6 +11,7 @@ const initialFValues = {
     title: '',
     subTitle: '',
     header:'',
+    description:'',
     pictureUrl: '',
 }
 
@@ -29,6 +30,8 @@ export default function MenuSubMenuMapForm(props) {
             temp.subTitle = fieldValues.subTitle ? "" : "This field is required."
         if ('header' in fieldValues)
             temp.header = fieldValues.header ? "" : "This field is required."
+        if ('description' in fieldValues)
+            temp.description = fieldValues.description ? "" : "This field is required."
         
         setErrors({
             ...temp
@@ -103,6 +106,13 @@ export default function MenuSubMenuMapForm(props) {
                         value={values.header}
                         onChange={handleInputChange}
                         error={errors.header}
+                    />
+                    <Controls.Input
+                        label="Description"
+                        name="description"
+                        value={values.description}
+                        onChange={handleInputChange}
+                        error={errors.description}
                     />
                     <div style={{margin:5}}>
                     <Button

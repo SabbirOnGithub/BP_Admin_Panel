@@ -18,6 +18,7 @@ import * as Auth from '../../helpers/auth';
 
 
 import { signin } from '../../redux/actions/userActions';
+import { detailsRoleResource } from '../../redux/actions/roleResourceActions';
 
 function SignInScreen(props) {
   var classes = useStyles();
@@ -25,8 +26,8 @@ function SignInScreen(props) {
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const userSignIn = useSelector( state => state.userSignin );
-  // const { loading , userInfo , error } = userSignIn;
-  const { loading , error } = userSignIn;
+  const { loading , userInfo , error } = userSignIn;
+  // const { loading , error } = userSignIn;
   // const redirect = props.location.search ? props.location.search.split("=")[1]:"/";
 
   const dispatch = useDispatch();
@@ -34,12 +35,14 @@ function SignInScreen(props) {
     e.preventDefault();
     console.log(email)
     console.log(password)
-    dispatch(signin(email,password));
+    dispatch(signin(email,password))
+      // dispatch(detailsRoleResource())
+    .then(res=>{
+      res && console.log(userInfo)
+    })
 }
 useEffect(()=>{
   if(Auth.validAdmin()){
-      // console.log(redirect)
-      // props.history.push(redirect);
       props.history.push('/dashboard');
   }
   return()=>{

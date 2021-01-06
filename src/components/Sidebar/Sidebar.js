@@ -100,6 +100,9 @@ const structure = [
   {
     id: 11, label: "Role Resource", link: "/dashboard/roleResource", icon: <TypographyIcon />,
   },
+  {
+    id: 12, label: "Blog Post", link: "/dashboard/blogPost", icon: <TypographyIcon />,
+  },
 
 ];
 

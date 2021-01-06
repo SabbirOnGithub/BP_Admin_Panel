@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import BlogSubCategoryForm from "./BlogSubCategoryForm";
+import BlogPostForm from "./BlogPostForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -17,32 +17,40 @@ import { searchNameByIdFromArray } from '../../../helpers/search';
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { listBlogSubCategorys, saveBlogSubCategory, deleteBlogSubCategory } from '../../../redux/actions/blogSubCategoryActions';
-import { listBlogCategorys  } from '../../../redux/actions/blogCategoryActions';
+import { listBlogPosts, saveBlogPost, deleteBlogPost } from '../../../redux/actions/blogPostActions';
+import { listBlogSubCategorys } from '../../../redux/actions/blogSubCategoryActions';
+
+
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'name', label: 'Name' },
-    { id: 'blogCategoryId', label: 'Blog Category' },
+    { id: 'blogSubCategoryId', label: 'BlogSubCategoryId' },
+    { id: 'title', label: 'Title' },
+    { id: 'content', label: 'Content' },
+    { id: 'tags', label: 'Tags' },
+    { id: 'published', label: 'Published' },
+    // { id: 'authorId', label: 'AuthorId' },
+    // { id: 'blogCategoryId', label: 'BlogCategoryId' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function BlogSubCategoryScreen() {
-    const blogCategoryList = useSelector(state => state.blogCategoryList);
-    //eslint-disable-next-line
-    const { blogCategorys, loading:loadingBlogCategorys } = blogCategoryList;
-
-
+export default function BlogPostScreen() {
     const blogSubCategoryList = useSelector(state => state.blogSubCategoryList);
     //eslint-disable-next-line
-    const { blogSubCategorys, loading, error } = blogSubCategoryList;
-    
-    const blogSubCategorySave = useSelector(state => state.blogSubCategorySave);
+    const { blogSubCategorys, loading:loadingBlogSubCategorys } = blogSubCategoryList;
+
+    const userSignIn = useSelector( state => state.userSignin );
+    const {  userInfo  } = userSignIn;
+
+    const blogPostList = useSelector(state => state.blogPostList);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = blogSubCategorySave;
-    const blogSubCategoryDelete = useSelector(state => state.blogSubCategoryDelete);
+    const { blogPosts, loading, error } = blogPostList;
+    const blogPostSave = useSelector(state => state.blogPostSave);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = blogSubCategoryDelete;
+    const { loading: loadingSave, success: successSave, error: errorSave } = blogPostSave;
+    const blogPostDelete = useSelector(state => state.blogPostDelete);
+    //eslint-disable-next-line
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = blogPostDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -58,19 +66,19 @@ export default function BlogSubCategoryScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(blogSubCategorys, headCells, filterFn);
+    } = useTable(blogPosts, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveBlogSubCategory(item));
+        dispatch(saveBlogPost(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteBlogSubCategory(id));
+        dispatch(deleteBlogPost(id));
         resolve();
     })
 
@@ -78,6 +86,13 @@ export default function BlogSubCategoryScreen() {
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
+        item['authorId'] = userInfo.userId
+        // item.published ? item['published'] = 1 : item['published'] = 0
+        delete item.authorName
+        delete item.createdAt
+        delete item.updatedAt
+        delete item.publishedAt
+        console.log(item)
         saveItem(item)
         .then(()=>{
             // resetForm()
@@ -90,6 +105,7 @@ export default function BlogSubCategoryScreen() {
                     type: 'success'
                 })
             }
+            
             if (errorSave) {
                 setNotify({
                     isOpen: true,
@@ -102,6 +118,9 @@ export default function BlogSubCategoryScreen() {
     }
 
     const openInPopup = item => {
+        // item.published === 1 ? item['published'] = true : item['published'] = false
+        // setRecordForEdit(item)
+        // typeof item.published === "boolean" && setRecordForEdit(item)
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -131,8 +150,8 @@ export default function BlogSubCategoryScreen() {
     }
 
     useEffect(() => {
-        dispatch(listBlogCategorys());
         dispatch(listBlogSubCategorys());
+        dispatch(listBlogPosts());
         return () => {
             // 
         }
@@ -141,14 +160,14 @@ export default function BlogSubCategoryScreen() {
 
         <>
             {
-                loading || loadingSave || loadingDelete || loadingBlogCategorys ? "Loading" :
+                loading || loadingSave || loadingDelete || loadingBlogSubCategorys? "Loading" :
                     <>
-                        <PageTitle title="Blog Sub Categorys" />
+                        <PageTitle title="BlogPosts" />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Widget
-                                    title="Blog Sub Category List Table"
+                                    title="BlogPost List Table"
                                     upperTitle
                                     noBodyPadding
                                     setOpenPopup={setOpenPopup}
@@ -166,8 +185,15 @@ export default function BlogSubCategoryScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.name}</TableCell>
-                                                            <TableCell>{blogCategorys ? searchNameByIdFromArray(blogCategorys, item.blogCategoryId) : ""}</TableCell>
+                                                            <TableCell>{item.blogSubCategoryId}</TableCell>
+                                                            {/* <TableCell>{blogSubCategorys ? searchNameByIdFromArray(blogSubCategorys, item.blogSubCategorys) : ""}</TableCell> */}
+
+                                                            <TableCell>{item.title}</TableCell>
+                                                            <TableCell>{item.content}</TableCell>
+                                                            <TableCell>{item.tags}</TableCell>
+                                                            <TableCell>{item.published ? "published" : "Not published"}</TableCell>
+                                                            {/* <TableCell>{item.authorId}</TableCell> */}
+                                                            {/* <TableCell>{item.blogCategoryId}</TableCell> */}
                                                             <TableCell>
                                                                 <Controls.ActionButton
                                                                     color="primary"
@@ -195,15 +221,15 @@ export default function BlogSubCategoryScreen() {
                                         <TblPagination />
                                     </Paper>
                                     <Popup
-                                        title="Blog Sub Category Form"
+                                        title="BlogPost Form"
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >
-                                        <BlogSubCategoryForm
+                                        <BlogPostForm
                                             recordForEdit={recordForEdit}
                                             addOrEdit={addOrEdit}
                                             loadingSave={loadingSave}
-                                            blogCategorys = {blogCategorys}
+                                            blogSubCategorys={blogSubCategorys}
                                         />
 
                                     </Popup>

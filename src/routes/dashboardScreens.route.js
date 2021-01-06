@@ -27,6 +27,7 @@ import ResourceScreen from '../screens/dashboardScreens/resourceScreen/ResourceS
 import BlogCategoryScreen from '../screens/dashboardScreens/blogCategoryScreen/BlogCategoryScreen';
 import BlogSubCategoryScreen from '../screens/dashboardScreens/blogSubCategoryScreen/BlogSubCategoryScreen';
 import RoleResourceScreen from '../screens/dashboardScreens/roleResourceScreen/RoleResourceScreen';
+import BlogPostScreen from '../screens/dashboardScreens/blogPostScreen/BlogPostScreen';
 
 
 const DashboardScreensRoute = (props) => {
@@ -59,7 +60,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/blogCategory`} component={BlogCategoryScreen} />
         <Route exact path={`${props.match.path}/blogSubCategory`} component={BlogSubCategoryScreen} />
         <Route exact path={`${props.match.path}/roleResource`} component={RoleResourceScreen} />
-
+        <Route exact path={`${props.match.path}/blogPost`} component={BlogPostScreen} />
         
         <Route path="*">
           <Redirect to="/notFound" />

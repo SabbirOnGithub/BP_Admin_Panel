@@ -35,6 +35,7 @@ const headCells = [
     { id: 'title', label: 'Title' },
     { id: 'subTitle', label: 'SubTitle' },
     { id: 'header', label: 'Header' },
+    { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
@@ -93,13 +94,15 @@ export default function MenuSubMenuMapScreen() {
 
         const formData = new FormData();
         // console.log(item.id)
+        console.log(files)
         item.id && formData.append('Id', item.id)
         formData.append('MenuId', item.menuId)
         formData.append('SubMenuId', item.subMenuId)
         formData.append('Title', item.title)
         formData.append('SubTitle', item.subTitle)
         formData.append('Header', item.header)
-        formData.append('file', files)
+        formData.append('Description', item.description)
+        files && formData.append('file', files)
 
         if (formData) {
             resetForm()
@@ -200,6 +203,7 @@ export default function MenuSubMenuMapScreen() {
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.subTitle}</TableCell>
                                                         <TableCell>{item.header}</TableCell>
+                                                        <TableCell>{item.description}</TableCell>
                                                         <TableCell>
                                                             {
                                                                 item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
