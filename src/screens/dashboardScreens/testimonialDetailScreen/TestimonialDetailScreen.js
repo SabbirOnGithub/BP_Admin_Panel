@@ -11,17 +11,20 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import { searchNameByIdFromArray } from '../../../helpers/search';
+
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteTestimonialDetail, listTestimonialDetails, saveTestimonialDetail } from '../../../redux/actions/testimonialDetailActions';
 import { listHomePageDatas } from '../../../redux/actions/homePageActions';
+import { listUsers } from '../../../redux/actions/userActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'homepageId', label: 'Homepage Id' },
-    { id: 'userId', label: 'User Id' },
+    { id: 'userId', label: 'User' },
     { id: 'userName', label: 'User Name' },
     { id: 'isActive', label: 'Is Active' },
     { id: 'displayOrder', label: 'DisplayOrder' },
@@ -30,6 +33,10 @@ const headCells = [
 ]
 
 export default function TestimonialDetailScreen() {
+    const userList = useSelector(state => state.userList);
+    //eslint-disable-next-line
+    const { users, loading:loadingUsers } = userList;
+
     const homePageDataList = useSelector(state => state.homePageDataList);
     //eslint-disable-next-line
     const { homePageDatas, loading:loadingHomePageDatas } = homePageDataList;
@@ -134,6 +141,7 @@ export default function TestimonialDetailScreen() {
 
 
     useEffect(() => {
+        dispatch(listUsers());
         dispatch(listHomePageDatas());
         dispatch(listTestimonialDetails());
         return () => {
@@ -144,7 +152,7 @@ export default function TestimonialDetailScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas || loadingUsers ? "Loading ...." :
                 <>
                     <PageTitle title="Testimonial Details" />
 
@@ -169,7 +177,8 @@ export default function TestimonialDetailScreen() {
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
                                                         <TableCell>{item.homepageId}</TableCell>
-                                                        <TableCell>{item.userId}</TableCell>
+                                                        {/* <TableCell>{item.userId}</TableCell> */}
+                                                        <TableCell>{users ? searchNameByIdFromArray(users, item.userId) : item.userId}</TableCell>
                                                         <TableCell>{item.userName}</TableCell>
                                                         <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                         <TableCell>{item.displayOrder}</TableCell>
@@ -209,6 +218,7 @@ export default function TestimonialDetailScreen() {
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit} 
                                         homePageDatas = {homePageDatas}
+                                        users={users}
                                     />
                                 </Popup>
                                 <Notification

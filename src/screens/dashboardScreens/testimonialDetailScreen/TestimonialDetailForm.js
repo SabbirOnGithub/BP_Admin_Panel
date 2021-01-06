@@ -15,7 +15,7 @@ const initialFValues = {
 }
 
 export default function TestimonialDetailForm(props) {
-    const { addOrEdit, recordForEdit, homePageDatas } = props
+    const { addOrEdit, recordForEdit, homePageDatas, users } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -74,13 +74,21 @@ export default function TestimonialDetailForm(props) {
                         error={errors.homepageId}
                         options={homePageDatas ? homePageDatas : []}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         label="User Id"
                         name="userId"
                         type="number"
                         value={values.userId}
                         onChange={handleInputNumberChange}
                         error={errors.userId}
+                    /> */}
+                    <Controls.Select
+                        name="userId"
+                        label="User"
+                        value={values.userId}
+                        onChange={handleInputChange}
+                        error={errors.userId}
+                        options={users ? users : []}
                     />
                     <Controls.Input
                         label="User Name"
