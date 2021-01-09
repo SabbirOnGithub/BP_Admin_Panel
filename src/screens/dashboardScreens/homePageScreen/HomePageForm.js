@@ -62,6 +62,18 @@ export default function HomePageForm(props) {
             temp.testimonialTitle = fieldValues.testimonialTitle ? "" : "This field is required."
         if ('testimonialSubTitle' in fieldValues)
             temp.testimonialSubTitle = fieldValues.testimonialSubTitle ? "" : "This field is required."
+        if ('uniqueSolutionTitle' in fieldValues)
+            temp.uniqueSolutionTitle = fieldValues.uniqueSolutionTitle ? "" : "This field is required."
+        if ('uniqueSolutionSubTitle' in fieldValues)
+            temp.uniqueSolutionSubTitle = fieldValues.uniqueSolutionSubTitle ? "" : "This field is required."
+        if ('personalizedServiceTitle' in fieldValues)
+            temp.personalizedServiceTitle = fieldValues.personalizedServiceTitle ? "" : "This field is required."
+        if ('personalizedServiceSubTitle' in fieldValues)
+            temp.personalizedServiceSubTitle = fieldValues.personalizedServiceSubTitle ? "" : "This field is required."
+        if ('modernTechTitle' in fieldValues)
+            temp.modernTechTitle = fieldValues.modernTechTitle ? "" : "This field is required."
+        if ('modernTechSubTitle' in fieldValues)
+            temp.modernTechSubTitle = fieldValues.modernTechSubTitle ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -152,6 +164,35 @@ export default function HomePageForm(props) {
                         onChange={handleInputChange}
                         error={errors.functionAreaWalkthroughSubTitle}
                     />
+                    <Controls.Input
+                        name="modernTechTitle"
+                        label="Modern Tech Title"
+                        value={values.modernTechTitle}
+                        onChange={handleInputChange}
+                        error={errors.modernTechTitle}
+                    />
+                    <Controls.Input
+                        name="modernTechSubTitle"
+                        label="Modern Tech Sub Title"
+                        value={values.modernTechSubTitle}
+                        onChange={handleInputChange}
+                        error={errors.modernTechSubTitle}
+                    />
+                    <Controls.Input
+                        name="personalizedServiceTitle"
+                        label="Personalized Service Title"
+                        value={values.personalizedServiceTitle}
+                        onChange={handleInputChange}
+                        error={errors.personalizedServiceTitle}
+                    />
+                    <Controls.Input
+                        name="personalizedServiceSubTitle"
+                        label="Personalized Service Sub Title"
+                        value={values.personalizedServiceSubTitle}
+                        onChange={handleInputChange}
+                        error={errors.personalizedServiceSubTitle}
+                    />
+
                 </Grid>
                 <Grid item xs={6}>
                     <Controls.Input
@@ -206,6 +247,21 @@ export default function HomePageForm(props) {
                         value={values.testimonialSubTitle}
                         onChange={handleInputChange}
                         error={errors.testimonialSubTitle}
+                    />
+
+                    <Controls.Input
+                        name="uniqueSolutionTitle"
+                        label="Unique Solution Title"
+                        value={values.uniqueSolutionTitle}
+                        onChange={handleInputChange}
+                        error={errors.uniqueSolutionTitle}
+                    />
+                    <Controls.Input
+                        name="uniqueSolutionSubTitle"
+                        label="Unique Solution Sub Title"
+                        value={values.uniqueSolutionSubTitle}
+                        onChange={handleInputChange}
+                        error={errors.uniqueSolutionSubTitle}
                     />
 
                     <div>

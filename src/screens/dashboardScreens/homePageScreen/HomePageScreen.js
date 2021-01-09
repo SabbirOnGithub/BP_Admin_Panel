@@ -41,30 +41,30 @@ const useStyles = makeStyles(theme => ({
         right: '10px'
     },
     media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+        height: 0,
+        paddingTop: '56.25%', // 16:9
     },
     expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
     },
     expandOpen: {
-    transform: 'rotate(180deg)',
+        transform: 'rotate(180deg)',
     },
     avatar: {
-    backgroundColor: red[500],
+        backgroundColor: red[500],
     },
-    customPharagraph:{
-        fontSize:'1.5rem',
+    customPharagraph: {
+        fontSize: '1.5rem',
         "& b": {
-            color:'#536DFE'
-          }
+            color: '#536DFE'
+        }
     },
-    
-    
+
+
 }))
 
 export default function HomePageScreen() {
@@ -94,7 +94,7 @@ export default function HomePageScreen() {
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
-  
+
 
     const dispatch = useDispatch();
 
@@ -162,7 +162,7 @@ export default function HomePageScreen() {
                 if (errorDelete) {
                     setNotify({
                         isOpen: true,
-                        message:  ResponseMessage.errorDeleteMessage,
+                        message: ResponseMessage.errorDeleteMessage,
                         type: 'warning'
                     })
                 }
@@ -189,83 +189,88 @@ export default function HomePageScreen() {
                                 <Widget
                                     title="Basic Info List"
                                     disableWidgetMenu
-                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                    addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                 >
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                    {
-                                                    homePageDatas && homePageDatas.map(item =>
-                                                        ( <Card className={classes.root} key={item.id}>
-                                                            <CardHeader
-                                                              avatar={
-                                                                <Avatar aria-label="recipe" className={classes.avatar}>
-                                                                  {item.id}
-                                                                </Avatar>
-                                                              }
-                                                            //   title="Shrimp and Chorizo Paella"
-                                                            //   subheader="September 14, 2016"
-                                                            />
-                                                            <CardContent>
-                                                              <Typography variant="body2" color="textSecondary" component="span">
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Hero Text:</b> {item.heroText} </Typography>
-                                                              </Typography>
-                                                            </CardContent>
-                                                            <CardActions disableSpacing>
-                                                                <Button size="small" 
-                                                                        color="primary"
-                                                                        onClick={() => { openInPopup(item) }}
-                                                                    >
-                                                                    Edit
+                                        {
+                                            homePageDatas && homePageDatas.map(item =>
+                                            (<Card className={classes.root} key={item.id}>
+                                                <CardHeader
+                                                    avatar={
+                                                        <Avatar aria-label="recipe" className={classes.avatar}>
+                                                            {item.id}
+                                                        </Avatar>
+                                                    }
+                                                //   title="Shrimp and Chorizo Paella"
+                                                //   subheader="September 14, 2016"
+                                                />
+                                                <CardContent>
+                                                    <Typography variant="body2" color="textSecondary" component="span">
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Hero Text:</b> {item.heroText} </Typography>
+                                                    </Typography>
+                                                </CardContent>
+                                                <CardActions disableSpacing>
+                                                    <Button size="small"
+                                                        color="primary"
+                                                        onClick={() => { openInPopup(item) }}
+                                                    >
+                                                        Edit
                                                                 </Button>
-                                                                <Button size="small" 
-                                                                        color="primary"
-                                                                        onClick={() => {
-                                                                            setConfirmDialog({
-                                                                                isOpen: true,
-                                                                                title: 'Are you sure to delete this record?',
-                                                                                subTitle: "You can't undo this operation",
-                                                                                onConfirm: () => { onDelete(item.id) }
-                                                                            })
-                                                                        }}
-                                                                        >
-                                                                    Delete
+                                                    <Button size="small"
+                                                        color="primary"
+                                                        onClick={() => {
+                                                            setConfirmDialog({
+                                                                isOpen: true,
+                                                                title: 'Are you sure to delete this record?',
+                                                                subTitle: "You can't undo this operation",
+                                                                onConfirm: () => { onDelete(item.id) }
+                                                            })
+                                                        }}
+                                                    >
+                                                        Delete
                                                                 </Button>
-                                                                <IconButton
-                                                                    className={clsx(classes.expand, {
-                                                                        [classes.expandOpen]: expanded,
-                                                                    })}
-                                                                    onClick={handleExpandClick}
-                                                                    aria-expanded={expanded}
-                                                                    aria-label="show more"
-                                                                    >
-                                                                    <ExpandMoreIcon />
-                                                                    </IconButton>
-                                                            </CardActions>
-                                                            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                                              <CardContent>
-                                                              
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Hero Description:</b> {item.heroSectionDescription} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Video Url:</b> {item.videoUrl} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Hero Section Background Image:</b> {item.heroSectionBackgroundImage} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Short Intro Title:</b> {item.shortIntroTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Short Intro Subtitle:</b> {item.shortIntroSubTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Function Area Walkthrough Title:</b> {item.functionAreaWalkthroughTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Function Area Walkthrough Subtitle:</b> {item.functionAreaWalkthroughSubTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Consulting Title:</b> {item.consultingTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Consulting Subtitle:</b> {item.consultingSubTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Core Value Title:</b> {item.coreValueTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Core Value Subtitle:</b> {item.coreValueSubtitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Training Title:</b> {item.trainingTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Training Subtitle:</b> {item.trainingSubtitile} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Testimonial Title:</b> {item.testimonialTitle} </Typography>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Testimonial Subtitle:</b> {item.testimonialSubTitle} </Typography>
-                                                                {/* <Typography>
+                                                    <IconButton
+                                                        className={clsx(classes.expand, {
+                                                            [classes.expandOpen]: expanded,
+                                                        })}
+                                                        onClick={handleExpandClick}
+                                                        aria-expanded={expanded}
+                                                        aria-label="show more"
+                                                    >
+                                                        <ExpandMoreIcon />
+                                                    </IconButton>
+                                                </CardActions>
+                                                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                                    <CardContent>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Hero Description:</b> {item.heroSectionDescription} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Video Url:</b> {item.videoUrl} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Hero Section Background Image:</b> {item.heroSectionBackgroundImage} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Short Intro Title:</b> {item.shortIntroTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Short Intro Subtitle:</b> {item.shortIntroSubTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Function Area Walkthrough Title:</b> {item.functionAreaWalkthroughTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Function Area Walkthrough Subtitle:</b> {item.functionAreaWalkthroughSubTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Consulting Title:</b> {item.consultingTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Consulting Subtitle:</b> {item.consultingSubTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Core Value Title:</b> {item.coreValueTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Core Value Subtitle:</b> {item.coreValueSubtitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Training Title:</b> {item.trainingTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Training Subtitle:</b> {item.trainingSubtitile} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Testimonial Title:</b> {item.testimonialTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Testimonial Subtitle:</b> {item.testimonialSubTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Modern Tech Title:</b> {item.modernTechTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Modern Tech Sub Title:</b> {item.modernTechSubTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Personalized Service Title:</b> {item.personalizedServiceTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Personalized Service Sub Title:</b> {item.personalizedServiceSubTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Unique Solution Title:</b> {item.uniqueSolutionTitle} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Unique Solution Sub Title:</b> {item.uniqueSolutionSubTitle} </Typography>
+                                                        {/* <Typography>
                                                                   Set aside off of the heat to let rest for 10 minutes, and then serve.
                                                                 </Typography> */}
-                                                              </CardContent>
-                                                            </Collapse>
-                                                          </Card>)
-                                                    )
-                                                }
+                                                    </CardContent>
+                                                </Collapse>
+                                            </Card>)
+                                            )
+                                        }
                                     </Paper>
                                     <Popup
                                         title="Basic Info Form"
