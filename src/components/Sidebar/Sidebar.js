@@ -42,6 +42,7 @@ const structure = [
       { label: "Walk-through", link: "/dashboard/homePageFunctionAreaDetail" },
       { label: "Consulting", link: "/dashboard/homeConsultationTopic" },
       { label: "Core Values", link: "/dashboard/homePageCoreValueDetail" },
+      { label: "Modern Tech", link: "/dashboard/modernTechDetail" },
     ],
   },
   {
@@ -117,7 +118,7 @@ function Sidebar({ location }) {
   // local
   var [isPermanent, setPermanent] = useState(true);
 
-  useEffect(function() {
+  useEffect(function () {
     window.addEventListener("resize", handleWindowWidthChange);
     handleWindowWidthChange();
     return function cleanup() {
@@ -163,7 +164,7 @@ function Sidebar({ location }) {
     </Drawer>
   );
 
-  // ##################################################################
+  //##################################################################
   function handleWindowWidthChange() {
     var windowWidth = window.innerWidth;
     var breakpointWidth = theme.breakpoints.values.md;
@@ -173,7 +174,6 @@ function Sidebar({ location }) {
       setPermanent(false);
     } else if (!isSmallScreen && !isPermanent) {
       setPermanent(true);
-
     }
   }
 }

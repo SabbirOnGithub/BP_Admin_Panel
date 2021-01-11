@@ -28,6 +28,7 @@ import BlogCategoryScreen from '../screens/dashboardScreens/blogCategoryScreen/B
 import BlogSubCategoryScreen from '../screens/dashboardScreens/blogSubCategoryScreen/BlogSubCategoryScreen';
 import RoleResourceScreen from '../screens/dashboardScreens/roleResourceScreen/RoleResourceScreen';
 import BlogPostScreen from '../screens/dashboardScreens/blogPostScreen/BlogPostScreen';
+import ModernTechDetailScreen from "../screens/dashboardScreens/modernTechDetailScreen/ModernTechDetailScreen";
 
 
 const DashboardScreensRoute = (props) => {
@@ -42,6 +43,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/footerSection`} component={FooterSectionScreen} />
         <Route exact path={`${props.match.path}/homePageCoreValueDetail`} component={HomePageCoreValueDetailScreen} />
         <Route exact path={`${props.match.path}/homePageFunctionAreaDetail`} component={HomePageFunctionAreaDetailScreen} />
+        <Route exact path={`${props.match.path}/modernTechDetail`} component={ModernTechDetailScreen} />
         <Route exact path={`${props.match.path}/homeConsultationTopic`} component={HomeConsultationTopicScreen} />
         <Route exact path={`${props.match.path}/trainingDetail`} component={TrainingDetailScreen} />
         <Route exact path={`${props.match.path}/testimonialDetail`} component={TestimonialDetailScreen} />
@@ -61,7 +63,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/blogSubCategory`} component={BlogSubCategoryScreen} />
         <Route exact path={`${props.match.path}/roleResource`} component={RoleResourceScreen} />
         <Route exact path={`${props.match.path}/blogPost`} component={BlogPostScreen} />
-        
+
         <Route path="*">
           <Redirect to="/notFound" />
         </Route>

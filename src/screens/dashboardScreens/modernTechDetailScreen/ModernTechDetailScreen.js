@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import HomePageCoreValueDetailForm from "./HomePageCoreValueDetailForm";
+import ModernTechDetailForm from "./ModernTechDetailForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -15,7 +15,7 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { deleteHomePageCoreValueDetail, listHomePageCoreValueDetails, saveHomePageCoreValueDetail } from '../../../redux/actions/homePageCoreValueDetailActions';
+import { deleteModernTechDetail, listModernTechDetails, saveModernTechDetail } from '../../../redux/actions/modernTechDetailActions';
 import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
@@ -30,21 +30,21 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function HomePageCoreValueDetailScreen() {
+export default function ModernTechDetailScreen() {
     const homePageDataList = useSelector(state => state.homePageDataList);
     //eslint-disable-next-line
     const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
 
-    const homePageCoreValueDetailList = useSelector(state => state.homePageCoreValueDetailList)
+    const modernTechDetailList = useSelector(state => state.modernTechDetailList)
     //eslint-disable-next-line
-    const { homePageCoreValueDetails, loading, error } = homePageCoreValueDetailList;
+    const { modernTechDetails, loading, error } = modernTechDetailList;
     //eslint-disable-next-line
-    const homePageCoreValueDetailSave = useSelector(state => state.homePageCoreValueDetailSave);
+    const modernTechDetailSave = useSelector(state => state.modernTechDetailSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = homePageCoreValueDetailSave;
-    const homePageCoreValueDetailDelete = useSelector(state => state.homePageCoreValueDetailDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = modernTechDetailSave;
+    const modernTechDetailDelete = useSelector(state => state.modernTechDetailDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = homePageCoreValueDetailDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = modernTechDetailDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -59,19 +59,19 @@ export default function HomePageCoreValueDetailScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(homePageCoreValueDetails, headCells, filterFn);
+    } = useTable(modernTechDetails, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveHomePageCoreValueDetail(item, id));
+        dispatch(saveModernTechDetail(item, id));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteHomePageCoreValueDetail(id));
+        dispatch(deleteModernTechDetail(id));
         resolve();
     })
     const addOrEdit = (item, files, resetForm) => {
@@ -146,7 +146,7 @@ export default function HomePageCoreValueDetailScreen() {
 
     useEffect(() => {
         dispatch(listHomePageDatas());
-        dispatch(listHomePageCoreValueDetails());
+        dispatch(listModernTechDetails());
         return () => {
             // 
         }
@@ -157,12 +157,12 @@ export default function HomePageCoreValueDetailScreen() {
         <div>
             {loading || loadingSave || loadingDelete ? "Loading ...." :
                 <>
-                    <PageTitle title="Home Page Core Value Details" />
+                    <PageTitle title="Modern Tech. Industry standard Best Practicies" />
 
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="Home Page Core Value Details List Table"
+                                title="Modern Tech. Details List Table"
                                 upperTitle
                                 noBodyPadding
                                 // bodyClass={classes.tableWidget}
@@ -171,7 +171,7 @@ export default function HomePageCoreValueDetailScreen() {
                                 disableWidgetMenu
                                 addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                             >
-
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                     <TblContainer>
                                         <TblHead />
@@ -186,10 +186,11 @@ export default function HomePageCoreValueDetailScreen() {
                                                     <TableCell>
                                                         {
                                                             item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                        }</TableCell>
+                                                        }uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+                                                    </TableCell>
                                                     <TableCell>
                                                         <Controls.ActionButton
-                                                            color="primary"
+                                                            color="primary" 
                                                             onClick={() => { openInPopup(item) }}>
                                                             <EditOutlinedIcon fontSize="small" />
                                                         </Controls.ActionButton>
@@ -218,7 +219,7 @@ export default function HomePageCoreValueDetailScreen() {
                                     openPopup={openPopup}
                                     setOpenPopup={setOpenPopup}
                                 >
-                                    <HomePageCoreValueDetailForm
+                                    <ModernTechDetailForm
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit} />
                                 </Popup>
