@@ -13,7 +13,7 @@ import {
     BLOG_POST_DELETE_FAIL,
 
  } from '../constants/blogPostConstants';
-import { axiosWithoutToken, axiosWithToken } from '../../helpers/axios';
+import { axiosWithoutToken, axiosWithToken, axiosWithTokenAndMultipartData } from '../../helpers/axios';
 
 import {config} from "../../config";
 
@@ -49,16 +49,15 @@ const detailsBlogPost = (id)=> async (dispatch) =>{
     }
 };
 
-const saveBlogPost = (item) => async (dispatch) =>{
+const saveBlogPost = (item, id) => async (dispatch) =>{
     try{
         dispatch({type: BLOG_POST_SAVE_REQUEST, payload:item })
-        if(!item.id){
+        if(!id){
             console.log('create')
-
             //eslint-disable-next-line
-            const formatHomePageData = delete item.id;
+            const formatData = delete item.id;
             // console.log(homePageData)
-            const { data } = await axiosWithToken.post("/BlogPost", item)
+            const { data } = await axiosWithTokenAndMultipartData.post("/BlogPost/Create", item)
             if (data.status === true) {
                 dispatch({type: BLOG_POST_SAVE_SUCCESS, payload: data });
             }else{
@@ -66,7 +65,7 @@ const saveBlogPost = (item) => async (dispatch) =>{
             }
         }else{
             console.log('update')
-            const { data } = await axiosWithToken.put("/BlogPost/", item);
+            const { data } = await axiosWithTokenAndMultipartData.put("/BlogPost/Update", item);
             if (data.status === true) {
                 dispatch({type: BLOG_POST_SAVE_SUCCESS, payload: data });            
             }else{

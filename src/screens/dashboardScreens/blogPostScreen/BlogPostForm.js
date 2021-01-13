@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, CircularProgress } from '@material-ui/core';
+import { Grid, Button, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 
@@ -11,6 +11,7 @@ const initialFValues = {
     tags: '',
     published: false,
     blogSubCategoryId: '',
+    pictureUrl: '',
 }
 
 export default function BlogPostForm(props) {
@@ -42,7 +43,9 @@ export default function BlogPostForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        handleFileChange,
+        resetForm,
+        files
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -50,7 +53,7 @@ export default function BlogPostForm(props) {
         // console.log(values)
         if (validate()) {
             console.log(values)
-            addOrEdit(values, resetForm);
+            addOrEdit(values, files, resetForm);
         }
     }
 
@@ -109,6 +112,20 @@ export default function BlogPostForm(props) {
                         onChange={handleInputChange}
                         error={errors.published}
                     />
+                    <div style={{ margin: 5 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
+                        >
+                            Upload File
+                         <input
+                                type="file"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
+                    </div>
 
                     <div>
                         {loadingSave ? (

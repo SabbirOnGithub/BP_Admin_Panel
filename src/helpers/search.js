@@ -1,12 +1,9 @@
 const searchNameByIdFromArray = (arr, id) =>{
-    const name = arr.find( item => item.id === id).name;
-    return name ? name : 'no name found'
+    const name = Array.isArray(arr) ?  arr.find( item => item.id === id).name : "no data found";
+    return name
 }
 const searchTitleByIdFromArray = (arr, id) =>{
-    const title = arr.find( item => item.id === id).title;
-    if(title){
-        return title
-    }
-    return 'no name found'
+    const title = Array.isArray(arr) ? arr.find( item => item.id === id).title : "no data found";
+    return title
 }
 export { searchNameByIdFromArray, searchTitleByIdFromArray };

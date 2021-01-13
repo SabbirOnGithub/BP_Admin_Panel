@@ -11,7 +11,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-// import { searchNameByIdFromArray } from '../../../helpers/search';
+import { searchNameByIdFromArray } from '../../../helpers/search';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,15 +20,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { listBlogPosts, saveBlogPost, deleteBlogPost } from '../../../redux/actions/blogPostActions';
 import { listBlogSubCategorys } from '../../../redux/actions/blogSubCategoryActions';
 
+import { config } from "../../../config";
+const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'blogSubCategoryId', label: 'BlogSubCategoryId' },
+    { id: 'blogSubCategoryId', label: 'Blog Sub Category' },
     { id: 'title', label: 'Title' },
     { id: 'content', label: 'Content' },
     { id: 'tags', label: 'Tags' },
     { id: 'published', label: 'Published' },
+    { id: 'pictureUrl', label: 'Picture' },
     // { id: 'authorId', label: 'AuthorId' },
     // { id: 'blogCategoryId', label: 'BlogCategoryId' },
     { id: 'actions', label: 'Actions', disableSorting: true }
@@ -71,8 +74,9 @@ export default function BlogPostScreen() {
     const dispatch = useDispatch();
 
     // add/update promise
-    const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveBlogPost(item));
+    const saveItem = (item, id) => new Promise((resolve, reject) => {
+    
+        dispatch(saveBlogPost( item, id));
         resolve();
     })
 
@@ -82,18 +86,28 @@ export default function BlogPostScreen() {
         resolve();
     })
 
-    const addOrEdit = async (item, resetForm) => {
+    const addOrEdit = async (item, files, resetForm) => {
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
-        item['authorId'] = userInfo.userId
-        // item.published ? item['published'] = 1 : item['published'] = 0
-        delete item.authorName
-        delete item.createdAt
-        delete item.updatedAt
-        delete item.publishedAt
-        console.log(item)
-        saveItem(item)
+        // item['authorId'] = userInfo.userId
+        // // item.published ? item['published'] = 1 : item['published'] = 0
+        // delete item.authorName
+        // delete item.createdAt
+        // delete item.updatedAt
+        // delete item.publishedAt
+        // console.log(item)
+        const formData = new FormData();
+        item.id && formData.append('Id', item.id)
+        formData.append('BlogSubCategoryId', item.blogSubCategoryId)
+        formData.append('Title', item.title)
+        formData.append('Content', item.content)
+        formData.append('Tags', item.tags)
+        formData.append('Published', item.published)
+        formData.append('AuthorId', userInfo.userId)
+        formData.append('PictureUrl', item.pictureUrl)
+        formData.append('file', files)
+        saveItem(formData, item.id)
         .then(()=>{
             // resetForm()
             // setRecordForEdit(null)
@@ -160,14 +174,14 @@ export default function BlogPostScreen() {
 
         <>
             {
-                loading || loadingSave || loadingDelete || loadingBlogSubCategorys? "Loading" :
+                loading || loadingSave || loadingDelete || loadingBlogSubCategorys ? "Loading" :
                     <>
-                        <PageTitle title="BlogPosts" />
+                        <PageTitle title="Blog Posts" />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Widget
-                                    title="BlogPost List Table"
+                                    title="Blog Post List Table"
                                     upperTitle
                                     noBodyPadding
                                     setOpenPopup={setOpenPopup}
@@ -185,13 +199,18 @@ export default function BlogPostScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.blogSubCategoryId}</TableCell>
-                                                            {/* <TableCell>{blogSubCategorys ? searchNameByIdFromArray(blogSubCategorys, item.blogSubCategorys) : ""}</TableCell> */}
+                                                            {/* <TableCell>{item.blogSubCategoryId}</TableCell> */}
+                                                            <TableCell>{blogSubCategorys ? searchNameByIdFromArray(blogSubCategorys, item.blogSubCategoryId) : ""}</TableCell>
 
                                                             <TableCell>{item.title}</TableCell>
                                                             <TableCell>{item.content}</TableCell>
                                                             <TableCell>{item.tags}</TableCell>
                                                             <TableCell>{item.published ? "published" : "Not published"}</TableCell>
+                                                            <TableCell>
+                                                        {
+                                                            item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                        }
+                                                    </TableCell>
                                                             {/* <TableCell>{item.authorId}</TableCell> */}
                                                             {/* <TableCell>{item.blogCategoryId}</TableCell> */}
                                                             <TableCell>
@@ -221,7 +240,7 @@ export default function BlogPostScreen() {
                                         <TblPagination />
                                     </Paper>
                                     <Popup
-                                        title="BlogPost Form"
+                                        title="Blog Post Form"
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
                                     >
