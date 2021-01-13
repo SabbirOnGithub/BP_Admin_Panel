@@ -29,6 +29,7 @@ import { roleResourceDeleteReducer, roleResourceDetailsReducer, roleResourceList
 import { blogPostDeleteReducer, blogPostDetailsReducer, blogPostListReducer, blogPostSaveReducer } from './reducers/blogPostReducers';
 import { modernTechDetailDeleteReducer, modernTechDetailDetailsReducer, modernTechDetailListReducer, modernTechDetailSaveReducer } from './reducers/modernTechDetailReducers';
 import { personalizedServiceDetailDeleteReducer, personalizedServiceDetailDetailsReducer, personalizedServiceDetailListReducer, personalizedServiceDetailSaveReducer } from './reducers/personalizedServiceDetailReducers';
+import { uniqueSolutionDetailDeleteReducer, uniqueSolutionDetailDetailsReducer, uniqueSolutionDetailListReducer, uniqueSolutionDetailSaveReducer } from './reducers/uniqueSolutionDetailReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -150,6 +151,10 @@ const reducer = combineReducers({
     personalizedServiceDetailDetails: personalizedServiceDetailDetailsReducer,
     personalizedServiceDetailSave: personalizedServiceDetailSaveReducer,
     personalizedServiceDetailDelete: personalizedServiceDetailDeleteReducer,
+    uniqueSolutionDetailList:uniqueSolutionDetailListReducer,
+    uniqueSolutionDetailDetails: uniqueSolutionDetailDetailsReducer,
+    uniqueSolutionDetailSave: uniqueSolutionDetailSaveReducer,
+    uniqueSolutionDetailDelete: uniqueSolutionDetailDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

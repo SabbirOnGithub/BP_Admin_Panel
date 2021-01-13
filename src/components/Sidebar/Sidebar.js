@@ -110,6 +110,9 @@ const structure = [
   {
     id: 14, label: "Personalized Service Detail", link: "/dashboard/personalizedServiceDetail", icon: <TypographyIcon />,
   },
+  {
+    id: 15, label: "Unique Solution Detail", link: "/dashboard/uniqueSolutionDetail", icon: <TypographyIcon />,
+  },
 
 ];
 

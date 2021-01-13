@@ -30,6 +30,7 @@ import RoleResourceScreen from '../screens/dashboardScreens/roleResourceScreen/R
 import BlogPostScreen from '../screens/dashboardScreens/blogPostScreen/BlogPostScreen';
 import ModernTechDetailScreen from "../screens/dashboardScreens/modernTechDetailScreen/ModernTechDetailScreen";
 import PersonalizedServiceDetailScreen from "../screens/dashboardScreens/personalizedServiceDetailScreen/PersonalizedServiceDetailScreen";
+import UniqueSolutionDetailScreen from "../screens/dashboardScreens/uniqueSolutionDetailScreen/UniqueSolutionDetailScreen";
 
 
 const DashboardScreensRoute = (props) => {
@@ -65,6 +66,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/blogPost`} component={BlogPostScreen} />
         <Route exact path={`${props.match.path}/modernTechDetail`} component={ModernTechDetailScreen} />
         <Route exact path={`${props.match.path}/personalizedServiceDetail`} component={PersonalizedServiceDetailScreen} />
+        <Route exact path={`${props.match.path}/uniqueSolutionDetail`} component={UniqueSolutionDetailScreen} />
 
 
         <Route path="*">
