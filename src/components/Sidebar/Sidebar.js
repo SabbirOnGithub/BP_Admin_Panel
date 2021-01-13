@@ -104,6 +104,9 @@ const structure = [
   {
     id: 12, label: "Blog Post", link: "/dashboard/blogPost", icon: <TypographyIcon />,
   },
+  {
+    id: 13, label: "Modern Tech", link: "/dashboard/modernTechDetail", icon: <TypographyIcon />,
+  },
 
 ];
 

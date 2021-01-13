@@ -18,7 +18,7 @@ import * as Auth from '../../helpers/auth';
 
 
 import { signin } from '../../redux/actions/userActions';
-import { detailsRoleResource } from '../../redux/actions/roleResourceActions';
+// import { detailsRoleResource } from '../../redux/actions/roleResourceActions';
 
 function SignInScreen(props) {
   var classes = useStyles();

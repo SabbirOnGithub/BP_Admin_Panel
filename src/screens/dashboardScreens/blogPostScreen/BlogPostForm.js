@@ -42,7 +42,6 @@ export default function BlogPostForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 

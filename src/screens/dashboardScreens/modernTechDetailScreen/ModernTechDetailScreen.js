@@ -23,7 +23,7 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    // { id: 'homepageId', label: 'Homepage Id' },
+    { id: 'homepageId', label: 'Homepage Id' },
     { id: 'title', label: 'Title' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
@@ -76,7 +76,7 @@ export default function ModernTechDetailScreen() {
     })
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
-        console.log(item.id)
+        console.log(item.homepageId)
         item.id && formData.append('Id', item.id)
         formData.append('HomepageId', item.homepageId)
         formData.append('Title', item.title)
@@ -155,7 +155,7 @@ export default function ModernTechDetailScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Modern Tech. Industry standard Best Practicies" />
 
@@ -171,7 +171,6 @@ export default function ModernTechDetailScreen() {
                                 disableWidgetMenu
                                 addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                             >
-uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                     <TblContainer>
                                         <TblHead />
@@ -180,13 +179,13 @@ uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
                                                 recordsAfterPagingAndSorting().map(item =>
                                                 (<TableRow key={item.id}>
                                                     <TableCell>{item.id}</TableCell>
-                                                    {/* <TableCell>{item.homepageId}</TableCell> */}
+                                                    <TableCell>{item.homepageId}</TableCell>
                                                     <TableCell>{item.title}</TableCell>
                                                     <TableCell>{item.description}</TableCell>
                                                     <TableCell>
                                                         {
                                                             item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                        }uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+                                                        }
                                                     </TableCell>
                                                     <TableCell>
                                                         <Controls.ActionButton
@@ -215,13 +214,15 @@ uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
                                     <TblPagination />
                                 </Paper>
                                 <Popup
-                                    title="Home Page Core Value Detail Form"
+                                    title="Modern Tech. Details Form"
                                     openPopup={openPopup}
                                     setOpenPopup={setOpenPopup}
                                 >
                                     <ModernTechDetailForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        homePageDatas = {homePageDatas}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}
