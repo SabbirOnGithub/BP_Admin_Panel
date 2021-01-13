@@ -29,6 +29,7 @@ import BlogSubCategoryScreen from '../screens/dashboardScreens/blogSubCategorySc
 import RoleResourceScreen from '../screens/dashboardScreens/roleResourceScreen/RoleResourceScreen';
 import BlogPostScreen from '../screens/dashboardScreens/blogPostScreen/BlogPostScreen';
 import ModernTechDetailScreen from "../screens/dashboardScreens/modernTechDetailScreen/ModernTechDetailScreen";
+import PersonalizedServiceDetailScreen from "../screens/dashboardScreens/personalizedServiceDetailScreen/PersonalizedServiceDetailScreen";
 
 
 const DashboardScreensRoute = (props) => {
@@ -63,6 +64,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/roleResource`} component={RoleResourceScreen} />
         <Route exact path={`${props.match.path}/blogPost`} component={BlogPostScreen} />
         <Route exact path={`${props.match.path}/modernTechDetail`} component={ModernTechDetailScreen} />
+        <Route exact path={`${props.match.path}/personalizedServiceDetail`} component={PersonalizedServiceDetailScreen} />
 
 
         <Route path="*">
