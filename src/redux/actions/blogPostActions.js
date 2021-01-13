@@ -29,7 +29,7 @@ const listBlogPosts = () => async (dispatch)=>{
         }else{
             dispatch({ type: BLOG_POST_LIST_FAIL, payload: data.message });
         }
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: BLOG_POST_LIST_FAIL, payload: error.message });
@@ -56,7 +56,6 @@ const saveBlogPost = (item, id) => async (dispatch) =>{
             console.log('create')
             //eslint-disable-next-line
             const formatData = delete item.id;
-            // console.log(homePageData)
             const { data } = await axiosWithTokenAndMultipartData.post("/BlogPost/Create", item)
             if (data.status === true) {
                 dispatch({type: BLOG_POST_SAVE_SUCCESS, payload: data });

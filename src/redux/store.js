@@ -30,6 +30,7 @@ import { blogPostDeleteReducer, blogPostDetailsReducer, blogPostListReducer, blo
 import { modernTechDetailDeleteReducer, modernTechDetailDetailsReducer, modernTechDetailListReducer, modernTechDetailSaveReducer } from './reducers/modernTechDetailReducers';
 import { personalizedServiceDetailDeleteReducer, personalizedServiceDetailDetailsReducer, personalizedServiceDetailListReducer, personalizedServiceDetailSaveReducer } from './reducers/personalizedServiceDetailReducers';
 import { uniqueSolutionDetailDeleteReducer, uniqueSolutionDetailDetailsReducer, uniqueSolutionDetailListReducer, uniqueSolutionDetailSaveReducer } from './reducers/uniqueSolutionDetailReducers';
+import { subMenuBusinessContextDeleteReducer, subMenuBusinessContextDetailsReducer, subMenuBusinessContextListReducer, subMenuBusinessContextSaveReducer } from './reducers/subMenuBusinessContextReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -155,6 +156,10 @@ const reducer = combineReducers({
     uniqueSolutionDetailDetails: uniqueSolutionDetailDetailsReducer,
     uniqueSolutionDetailSave: uniqueSolutionDetailSaveReducer,
     uniqueSolutionDetailDelete: uniqueSolutionDetailDeleteReducer,
+    subMenuBusinessContextList:subMenuBusinessContextListReducer,
+    subMenuBusinessContextDetails: subMenuBusinessContextDetailsReducer,
+    subMenuBusinessContextSave: subMenuBusinessContextSaveReducer,
+    subMenuBusinessContextDelete: subMenuBusinessContextDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 
