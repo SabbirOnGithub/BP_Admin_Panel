@@ -11,7 +11,8 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-import { searchTitleByIdFromArray } from '../../../helpers/search';
+//eslint-disable-next-line
+import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -24,6 +25,7 @@ import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'menuName/subMenuName', label: 'Menu/Sub Menu Name' },
     { id: 'menuSubMenuMapItemId', label: 'Menu Sub Menu Map Item Id' },
     { id: 'text', label: 'Text' },
     { id: 'isActive', label: 'Active' },
@@ -204,7 +206,14 @@ export default function MenuSubMenuMapItemListItemScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            {/* <TableCell>{item.menuSubMenuMapItemId}</TableCell> */}
+                                                            <TableCell> /
+                                                                {
+                                                                    // console.log(menuSubMenuMapItems.find(menuSubMenuMapItem =>menuSubMenuMapItem.id = item.menuSubMenuMapItemId).menuSubMenuMapId)
+                                                                    // console.log(menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === menuSubMenuMapItems.find(menuSubMenuMapItem =>menuSubMenuMapItem.id = item.menuSubMenuMapItemId).menuSubMenuMapId).menuId)
+                                                                }
+                                                                {/* {searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem=> menuSubMenuMapItem.id === (menuSubMenuMapItems.find(menuSubMenuMapItem =>menuSubMenuMapItem.id = item.menuSubMenuMapItemId).menuSubMenuMapId)).menuId)} / */}
+                                                                {/* {searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === menuSubMenuMapItems.find(menuSubMenuMapItem =>menuSubMenuMapItem.id = item.menuSubMenuMapItemId).menuSubMenuMapId).subMenuId)} */}
+                                                            </TableCell>
                                                             <TableCell>{searchTitleByIdFromArray(menuSubMenuMapItems, item.menuSubMenuMapItemId)}</TableCell>
                                                             <TableCell>{item.text}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>

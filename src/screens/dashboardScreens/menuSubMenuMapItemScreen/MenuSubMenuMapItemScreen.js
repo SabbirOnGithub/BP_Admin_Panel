@@ -11,7 +11,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-import { searchTitleByIdFromArray } from '../../../helpers/search';
+import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../helpers/search';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,6 +25,7 @@ import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'menuName/subMenuName', label: 'Menu/Sub Menu Name' },
     { id: 'menuSubMenuMapId', label: 'Menu SubMenu Map Title' },
     { id: 'title', label: 'Title' },
     { id: 'description', label: 'Description' },
@@ -188,6 +189,9 @@ export default function MenuSubMenuMapItemScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId)} /
+                                                                    {searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId)}
+                                                            </TableCell>
                                                             <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell>
                                                             <TableCell>{item.title}</TableCell>
                                                             <TableCell>{item.description}</TableCell>

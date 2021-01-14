@@ -39,10 +39,12 @@ const listRoleResources = () => async (dispatch)=>{
 
 
 const detailsRoleResource = (id)=> async (dispatch) =>{
+    // console.log(id)
     try{
         dispatch({type:ROLE_RESOURCE_DETAILS_REQUEST});
-        const { data } = await axiosWithoutToken.get("/RoleResource/GetResourcesByRole" + id); 
-        dispatch({type:ROLE_RESOURCE_DETAILS_SUCCESS, payload: data });
+        const { data } = await axiosWithoutToken.get("/RoleResource/GetResourcesByRole/" + id); 
+        dispatch({type:ROLE_RESOURCE_DETAILS_SUCCESS, payload: data.data });
+        // console.log(data)
     }
     catch(error){
         dispatch({ type: ROLE_RESOURCE_DETAILS_FAIL, payload: error.message });

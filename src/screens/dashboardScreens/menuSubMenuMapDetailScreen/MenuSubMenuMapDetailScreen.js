@@ -11,7 +11,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-import { searchTitleByIdFromArray } from '../../../helpers/search';
+import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -29,6 +29,9 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'menuName/subMenuName', label: 'Menu/Sub Menu Name' },
+    // { id: 'menuName', label: 'Menu Name' },
+    // { id: 'subMenuName', label: 'Sub Menu Name' },
     { id: 'menuSubMenuMapId', label: 'Menu Sub Menu Map Title' },
     { id: 'title', label: 'Title' },
     { id: 'subTitle', label: 'Sub Title' },
@@ -200,6 +203,12 @@ export default function MenuSubMenuMapDetailScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
+                                                        <TableCell>{searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId)} /
+                                                                    {searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId)}
+                                                        </TableCell>
+                                                        {/* <TableCell>{searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId)}</TableCell>
+                                                        <TableCell>{searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId)}</TableCell>
+                                                         */}
                                                         <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.subTitle}</TableCell>

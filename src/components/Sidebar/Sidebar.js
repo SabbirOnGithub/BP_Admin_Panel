@@ -5,6 +5,8 @@ import SubjectIcon from '@material-ui/icons/Subject';
 import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import SettingsIcon from '@material-ui/icons/Settings';
+import BookIcon from '@material-ui/icons/Book';
 import AppsIcon from '@material-ui/icons/Apps';
 import {
   Home as HomeIcon,
@@ -43,6 +45,8 @@ const structure = [
       { label: "Consulting", link: "/dashboard/homeConsultationTopic" },
       { label: "Core Values", link: "/dashboard/homePageCoreValueDetail" },
       { label: "Modern Tech", link: "/dashboard/modernTechDetail" },
+      { label: "Personalized Service Detail", link: "/dashboard/personalizedServiceDetail" },
+      { label: "Unique Solution Detail", link: "/dashboard/uniqueSolutionDetail" },
     ],
   },
   {
@@ -59,6 +63,18 @@ const structure = [
   },
   {
     id: 3,
+    label: "SubMenu",
+    link: "/dashboard/menu",
+    icon: <SubjectIcon />,
+    children: [
+      { label: "Submenu", link: "/dashboard/submenu" },
+      { label: "Submenu Best Practice", link: "/dashboard/submenuBestPractice" },
+      { label: "SubMenu Overview", link: "/dashboard/SubMenuOverView" },
+      { label: "SubMenu Business Context", link: "/dashboard/subMenuBusinessContext" },
+    ],
+  },
+  {
+    id: 4,
     label: "Menu SubMenu",
     link: "/dashboard/menuSubMenuMap",
     icon: <FeaturedPlayListIcon />,
@@ -67,17 +83,6 @@ const structure = [
       { label: "Menu Sub Menu Map Detail", link: "/dashboard/menuSubMenuMapDetail" },
       { label: "Menu SubMenu Map Item", link: "/dashboard/menuSubMenuMapItem" },
       { label: "Menu Sub Menu Map Item List Item", link: "/dashboard/menuSubMenuMapItemListItem" },
-    ],
-  },
-  {
-    id: 4,
-    label: "SubMenu",
-    link: "/dashboard/menu",
-    icon: <SubjectIcon />,
-    children: [
-      { label: "Submenu", link: "/dashboard/submenu" },
-      { label: "Submenu Best Practice", link: "/dashboard/submenuBestPractice" },
-      { label: "SubMenu Overview", link: "/dashboard/SubMenuOverView" },
     ],
   },
   {
@@ -90,32 +95,27 @@ const structure = [
     id: 7, label: "Footer Section", link: "/dashboard/footerSection", icon: <TypographyIcon />,
   },
   {
-    id: 8, label: "Resource", link: "/dashboard/resource", icon: <TypographyIcon />,
+    id: 8,
+    label: "Blog",
+    link: "/dashboard/blogPost",
+    icon: <BookIcon />,
+    children: [
+      { label: "Blog Post", link: "/dashboard/blogPost" },
+      { label: "Blog Category", link: "/dashboard/blogCategory" },
+      { label: "Blog Sub Category", link: "/dashboard/blogSubCategory" },
+    ],
   },
   {
-    id: 9, label: "Blog Category", link: "/dashboard/blogCategory", icon: <TypographyIcon />,
+    id: 9,
+    label: "Settings",
+    link: "/dashboard/resource",
+    icon: <SettingsIcon />,
+    children: [
+      { label: "Resource", link: "/dashboard/resource" },
+      { label: "Role Resource", link: "/dashboard/roleResource" },
+    ],
   },
-  {
-    id: 10, label: "Blog Sub Category", link: "/dashboard/blogSubCategory", icon: <TypographyIcon />,
-  },
-  {
-    id: 11, label: "Role Resource", link: "/dashboard/roleResource", icon: <TypographyIcon />,
-  },
-  {
-    id: 12, label: "Blog Post", link: "/dashboard/blogPost", icon: <TypographyIcon />,
-  },
-  {
-    id: 13, label: "Modern Tech", link: "/dashboard/modernTechDetail", icon: <TypographyIcon />,
-  },
-  {
-    id: 14, label: "Personalized Service Detail", link: "/dashboard/personalizedServiceDetail", icon: <TypographyIcon />,
-  },
-  {
-    id: 15, label: "Unique Solution Detail", link: "/dashboard/uniqueSolutionDetail", icon: <TypographyIcon />,
-  },
-  {
-    id: 16, label: "SubMenu Business Context", link: "/dashboard/subMenuBusinessContext", icon: <TypographyIcon />,
-  },
+  
 
 ];
 

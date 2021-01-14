@@ -11,12 +11,13 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-
+import { createPermission } from '../../../helpers/search'
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { listBlogCategorys, saveBlogCategory, deleteBlogCategory } from '../../../redux/actions/blogCategoryActions';
+import { detailsRoleResource } from '../../../redux/actions/roleResourceActions';
 
 
 
@@ -27,8 +28,18 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function BlogCategoryScreen() {
+export default function BlogCategoryScreen(props) {
 
+    const roleResourceDetails = useSelector(state => state.roleResourceDetails);
+    const { roleResource, loading:loadingResources } = roleResourceDetails;
+    
+    const currentPath = props.location.pathname;
+    const currentPathName = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+
+    const userSignIn = useSelector( state => state.userSignin );
+    const {  userInfo  } = userSignIn;
+
+    // 
     const blogCategoryList = useSelector(state => state.blogCategoryList);
     //eslint-disable-next-line
     const { blogCategorys, loading, error } = blogCategoryList;
@@ -127,16 +138,17 @@ export default function BlogCategoryScreen() {
     }
 
     useEffect(() => {
+        dispatch(detailsRoleResource(userInfo.userId))
         dispatch(listBlogCategorys());
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, userInfo.userId])
     return (
 
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
+                loading || loadingSave || loadingDelete || loadingResources ? "Loading" :
                     <>
                         <PageTitle title="Blog Categorys" />
 
@@ -164,6 +176,7 @@ export default function BlogCategoryScreen() {
                                                             <TableCell>{item.name}</TableCell>
                                                             {/* <TableCell>{item.isActive ? "yes" : "no"}</TableCell> */}
                                                             <TableCell>
+                                                                {createPermission(roleResource, currentPathName) ? 'yes' : 'no'}
                                                                 <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
