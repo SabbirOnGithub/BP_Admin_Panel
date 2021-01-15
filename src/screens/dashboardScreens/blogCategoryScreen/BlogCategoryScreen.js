@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import BlogCategoryForm from "./BlogCategoryForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
@@ -11,35 +12,26 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-import { createPermission } from '../../../helpers/search'
+import { getPermissions } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { listBlogCategorys, saveBlogCategory, deleteBlogCategory } from '../../../redux/actions/blogCategoryActions';
-import { detailsRoleResource } from '../../../redux/actions/roleResourceActions';
-
-
 
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
-    // { id: 'isActive', label: 'Active' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function BlogCategoryScreen(props) {
-
-    const roleResourceDetails = useSelector(state => state.roleResourceDetails);
-    const { roleResource, loading:loadingResources } = roleResourceDetails;
-    
-    const currentPath = props.location.pathname;
+export default function BlogCategoryScreen() {
+    // permission get
+    let history = useHistory();
+    const currentPath = history.location.pathname
     const currentPathName = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+    const permission = getPermissions(currentPathName)
 
-    const userSignIn = useSelector( state => state.userSignin );
-    const {  userInfo  } = userSignIn;
-
-    // 
     const blogCategoryList = useSelector(state => state.blogCategoryList);
     //eslint-disable-next-line
     const { blogCategorys, loading, error } = blogCategoryList;
@@ -67,7 +59,7 @@ export default function BlogCategoryScreen(props) {
     } = useTable(blogCategorys, headCells, filterFn);
     
     const dispatch = useDispatch();
-
+    
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
         dispatch(saveBlogCategory(item));
@@ -138,17 +130,16 @@ export default function BlogCategoryScreen(props) {
     }
 
     useEffect(() => {
-        dispatch(detailsRoleResource(userInfo.userId))
         dispatch(listBlogCategorys());
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete, userInfo.userId])
+    }, [dispatch, successSave, successDelete])
     return (
 
         <>
             {
-                loading || loadingSave || loadingDelete || loadingResources ? "Loading" :
+                loading || loadingSave || loadingDelete ? "Loading" : permission.readOperation &&
                     <>
                         <PageTitle title="Blog Categorys" />
 
@@ -163,6 +154,7 @@ export default function BlogCategoryScreen(props) {
                                     threeDotDisplay={true}
                                     disableWidgetMenu
                                     addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                    createPermission = {permission.createOperation}
                                 >
                                     
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -176,12 +168,16 @@ export default function BlogCategoryScreen(props) {
                                                             <TableCell>{item.name}</TableCell>
                                                             {/* <TableCell>{item.isActive ? "yes" : "no"}</TableCell> */}
                                                             <TableCell>
-                                                                {createPermission(roleResource, currentPathName) ? 'yes' : 'no'}
+                                                                {/* {createPermission(roleResource, currentPathName) ? 'yes' : 'no'} */}
+                                                                
+                                                            {permission.updateOperation && 
                                                                 <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
                                                                     <EditOutlinedIcon fontSize="small" />
                                                                 </Controls.ActionButton>
+                                                            }
+                                                            {permission.deleteOperation && 
                                                                 <Controls.ActionButton
                                                                     color="secondary"
                                                                     onClick={() => {
@@ -194,6 +190,7 @@ export default function BlogCategoryScreen(props) {
                                                                     }}>
                                                                     <CloseIcon fontSize="small" />
                                                                 </Controls.ActionButton>
+                                                            }
                                                             </TableCell>
                                                         </TableRow>)
                                                     )

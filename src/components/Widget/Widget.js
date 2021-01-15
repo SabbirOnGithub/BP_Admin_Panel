@@ -61,14 +61,15 @@ export default function Widget({
                   <MoreIcon />
                 </IconButton>
               )}
-             {
-               props.addNew && <Controls.Button
-               text="Add New"
-               variant="outlined"
-               startIcon={<AddIcon />}
-               onClick = {props.addNew}
-           />
-             }
+            {
+               props.createPermission && props.addNew && 
+               <Controls.Button
+                  text="Add New"
+                  variant="outlined"
+                  startIcon={<AddIcon />}
+                  onClick = {props.addNew}
+              />
+            }
 
             </React.Fragment>
           )}

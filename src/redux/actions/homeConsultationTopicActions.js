@@ -20,7 +20,7 @@ const listHomeConsultationTopics = () => async (dispatch) => {
     try {
         dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get('/HomeConsultationTopic');
-        console.log(data)
+        // console.log(data)
         if (data.status === true) {
             dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_SUCCESS, payload: data.data ? data.data : [] });
         } else {

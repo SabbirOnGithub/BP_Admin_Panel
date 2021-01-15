@@ -1,4 +1,7 @@
-import React from "react";
+// import React from "react";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import classnames from "classnames";
 import { Box } from '@material-ui/core'
 // import {Box, IconButton, Link} from '@material-ui/core'
@@ -23,15 +26,35 @@ import Sidebar from "../Sidebar/Sidebar";
 // context
 import { useLayoutState } from "../../context/LayoutContext";
 
-const  CustomLayout = props => {
+// redux actions
+import { detailsRoleResource } from '../../redux/actions/roleResourceActions';
 
+
+const  CustomLayout = props => {
   
-  let classes = useStyles();
+    let classes = useStyles();
 
     // global
     let layoutState = useLayoutState();
 
-  return (
+    const roleResourceDetails = useSelector(state => state.roleResourceDetails);
+    const { roleResource, loading:loadingResources } = roleResourceDetails;
+
+    const userSignIn = useSelector( state => state.userSignin );
+    const {  userInfo  } = userSignIn;
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      if(typeof roleResource === 'object' && roleResource !== null && Object.keys(roleResource).length === 0){
+        dispatch(detailsRoleResource(userInfo.userId))
+      }
+      return () => {
+          // 
+      }
+  }, [dispatch, roleResource, userInfo.userId])
+
+  return ( loadingResources ? 'loading' :
     <div className={classes.root}>
     <>
       <Header history={props.history} />
