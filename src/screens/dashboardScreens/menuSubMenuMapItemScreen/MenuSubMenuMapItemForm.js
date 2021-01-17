@@ -2,13 +2,14 @@ import React, { useEffect } from 'react'
 import { Grid, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
+import { EditorState } from 'draft-js';
 
 
 const initialFValues = {
     id: '',
     menuSubMenuMapId:'',
     title: '',
-    description: '',
+    description: EditorState.createEmpty(),
     displayOrder:'',
     isActive: false,
     menuId:'',
@@ -24,8 +25,8 @@ export default function MenuSubMenuMapItemForm(props) {
             temp.menuSubMenuMapId = fieldValues.menuSubMenuMapId ? "" : "This field is required."
         if ('title' in fieldValues)
             temp.title = fieldValues.title ? "" : "This field is required."
-        if ('description' in fieldValues)
-            temp.description = fieldValues.description ? "" : "This field is required."
+        // if ('description' in fieldValues)
+        //     temp.description = fieldValues.description ? "" : "This field is required."
         if ('displayOrder' in fieldValues)
             temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
         setErrors({
@@ -42,7 +43,8 @@ export default function MenuSubMenuMapItemForm(props) {
         setErrors,
         handleInputChange,
         handleInputNumberChange,
-        resetForm
+        resetForm,
+        handleEditorInput
     } = useForm(initialFValues, true, validate);
 
     const felteredMenuSubMenuMaps = menuSubMenuMaps.filter(item=>item.menuId === values.menuId && item.subMenuId === values.subMenuId)
@@ -99,12 +101,17 @@ export default function MenuSubMenuMapItemForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         label="Description"
                         name="description"
                         value={values.description}
                         onChange={handleInputChange}
                         error={errors.description}
+                    /> */}
+
+                    <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)
+                        placeholder="Description here..."
                     />
                     <Controls.Input
                         label="Display Order"

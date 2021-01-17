@@ -183,7 +183,8 @@ export default function SubMenuScreen() {
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
                                                         <TableCell>{item.name}</TableCell>
-                                                        <TableCell>{item.shortDescription}</TableCell>
+                                                        {/* <TableCell>{item.shortDescription}</TableCell> */}
+                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.shortDescription}`}} /></TableCell>
                                                         <TableCell>{item.isActive ? 'Yes': 'No'}</TableCell>
                                                         <TableCell>{item.displayOrder ? item.displayOrder: 'no input given'}</TableCell>
                                                         <TableCell>

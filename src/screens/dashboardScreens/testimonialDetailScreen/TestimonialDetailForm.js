@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-
+import { EditorState } from 'draft-js';
 
 const initialFValues = {
     id: '',
@@ -11,7 +11,7 @@ const initialFValues = {
     userName:'',
     isActive: false,
     displayOrder: '',
-    message:'',
+    message:EditorState.createEmpty(),
 }
 
 export default function TestimonialDetailForm(props) {
@@ -27,8 +27,8 @@ export default function TestimonialDetailForm(props) {
             temp.userName = fieldValues.userName ? "" : "This field is required."
         if ('displayOrder' in fieldValues)
             temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
-        if ('message' in fieldValues)
-            temp.message = fieldValues.message ? "" : "This field is required."
+        // if ('message' in fieldValues)
+        //     temp.message = fieldValues.message ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -45,6 +45,7 @@ export default function TestimonialDetailForm(props) {
         handleInputChange,
         handleInputNumberChange,
         resetForm,
+        handleEditorInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -97,12 +98,16 @@ export default function TestimonialDetailForm(props) {
                         onChange={handleInputChange}
                         error={errors.userName}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         label="Message"
                         name="message"
                         value={values.message}
                         onChange={handleInputChange}
                         error={errors.message}
+                    /> */}
+                    <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('message', value)} //handleEditorInput(name, value)
+                        placeholder="Message here..."
                     />
                     <Controls.Input
                         label="Display Order"

@@ -182,7 +182,8 @@ export default function HomePageCoreValueDetailScreen() {
                                                     <TableCell>{item.id}</TableCell>
                                                     {/* <TableCell>{item.homepageId}</TableCell> */}
                                                     <TableCell>{item.title}</TableCell>
-                                                    <TableCell>{item.description}</TableCell>
+                                                    {/* <TableCell>{item.description}</TableCell> */}
+                                                    <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
                                                     <TableCell>
                                                         {
                                                             item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"

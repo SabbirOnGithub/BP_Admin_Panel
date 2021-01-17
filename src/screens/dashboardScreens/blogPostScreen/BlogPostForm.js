@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { Grid, Button, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
+import { EditorState } from 'draft-js';
 
 
 const initialFValues = {
     id: '',
     title: '',
-    content: '',
+    content: EditorState.createEmpty(),
     tags: '',
     published: false,
     blogSubCategoryId: '',
@@ -22,8 +23,8 @@ export default function BlogPostForm(props) {
 
         if ('title' in fieldValues)
             temp.title = fieldValues.title ? "" : "This field is required."
-        if ('content' in fieldValues)
-            temp.content = fieldValues.content ? "" : "This field is required."
+        // if ('content' in fieldValues)
+        //     temp.content = fieldValues.content ? "" : "This field is required."
         if ('tags' in fieldValues)
             temp.tags = fieldValues.tags ? "" : "This field is required."
         // if ('published' in fieldValues)
@@ -45,7 +46,8 @@ export default function BlogPostForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files
+        files,
+        handleEditorInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -83,12 +85,16 @@ export default function BlogPostForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         name="content"
                         label="Content"
                         value={values.content}
                         onChange={handleInputChange}
                         error={errors.content}
+                    /> */}
+                    <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('content', value)} //handleEditorInput(name, value)
+                        placeholder="Content here..."
                     />
                     <Controls.Input
                         name="tags"

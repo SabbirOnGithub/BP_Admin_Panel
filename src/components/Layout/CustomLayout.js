@@ -1,18 +1,7 @@
-// import React from "react";
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from "react";
 
 import classnames from "classnames";
 import { Box } from '@material-ui/core'
-// import {Box, IconButton, Link} from '@material-ui/core'
-// import Icon from '@mdi/react'
-
-//icons
-// import {
-//   mdiFacebook as FacebookIcon,
-//   mdiTwitter as TwitterIcon,
-//   mdiGithub as GithubIcon,
-// } from '@mdi/js'
 
 // styles
 import useStyles from "./styles";
@@ -21,14 +10,8 @@ import useStyles from "./styles";
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 
-
-
 // context
 import { useLayoutState } from "../../context/LayoutContext";
-
-// redux actions
-import { detailsRoleResource } from '../../redux/actions/roleResourceActions';
-
 
 const  CustomLayout = props => {
   
@@ -37,24 +20,7 @@ const  CustomLayout = props => {
     // global
     let layoutState = useLayoutState();
 
-    const roleResourceDetails = useSelector(state => state.roleResourceDetails);
-    const { roleResource, loading:loadingResources } = roleResourceDetails;
-
-    const userSignIn = useSelector( state => state.userSignin );
-    const {  userInfo  } = userSignIn;
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-      if(typeof roleResource === 'object' && roleResource !== null && Object.keys(roleResource).length === 0){
-        dispatch(detailsRoleResource(userInfo.userId))
-      }
-      return () => {
-          // 
-      }
-  }, [dispatch, roleResource, userInfo.userId])
-
-  return ( loadingResources ? 'loading' :
+  return (
     <div className={classes.root}>
     <>
       <Header history={props.history} />
@@ -67,7 +33,7 @@ const  CustomLayout = props => {
         
         <div className={classes.fakeToolbar} />
         <div style={{minHeight:'80%'}}> 
-          {props.children}
+          { props.children}
         </div>
        
         <Box

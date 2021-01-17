@@ -26,7 +26,7 @@ import { listSubMenus } from '../../../redux/actions/subMenuActions';
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'menuName/subMenuName', label: 'Menu/Sub Menu Name' },
-    { id: 'menuSubMenuMapItemId', label: 'Menu Sub Menu Map Item Id' },
+    { id: 'menuSubMenuMapItemId', label: 'Menu Sub Menu Map Item' },
     { id: 'text', label: 'Text' },
     { id: 'isActive', label: 'Active' },
     { id: 'actions', label: 'Actions', disableSorting: true }

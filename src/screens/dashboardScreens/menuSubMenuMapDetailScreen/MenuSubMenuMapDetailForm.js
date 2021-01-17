@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react'
-import { Grid, Button} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
+import { EditorState } from 'draft-js';
 
 
 const initialFValues = {
     id: '',
-    menuSubMenuMapId:'',
+    menuSubMenuMapId: '',
     title: '',
     subTitle: '',
-    description:'',
+    description: EditorState.createEmpty(),
     pictureUrl: '',
-    menuId:'',
-    subMenuId:'',
+    menuId: '',
+    subMenuId: '',
 }
 
 export default function MenuSubMenuMapDetailForm(props) {
@@ -26,9 +27,9 @@ export default function MenuSubMenuMapDetailForm(props) {
             temp.title = fieldValues.title ? "" : "This field is required."
         if ('subTitle' in fieldValues)
             temp.subTitle = fieldValues.subTitle ? "" : "This field is required."
-        if ('description' in fieldValues)
-            temp.description = fieldValues.description ? "" : "This field is required."
-        
+        // if ('description' in fieldValues)
+        //     temp.description = fieldValues.description ? "" : "This field is required."
+
         setErrors({
             ...temp
         })
@@ -45,10 +46,11 @@ export default function MenuSubMenuMapDetailForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files
+        files,
+        handleEditorInput
     } = useForm(initialFValues, true, validate);
 
-    const felteredMenuSubMenuMaps = menuSubMenuMaps.filter(item=>item.menuId === values.menuId && item.subMenuId === values.subMenuId)
+    const felteredMenuSubMenuMaps = menuSubMenuMaps.filter(item => item.menuId === values.menuId && item.subMenuId === values.subMenuId)
 
 
     const handleSubmit = e => {
@@ -69,7 +71,7 @@ export default function MenuSubMenuMapDetailForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                <Controls.Select
+                    <Controls.Select
                         name="menuId"
                         label="Menu Title"
                         value={values.menuId}
@@ -85,7 +87,7 @@ export default function MenuSubMenuMapDetailForm(props) {
                         error={errors.subMenuId}
                         options={subMenus ? subMenus : []}
                     />
-                <Controls.Select
+                    <Controls.Select
                         name="menuSubMenuMapId"
                         label="Menu Sub Menu Map Title"
                         value={values.menuSubMenuMapId}
@@ -107,28 +109,33 @@ export default function MenuSubMenuMapDetailForm(props) {
                         onChange={handleInputChange}
                         error={errors.subTitle}
                     />
-                   <Controls.Input
+                    {/* <Controls.Input
                         label="Description"
                         name="description"
                         value={values.description}
                         onChange={handleInputChange}
                         error={errors.description}
+                    /> */}
+
+                    <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)
+                        placeholder="Description here..."
                     />
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
+                    <div style={{ margin: 5 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
                         >
-                        Upload File
+                            Upload File
                          <input
-                        type="file"
-                        onChange={handleFileChange}
-                        hidden
-                    />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
+                                type="file"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
                     </div>
-                    
+
                     <div>
                         <Controls.Button
                             type="submit"

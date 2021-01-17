@@ -182,7 +182,9 @@ export default function TestimonialDetailScreen() {
                                                         <TableCell>{item.userName}</TableCell>
                                                         <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                         <TableCell>{item.displayOrder}</TableCell>
-                                                        <TableCell>{item.message}</TableCell>
+                                                        {/* <TableCell>{item.message}</TableCell> */}
+                                                         <TableCell><div dangerouslySetInnerHTML={{__html: `${item.message}`}} /></TableCell>
+
                                                         <TableCell>
                                                             <Controls.ActionButton
                                                                 color="primary"

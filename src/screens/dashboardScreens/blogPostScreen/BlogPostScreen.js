@@ -203,7 +203,9 @@ export default function BlogPostScreen() {
                                                             <TableCell>{blogSubCategorys ? searchNameByIdFromArray(blogSubCategorys, item.blogSubCategoryId) : ""}</TableCell>
 
                                                             <TableCell>{item.title}</TableCell>
-                                                            <TableCell>{item.content}</TableCell>
+                                                            {/* <TableCell>{item.content}</TableCell> */}
+                                                            <TableCell><div dangerouslySetInnerHTML={{__html: `${item.content}`}} /></TableCell>
+
                                                             <TableCell>{item.tags}</TableCell>
                                                             <TableCell>{item.published ? "published" : "Not published"}</TableCell>
                                                             <TableCell>

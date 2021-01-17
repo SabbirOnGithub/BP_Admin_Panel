@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react'
-import { Grid, Button} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
+import { EditorState } from 'draft-js';
 
 
 const initialFValues = {
     id: '',
-    menuSectionId:'',
+    menuSectionId: '',
     title: '',
-    description: '',
+    description: EditorState.createEmpty(),
     pictureUrl: '',
-    menuId:'',
+    menuId: '',
 }
 
 export default function MenuSectionDetailForm(props) {
     const { addOrEdit, recordForEdit, menuSections, menus } = props
 
- 
+
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -24,10 +25,10 @@ export default function MenuSectionDetailForm(props) {
             temp.menuSectionId = fieldValues.menuSectionId ? "" : "This field is required."
         if ('title' in fieldValues)
             temp.title = fieldValues.title ? "" : "This field is required."
-        if ('description' in fieldValues)
-            temp.description = fieldValues.description ? "" : "This field is required."
-        
-        
+        // if ('description' in fieldValues)
+        //     temp.description = fieldValues.description ? "" : "This field is required."
+
+
         setErrors({
             ...temp
         })
@@ -44,10 +45,11 @@ export default function MenuSectionDetailForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files
+        files,
+        handleEditorInput
     } = useForm(initialFValues, true, validate);
-    
-    const felteredMenuSections = menuSections.filter(item=>item.menuId === values.menuId)
+
+    const felteredMenuSections = menuSections.filter(item => item.menuId === values.menuId)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -91,29 +93,34 @@ export default function MenuSectionDetailForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         label="Description"
                         name="description"
                         value={values.description}
                         onChange={handleInputChange}
                         error={errors.description}
+                    /> */}
+
+                    <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)
+                        placeholder="Description here..."
                     />
-                   
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
+
+                    <div style={{ margin: 5 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
                         >
-                        Upload File
+                            Upload File
                          <input
-                        type="file"
-                        onChange={handleFileChange}
-                        hidden
-                    />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
+                                type="file"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
                     </div>
-                    
+
                     <div>
                         <Controls.Button
                             type="submit"

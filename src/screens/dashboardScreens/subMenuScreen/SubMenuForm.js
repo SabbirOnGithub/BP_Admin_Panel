@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { Grid, Button} from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
+import { EditorState } from 'draft-js';
 
 
 const initialFValues = {
     id: '',
     name: '',
-    shortDescription: '',
+    shortDescription: EditorState.createEmpty(),
     pictureName: '',
     isActive: false,
     displayOrder:'',
@@ -43,7 +44,9 @@ export default function SubMenuForm(props) {
         handleFileChange,
         handleInputNumberChange,
         resetForm,
-        files
+        files,
+        handleEditorInput
+
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -71,12 +74,16 @@ export default function SubMenuForm(props) {
                         onChange={handleInputChange}
                         error={errors.name}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         label="Short Description"
                         name="shortDescription"
                         value={values.shortDescription}
                         onChange={handleInputChange}
                         error={errors.shortDescription}
+                    /> */}
+                      <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('shortDescription', value)} //handleEditorInput(name, value)
+                        placeholder="Short Description here..."
                     />
                     <Controls.Input
                         label="Display Order"

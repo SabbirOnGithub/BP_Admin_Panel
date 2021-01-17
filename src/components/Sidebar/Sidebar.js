@@ -111,12 +111,11 @@ const structure = [
     link: "/dashboard/resource",
     icon: <SettingsIcon />,
     children: [
+      { label: "Role", link: "/dashboard/role" },
       { label: "Resource", link: "/dashboard/resource" },
       { label: "Role Resource", link: "/dashboard/roleResource" },
     ],
   },
-  
-
 ];
 
 function Sidebar({ location }) {

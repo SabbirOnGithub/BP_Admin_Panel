@@ -8,7 +8,6 @@ const initialFValues = {
     id: '',
     homepageId: '',
     name: '',
-    // description: '',
     pictureUrl: '',
     description: EditorState.createEmpty(),
 }
@@ -98,13 +97,6 @@ export default function HomeConsultationTopicForm(props) {
                         onChange={handleInputChange}
                         error={errors.name}
                     />
-                    {/* <Controls.Input
-                        label="Description"
-                        name="description"
-                        value={values.description}
-                        onChange={handleInputChange}
-                        error={errors.description}
-                    /> */}
 
                     <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)

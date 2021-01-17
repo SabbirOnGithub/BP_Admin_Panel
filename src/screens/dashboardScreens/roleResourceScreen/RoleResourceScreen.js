@@ -13,7 +13,6 @@ import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
 
-
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
@@ -32,7 +31,8 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function RoleResourceScreen() {
+export default function RoleResourceScreen(props) {
+    
     const resourceList = useSelector(state => state.resourceList);
     //eslint-disable-next-line
     const { resources, loading:loadingResources } = resourceList;

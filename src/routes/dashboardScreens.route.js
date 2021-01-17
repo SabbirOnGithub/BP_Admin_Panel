@@ -1,4 +1,6 @@
-import React from "react";
+// import React from "react";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from "react-router-dom";
 import CustomLayout from "../components/Layout/CustomLayout";
 import HomeScreen from "../screens/dashboardScreens/HomeScreen";
@@ -34,12 +36,39 @@ import UniqueSolutionDetailScreen from "../screens/dashboardScreens/uniqueSoluti
 import SubMenuBusinessContextScreen from "../screens/dashboardScreens/subMenuBusinessContextScreen/SubMenuBusinessContextScreen";
 
 
+// import { searchNameByIdFromArray } from '../helpers/search';
+
+import { detailsRoleResource } from '../redux/actions/roleResourceActions';
+// import { listResources } from '../redux/actions/resourceActions';
+
 
 const DashboardScreensRoute = (props) => {
-  return (<div>
+
+
+  const roleResourceDetails = useSelector(state => state.roleResourceDetails);
+  const { roleResource, loading:loadingResource } = roleResourceDetails;
+
+  const userSignIn = useSelector( state => state.userSignin );
+  const {  userInfo  } = userSignIn;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(typeof roleResource === 'object' && roleResource !== null && Object.keys(roleResource).length === 0){
+    // if(roleResource === undefined || roleResource.length === 0){
+      dispatch(detailsRoleResource(userInfo.userId))
+    }
+    return () => {
+        // 
+    }
+}, [dispatch, roleResource, userInfo.userId])
+
+  return (<div> 
+  {   loadingResource ? 'loading' : 
     <CustomLayout>
       <Switch>
-        <Route exact path={`${props.match.path}/`} component={HomeScreen} />
+        <Route exact path={`${props.match.path}/`} component={()=><HomeScreen test={roleResource}/> }/>
+        {/* <Route exact path={`${props.match.path}/`} component={HomeScreen} /> */}
         <Route exact path={`${props.match.path}/submenu`} component={SubMenuScreen} />
         <Route exact path={`${props.match.path}/homePage`} component={HomePageScreen} />
         <Route exact path={`${props.match.path}/menu`} component={MenuScreen} />
@@ -60,16 +89,17 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/menuHeroSlider`} component={MenuHeroSliderScreen} />
         <Route exact path={`${props.match.path}/menuSectionDetail`} component={MenuSectionDetailScreen} />
         <Route exact path={`${props.match.path}/menuSubMenuMapDetail`} component={MenuSubMenuMapDetailScreen} />
-        <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
-        <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
         <Route exact path={`${props.match.path}/blogCategory`} component={BlogCategoryScreen} />
         <Route exact path={`${props.match.path}/blogSubCategory`} component={BlogSubCategoryScreen} />
-        <Route exact path={`${props.match.path}/roleResource`} component={RoleResourceScreen} />
         <Route exact path={`${props.match.path}/blogPost`} component={BlogPostScreen} />
         <Route exact path={`${props.match.path}/modernTechDetail`} component={ModernTechDetailScreen} />
         <Route exact path={`${props.match.path}/personalizedServiceDetail`} component={PersonalizedServiceDetailScreen} />
         <Route exact path={`${props.match.path}/uniqueSolutionDetail`} component={UniqueSolutionDetailScreen} />
         <Route exact path={`${props.match.path}/subMenuBusinessContext`} component={SubMenuBusinessContextScreen} />
+        {/* role routes */}
+        <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
+        <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
+        <Route exact path={`${props.match.path}/roleResource`} test='tajul' component={RoleResourceScreen}  />
 
 
         <Route path="*">
@@ -78,6 +108,7 @@ const DashboardScreensRoute = (props) => {
 
       </Switch>
     </CustomLayout>
+  }
   </div>
   )
 };

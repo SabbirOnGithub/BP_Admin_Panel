@@ -43,8 +43,13 @@ const detailsRoleResource = (id)=> async (dispatch) =>{
     try{
         dispatch({type:ROLE_RESOURCE_DETAILS_REQUEST});
         const { data } = await axiosWithoutToken.get("/RoleResource/GetResourcesByRole/" + id); 
-        dispatch({type:ROLE_RESOURCE_DETAILS_SUCCESS, payload: data.data });
-        // console.log(data)
+        if (data.status === true) {
+            dispatch({type:ROLE_RESOURCE_DETAILS_SUCCESS, payload: data.data });
+        }
+        else{
+            dispatch({ type: ROLE_RESOURCE_DETAILS_FAIL, payload: data.message });
+        }
+        console.log(data)
     }
     catch(error){
         dispatch({ type: ROLE_RESOURCE_DETAILS_FAIL, payload: error.message });

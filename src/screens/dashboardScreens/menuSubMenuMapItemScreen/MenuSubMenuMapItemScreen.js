@@ -194,7 +194,8 @@ export default function MenuSubMenuMapItemScreen() {
                                                             </TableCell>
                                                             <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell>
                                                             <TableCell>{item.title}</TableCell>
-                                                            <TableCell>{item.description}</TableCell>
+                                                            {/* <TableCell>{item.description}</TableCell> */}
+                                                            <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
                                                             <TableCell>{item.displayOrder}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>

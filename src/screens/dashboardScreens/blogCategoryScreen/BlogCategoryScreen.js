@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
 import BlogCategoryForm from "./BlogCategoryForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
@@ -12,7 +11,6 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-import { getPermissions } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -25,12 +23,8 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function BlogCategoryScreen() {
-    // permission get
-    let history = useHistory();
-    const currentPath = history.location.pathname
-    const currentPathName = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-    const permission = getPermissions(currentPathName)
+export default function BlogCategoryScreen(props) {
+   const { createOperation, readOperation, deleteOperation, updateOperation} = props;
 
     const blogCategoryList = useSelector(state => state.blogCategoryList);
     //eslint-disable-next-line
@@ -139,7 +133,8 @@ export default function BlogCategoryScreen() {
 
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" : permission.readOperation &&
+                // loading || loadingSave || loadingDelete ? "Loading" : readOperation &&
+                loading || loadingSave || loadingDelete ? "Loading" : 
                     <>
                         <PageTitle title="Blog Categorys" />
 
@@ -154,7 +149,8 @@ export default function BlogCategoryScreen() {
                                     threeDotDisplay={true}
                                     disableWidgetMenu
                                     addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    createPermission = {permission.createOperation}
+                                    // createPermission = {createOperation}
+                                    createPermission = {true}
                                 >
                                     
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -170,14 +166,16 @@ export default function BlogCategoryScreen() {
                                                             <TableCell>
                                                                 {/* {createPermission(roleResource, currentPathName) ? 'yes' : 'no'} */}
                                                                 
-                                                            {permission.updateOperation && 
+                                                            {/* {updateOperation &&  */}
+                                                            {
                                                                 <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
                                                                     <EditOutlinedIcon fontSize="small" />
                                                                 </Controls.ActionButton>
                                                             }
-                                                            {permission.deleteOperation && 
+                                                            {/* {deleteOperation &&  */}
+                                                            {
                                                                 <Controls.ActionButton
                                                                     color="secondary"
                                                                     onClick={() => {

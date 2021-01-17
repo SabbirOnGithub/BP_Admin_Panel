@@ -212,7 +212,8 @@ export default function MenuSubMenuMapDetailScreen() {
                                                         <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell>
                                                         <TableCell>{item.title}</TableCell>
                                                         <TableCell>{item.subTitle}</TableCell>
-                                                        <TableCell>{item.description ? item.description: 'no input given'}</TableCell>
+                                                        {/* <TableCell>{item.description ? item.description: 'no input given'}</TableCell> */}
+                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
                                                         <TableCell>
                                                             {
                                                                 item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
