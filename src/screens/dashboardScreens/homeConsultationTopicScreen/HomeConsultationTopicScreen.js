@@ -81,7 +81,7 @@ export default function HomeConsultationTopicScreen() {
     })
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
-        console.log(item.homepageId)
+
         item.id && formData.append('Id', item.id)
         formData.append('Name', item.name)
         formData.append('Description', item.description)
@@ -186,7 +186,9 @@ export default function HomeConsultationTopicScreen() {
                                                         <TableCell>{item.id}</TableCell>
                                                         <TableCell>{item.homepageId}</TableCell>
                                                         <TableCell>{item.name}</TableCell>
-                                                        <TableCell>{item.description}</TableCell>
+                                                        {/* <TableCell>{item.description}</TableCell> */}
+                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
+                                                        
                                                         <TableCell>
                                                             {
                                                                 item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"

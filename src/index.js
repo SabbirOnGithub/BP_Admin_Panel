@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import store from './redux/store'
+import 'draft-js/dist/Draft.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 // import * as serviceWorker from './serviceWorker';
 
 import { ThemeProvider } from "@material-ui/styles";

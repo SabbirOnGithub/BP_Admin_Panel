@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from "@material-ui/core";
+import draftToHtml from 'draftjs-to-html';
+import { convertToRaw} from 'draft-js';
 
 export function useForm(initialFValues, validateOnChange = false, validate) {
 
@@ -43,6 +45,18 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
     const handleFileChange = e => {
         e.target.files[0] && setFiles(e.target.files[0])
     }
+
+    const handleEditorInput = (name, editorValue) =>{
+        // console.log(name)
+        // console.log(editorValue)
+        setValues({
+            ...values,
+            // [name]: editorValue.getCurrentContent().getPlainText()
+            [name]: draftToHtml(convertToRaw(editorValue.getCurrentContent()))
+        })
+        if (validateOnChange)
+            validate({ [name]: editorValue })
+    }
     const resetForm = () => {
         setValues(initialFValues);
         setFiles(null)
@@ -59,7 +73,8 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         handleInputChange,
         handleInputNumberChange,
         handleFileChange,
-        resetForm
+        resetForm,
+        handleEditorInput
     }
 }
 
