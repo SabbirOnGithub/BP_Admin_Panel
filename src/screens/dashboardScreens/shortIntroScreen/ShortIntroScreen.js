@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SubMenuForm from "./SubMenuForm";
+import ShortIntroForm from "./ShortIntroForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -25,17 +25,14 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
-    { id: 'overViewTitle', label: 'Over View Title' },
-    { id: 'overViewSubtitle', label: 'Over View Subtitle' },
-    { id: 'bestPracticeTitle', label: 'Best Practice Title' },
-    { id: 'bestPracticeSubtitle', label: 'Best Practice Subtitle' },
-    { id: 'overViewBackgroundPicture', label: 'Over View Background Picture' },
-    { id: 'bestPracticeBackgroundPicture', label: 'Best Practice Background Picture' },
+    { id: 'shortDescription', label: 'Short Description' },
+    { id: 'isActive', label: 'Active' },
+    { id: 'displayOrder', label: 'Display Order' },
+    { id: 'pictureName', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
-
 ]
 
-export default function SubMenuScreen() {
+export default function ShortIntroScreen() {
 
     const subMenuList = useSelector(state => state.subMenuList)
 
@@ -81,19 +78,12 @@ export default function SubMenuScreen() {
     })
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
-       
         item.id && formData.append('Id', item.id)
-        // formData.append('Name', item.name)
-        // formData.append('ShortDescription', item.shortDescription)
-        // formData.append('DisplayOrder', item.displayOrder)
-        // formData.append('isActive', item.isActive)
-        // formData.append('file', item.pictureUrl)
-        formData.append('OverViewTitle', item.overViewTitle)
-        formData.append('OverViewSubtitle', item.overViewSubtitle)
-        formData.append('BestPracticeTitle', item.bestPracticeTitle)
-        formData.append('BestPracticeSubtitle', item.bestPracticeSubtitle)
-        formData.append('OverViewBackgroundPicture', item.overViewBackgroundPicture)
-        formData.append('BestPracticeBackgroundPicture', item.bestPracticeBackgroundPicture)
+        formData.append('Name', item.name)
+        formData.append('ShortDescription', item.shortDescription)
+        formData.append('DisplayOrder', item.displayOrder)
+        formData.append('isActive', item.isActive)
+        formData.append('file', files)
 
         if (formData) {
             resetForm()
@@ -126,7 +116,7 @@ export default function SubMenuScreen() {
     }
 
     const openInPopup = item => {
-        // console.log(subMenus)
+        console.log(subMenus)
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -170,18 +160,18 @@ export default function SubMenuScreen() {
         <div>
             {loading || loadingSave || loadingDelete ? "Loading ...." :
                 <>
-                    <PageTitle title="Sub Menus" />
+                    <PageTitle title="Short Intro" />
 
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="Sub Menu List Table"
+                                title="Short Intro List Table"
                                 upperTitle
                                 noBodyPadding
-                                // setOpenPopup={setOpenPopup}
+                                setOpenPopup={setOpenPopup}
                                 setRecordForEdit={setRecordForEdit}
                                 disableWidgetMenu
-                                // addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
                             >
                                
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -193,20 +183,14 @@ export default function SubMenuScreen() {
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
                                                         <TableCell>{item.name}</TableCell>
-                                                        <TableCell>{item.overViewTitle}</TableCell>
-                                                        <TableCell>{item.overViewSubtitle}</TableCell>
-                                                        <TableCell>{item.bestPracticeTitle}</TableCell>
-                                                        <TableCell>{item.bestPracticeSubtitle}</TableCell>
+                                                        {/* <TableCell>{item.shortDescription}</TableCell> */}
+                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.shortDescription}`}} /></TableCell>
+                                                        <TableCell>{item.isActive ? 'Yes': 'No'}</TableCell>
+                                                        <TableCell>{item.displayOrder ? item.displayOrder: 'no input given'}</TableCell>
                                                         <TableCell>
                                                             {
-                                                                item.overViewBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.overViewBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                item.bestPracticeBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.bestPracticeBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }
-                                                        </TableCell>
+                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                            }</TableCell>
                                                         <TableCell>
                                                             <Controls.ActionButton
                                                                 color="primary"
@@ -234,12 +218,11 @@ export default function SubMenuScreen() {
                                     <TblPagination />
                                 </Paper>
                                 <Popup
-                                    title="Submenu Form"
+                                    title="Short Intro Form"
                                     openPopup={openPopup}
                                     setOpenPopup={setOpenPopup}
-                                    plainForm
                                 >
-                                    <SubMenuForm
+                                    <ShortIntroForm
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit} />
                                 </Popup>

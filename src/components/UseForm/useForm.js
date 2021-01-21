@@ -43,7 +43,17 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
     }
 
     const handleFileChange = e => {
+        // for single file in one form
         e.target.files[0] && setFiles(e.target.files[0])
+        // for multiple image field in a form 
+        const { name, files } = e.target
+        if(name){
+            setValues({
+                ...values,
+                [name]: files[0]
+            })
+        }
+
     }
 
     const handleEditorInput = (name, editorValue) =>{

@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
-import { Grid, Button} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-import { EditorState } from 'draft-js';
-
 
 const initialFValues = {
     id: '',
     name: '',
-    shortDescription: EditorState.createEmpty(),
-    pictureName: '',
-    isActive: false,
-    displayOrder:'',
+    overViewTitle: '',
+    overViewSubtitle: '',
+    bestPracticeTitle: '',
+    bestPracticeSubtitle: '',
+    overViewBackgroundPicture: '',
+    bestPracticeBackgroundPicture: '',
 }
 
 export default function SubMenuForm(props) {
@@ -19,14 +19,10 @@ export default function SubMenuForm(props) {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        if ('name' in fieldValues)
-            temp.fullName = fieldValues.name ? "" : "This field is required."
-        if ('shortDescription' in fieldValues)
-            temp.shortDescription = fieldValues.shortDescription ? "" : "This field is required."
-        if ('displayOrder' in fieldValues)
-            // temp.displayOrder = fieldValues.displayOrder && typeof(fieldValues.displayOrder)==='number'? "" : "This field is required."
-            temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
-        
+        // if ('overViewTitle' in fieldValues)
+        //     temp.overViewTitle = fieldValues.overViewTitle ? "" : "This field is required."
+
+
         setErrors({
             ...temp
         })
@@ -42,11 +38,8 @@ export default function SubMenuForm(props) {
         setErrors,
         handleInputChange,
         handleFileChange,
-        handleInputNumberChange,
         resetForm,
         files,
-        handleEditorInput
-
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -71,50 +64,69 @@ export default function SubMenuForm(props) {
                         name="name"
                         label="Name"
                         value={values.name}
-                        onChange={handleInputChange}
-                        error={errors.name}
+                        readOnly
                     />
-                    {/* <Controls.Input
-                        label="Short Description"
-                        name="shortDescription"
-                        value={values.shortDescription}
+
+                    <Controls.Input
+                        name="overViewTitle"
+                        label="Over View Title"
+                        value={values.overViewTitle}
                         onChange={handleInputChange}
-                        error={errors.shortDescription}
-                    /> */}
-                      <Controls.RichTextEditor
-                        onEditorStateChange={value => handleEditorInput('shortDescription', value)} //handleEditorInput(name, value)
-                        placeholder="Short Description here..."
+                        error={errors.overViewTitle}
                     />
                     <Controls.Input
-                        label="Display Order"
-                        name="displayOrder"
-                        type="number"
-                        value={values.displayOrder}
-                        onChange={handleInputNumberChange}
-                        error={errors.displayOrder}
-                    />
-                    <Controls.Checkbox
-                        name="isActive"
-                        label="isActive"
-                        value={values.isActive}
+                        name="overViewSubtitle"
+                        label="Over View Subtitle"
+                        value={values.overViewSubtitle}
                         onChange={handleInputChange}
-                        error={errors.isActive}
+                        error={errors.overViewSubtitle}
                     />
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
+                    <Controls.Input
+                        name="bestPracticeTitle"
+                        label="Best Practice Title"
+                        value={values.bestPracticeTitle}
+                        onChange={handleInputChange}
+                        error={errors.bestPracticeTitle}
+                    />
+                    <Controls.Input
+                        name="bestPracticeSubtitle"
+                        label="Best Practice Subtitle"
+                        value={values.bestPracticeSubtitle}
+                        onChange={handleInputChange}
+                        error={errors.bestPracticeSubtitle}
+                    />
+                    <div style={{ margin: 5, marginBottom: 10 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
                         >
-                        Upload File
+                            Upload File
                          <input
-                        type="file"
-                        onChange={handleFileChange}
-                        hidden
-                    />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
+                                name="overViewBackgroundPicture"
+                                type="file"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <span style={{ marginLeft: 5 }}>{values.overViewBackgroundPicture ? values.overViewBackgroundPicture.name : 'no file'}</span>
+                        <span style={{ fontSize: 14, margin: 5 }}> OverView Background Picture </span>
                     </div>
-                    
+                    <div style={{ margin: 5, marginBottom: 10 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
+                        >
+                            Upload File
+                         <input
+                                name="bestPracticeBackgroundPicture"
+                                type="file"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <span style={{ marginLeft: 5 }}>{values.bestPracticeBackgroundPicture ? values.bestPracticeBackgroundPicture.name : 'no file'}</span>
+                        <span style={{ fontSize: 14, margin: 5 }}> Best Practice Background Picture</span>
+                    </div>
                     <div>
                         <Controls.Button
                             type="submit"

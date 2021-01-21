@@ -49,7 +49,7 @@ const detailsRoleResource = (id)=> async (dispatch) =>{
         else{
             dispatch({ type: ROLE_RESOURCE_DETAILS_FAIL, payload: data.message });
         }
-        console.log(data)
+        // console.log(data)
     }
     catch(error){
         dispatch({ type: ROLE_RESOURCE_DETAILS_FAIL, payload: error.message });

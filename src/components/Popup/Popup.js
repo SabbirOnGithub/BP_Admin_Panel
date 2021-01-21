@@ -18,7 +18,7 @@ export default function Popup(props) {
 
     const { title, children, openPopup, setOpenPopup } = props;
     const classes = useStyles();
-
+    
     return (
         <Dialog open={openPopup} maxWidth="md" classes={{ paper: classes.dialogWrapper }}>
             <DialogTitle className={classes.dialogTitle}>

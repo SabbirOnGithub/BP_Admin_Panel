@@ -3,7 +3,7 @@ import BlogPostForm from "./BlogPostForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
-import Popup from "../../../components/Popup/Popup";
+// import Popup from "../../../components/Popup/Popup";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../../../components/Notification/Notification";
@@ -180,6 +180,24 @@ export default function BlogPostScreen() {
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
+                                {
+                                    openPopup ? 
+                                <Widget
+                                    title="Blog Post Form"
+                                    upperTitle
+                                    // noBodyPadding
+                                    disableWidgetMenu
+
+                                >
+                                    <BlogPostForm
+                                            recordForEdit={recordForEdit}
+                                            addOrEdit={addOrEdit}
+                                            loadingSave={loadingSave}
+                                            blogSubCategorys={blogSubCategorys}
+                                            setOpenPopup={setOpenPopup}
+                                        />
+                                </Widget> : 
+                                
                                 <Widget
                                     title="Blog Post List Table"
                                     upperTitle
@@ -241,7 +259,7 @@ export default function BlogPostScreen() {
                                         </TblContainer>
                                         <TblPagination />
                                     </Paper>
-                                    <Popup
+                                    {/* <Popup
                                         title="Blog Post Form"
                                         openPopup={openPopup}
                                         setOpenPopup={setOpenPopup}
@@ -253,7 +271,7 @@ export default function BlogPostScreen() {
                                             blogSubCategorys={blogSubCategorys}
                                         />
 
-                                    </Popup>
+                                    </Popup> */}
                                     <Notification
                                         notify={notify}
                                         setNotify={setNotify}
@@ -264,6 +282,8 @@ export default function BlogPostScreen() {
                                     />
                                 </Widget>
 
+                                }
+                                
                             </Grid>
                         </Grid>
                     </>

@@ -40,7 +40,7 @@ const structure = [
     children: [
       { label: "Basic Info", link: "/dashboard/homepage" },
       { label: "Slider", link: "/dashboard/homePageSlider" },
-      { label: "Short Intro", link: "/dashboard/submenu" },
+      { label: "Short Intro", link: "/dashboard/shortIntro" },
       { label: "Walk-through", link: "/dashboard/homePageFunctionAreaDetail" },
       { label: "Consulting", link: "/dashboard/homeConsultationTopic" },
       { label: "Core Values", link: "/dashboard/homePageCoreValueDetail" },

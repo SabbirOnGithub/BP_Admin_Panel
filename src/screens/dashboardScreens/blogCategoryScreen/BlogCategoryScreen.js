@@ -24,7 +24,7 @@ const headCells = [
 ]
 
 export default function BlogCategoryScreen(props) {
-   const { createOperation, readOperation, deleteOperation, updateOperation} = props;
+//    const { createOperation, readOperation, deleteOperation, updateOperation} = props;
 
     const blogCategoryList = useSelector(state => state.blogCategoryList);
     //eslint-disable-next-line
@@ -197,6 +197,7 @@ export default function BlogCategoryScreen(props) {
                                         </TblContainer>
                                         <TblPagination />
                                     </Paper>
+                                   
                                     <Popup
                                         title="Blog Category Form"
                                         openPopup={openPopup}

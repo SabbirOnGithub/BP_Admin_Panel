@@ -16,7 +16,7 @@ const initialFValues = {
 }
 
 export default function BlogPostForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave, blogSubCategorys } = props
+    const { addOrEdit, recordForEdit, loadingSave, blogSubCategorys, setOpenPopup } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -113,7 +113,7 @@ export default function BlogPostForm(props) {
                     /> */}
                     <Controls.Checkbox
                         name="published"
-                        label="published"
+                        label="Published"
                         value={values.published}
                         onChange={handleInputChange}
                         error={errors.published}
@@ -144,6 +144,11 @@ export default function BlogPostForm(props) {
                                 text="Reset"
                                 color="default"
                                 onClick={resetForm} />
+                            <Controls.Button
+                                text="Close"
+                                color="default"
+                                onClick={()=>{setOpenPopup(false)}}
+                            />
                         </>
                             )
                         }
