@@ -88,7 +88,9 @@ export default function ShortIntroScreen() {
         formData.append('ShortDescription', item.shortDescription)
         formData.append('DisplayOrder', item.displayOrder)
         formData.append('isActive', item.isActive)
-        formData.append('file', files)
+        // formData.append('file', files)
+        formData.append('sub_menu_image', item.pictureUrl)
+
 
         if (formData) {
             resetForm()

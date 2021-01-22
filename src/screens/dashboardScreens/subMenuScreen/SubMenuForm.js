@@ -5,6 +5,7 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 const initialFValues = {
     id: '',
+    homepageId: '',
     name: '',
     overViewTitle: '',
     overViewSubtitle: '',
@@ -15,10 +16,12 @@ const initialFValues = {
 }
 
 export default function SubMenuForm(props) {
-    const { addOrEdit, recordForEdit } = props
+    const { addOrEdit, recordForEdit, homePageDatas } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
+        if ('homepageId' in fieldValues)
+            temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         // if ('overViewTitle' in fieldValues)
         //     temp.overViewTitle = fieldValues.overViewTitle ? "" : "This field is required."
 
@@ -60,6 +63,14 @@ export default function SubMenuForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                <Controls.Select
+                        name="homepageId"
+                        label="Homepage"
+                        value={values.homepageId}
+                        onChange={handleInputChange}
+                        error={errors.homepageId}
+                        options={homePageDatas ? homePageDatas : []}
+                    />
                     <Controls.Input
                         name="name"
                         label="Name"

@@ -13,6 +13,7 @@ const initialFValues = {
     pictureName: '',
     isActive: false,
     displayOrder: '',
+    pictureUrl:'',
 }
 
 export default function ShortIntroForm(props) {
@@ -118,6 +119,7 @@ export default function ShortIntroForm(props) {
                         >
                             Upload File
                          <input
+                                name='pictureUrl'
                                 type="file"
                                 onChange={handleFileChange}
                                 hidden

@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteSubMenu, listSubMenus, saveSubMenu } from '../../../redux/actions/subMenuActions';
+import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -36,6 +37,9 @@ const headCells = [
 ]
 
 export default function SubMenuScreen() {
+    const homePageDataList = useSelector(state => state.homePageDataList);
+    //eslint-disable-next-line
+    const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
 
     const subMenuList = useSelector(state => state.subMenuList)
 
@@ -83,10 +87,11 @@ export default function SubMenuScreen() {
         const formData = new FormData();
         console.log(item)
         item.id && formData.append('Id', item.id)
-        // formData.append('Name', item.name)
-        // formData.append('ShortDescription', item.shortDescription)
-        // formData.append('DisplayOrder', item.displayOrder)
-        // formData.append('isActive', item.isActive)
+        formData.append('HomepageId', item.homepageId)
+        formData.append('Name', item.name)
+        formData.append('ShortDescription', item.shortDescription)
+        formData.append('DisplayOrder', item.displayOrder)
+        formData.append('isActive', item.isActive)
         // formData.append('file', item.pictureUrl)
         formData.append('OverViewTitle', item.overViewTitle)
         formData.append('OverViewSubtitle', item.overViewSubtitle)
@@ -159,6 +164,7 @@ export default function SubMenuScreen() {
 
 
     useEffect(() => {
+        dispatch(listHomePageDatas());
         dispatch(listSubMenus());
         return () => {
             // 
@@ -168,7 +174,7 @@ export default function SubMenuScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Sub Menus" />
 
@@ -241,7 +247,9 @@ export default function SubMenuScreen() {
                                 >
                                     <SubMenuForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        homePageDatas = {homePageDatas}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}

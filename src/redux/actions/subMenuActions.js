@@ -53,7 +53,7 @@ const saveSubMenu = (item, id) => async (dispatch) =>{
             console.log('create')
             //eslint-disable-next-line
             const formatData = delete item.id;
-            const { data } = await axiosWithTokenAndMultipartData.post("/SubMenu/Create", item)
+            const { data } = await axiosWithTokenAndMultipartData.post("/SubMenu", item)
             // console.log(data)
             if(data.status===true){
                 dispatch({type: SUBMENU_SAVE_SUCCESS, payload: data });
@@ -61,7 +61,7 @@ const saveSubMenu = (item, id) => async (dispatch) =>{
                 dispatch({ type: SUBMENU_SAVE_FAIL, payload: data.message });
             }
         }else{
-            const { data } = await axiosWithTokenAndMultipartData.put("/SubMenu/Update", item);
+            const { data } = await axiosWithTokenAndMultipartData.put("/SubMenu", item);
             // console.log(data)
             if(data.status===true){
                 dispatch({type: SUBMENU_SAVE_SUCCESS, payload: data });   
