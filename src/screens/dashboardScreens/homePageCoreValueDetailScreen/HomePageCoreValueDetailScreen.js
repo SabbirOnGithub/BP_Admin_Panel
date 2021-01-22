@@ -155,7 +155,7 @@ export default function HomePageCoreValueDetailScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Home Page Core Value Details" />
 
@@ -221,7 +221,9 @@ export default function HomePageCoreValueDetailScreen() {
                                 >
                                     <HomePageCoreValueDetailForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        homePageDatas = {homePageDatas}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}

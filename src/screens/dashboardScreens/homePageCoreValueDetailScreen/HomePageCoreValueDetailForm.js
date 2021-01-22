@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState } from 'draft-js';
@@ -7,16 +7,19 @@ import { EditorState } from 'draft-js';
 
 const initialFValues = {
     id: '',
+    homepageId: '',
     title: '',
     description: EditorState.createEmpty(),
     pictureUrl: '',
 }
 
 export default function HomePageCoreValueDetailForm(props) {
-    const { addOrEdit, recordForEdit } = props
+    const { addOrEdit, recordForEdit, homePageDatas } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
+        if ('homepageId' in fieldValues)
+            temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         if ('title' in fieldValues)
             temp.title = fieldValues.title ? "" : "This field is required."
         if ('description' in fieldValues)
@@ -53,12 +56,20 @@ export default function HomePageCoreValueDetailForm(props) {
             setValues({
                 ...recordForEdit
             })
-    }, [recordForEdit,setValues])
+    }, [recordForEdit, setValues])
 
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                    <Controls.Select
+                        name="homepageId"
+                        label="Homepage"
+                        value={values.homepageId}
+                        onChange={handleInputChange}
+                        error={errors.homepageId}
+                        options={homePageDatas ? homePageDatas : []}
+                    />
                     <Controls.Input
                         label="Title"
                         name="title"
@@ -77,21 +88,21 @@ export default function HomePageCoreValueDetailForm(props) {
                         onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)
                         placeholder="Description here..."
                     />
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
+                    <div style={{ margin: 5 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
                         >
-                        Upload File
+                            Upload File
                          <input
-                        type="file"
-                        onChange={handleFileChange}
-                        hidden
-                    />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
+                                type="file"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
                     </div>
-                    
+
                     <div>
                         <Controls.Button
                             type="submit"

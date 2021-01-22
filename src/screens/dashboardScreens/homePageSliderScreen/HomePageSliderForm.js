@@ -6,6 +6,7 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 const initialFValues = {
     id: '',
+    homepageId:'',
     title: '',
     subTitle: '',
     pictureUrl: '',
@@ -14,10 +15,12 @@ const initialFValues = {
 }
 
 export default function HomepageSliderForm(props) {
-    const { addOrEdit, recordForEdit } = props
+    const { addOrEdit, recordForEdit, homePageDatas } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
+        if ('homepageId' in fieldValues)
+            temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         if ('title' in fieldValues)
             temp.title = fieldValues.title ? "" : "This field is required."
         if ('subTitle' in fieldValues)
@@ -63,6 +66,14 @@ export default function HomepageSliderForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                <Controls.Select
+                        name="homepageId"
+                        label="Homepage"
+                        value={values.homepageId}
+                        onChange={handleInputChange}
+                        error={errors.homepageId}
+                        options={homePageDatas ? homePageDatas : []}
+                    />
                     <Controls.Input
                         name="title"
                         label="Title"

@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteHomePageSlider, listHomePageSliders, saveHomePageSlider } from '../../../redux/actions/homePageSliderActions';
+import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -34,6 +35,9 @@ const headCells = [
 ]
 
 export default function HomePageSliderScreen() {
+    const homePageDataList = useSelector(state => state.homePageDataList);
+    //eslint-disable-next-line
+    const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
 
     const homePageSliderList = useSelector(state => state.homePageSliderList)
     //eslint-disable-next-line
@@ -79,6 +83,7 @@ export default function HomePageSliderScreen() {
         const formData = new FormData();
         // append form data
         item.id && formData.append('Id', item.id)
+        formData.append('HomepageId', item.homepageId)
         formData.append('Title', item.title)
         formData.append('SubTitle', item.subTitle)
         formData.append('DisplayOrder', item.displayOrder)
@@ -147,6 +152,7 @@ export default function HomePageSliderScreen() {
 
 
     useEffect(() => {
+        dispatch(listHomePageDatas());
         dispatch(listHomePageSliders());
         return () => {
             // 
@@ -156,7 +162,7 @@ export default function HomePageSliderScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Home Page Slider" />
 
@@ -221,7 +227,9 @@ export default function HomePageSliderScreen() {
                                 >
                                     <HomepageSliderForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        homePageDatas = {homePageDatas}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}

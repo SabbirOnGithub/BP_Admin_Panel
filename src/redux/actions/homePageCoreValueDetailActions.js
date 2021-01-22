@@ -21,7 +21,7 @@ const listHomePageCoreValueDetails = () => async (dispatch) => {
     try {
         dispatch({ type: HOME_PAGE_CORE_VALUE_DETAIL_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get('/HomePageCoreValueDetail');
-        // console.log(data)
+        console.log(data)
         if (data.status === true) {
             dispatch({ type: HOME_PAGE_CORE_VALUE_DETAIL_LIST_SUCCESS, payload: data.data ? data.data : [] });
         } else {
