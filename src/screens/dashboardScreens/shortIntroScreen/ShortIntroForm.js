@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState } from 'draft-js';
@@ -7,18 +7,21 @@ import { EditorState } from 'draft-js';
 
 const initialFValues = {
     id: '',
+    homepageId: '',
     name: '',
     shortDescription: EditorState.createEmpty(),
     pictureName: '',
     isActive: false,
-    displayOrder:'',
+    displayOrder: '',
 }
 
 export default function ShortIntroForm(props) {
-    const { addOrEdit, recordForEdit } = props
+    const { addOrEdit, recordForEdit, homePageDatas } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
+        if ('homepageId' in fieldValues)
+            temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         if ('name' in fieldValues)
             temp.fullName = fieldValues.name ? "" : "This field is required."
         if ('shortDescription' in fieldValues)
@@ -26,7 +29,7 @@ export default function ShortIntroForm(props) {
         if ('displayOrder' in fieldValues)
             // temp.displayOrder = fieldValues.displayOrder && typeof(fieldValues.displayOrder)==='number'? "" : "This field is required."
             temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
-        
+
         setErrors({
             ...temp
         })
@@ -67,6 +70,14 @@ export default function ShortIntroForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                    <Controls.Select
+                        name="homepageId"
+                        label="Homepage"
+                        value={values.homepageId}
+                        onChange={handleInputChange}
+                        error={errors.homepageId}
+                        options={homePageDatas ? homePageDatas : []}
+                    />
                     <Controls.Input
                         name="name"
                         label="Name"
@@ -81,7 +92,7 @@ export default function ShortIntroForm(props) {
                         onChange={handleInputChange}
                         error={errors.shortDescription}
                     /> */}
-                      <Controls.RichTextEditor
+                    <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('shortDescription', value)} //handleEditorInput(name, value)
                         placeholder="Short Description here..."
                     />
@@ -100,21 +111,21 @@ export default function ShortIntroForm(props) {
                         onChange={handleInputChange}
                         error={errors.isActive}
                     />
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
+                    <div style={{ margin: 5 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
                         >
-                        Upload File
+                            Upload File
                          <input
-                        type="file"
-                        onChange={handleFileChange}
-                        hidden
-                    />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
+                                type="file"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
                     </div>
-                    
+
                     <div>
                         <Controls.Button
                             type="submit"

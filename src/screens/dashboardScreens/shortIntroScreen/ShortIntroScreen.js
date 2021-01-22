@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteSubMenu, listSubMenus, saveSubMenu } from '../../../redux/actions/subMenuActions';
+import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -33,6 +34,9 @@ const headCells = [
 ]
 
 export default function ShortIntroScreen() {
+    const homePageDataList = useSelector(state => state.homePageDataList);
+    //eslint-disable-next-line
+    const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
 
     const subMenuList = useSelector(state => state.subMenuList)
 
@@ -79,6 +83,7 @@ export default function ShortIntroScreen() {
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
         item.id && formData.append('Id', item.id)
+        formData.append('HomepageId', item.homepageId)
         formData.append('Name', item.name)
         formData.append('ShortDescription', item.shortDescription)
         formData.append('DisplayOrder', item.displayOrder)
@@ -149,6 +154,7 @@ export default function ShortIntroScreen() {
 
 
     useEffect(() => {
+        dispatch(listHomePageDatas());
         dispatch(listSubMenus());
         return () => {
             // 
@@ -158,7 +164,7 @@ export default function ShortIntroScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Short Intro" />
 
@@ -224,7 +230,9 @@ export default function ShortIntroScreen() {
                                 >
                                     <ShortIntroForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        homePageDatas = {homePageDatas}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}

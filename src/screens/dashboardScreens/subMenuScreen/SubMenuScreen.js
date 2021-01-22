@@ -81,7 +81,7 @@ export default function SubMenuScreen() {
     })
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
-       
+        console.log(item)
         item.id && formData.append('Id', item.id)
         // formData.append('Name', item.name)
         // formData.append('ShortDescription', item.shortDescription)
@@ -92,8 +92,8 @@ export default function SubMenuScreen() {
         formData.append('OverViewSubtitle', item.overViewSubtitle)
         formData.append('BestPracticeTitle', item.bestPracticeTitle)
         formData.append('BestPracticeSubtitle', item.bestPracticeSubtitle)
-        formData.append('OverViewBackgroundPicture', item.overViewBackgroundPicture)
-        formData.append('BestPracticeBackgroundPicture', item.bestPracticeBackgroundPicture)
+        formData.append('over_view_background', item.overViewBackgroundPicture)
+        formData.append('best_practice_background', item.bestPracticeBackgroundPicture)
 
         if (formData) {
             resetForm()
