@@ -16,6 +16,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteHomePageFunctionAreaDetail, listHomePageFunctionAreaDetails, saveHomePageFunctionAreaDetail } from '../../../redux/actions/homePageFunctionAreaDetailActions';
+import { listHomePageDatas } from '../../../redux/actions/homePageActions';
+
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -31,6 +33,9 @@ const headCells = [
 ]
 
 export default function HomePageFunctionAreaDetailScreen() {
+    const homePageDataList = useSelector(state => state.homePageDataList);
+    //eslint-disable-next-line
+    const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
 
     const homePageFunctionAreaDetailList = useSelector(state => state.homePageFunctionAreaDetailList)
     //eslint-disable-next-line
@@ -73,8 +78,8 @@ export default function HomePageFunctionAreaDetailScreen() {
     })
     const addOrEdit = (item, files, resetForm) => {
         const formData = new FormData();
-        console.log(item.id)
-        formData.append('HompageId', item.id)
+        item.id && formData.append('Id', item.id)
+        formData.append('HomepageId', item.homepageId)
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         formData.append('file', files)
@@ -142,6 +147,7 @@ export default function HomePageFunctionAreaDetailScreen() {
 
 
     useEffect(() => {
+        dispatch(listHomePageDatas());
         dispatch(listHomePageFunctionAreaDetails());
         return () => {
             // 
@@ -151,7 +157,7 @@ export default function HomePageFunctionAreaDetailScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
+            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Home Page Function Area Details" />
 
@@ -215,7 +221,9 @@ export default function HomePageFunctionAreaDetailScreen() {
                                 >
                                     <HomePageFunctionAreaDetailForm
                                         recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
+                                        addOrEdit={addOrEdit} 
+                                        homePageDatas = {homePageDatas}
+                                    />
                                 </Popup>
                                 <Notification
                                     notify={notify}
