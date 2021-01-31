@@ -116,6 +116,12 @@ const structure = [
       { label: "Role Resource", link: "/dashboard/roleResource" },
     ],
   },
+  {
+    id: 10,
+    label: "Cta Category",
+    link: "/dashboard/ctaCategory",
+    icon: <BookIcon />,
+  },
 ];
 
 function Sidebar({ location }) {

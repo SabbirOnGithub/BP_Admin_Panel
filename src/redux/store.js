@@ -31,6 +31,7 @@ import { modernTechDetailDeleteReducer, modernTechDetailDetailsReducer, modernTe
 import { personalizedServiceDetailDeleteReducer, personalizedServiceDetailDetailsReducer, personalizedServiceDetailListReducer, personalizedServiceDetailSaveReducer } from './reducers/personalizedServiceDetailReducers';
 import { uniqueSolutionDetailDeleteReducer, uniqueSolutionDetailDetailsReducer, uniqueSolutionDetailListReducer, uniqueSolutionDetailSaveReducer } from './reducers/uniqueSolutionDetailReducers';
 import { subMenuBusinessContextDeleteReducer, subMenuBusinessContextDetailsReducer, subMenuBusinessContextListReducer, subMenuBusinessContextSaveReducer } from './reducers/subMenuBusinessContextReducers';
+import { ctaCategoryDetailsReducer, ctaCategoryListReducer } from './reducers/ctaCategoryReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 
@@ -160,6 +161,8 @@ const reducer = combineReducers({
     subMenuBusinessContextDetails: subMenuBusinessContextDetailsReducer,
     subMenuBusinessContextSave: subMenuBusinessContextSaveReducer,
     subMenuBusinessContextDelete: subMenuBusinessContextDeleteReducer,
+    ctaCategoryList:ctaCategoryListReducer,
+    ctaCategoryDetails: ctaCategoryDetailsReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 
