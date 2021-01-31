@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import CtaCategoryDetailScreen from "./CtaCategoryDetailScreen";
+import ContactUsMessageDetailScreen from "./ContactUsMessageDetailScreen";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -13,26 +13,26 @@ import DetailsIcon from '@material-ui/icons/Details';
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
-import { listCtaCategorys } from '../../../redux/actions/ctaCategoryActions';
+import { listContactUsMessages } from '../../../redux/actions/contactUsMessageActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'name', label: 'Name' },
+    { id: 'fullName', label: 'FullName' },
     { id: 'companyName', label: 'Company Name' },
     { id: 'email', label: 'Email' },
-    { id: 'phone', label: 'Phone' },
+    { id: 'phoneNumber', label: 'Phone Number' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function CtaCategoryScreen() {
+export default function ContactUsMessageScreen() {
 
     const userSignIn = useSelector( state => state.userSignin );
     //eslint-disable-next-line
     const {  userInfo  } = userSignIn;
 
-    const ctaCategoryList = useSelector(state => state.ctaCategoryList);
+    const contactUsMessageList = useSelector(state => state.contactUsMessageList);
     //eslint-disable-next-line
-    const { ctaCategorys, loading, error } = ctaCategoryList;
+    const { contactUsMessages, loading, error } = contactUsMessageList;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
@@ -47,7 +47,7 @@ export default function CtaCategoryScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(ctaCategorys, headCells, filterFn);
+    } = useTable(contactUsMessages, headCells, filterFn);
     
     const dispatch = useDispatch();
 
@@ -57,7 +57,7 @@ export default function CtaCategoryScreen() {
     }
 
     useEffect(() => {
-        dispatch(listCtaCategorys());
+        dispatch(listContactUsMessages());
         return () => {
             // 
         }
@@ -68,33 +68,32 @@ export default function CtaCategoryScreen() {
             {
                 loading ? "Loading" :
                     <>
-                        <PageTitle title="Blog Posts" />
+                        <PageTitle title="Contact Us Message" />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 {
                                     openPopup ? 
                                 <Widget
-                                    title="Cta Category Detail"
+                                    title="Contact Us Message Detail"
                                     upperTitle
                                     // noBodyPadding
                                     disableWidgetMenu
                                 >
-                                    <CtaCategoryDetailScreen
+                                    <ContactUsMessageDetailScreen
                                             recordForEdit={recordForEdit}
                                             setOpenPopup={setOpenPopup}
                                         />
                                 </Widget> : 
                                 
                                 <Widget
-                                    title="Blog Post List Table"
+                                    title="Contact Us Message List Table"
                                     upperTitle
                                     noBodyPadding
                                     setOpenPopup={setOpenPopup}
                                     setRecordForEdit={setRecordForEdit}
                                     threeDotDisplay={true}
                                     disableWidgetMenu
-                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
                                 >
                                     
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -105,10 +104,10 @@ export default function CtaCategoryScreen() {
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.firstName + ' ' + item.lastName}</TableCell>
+                                                            <TableCell>{item.fullName}</TableCell>
                                                             <TableCell>{item.companyName}</TableCell>
                                                             <TableCell>{item.email}</TableCell>
-                                                            <TableCell>{item.phone}</TableCell>
+                                                            <TableCell>{item.phoneNumber}</TableCell>
                                                             <TableCell>
                                                                 <Controls.ActionButton
                                                                     color="primary"

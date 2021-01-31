@@ -8,6 +8,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
 import BookIcon from '@material-ui/icons/Book';
 import AppsIcon from '@material-ui/icons/Apps';
+import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import {
   Home as HomeIcon,
   FormatSize as TypographyIcon,
@@ -121,6 +122,12 @@ const structure = [
     label: "Cta Category",
     link: "/dashboard/ctaCategory",
     icon: <BookIcon />,
+  },
+  {
+    id: 11,
+    label: "Contact Us",
+    link: "/dashboard/contactUs",
+    icon: <ContactSupportIcon />,
   },
 ];
 

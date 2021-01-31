@@ -68,7 +68,7 @@ export default function CtaCategoryScreen() {
             {
                 loading ? "Loading" :
                     <>
-                        <PageTitle title="Blog Posts" />
+                        <PageTitle title="Cta Categorys" />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
@@ -87,14 +87,13 @@ export default function CtaCategoryScreen() {
                                 </Widget> : 
                                 
                                 <Widget
-                                    title="Blog Post List Table"
+                                    title="Cta Category List Table"
                                     upperTitle
                                     noBodyPadding
                                     setOpenPopup={setOpenPopup}
                                     setRecordForEdit={setRecordForEdit}
                                     threeDotDisplay={true}
                                     disableWidgetMenu
-                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
                                 >
                                     
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
