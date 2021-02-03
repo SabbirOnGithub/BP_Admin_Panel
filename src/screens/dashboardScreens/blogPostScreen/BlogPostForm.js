@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { Grid, Button, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-import { EditorState } from 'draft-js';
-
+import { EditorState, ContentState  } from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
+import { convertToRaw} from 'draft-js';
 
 const initialFValues = {
     id: '',
@@ -52,18 +54,46 @@ export default function BlogPostForm(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
-        // console.log(values)
         if (validate()) {
-            console.log(values)
-            addOrEdit(values, files, resetForm);
+            try{
+                values['content'] = draftToHtml(convertToRaw(values.content.getCurrentContent()))
+            }
+            catch(e){
+                console.log(e)
+            }
+            finally{
+                addOrEdit(values, files, resetForm);
+            }
         }
     }
 
     useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
-                ...recordForEdit
-            })
+        if (recordForEdit != null){
+            try {    
+                setValues({
+                    ...recordForEdit
+                })
+              } catch (e) {
+                console.warn(e);
+              } finally {
+                console.log('state set done')
+                const html = recordForEdit.content;
+                const contentBlock = htmlToDraft(html);
+                if (contentBlock) {
+                    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                    const content = EditorState.createWithContent(contentState);
+                // this.state = {
+                //     editorState,
+                // };
+                setValues({
+                    ...recordForEdit,
+                    content
+                })
+                }
+
+              }
+        }
+            
     }, [recordForEdit, setValues])
 
     return (
@@ -95,6 +125,7 @@ export default function BlogPostForm(props) {
                     <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('content', value)} //handleEditorInput(name, value)
                         placeholder="Content here..."
+                        editorState = {values.content}
                     />
                     <Controls.Input
                         name="tags"

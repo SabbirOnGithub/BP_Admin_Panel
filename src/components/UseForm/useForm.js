@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from "@material-ui/core";
-import draftToHtml from 'draftjs-to-html';
-import { convertToRaw} from 'draft-js';
+
 
 export function useForm(initialFValues, validateOnChange = false, validate) {
 
@@ -62,7 +61,8 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         setValues({
             ...values,
             // [name]: editorValue.getCurrentContent().getPlainText()
-            [name]: draftToHtml(convertToRaw(editorValue.getCurrentContent()))
+            // [name]: draftToHtml(convertToRaw(editorValue.getCurrentContent()))
+            [name]: editorValue
         })
         if (validateOnChange)
             validate({ [name]: editorValue })
