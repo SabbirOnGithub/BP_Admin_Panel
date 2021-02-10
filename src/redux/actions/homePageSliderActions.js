@@ -29,6 +29,7 @@ const listHomePageSliders = () => async (dispatch) => {
         } else {
             dispatch({ type: HOMEPAGE_SLIDER_LIST_FAIL, payload: data.message });
         }
+        // console.log(data)
     }
     catch (error) {
         dispatch({ type: HOMEPAGE_SLIDER_LIST_FAIL, payload: error.message });

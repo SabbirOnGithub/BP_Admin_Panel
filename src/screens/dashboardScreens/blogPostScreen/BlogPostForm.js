@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { Grid, Button, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-import { EditorState, ContentState  } from 'draft-js';
+import { EditorState, ContentState, convertToRaw  } from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html';
-import { convertToRaw} from 'draft-js';
 
 const initialFValues = {
     id: '',

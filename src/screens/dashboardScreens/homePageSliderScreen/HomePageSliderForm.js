@@ -2,12 +2,15 @@ import React, { useEffect } from 'react'
 import { Grid, Button} from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-
+import { EditorState, ContentState, convertToRaw  } from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
 
 const initialFValues = {
     id: '',
     homepageId:'',
-    title: '',
+    // title: '',
+    title: EditorState.createEmpty(),
     subTitle: '',
     pictureUrl: '',
     isActive: false,
@@ -21,8 +24,8 @@ export default function HomepageSliderForm(props) {
         let temp = { ...errors }
         if ('homepageId' in fieldValues)
             temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
-        if ('title' in fieldValues)
-            temp.title = fieldValues.title ? "" : "This field is required."
+        // if ('title' in fieldValues)
+        //     temp.title = fieldValues.title ? "" : "This field is required."
         if ('subTitle' in fieldValues)
             temp.subTitle = fieldValues.subTitle ? "" : "This field is required."
         if ('displayOrder' in fieldValues)
@@ -45,21 +48,60 @@ export default function HomepageSliderForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files
+        files,
+        handleEditorInput
+
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
+        // if (validate()) {
+        //     addOrEdit(values, files, resetForm);
+        // }
         if (validate()) {
-            addOrEdit(values, files, resetForm);
+            try{
+                values['title'] = draftToHtml(convertToRaw(values.title.getCurrentContent()))
+            }
+            catch(e){
+                console.log(e)
+            }
+            finally{
+                addOrEdit(values, files, resetForm);
+            }
         }
     }
 
     useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
-                ...recordForEdit
-            })
+        // if (recordForEdit != null)
+        //     setValues({
+        //         ...recordForEdit
+        //     })
+
+        if (recordForEdit != null){
+            try {    
+                setValues({
+                    ...recordForEdit
+                })
+              } catch (e) {
+                console.warn(e);
+              } finally {
+                console.log('state set done')
+                const html = recordForEdit.title;
+                const contentBlock = htmlToDraft(html);
+                if (contentBlock) {
+                    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                    const title = EditorState.createWithContent(contentState);
+                // this.state = {
+                //     editorState,
+                // };
+                setValues({
+                    ...recordForEdit,
+                    title
+                })
+                }
+
+              }
+        }
     }, [recordForEdit, setValues])
 
     return (
@@ -74,12 +116,17 @@ export default function HomepageSliderForm(props) {
                         error={errors.homepageId}
                         options={homePageDatas ? homePageDatas : []}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         name="title"
                         label="Title"
                         value={values.title}
                         onChange={handleInputChange}
                         error={errors.title}
+                    /> */}
+                    <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('title', value)} //handleEditorInput(name, value)
+                        placeholder="Title here..."
+                        editorState = {values.title}
                     />
                     <Controls.Input
                         label="Sub-Title"

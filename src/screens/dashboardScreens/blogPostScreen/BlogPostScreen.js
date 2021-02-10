@@ -96,7 +96,8 @@ export default function BlogPostScreen() {
         // delete item.createdAt
         // delete item.updatedAt
         // delete item.publishedAt
-        // console.log(item)
+        console.log(item)
+
         const formData = new FormData();
         item.id && formData.append('Id', item.id)
         formData.append('BlogSubCategoryId', item.blogSubCategoryId)

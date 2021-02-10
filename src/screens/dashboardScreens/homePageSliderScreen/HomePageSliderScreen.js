@@ -81,6 +81,7 @@ export default function HomePageSliderScreen() {
     const addOrEdit = (item, files, resetForm) => {
 
         const formData = new FormData();
+        console.log(item)
         // append form data
         item.id && formData.append('Id', item.id)
         formData.append('HomepageId', item.homepageId)
@@ -185,7 +186,8 @@ export default function HomePageSliderScreen() {
                                                 recordsAfterPagingAndSorting().map(item =>
                                                     (<TableRow key={item.id}>
                                                         <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
+                                                        {/* <TableCell>{item.title}</TableCell> */}
+                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.title}`}} /></TableCell>
                                                         <TableCell>{item.subTitle}</TableCell>
                                                         <TableCell>{item.isActive ? 'Yes': 'No'}</TableCell>
                                                         <TableCell>{item.displayOrder ? item.displayOrder: 'no input given'}</TableCell>

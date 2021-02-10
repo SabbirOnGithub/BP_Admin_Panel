@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { Grid, Button } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-import { EditorState } from 'draft-js';
-
+import { EditorState, ContentState, convertToRaw  } from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
 
 const initialFValues = {
     id: '',
@@ -25,8 +26,8 @@ export default function ShortIntroForm(props) {
             temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         if ('name' in fieldValues)
             temp.fullName = fieldValues.name ? "" : "This field is required."
-        if ('shortDescription' in fieldValues)
-            temp.shortDescription = fieldValues.shortDescription ? "" : "This field is required."
+        // if ('shortDescription' in fieldValues)
+        //     temp.shortDescription = fieldValues.shortDescription ? "" : "This field is required."
         if ('displayOrder' in fieldValues)
             // temp.displayOrder = fieldValues.displayOrder && typeof(fieldValues.displayOrder)==='number'? "" : "This field is required."
             temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
@@ -55,16 +56,49 @@ export default function ShortIntroForm(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
+        // if (validate()) {
+        //     addOrEdit(values, files, resetForm);
+        // }
         if (validate()) {
-            addOrEdit(values, files, resetForm);
+            try{
+                values['shortDescription'] = draftToHtml(convertToRaw(values.shortDescription.getCurrentContent()))
+            }
+            catch(e){
+                console.log(e)
+            }
+            finally{
+                addOrEdit(values, files, resetForm);
+            }
         }
     }
 
     useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
-                ...recordForEdit
-            })
+        // if (recordForEdit != null)
+        //     setValues({
+        //         ...recordForEdit
+        //     })
+        if (recordForEdit != null){
+            try {    
+                setValues({
+                    ...recordForEdit
+                })
+              } catch (e) {
+                console.warn(e);
+              } finally {
+                console.log('state set done')
+                const html = recordForEdit.shortDescription;
+                const contentBlock = htmlToDraft(html);
+                if (contentBlock) {
+                    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                    const shortDescription = EditorState.createWithContent(contentState);
+                setValues({
+                    ...recordForEdit,
+                    shortDescription
+                })
+                }
+
+              }
+        }
     }, [recordForEdit, setValues])
 
     return (
@@ -86,16 +120,11 @@ export default function ShortIntroForm(props) {
                         onChange={handleInputChange}
                         error={errors.name}
                     />
-                    {/* <Controls.Input
-                        label="Short Description"
-                        name="shortDescription"
-                        value={values.shortDescription}
-                        onChange={handleInputChange}
-                        error={errors.shortDescription}
-                    /> */}
+                    
                     <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('shortDescription', value)} //handleEditorInput(name, value)
-                        placeholder="Short Description here..."
+                        placeholder="shortDescription here..."
+                        editorState = {values.shortDescription}
                     />
                     <Controls.Input
                         label="Display Order"
