@@ -11,8 +11,8 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-
 import { useSelector, useDispatch } from 'react-redux';
+
 
 // redux actions
 import { deleteHomePageSlider, listHomePageSliders, saveHomePageSlider } from '../../../redux/actions/homePageSliderActions';
@@ -20,8 +20,6 @@ import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
-
-
 
 
 const headCells = [

@@ -5,6 +5,10 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState, ContentState, convertToRaw  } from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html';
+// import { fileToBase64 } from '../../../helpers/converter';
+
+// import { config } from "../../../config";
+// const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const initialFValues = {
     id: '',
