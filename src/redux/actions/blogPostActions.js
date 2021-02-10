@@ -29,7 +29,7 @@ const listBlogPosts = () => async (dispatch)=>{
         }else{
             dispatch({ type: BLOG_POST_LIST_FAIL, payload: data.message });
         }
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: BLOG_POST_LIST_FAIL, payload: error.message });

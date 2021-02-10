@@ -2,7 +2,9 @@ import React, { useEffect } from 'react'
 import { Grid, Button} from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-
+import { EditorState, ContentState, convertToRaw  } from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
 
 const initialFValues = {
     id: '',
@@ -11,7 +13,7 @@ const initialFValues = {
     title: '',
     subTitle: '',
     header:'',
-    description:'',
+    description: EditorState.createEmpty(),
     pictureUrl: '',
 }
 
@@ -30,8 +32,8 @@ export default function MenuSubMenuMapForm(props) {
             temp.subTitle = fieldValues.subTitle ? "" : "This field is required."
         if ('header' in fieldValues)
             temp.header = fieldValues.header ? "" : "This field is required."
-        if ('description' in fieldValues)
-            temp.description = fieldValues.description ? "" : "This field is required."
+        // if ('description' in fieldValues)
+        //     temp.description = fieldValues.description ? "" : "This field is required."
         
         setErrors({
             ...temp
@@ -49,21 +51,56 @@ export default function MenuSubMenuMapForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files
+        files,
+        handleEditorInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
+        // if (validate()) {
+        //     addOrEdit(values, files, resetForm);
+        // }
         if (validate()) {
-            addOrEdit(values, files, resetForm);
+            try{
+                values['description'] = draftToHtml(convertToRaw(values.description.getCurrentContent()))
+            }
+            catch(e){
+                console.log(e)
+            }
+            finally{
+                addOrEdit(values, files, resetForm);
+            }
         }
     }
 
     useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
-                ...recordForEdit
-            })
+        // if (recordForEdit != null)
+        //     setValues({
+        //         ...recordForEdit
+        //     })
+
+        if (recordForEdit != null){
+            try {    
+                setValues({
+                    ...recordForEdit
+                })
+              } catch (e) {
+                console.warn(e);
+              } finally {
+                // console.log('state set done')
+                const html = recordForEdit.description;
+                const contentBlock = htmlToDraft(html);
+                if (contentBlock) {
+                    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                    const description = EditorState.createWithContent(contentState);
+                setValues({
+                    ...recordForEdit,
+                    description
+                })
+                }
+
+              }
+        }
     }, [recordForEdit, setValues])
 
     return (
@@ -107,12 +144,17 @@ export default function MenuSubMenuMapForm(props) {
                         onChange={handleInputChange}
                         error={errors.header}
                     />
-                    <Controls.Input
+                    {/* <Controls.Input
                         label="Description"
                         name="description"
                         value={values.description}
                         onChange={handleInputChange}
                         error={errors.description}
+                    /> */}
+                    <Controls.RichTextEditor
+                        onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)
+                        placeholder="Description here..."
+                        editorState = {values.description}
                     />
                     <div style={{margin:5}}>
                     <Button

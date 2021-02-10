@@ -123,7 +123,7 @@ export default function ShortIntroScreen() {
     }
 
     const openInPopup = item => {
-        console.log(subMenus)
+        // console.log(subMenus)
         setRecordForEdit(item)
         setOpenPopup(true)
     }
