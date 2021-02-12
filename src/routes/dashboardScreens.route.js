@@ -37,6 +37,7 @@ import SubMenuBusinessContextScreen from "../screens/dashboardScreens/subMenuBus
 import ShortIntroScreen from "../screens/dashboardScreens/shortIntroScreen/ShortIntroScreen";
 import CtaCategoryScreen from "../screens/dashboardScreens/ctaCategoryScreen/CtaCategoryScreen";
 import ContactUsMessageScreen from "../screens/dashboardScreens/contactUsMessageScreen/ContactUsMessageScreen";
+import PaymentPackageScreen from "../screens/dashboardScreens/paymentPackageScreen/PaymentPackageScreen";
 
 
 // import { searchNameByIdFromArray } from '../helpers/search';
@@ -102,6 +103,7 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/shortIntro`} component={ShortIntroScreen} />
         <Route exact path={`${props.match.path}/ctaCategory`} component={CtaCategoryScreen} />
         <Route exact path={`${props.match.path}/contactUs`} component={ContactUsMessageScreen} />
+        <Route exact path={`${props.match.path}/paymentPackage`} component={PaymentPackageScreen} />
         {/* role routes */}
         <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
         <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />

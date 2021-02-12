@@ -22,12 +22,12 @@ export default function Input(props) {
             InputProps={{
                 className: (readOnly) ? 'Mui-disabled' : undefined,
             }}
-            onInput = {(e) =>{
-                // set max input 10 digit
-                if(e.target.type === 'number'){
-                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
-                }
-            }}
+            // onInput = {(e) =>{
+            //     // set max input 10 digit
+            //     if(e.target.type === 'number'){
+            //         e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+            //     }
+            // }}
         />
     )
 }

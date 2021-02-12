@@ -9,6 +9,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import BookIcon from '@material-ui/icons/Book';
 import AppsIcon from '@material-ui/icons/Apps';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import PaymentIcon from '@material-ui/icons/Payment';
 import {
   Home as HomeIcon,
   FormatSize as TypographyIcon,
@@ -128,6 +129,12 @@ const structure = [
     label: "Contact Us",
     link: "/dashboard/contactUs",
     icon: <ContactSupportIcon />,
+  },
+  {
+    id: 12,
+    label: "Payment Package",
+    link: "/dashboard/paymentPackage",
+    icon: <PaymentIcon />,
   },
 ];
 
