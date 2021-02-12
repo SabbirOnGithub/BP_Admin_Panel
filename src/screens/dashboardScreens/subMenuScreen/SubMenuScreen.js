@@ -30,6 +30,7 @@ const headCells = [
     { id: 'overViewSubtitle', label: 'Over View Subtitle' },
     { id: 'bestPracticeTitle', label: 'Best Practice Title' },
     { id: 'bestPracticeSubtitle', label: 'Best Practice Subtitle' },
+    { id: 'pictureUrl', label: 'Sub Menu Picture' },
     { id: 'overViewBackgroundPicture', label: 'Over View Background Picture' },
     { id: 'bestPracticeBackgroundPicture', label: 'Best Practice Background Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
@@ -83,32 +84,74 @@ export default function SubMenuScreen() {
         dispatch(deleteSubMenu(id));
         resolve();
     })
-    const addOrEdit = (item, files, resetForm) => {
+    const addOrEdit = (item, resetForm) => {
+
         const formData = new FormData();
-        console.log(item)
+        console.log(typeof(item.overViewBackgroundPicture))
+        console.log(item.overViewBackgroundPicture)
+        // append form data 
         item.id && formData.append('Id', item.id)
         formData.append('HomepageId', item.homepageId)
         formData.append('Name', item.name)
         formData.append('ShortDescription', item.shortDescription)
         formData.append('DisplayOrder', item.displayOrder)
         formData.append('isActive', item.isActive)
-        // formData.append('file', item.pictureUrl)
         formData.append('OverViewTitle', item.overViewTitle)
         formData.append('OverViewSubtitle', item.overViewSubtitle)
         formData.append('BestPracticeTitle', item.bestPracticeTitle)
         formData.append('BestPracticeSubtitle', item.bestPracticeSubtitle)
-        formData.append('over_view_background', item.overViewBackgroundPicture)
-        formData.append('best_practice_background', item.bestPracticeBackgroundPicture)
+  
+        // ---------------------------
+        // append file for add/update
+        // ---------------------------
+        if(typeof(item.pictureUrl) === 'object'){
+            formData.append('sub_menu_image', item.pictureUrl)
+        }
+        if(typeof(item.overViewBackgroundPicture) === 'object'){
+            formData.append('over_view_background', item.overViewBackgroundPicture)
+        }
+        if(typeof(item.bestPracticeBackgroundPicture) === 'object'){
+            formData.append('best_practice_background', item.bestPracticeBackgroundPicture)
+        }
+        // ------------------------
+        // append file for delete
+        // ------------------------
+        // eslint-disable-next-line 
+        if(typeof(item.pictureUrl) === 'string' || typeof(item.pictureUrl) === 'null'){
+            formData.append('pictureUrl', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.overViewBackgroundPicture) === 'string' || typeof(item.overViewBackgroundPicture) === 'null'){
+            formData.append('overViewBackgroundPicture', item.overViewBackgroundPicture)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.bestPracticeBackgroundPicture) === 'string' || typeof(item.bestPracticeBackgroundPicture) === 'null'){
+            formData.append('bestPracticeBackgroundPicture', item.bestPracticeBackgroundPicture)
+        }
 
+
+        // typeof(item.pictureUrl) === 'object' && formData.append('sub_menu_image', item.pictureUrl)
+        // typeof(item.overViewBackgroundPicture) === 'object' && formData.append('over_view_background', item.overViewBackgroundPicture)
+        // typeof(item.bestPracticeBackgroundPicture) === 'object' && formData.append('best_practice_background', item.bestPracticeBackgroundPicture)
+
+        // ------------------------
+        // append file for delete
+        // ------------------------
+
+        // eslint-disable-next-line 
+        // (typeof(item.pictureUrl) === 'string' || typeof(item.pictureUrl) === 'null') && formData.append('pictureUrl', item.pictureUrl)
+        // eslint-disable-next-line 
+        // (typeof(item.overViewBackgroundPicture) === 'string' || typeof(item.overViewBackgroundPicture) === 'null') && formData.append('overViewBackgroundPicture', item.overViewBackgroundPicture)
+        // eslint-disable-next-line 
+        // (typeof(item.bestPracticeBackgroundPicture) === 'string' || typeof(item.bestPracticeBackgroundPicture) === 'null') && formData.append('bestPracticeBackgroundPicture', item.bestPracticeBackgroundPicture)
+
+        // append form data end
         if (formData) {
             resetForm()
             setRecordForEdit(null)
             setOpenPopup(false)
             saveItem(formData, item.id)
             .then(()=>{
-                // resetForm()
-                // setRecordForEdit(null)
-                // setOpenPopup(false)
                 if (successSave) {
                     setNotify({
                         isOpen: true,
@@ -174,6 +217,7 @@ export default function SubMenuScreen() {
     return (
 
         <div>
+            
             {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
                 <>
                     <PageTitle title="Sub Menus" />
@@ -203,6 +247,11 @@ export default function SubMenuScreen() {
                                                         <TableCell>{item.overViewSubtitle}</TableCell>
                                                         <TableCell>{item.bestPracticeTitle}</TableCell>
                                                         <TableCell>{item.bestPracticeSubtitle}</TableCell>
+                                                        <TableCell>
+                                                            {
+                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                            }
+                                                        </TableCell>
                                                         <TableCell>
                                                             {
                                                                 item.overViewBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.overViewBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"

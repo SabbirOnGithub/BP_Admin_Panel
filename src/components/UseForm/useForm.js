@@ -7,7 +7,7 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 
     const [values, setValues] = useState(initialFValues);
     const [files, setFiles] = useState(null);
-    const [fileUrl, setFileUrl] = useState('');
+    // const [fileUrl, setFileUrl] = useState(null);
     const [errors, setErrors] = useState({});
 
     const handleInputChange = e => {
@@ -44,15 +44,14 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 
     const handleFileChange = e => {
         // for single file in one form
-        e.target.files[0] && setFiles(e.target.files[0])
-        // e.target.files[0] && setFileUrl(URL.createObjectURL(e.target.files[0]))
+        // e.target.files[0] && setFiles(e.target.files[0])
 
         // for multiple image field in a form 
         const { name, files } = e.target
         if(name){
             setValues({
                 ...values,
-                [name]: files[0]
+                [name]: files[0],
             })
         }
 
@@ -71,8 +70,21 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
             validate({ [name]: editorValue })
     }
     const resetForm = () => {
+        // console.log(values)
         setValues(initialFValues);
         setFiles(null)
+        // setFileUrl(null)
+        setErrors({})
+    }
+
+    const resetFileInput = (name) => {
+        
+        if(name){
+            setValues({
+                ...values,
+                [name]: null
+            })
+        }
         setErrors({})
     }
 
@@ -80,7 +92,8 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
     return {
         values,
         files,
-        fileUrl,
+        resetFileInput,
+        // fileUrl,
         setValues,
         errors,
         setErrors,

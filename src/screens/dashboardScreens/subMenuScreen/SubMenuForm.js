@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 
@@ -11,8 +11,9 @@ const initialFValues = {
     overViewSubtitle: '',
     bestPracticeTitle: '',
     bestPracticeSubtitle: '',
-    overViewBackgroundPicture: '',
-    bestPracticeBackgroundPicture: '',
+    pictureUrl:null,
+    overViewBackgroundPicture: null,
+    bestPracticeBackgroundPicture: null,
 }
 
 export default function SubMenuForm(props) {
@@ -42,13 +43,13 @@ export default function SubMenuForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files,
+        resetFileInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            addOrEdit(values, files, resetForm);
+            addOrEdit(values, resetForm);
         }
     }
 
@@ -77,6 +78,7 @@ export default function SubMenuForm(props) {
                         value={values.name}
                         readOnly
                     />
+                    
 
                     <Controls.Input
                         name="overViewTitle"
@@ -106,38 +108,32 @@ export default function SubMenuForm(props) {
                         onChange={handleInputChange}
                         error={errors.bestPracticeSubtitle}
                     />
-                    <div style={{ margin: 5, marginBottom: 10 }}>
-                        <Button
-                            variant="contained"
-                            component="label"
-                        >
-                            Upload File
-                         <input
-                                name="overViewBackgroundPicture"
-                                type="file"
-                                onChange={handleFileChange}
-                                hidden
-                            />
-                        </Button>
-                        <span style={{ marginLeft: 5 }}>{values.overViewBackgroundPicture ? values.overViewBackgroundPicture.name : 'no file'}</span>
-                        <span style={{ fontSize: 14, margin: 5 }}> OverView Background Picture </span>
-                    </div>
-                    <div style={{ margin: 5, marginBottom: 10 }}>
-                        <Button
-                            variant="contained"
-                            component="label"
-                        >
-                            Upload File
-                         <input
-                                name="bestPracticeBackgroundPicture"
-                                type="file"
-                                onChange={handleFileChange}
-                                hidden
-                            />
-                        </Button>
-                        <span style={{ marginLeft: 5 }}>{values.bestPracticeBackgroundPicture ? values.bestPracticeBackgroundPicture.name : 'no file'}</span>
-                        <span style={{ fontSize: 14, margin: 5 }}> Best Practice Background Picture</span>
-                    </div>
+                    <Controls.FileInput
+                        name="pictureUrl"
+                        label="Sub Menu Picture"
+                        value={values.pictureUrl}
+                        onChange={handleFileChange}
+                        error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
+                    />
+
+                    <Controls.FileInput
+                        name="overViewBackgroundPicture"
+                        label="OverView Background Picture"
+                        value={values.overViewBackgroundPicture}
+                        onChange={handleFileChange}
+                        error={errors.overViewBackgroundPicture}
+                        resetFileInput = {resetFileInput}
+                    />
+
+                    <Controls.FileInput
+                        name="bestPracticeBackgroundPicture"
+                        label="BestPractice Background Picture"
+                        value={values.bestPracticeBackgroundPicture}
+                        onChange={handleFileChange}
+                        error={errors.bestPracticeBackgroundPicture}
+                        resetFileInput = {resetFileInput}
+                    />
                     <div>
                         <Controls.Button
                             type="submit"

@@ -29,7 +29,7 @@ const headCells = [
     { id: 'shortDescription', label: 'Short Description' },
     { id: 'isActive', label: 'Active' },
     { id: 'displayOrder', label: 'Display Order' },
-    { id: 'pictureName', label: 'Picture' },
+    { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 

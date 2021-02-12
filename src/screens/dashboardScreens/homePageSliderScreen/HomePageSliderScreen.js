@@ -16,7 +16,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
 import { deleteHomePageSlider, listHomePageSliders, saveHomePageSlider } from '../../../redux/actions/homePageSliderActions';
-import { listHomePageDatas } from '../../../redux/actions/homePageActions';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -33,9 +32,6 @@ const headCells = [
 ]
 
 export default function HomePageSliderScreen() {
-    const homePageDataList = useSelector(state => state.homePageDataList);
-    //eslint-disable-next-line
-    const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
 
     const homePageSliderList = useSelector(state => state.homePageSliderList)
     //eslint-disable-next-line
@@ -76,18 +72,31 @@ export default function HomePageSliderScreen() {
         dispatch(deleteHomePageSlider(id));
         resolve();
     })
-    const addOrEdit = (item, files, resetForm) => {
+    const addOrEdit = (item, resetForm) => {
 
         const formData = new FormData();
-        console.log(item)
         // append form data
         item.id && formData.append('Id', item.id)
-        formData.append('HomepageId', item.homepageId)
         formData.append('Title', item.title)
         formData.append('SubTitle', item.subTitle)
         formData.append('DisplayOrder', item.displayOrder)
         formData.append('IsActive', item.isActive)
-        formData.append('file', files)
+        // append for add/update image
+        if(typeof(item.pictureUrl) === 'object'){
+            formData.append('file', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('pictureUrl', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        // typeof(item.pictureUrl) === 'object' && formData.append('file', item.pictureUrl)
+
+        // append  for delete image
+        // eslint-disable-next-line 
+        // (typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string') && formData.append('pictureUrl', item.pictureUrl)
+
+        // formData.append('file', files)
 
         if (formData) {
             resetForm()
@@ -151,7 +160,6 @@ export default function HomePageSliderScreen() {
 
 
     useEffect(() => {
-        dispatch(listHomePageDatas());
         dispatch(listHomePageSliders());
         return () => {
             // 
@@ -161,7 +169,7 @@ export default function HomePageSliderScreen() {
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
+            {loading || loadingSave || loadingDelete ? "Loading ...." :
                 <>
                     <PageTitle title="Home Page Slider" />
 
@@ -228,7 +236,6 @@ export default function HomePageSliderScreen() {
                                     <HomepageSliderForm
                                         recordForEdit={recordForEdit}
                                         addOrEdit={addOrEdit} 
-                                        homePageDatas = {homePageDatas}
                                     />
                                 </Popup>
                                 <Notification

@@ -6,6 +6,7 @@ import DatePicker from "./DatePicker";
 import Button from "./Button";
 import ActionButton from "./ActionButton";
 import RichTextEditor from "./RichTextEditor";
+import FileInput from "./FileInput";
 
 const Controls = {
     Input,
@@ -15,7 +16,8 @@ const Controls = {
     DatePicker,
     Button,
     ActionButton,
-    RichTextEditor
+    RichTextEditor,
+    FileInput
 }
 
 export default Controls;

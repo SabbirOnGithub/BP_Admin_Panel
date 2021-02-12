@@ -11,7 +11,6 @@ const initialFValues = {
     homepageId: '',
     name: '',
     shortDescription: EditorState.createEmpty(),
-    pictureName: '',
     isActive: false,
     displayOrder: '',
     pictureUrl:'',

@@ -26,7 +26,7 @@ const listSubMenus = () => async (dispatch)=>{
         }else{
             dispatch({ type: SUBMENU_LIST_FAIL, payload: data.message });
         }
-        // console.log(data)
+        console.log(data)
     }
     catch(error){
         dispatch({ type: SUBMENU_LIST_FAIL, payload: error.message });
@@ -61,6 +61,7 @@ const saveSubMenu = (item, id) => async (dispatch) =>{
                 dispatch({ type: SUBMENU_SAVE_FAIL, payload: data.message });
             }
         }else{
+            console.log(item)
             const { data } = await axiosWithTokenAndMultipartData.put("/SubMenu", item);
             // console.log(data)
             if(data.status===true){
