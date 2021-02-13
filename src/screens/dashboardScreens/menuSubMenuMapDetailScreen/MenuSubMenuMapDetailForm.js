@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState, ContentState, convertToRaw  } from 'draft-js';
@@ -29,9 +29,6 @@ export default function MenuSubMenuMapDetailForm(props) {
             temp.title = fieldValues.title ? "" : "This field is required."
         if ('subTitle' in fieldValues)
             temp.subTitle = fieldValues.subTitle ? "" : "This field is required."
-        // if ('description' in fieldValues)
-        //     temp.description = fieldValues.description ? "" : "This field is required."
-
         setErrors({
             ...temp
         })
@@ -48,8 +45,8 @@ export default function MenuSubMenuMapDetailForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files,
-        handleEditorInput
+        handleEditorInput,
+        resetFileInput
     } = useForm(initialFValues, true, validate);
 
     const felteredMenuSubMenuMaps = menuSubMenuMaps.filter(item => item.menuId === values.menuId && item.subMenuId === values.subMenuId)
@@ -65,7 +62,7 @@ export default function MenuSubMenuMapDetailForm(props) {
                 console.log(e)
             }
             finally{
-                addOrEdit(values, files, resetForm);
+                addOrEdit(values, resetForm);
             }
         }
     }
@@ -137,34 +134,19 @@ export default function MenuSubMenuMapDetailForm(props) {
                         onChange={handleInputChange}
                         error={errors.subTitle}
                     />
-                    {/* <Controls.Input
-                        label="Description"
-                        name="description"
-                        value={values.description}
-                        onChange={handleInputChange}
-                        error={errors.description}
-                    /> */}
-
                     <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)
                         placeholder="Description here..."
                         editorState = {values.description}
                     />
-                    <div style={{ margin: 5 }}>
-                        <Button
-                            variant="contained"
-                            component="label"
-                        >
-                            Upload File
-                         <input
-                                type="file"
-                                onChange={handleFileChange}
-                                hidden
-                            />
-                        </Button>
-                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
-                    </div>
-
+                    <Controls.FileInput
+                        name="pictureUrl"
+                        label="Picture"
+                        value={values.pictureUrl}
+                        onChange={handleFileChange}
+                        error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
+                    />
                     <div>
                         <Controls.Button
                             type="submit"

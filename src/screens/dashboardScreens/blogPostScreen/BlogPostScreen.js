@@ -86,17 +86,8 @@ export default function BlogPostScreen() {
         resolve();
     })
 
-    const addOrEdit = async (item, files, resetForm) => {
-        resetForm()
-        setRecordForEdit(null)
-        setOpenPopup(false)
-        // item['authorId'] = userInfo.userId
-        // // item.published ? item['published'] = 1 : item['published'] = 0
-        // delete item.authorName
-        // delete item.createdAt
-        // delete item.updatedAt
-        // delete item.publishedAt
-        console.log(item)
+    const addOrEdit = async (item, resetForm) => {
+      
 
         const formData = new FormData();
         item.id && formData.append('Id', item.id)
@@ -106,29 +97,43 @@ export default function BlogPostScreen() {
         formData.append('Tags', item.tags)
         formData.append('Published', item.published)
         formData.append('AuthorId', userInfo.userId)
-        formData.append('PictureUrl', item.pictureUrl)
-        formData.append('file', files)
-        saveItem(formData, item.id)
-        .then(()=>{
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            if (successSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submitted Successfully',
-                    type: 'success'
-                })
-            }
-            
-            if (errorSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submition Failed',
-                    type: 'warning'
-                })
-            }
-        })
+        // formData.append('PictureUrl', item.pictureUrl)
+        // formData.append('file', files)
+        // append for add/update image
+        if(typeof(item.pictureUrl) === 'object'){
+            formData.append('file', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('pictureUrl', item.pictureUrl)
+        }
+
+        if (formData) {
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
+            saveItem(formData, item.id)
+            .then(()=>{
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+                
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+        }
         
     }
 

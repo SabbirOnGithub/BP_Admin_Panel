@@ -90,11 +90,10 @@ export default function MenuSubMenuMapScreen() {
         dispatch(deleteMenuSubMenuMap(id));
         resolve();
     })
-    const addOrEdit = (item, files, resetForm) => {
+    const addOrEdit = (item, resetForm) => {
 
         const formData = new FormData();
         // console.log(item.id)
-        console.log(files)
         item.id && formData.append('Id', item.id)
         formData.append('MenuId', item.menuId)
         formData.append('SubMenuId', item.subMenuId)
@@ -102,7 +101,14 @@ export default function MenuSubMenuMapScreen() {
         formData.append('SubTitle', item.subTitle)
         formData.append('Header', item.header)
         formData.append('Description', item.description)
-        files && formData.append('file', files)
+        // append for add/update image
+        if(typeof(item.pictureUrl) === 'object'){
+            formData.append('file', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('pictureUrl', item.pictureUrl)
+        }
 
         if (formData) {
             resetForm()
@@ -182,7 +188,7 @@ export default function MenuSubMenuMapScreen() {
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <Widget
-                                title="MenuSubMenuMap Table"
+                                title="Menu Sub Menu Map Table"
                                 upperTitle
                                 noBodyPadding
                                 setOpenPopup={setOpenPopup}

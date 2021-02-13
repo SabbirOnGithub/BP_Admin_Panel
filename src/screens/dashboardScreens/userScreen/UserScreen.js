@@ -83,7 +83,7 @@ export default function UserScreen() {
         resolve();
     })
     //eslint-disable-next-line
-    const addOrEdit = (item, files, resetForm) => {
+    const addOrEdit = (item, resetForm) => {
         console.log(item.id)
         const formData = new FormData();
         item.id && formData.append('Id', item.id)
@@ -95,7 +95,14 @@ export default function UserScreen() {
         formData.append('Mobile', item.mobile)
         formData.append('Email', item.email)
         formData.append('Address', item.address)
-        formData.append('file', files)
+        // append for add/update image
+        if(typeof(item.photo) === 'object'){
+            formData.append('file', item.photo)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.photo) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('photo', item.photo)
+        }
 
         if (formData) {
             resetForm()

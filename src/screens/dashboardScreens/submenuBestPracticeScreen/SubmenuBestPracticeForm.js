@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState, ContentState, convertToRaw  } from 'draft-js';
@@ -42,8 +42,8 @@ export default function SubmenuBestPracticeForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files,
-        handleEditorInput
+        handleEditorInput,
+        resetFileInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -56,7 +56,7 @@ export default function SubmenuBestPracticeForm(props) {
                 console.log(e)
             }
             finally{
-                addOrEdit(values, files, resetForm);
+                addOrEdit(values, resetForm);
             }
         }
     }
@@ -110,21 +110,14 @@ export default function SubmenuBestPracticeForm(props) {
                         placeholder="Description here..."
                         editorState = {values.description}
                     />
-                    
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
-                        >
-                        Upload File
-                         <input
-                        type="file"
+                    <Controls.FileInput
+                        name="pictureUrl"
+                        label="Picture"
+                        value={values.pictureUrl}
                         onChange={handleFileChange}
-                        hidden
+                        error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
                     />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
-                    </div>
                     
                     <div>
                         <Controls.Button

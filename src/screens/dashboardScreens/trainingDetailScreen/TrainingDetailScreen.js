@@ -74,13 +74,20 @@ export default function TrainingDetailScreen() {
         dispatch(deleteTrainingDetail(id));
         resolve();
     })
-    const addOrEdit = (item, files, resetForm) => {
+    const addOrEdit = (item, resetForm) => {
         const formData = new FormData();
         console.log(item.id)
         formData.append('HompageId', item.id)
         formData.append('Title', item.title)
         formData.append('Description', item.description)
-        formData.append('file', files)
+        // append for add/update image
+        if(typeof(item.pictureUrl) === 'object'){
+            formData.append('file', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('pictureUrl', item.pictureUrl)
+        }
         
         if (formData) {
             resetForm()

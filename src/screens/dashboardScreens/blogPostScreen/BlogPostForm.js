@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Grid, Button, CircularProgress } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState, ContentState, convertToRaw  } from 'draft-js';
@@ -24,12 +24,8 @@ export default function BlogPostForm(props) {
 
         if ('title' in fieldValues)
             temp.title = fieldValues.title ? "" : "This field is required."
-        // if ('content' in fieldValues)
-        //     temp.content = fieldValues.content ? "" : "This field is required."
         if ('tags' in fieldValues)
             temp.tags = fieldValues.tags ? "" : "This field is required."
-        // if ('published' in fieldValues)
-        //     temp.published = fieldValues.published ? "" : "This field is required."
         if ('blogSubCategoryId' in fieldValues)
             temp.blogSubCategoryId = fieldValues.blogSubCategoryId ? "" : "This field is required."
         setErrors({
@@ -47,8 +43,8 @@ export default function BlogPostForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files,
-        handleEditorInput
+        handleEditorInput,
+        resetFileInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -61,7 +57,7 @@ export default function BlogPostForm(props) {
                 console.log(e)
             }
             finally{
-                addOrEdit(values, files, resetForm);
+                addOrEdit(values, resetForm);
             }
         }
     }
@@ -81,9 +77,6 @@ export default function BlogPostForm(props) {
                 if (contentBlock) {
                     const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
                     const content = EditorState.createWithContent(contentState);
-                // this.state = {
-                //     editorState,
-                // };
                 setValues({
                     ...recordForEdit,
                     content
@@ -114,13 +107,6 @@ export default function BlogPostForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
-                    {/* <Controls.Input
-                        name="content"
-                        label="Content"
-                        value={values.content}
-                        onChange={handleInputChange}
-                        error={errors.content}
-                    /> */}
                     <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('content', value)} //handleEditorInput(name, value)
                         placeholder="Content here..."
@@ -133,14 +119,6 @@ export default function BlogPostForm(props) {
                         onChange={handleInputChange}
                         error={errors.tags}
                     />
-                    {/* <Controls.Input
-                        label="Published"
-                        name="published"
-                        type="number"
-                        value={values.published}
-                        onChange={handleInputNumberChange}
-                        error={errors.published}
-                    /> */}
                     <Controls.Checkbox
                         name="published"
                         label="Published"
@@ -148,20 +126,14 @@ export default function BlogPostForm(props) {
                         onChange={handleInputChange}
                         error={errors.published}
                     />
-                    <div style={{ margin: 5 }}>
-                        <Button
-                            variant="contained"
-                            component="label"
-                        >
-                            Upload File
-                         <input
-                                type="file"
-                                onChange={handleFileChange}
-                                hidden
-                            />
-                        </Button>
-                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
-                    </div>
+                    <Controls.FileInput
+                        name="pictureUrl"
+                        label="Picture"
+                        value={values.pictureUrl}
+                        onChange={handleFileChange}
+                        error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
+                    />
 
                     <div>
                         {loadingSave ? (

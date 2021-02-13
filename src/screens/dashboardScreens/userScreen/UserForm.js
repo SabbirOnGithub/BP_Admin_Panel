@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, CircularProgress, Button } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 
@@ -14,6 +14,7 @@ const initialFValues = {
     email: "",
     mobile: "",
     address: "",
+    photo:""
 }
 
 export default function UserForm(props) {
@@ -23,8 +24,8 @@ export default function UserForm(props) {
         let temp = { ...errors }
         if ('username' in fieldValues)
             temp.username = fieldValues.username ? "" : "This field is required."
-        // if ('password' in fieldValues)
-        //     temp.password = fieldValues.password ? "" : "This field is required."
+        if ('password' in fieldValues)
+            temp.password = fieldValues.password ? "" : "This field is required."
         if ('roleId' in fieldValues)
             temp.roleId = fieldValues.roleId ? "" : "This field is required."
         if ('name' in fieldValues)
@@ -51,13 +52,13 @@ export default function UserForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files
+        resetFileInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            addOrEdit(values, files, resetForm);
+            addOrEdit(values, resetForm);
         }
     }
 
@@ -135,22 +136,14 @@ export default function UserForm(props) {
                         onChange={handleInputChange}
                         error={errors.isActive}
                     />
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
-                        >
-                        Upload File
-                         <input
-                        type="file"
+                    <Controls.FileInput
+                        name="photo"
+                        label="Photo"
+                        value={values.photo}
                         onChange={handleFileChange}
-                        hidden
+                        error={errors.photo}
+                        resetFileInput = {resetFileInput}
                     />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
-                    </div>
-
-
                     <div>
                         {loadingSave ? (
                             <CircularProgress size={26} />

@@ -26,7 +26,7 @@ const listSubMenus = () => async (dispatch)=>{
         }else{
             dispatch({ type: SUBMENU_LIST_FAIL, payload: data.message });
         }
-        console.log(data)
+        // console.log(data)
     }
     catch(error){
         dispatch({ type: SUBMENU_LIST_FAIL, payload: error.message });
@@ -50,7 +50,7 @@ const saveSubMenu = (item, id) => async (dispatch) =>{
     try{
         dispatch({type: SUBMENU_SAVE_REQUEST, payload:item })
         if(!id){
-            console.log('create')
+            // console.log('create')
             //eslint-disable-next-line
             const formatData = delete item.id;
             const { data } = await axiosWithTokenAndMultipartData.post("/SubMenu", item)
@@ -82,7 +82,7 @@ const deleteSubMenu = (id)=> async (dispatch, getState) =>{
     try{
         dispatch({type:SUBMENU_DELETE_REQUEST});
         const { data } = await axiosWithToken.delete("/SubMenu/" + id); 
-        console.log(data)
+        // console.log(data)
         if(data.status===true){
 
             dispatch({type:SUBMENU_DELETE_SUCCESS, payload: data, success:true });

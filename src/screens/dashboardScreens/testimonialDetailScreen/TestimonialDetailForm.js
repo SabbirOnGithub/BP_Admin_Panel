@@ -102,14 +102,6 @@ export default function TestimonialDetailForm(props) {
                         error={errors.homepageId}
                         options={homePageDatas ? homePageDatas : []}
                     />
-                    {/* <Controls.Input
-                        label="User Id"
-                        name="userId"
-                        type="number"
-                        value={values.userId}
-                        onChange={handleInputNumberChange}
-                        error={errors.userId}
-                    /> */}
                     <Controls.Select
                         name="userId"
                         label="User"
@@ -125,13 +117,6 @@ export default function TestimonialDetailForm(props) {
                         onChange={handleInputChange}
                         error={errors.userName}
                     />
-                    {/* <Controls.Input
-                        label="Message"
-                        name="message"
-                        value={values.message}
-                        onChange={handleInputChange}
-                        error={errors.message}
-                    /> */}
                     <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('message', value)} //handleEditorInput(name, value)
                         placeholder="Message here..."

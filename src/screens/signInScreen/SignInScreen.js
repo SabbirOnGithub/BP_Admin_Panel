@@ -33,8 +33,8 @@ function SignInScreen(props) {
   const dispatch = useDispatch();
   const submitHandler = (e)=>{
     e.preventDefault();
-    console.log(email)
-    console.log(password)
+    // console.log(email)
+    // console.log(password)
     dispatch(signin(email,password))
       // dispatch(detailsRoleResource())
     .then(res=>{

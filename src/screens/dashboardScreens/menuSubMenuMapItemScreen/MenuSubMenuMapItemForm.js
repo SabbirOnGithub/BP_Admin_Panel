@@ -128,14 +128,7 @@ export default function MenuSubMenuMapItemForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
-                    {/* <Controls.Input
-                        label="Description"
-                        name="description"
-                        value={values.description}
-                        onChange={handleInputChange}
-                        error={errors.description}
-                    /> */}
-
+                    
                     <Controls.RichTextEditor
                         onEditorStateChange={value => handleEditorInput('description', value)} //handleEditorInput(name, value)
                         placeholder="Description here..."

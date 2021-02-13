@@ -83,7 +83,7 @@ export default function MenuSectionDetailScreen() {
         dispatch(deleteMenuSectionDetail(id));
         resolve();
     })
-    const addOrEdit = (item, files, resetForm) => {
+    const addOrEdit = (item, resetForm) => {
 
         const formData = new FormData();
         // append form data
@@ -91,7 +91,14 @@ export default function MenuSectionDetailScreen() {
         formData.append('MenuSectionId', item.menuSectionId)
         formData.append('Title', item.title)
         formData.append('Description', item.description)
-        formData.append('file', files)
+        // append for add/update image
+        if(typeof(item.pictureUrl) === 'object'){
+            formData.append('file', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('pictureUrl', item.pictureUrl)
+        }
 
         if (formData) {
             resetForm()

@@ -80,7 +80,7 @@ export default function ShortIntroScreen() {
         dispatch(deleteSubMenu(id));
         resolve();
     })
-    const addOrEdit = (item, files, resetForm) => {
+    const addOrEdit = (item, resetForm) => {
         const formData = new FormData();
         item.id && formData.append('Id', item.id)
         formData.append('HomepageId', item.homepageId)
@@ -88,9 +88,15 @@ export default function ShortIntroScreen() {
         formData.append('ShortDescription', item.shortDescription)
         formData.append('DisplayOrder', item.displayOrder)
         formData.append('isActive', item.isActive)
-        // formData.append('file', files)
-        formData.append('sub_menu_image', item.pictureUrl)
 
+        // append for add/update image
+        if(typeof(item.pictureUrl) === 'object'){
+            formData.append('sub_menu_image', item.pictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('pictureUrl', item.pictureUrl)
+        }
 
         if (formData) {
             resetForm()

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState, ContentState, convertToRaw  } from 'draft-js';
@@ -25,10 +25,7 @@ export default function ShortIntroForm(props) {
             temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         if ('name' in fieldValues)
             temp.fullName = fieldValues.name ? "" : "This field is required."
-        // if ('shortDescription' in fieldValues)
-        //     temp.shortDescription = fieldValues.shortDescription ? "" : "This field is required."
         if ('displayOrder' in fieldValues)
-            // temp.displayOrder = fieldValues.displayOrder && typeof(fieldValues.displayOrder)==='number'? "" : "This field is required."
             temp.displayOrder = fieldValues.displayOrder ? "" : "This field is required."
 
         setErrors({
@@ -48,16 +45,14 @@ export default function ShortIntroForm(props) {
         handleFileChange,
         handleInputNumberChange,
         resetForm,
-        files,
-        handleEditorInput
+        handleEditorInput,
+        resetFileInput
 
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
-        // if (validate()) {
-        //     addOrEdit(values, files, resetForm);
-        // }
+        
         if (validate()) {
             try{
                 values['shortDescription'] = draftToHtml(convertToRaw(values.shortDescription.getCurrentContent()))
@@ -66,16 +61,13 @@ export default function ShortIntroForm(props) {
                 console.log(e)
             }
             finally{
-                addOrEdit(values, files, resetForm);
+                addOrEdit(values, resetForm);
             }
         }
     }
 
     useEffect(() => {
-        // if (recordForEdit != null)
-        //     setValues({
-        //         ...recordForEdit
-        //     })
+        
         if (recordForEdit != null){
             try {    
                 setValues({
@@ -140,21 +132,15 @@ export default function ShortIntroForm(props) {
                         onChange={handleInputChange}
                         error={errors.isActive}
                     />
-                    <div style={{ margin: 5 }}>
-                        <Button
-                            variant="contained"
-                            component="label"
-                        >
-                            Upload File
-                         <input
-                                name='pictureUrl'
-                                type="file"
-                                onChange={handleFileChange}
-                                hidden
-                            />
-                        </Button>
-                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
-                    </div>
+                    
+                    <Controls.FileInput
+                        name="pictureUrl"
+                        label="Picture"
+                        value={values.pictureUrl}
+                        onChange={handleFileChange}
+                        error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
+                    />
 
                     <div>
                         <Controls.Button

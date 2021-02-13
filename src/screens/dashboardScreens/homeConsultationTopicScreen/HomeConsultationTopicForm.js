@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 import { EditorState, ContentState, convertToRaw  } from 'draft-js';
@@ -24,8 +24,6 @@ export default function HomeConsultationTopicForm(props) {
             temp.homepageId = fieldValues.homepageId ? "" : "This field is required."
         if ('name' in fieldValues)
             temp.name = fieldValues.name ? "" : "This field is required."
-        // if ('description' in fieldValues)
-        //     temp.description = fieldValues.description ? "" : "This field is required."
 
         setErrors({
             ...temp
@@ -43,8 +41,9 @@ export default function HomeConsultationTopicForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files,
-        handleEditorInput
+        handleEditorInput,
+        resetFileInput
+
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -57,7 +56,7 @@ export default function HomeConsultationTopicForm(props) {
                 console.log(e)
             }
             finally{
-                addOrEdit(values, files, resetForm);
+                addOrEdit(values, resetForm);
             }
         }
     }
@@ -92,19 +91,6 @@ export default function HomeConsultationTopicForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                    {/* <div style={{maxWidth:'90%',border:'1px solid lightGrey', padding:5, borderRadius:5}} className='MuiFormControl-root'>
-                    <Editor
-                        editorState={editorState}
-                        wrapperClassName="rich-editor demo-wrapper"	          
-                        editorClassName="demo-editor"	          
-                        onEditorStateChange={editorState => setEditorState(editorState)}	          
-                        placeholder="The message goes here..."
-                        
-                    />
-                </div> */}
-
-
-
                     <Controls.Select
                         name="homepageId"
                         label="Homepage"
@@ -126,20 +112,14 @@ export default function HomeConsultationTopicForm(props) {
                         placeholder="Description here..."
                         editorState = {values.description}
                     />
-                    <div style={{ margin: 5 }}>
-                        <Button
-                            variant="contained"
-                            component="label"
-                        >
-                            Upload File
-                         <input
-                                type="file"
-                                onChange={handleFileChange}
-                                hidden
-                            />
-                        </Button>
-                        <span style={{ marginLeft: 5 }}>{files ? files.name : 'no file'}</span>
-                    </div>
+                    <Controls.FileInput
+                        name="pictureUrl"
+                        label="Picture"
+                        value={values.pictureUrl}
+                        onChange={handleFileChange}
+                        error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
+                    />
 
                     <div>
                         <Controls.Button

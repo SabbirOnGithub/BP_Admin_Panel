@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, Button} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
 
@@ -38,13 +38,13 @@ export default function MenuSectionForm(props) {
         handleInputChange,
         handleFileChange,
         resetForm,
-        files
+        resetFileInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            addOrEdit(values, files, resetForm);
+            addOrEdit(values, resetForm);
         }
     }
 
@@ -74,22 +74,14 @@ export default function MenuSectionForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
-                    
-                    <div style={{margin:5}}>
-                    <Button
-                        variant="contained"
-                        component="label"
-                        >
-                        Upload File
-                         <input
-                        type="file"
+                    <Controls.FileInput
+                        name="pictureUrl"
+                        label="Picture"
+                        value={values.pictureUrl}
                         onChange={handleFileChange}
-                        hidden
+                        error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
                     />
-                    </Button>
-                    <span style={{marginLeft:5}}>{files ? files.name : 'no file'}</span>
-                    </div>
-                    
                     <div>
                         <Controls.Button
                             type="submit"
