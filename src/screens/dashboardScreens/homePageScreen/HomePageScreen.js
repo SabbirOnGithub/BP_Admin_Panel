@@ -20,6 +20,10 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
+// 
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import AccessDeniedScreen from '../../accessDeniedScreen/AccessDeniedScreen';
+
 
 // react redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -69,6 +73,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function HomePageScreen() {
 
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource
+      } = usePermission();
+    
+    const { createOperation, readOperation, updateOperation, deleteOperation } =  permission; 
+
     const homePageDataList = useSelector(state => state.homePageDataList);
     //eslint-disable-next-line
     const { homePageDatas, loading, error } = homePageDataList;
@@ -80,15 +93,13 @@ export default function HomePageScreen() {
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = homePageDataDelete;
 
 
+
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+
 
     const [recordForEdit, setRecordForEdit] = useState(null)
-    // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -98,6 +109,9 @@ export default function HomePageScreen() {
 
     const dispatch = useDispatch();
 
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
         dispatch(saveHomePageData(item));
@@ -169,19 +183,29 @@ export default function HomePageScreen() {
             })
     }
 
-
-
     useEffect(() => {
-        dispatch(listHomePageDatas());
+        try{
+            if(recievedPermission){
+                setPermission({...recievedPermission})
+            }
+            if(recievedPermission?.readOperation){
+                dispatch(listHomePageDatas());
+            }
+        }catch(e){
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation])
     return (
 
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" : 
+                (readOperation === false) ? <AccessDeniedScreen /> :
+                (
+                    homePageDatas.length >0 &&
                     <>
                         <PageTitle title="Basic Info" />
                         <Grid container spacing={4}>
@@ -190,6 +214,7 @@ export default function HomePageScreen() {
                                     title="Basic Info List"
                                     disableWidgetMenu
                                     addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                    createOperation = {createOperation}
                                 >
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                         {
@@ -201,8 +226,6 @@ export default function HomePageScreen() {
                                                             {item.id}
                                                         </Avatar>
                                                     }
-                                                //   title="Shrimp and Chorizo Paella"
-                                                //   subheader="September 14, 2016"
                                                 />
                                                 <CardContent>
                                                     <Typography variant="body2" color="textSecondary" component="span">
@@ -210,25 +233,31 @@ export default function HomePageScreen() {
                                                     </Typography>
                                                 </CardContent>
                                                 <CardActions disableSpacing>
-                                                    <Button size="small"
-                                                        color="primary"
-                                                        onClick={() => { openInPopup(item) }}
-                                                    >
-                                                        Edit
-                                                                </Button>
-                                                    <Button size="small"
-                                                        color="primary"
-                                                        onClick={() => {
-                                                            setConfirmDialog({
-                                                                isOpen: true,
-                                                                title: 'Are you sure to delete this record?',
-                                                                subTitle: "You can't undo this operation",
-                                                                onConfirm: () => { onDelete(item.id) }
-                                                            })
-                                                        }}
-                                                    >
-                                                        Delete
-                                                                </Button>
+                                                    
+                                                         
+                                                    {updateOperation && <Button size="small"
+                                                                        color="primary"
+                                                                        onClick={() => { openInPopup(item) }}
+                                                                    >
+                                                                        Edit
+                                                                    </Button>
+                                                    }
+                                                    { deleteOperation && <Button size="small"
+                                                                            color="primary"
+                                                                            onClick={() => {
+                                                                                setConfirmDialog({
+                                                                                    isOpen: true,
+                                                                                    title: 'Are you sure to delete this record?',
+                                                                                    subTitle: "You can't undo this operation",
+                                                                                    onConfirm: () => { onDelete(item.id) }
+                                                                                })
+                                                                            }}
+                                                                        >
+                                                                            Delete
+                                                                        </Button>
+                                                    }
+                                                    
+                                                    
                                                     <IconButton
                                                         className={clsx(classes.expand, {
                                                             [classes.expandOpen]: expanded,
@@ -297,6 +326,7 @@ export default function HomePageScreen() {
                             </Grid>
                         </Grid>
                     </>
+                )
             }
         </>
     )

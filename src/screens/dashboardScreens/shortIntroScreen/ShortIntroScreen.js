@@ -186,6 +186,8 @@ export default function ShortIntroScreen() {
                                 setRecordForEdit={setRecordForEdit}
                                 disableWidgetMenu
                                 addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                createOperation = {true}
+
                             >
                                
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>

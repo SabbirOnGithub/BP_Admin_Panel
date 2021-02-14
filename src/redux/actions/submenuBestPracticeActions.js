@@ -21,7 +21,7 @@ const listSubmenuBestPractices = () => async (dispatch) => {
     try {
         dispatch({ type: SUBMENU_BEST_PRACTICE_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get('/SubmenuBestPractice');
-        console.log(data)
+        // console.log(data)
         if (data.status === true) {
             dispatch({ type: SUBMENU_BEST_PRACTICE_LIST_SUCCESS, payload: data.data ? data.data : [] });
         } else {
@@ -49,7 +49,7 @@ const saveSubmenuBestPractice = (item, id) => async (dispatch) => {
     try {
         dispatch({ type: SUBMENU_BEST_PRACTICE_SAVE_REQUEST, payload: item })
         if (!id) {
-            console.log('create')
+            // console.log('create')
             //eslint-disable-next-line
             const formatHomePageData = delete item.id;
             const { data } = await axiosWithTokenAndMultipartData.post("/SubmenuBestPractice/Create", item)
@@ -61,7 +61,7 @@ const saveSubmenuBestPractice = (item, id) => async (dispatch) => {
             }
         } else {
             const { data } = await axiosWithTokenAndMultipartData.put("/SubmenuBestPractice/Update", item);
-            console.log(data)
+            // console.log(data)
             if (data.status === true) {
                 dispatch({ type: SUBMENU_BEST_PRACTICE_SAVE_SUCCESS, payload: data });
             }
@@ -70,7 +70,7 @@ const saveSubmenuBestPractice = (item, id) => async (dispatch) => {
             }
         }
     } catch (error) {
-        console.log(error)
+        console.warn(error)
         dispatch({ type: SUBMENU_BEST_PRACTICE_SAVE_FAIL, payload: error.message });
     }
 };

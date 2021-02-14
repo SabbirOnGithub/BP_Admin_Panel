@@ -62,7 +62,7 @@ export default function Widget({
                 </IconButton>
               )}
             {
-               props.addNew && 
+               props.addNew && props.createOperation &&
                <Controls.Button
                   text="Add New"
                   variant="outlined"

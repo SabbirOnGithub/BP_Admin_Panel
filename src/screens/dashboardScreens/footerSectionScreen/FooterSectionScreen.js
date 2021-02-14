@@ -83,7 +83,7 @@ export default function FooterSectionScreen() {
             // setRecordForEdit(null)
             // setOpenPopup(false)
             if (successSave) {
-                console.log(successSave)
+                // console.log(successSave)
                 setNotify({
                     isOpen: true,
                     message: successSaveMessage,
@@ -158,6 +158,8 @@ export default function FooterSectionScreen() {
                                     threeDotDisplay={true}
                                     disableWidgetMenu
                                     addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                    createOperation = {true}
+
 
                                 >
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>

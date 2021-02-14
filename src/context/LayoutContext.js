@@ -7,6 +7,10 @@ function layoutReducer(state, action) {
   switch (action.type) {
     case "TOGGLE_SIDEBAR":
       return { ...state, isSidebarOpened: !state.isSidebarOpened };
+    case "MOBILE_INITIAL_SIDEBAR":
+      return { ...state, isSidebarOpened: false };
+    case "DESKTOP_INITIAL_SIDEBAR":
+      return { ...state, isSidebarOpened: true };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -42,11 +46,22 @@ function useLayoutDispatch() {
   return context;
 }
 
-export { LayoutProvider, useLayoutState, useLayoutDispatch, toggleSidebar };
+export { LayoutProvider, useLayoutState, useLayoutDispatch, toggleSidebar, setSidbarForMobile, setSidbarForDesktop };
 
 // ###########################################################
 function toggleSidebar(dispatch) {
   dispatch({
     type: "TOGGLE_SIDEBAR",
+  });
+}
+
+function setSidbarForMobile(dispatch) {
+  dispatch({
+    type: "MOBILE_INITIAL_SIDEBAR",
+  });
+}
+function setSidbarForDesktop(dispatch) {
+  dispatch({
+    type: "DESKTOP_INITIAL_SIDEBAR",
   });
 }

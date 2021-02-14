@@ -12,6 +12,7 @@ import {
   Person as AccountIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
+// import Avatar from '@material-ui/core/Avatar';
 import classNames from "classnames";
 
 // styles
@@ -30,11 +31,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions/userActions';
 import { useHistory } from "react-router-dom";
 
+// import { config } from "../../config";
+// const BASE_ROOT_URL = config.BASE_ROOT_URL
+
 export default function Header(props) {
   var classes = useStyles();
   const userSignIn = useSelector( state => state.userSignin );
   //eslint-disable-next-line
   const { userInfo  } = userSignIn;
+  // console.log(userInfo)
   // global
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
@@ -44,11 +49,14 @@ export default function Header(props) {
   
   const dispatch = useDispatch();
   const history = useHistory();
+
+// logout
   const handleLogout = () => {
     console.log('logout');
     dispatch(logout());
     history.push("/signin");
   }
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
@@ -93,6 +101,7 @@ export default function Header(props) {
           onClick={e => setProfileMenu(e.currentTarget)}
         >
           <AccountIcon classes={{ root: classes.headerIcon }} />
+          {/* <Avatar alt="Remy Sharp" src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} /> */}
         </IconButton>
         
         <Menu

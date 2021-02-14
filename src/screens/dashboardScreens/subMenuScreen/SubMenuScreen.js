@@ -232,6 +232,8 @@ export default function SubMenuScreen() {
                                 setRecordForEdit={setRecordForEdit}
                                 disableWidgetMenu
                                 // addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                createOperation = {false}
+
                             >
                                
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>

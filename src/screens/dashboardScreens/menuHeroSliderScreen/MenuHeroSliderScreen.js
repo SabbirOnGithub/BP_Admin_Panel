@@ -182,6 +182,8 @@ export default function MenuHeroSliderScreen() {
                                 setRecordForEdit={setRecordForEdit}
                                 disableWidgetMenu
                                 addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                createOperation = {true}
+
                             >
                               
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>

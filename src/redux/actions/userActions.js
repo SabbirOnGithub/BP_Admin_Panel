@@ -33,7 +33,7 @@ const listUsers = () => async (dispatch) => {
         } else {
             dispatch({ type: USER_LIST_FAIL, payload: data.message });
         }
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch (error) {
         dispatch({ type: USER_LIST_FAIL, payload: error.message });
@@ -59,7 +59,7 @@ const saveUser = (item, id) => async (dispatch) => {
             //eslint-disable-next-line
             const formatData = delete item.id;
             const { data } = await axiosWithToken.post("/User/AddUser", item)
-            console.log(data)
+            // console.log(data)
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
             } else {

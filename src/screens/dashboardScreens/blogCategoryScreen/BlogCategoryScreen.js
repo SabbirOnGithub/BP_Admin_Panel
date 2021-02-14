@@ -133,7 +133,6 @@ export default function BlogCategoryScreen(props) {
 
         <>
             {
-                // loading || loadingSave || loadingDelete ? "Loading" : readOperation &&
                 loading || loadingSave || loadingDelete ? "Loading" : 
                     <>
                         <PageTitle title="Blog Categorys" />
@@ -149,8 +148,7 @@ export default function BlogCategoryScreen(props) {
                                     threeDotDisplay={true}
                                     disableWidgetMenu
                                     addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    // createPermission = {createOperation}
-                                    createPermission = {true}
+                                    createOperation = {true}
                                 >
                                     
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>

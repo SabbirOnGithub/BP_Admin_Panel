@@ -37,11 +37,12 @@ import { paymentPackageDeleteReducer, paymentPackageDetailsReducer, paymentPacka
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = [];
+const loadingRoleResource = true;
 
 
 const initialState={ 
     userSignin:{ userInfo },
-    roleResourceDetails : { roleResource }
+    roleResourceDetails : { roleResource, loading:loadingRoleResource }
 };
 const reducer = combineReducers({
     userSignin:userSigninReducer,

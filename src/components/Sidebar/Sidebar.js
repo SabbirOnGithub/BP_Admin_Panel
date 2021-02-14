@@ -30,7 +30,12 @@ import {
   useLayoutState,
   useLayoutDispatch,
   toggleSidebar,
+  setSidbarForMobile,
+  setSidbarForDesktop
 } from "../../context/LayoutContext";
+
+import { useSelector } from 'react-redux';
+
 
 const structure = [
   { id: 0, label: "Dashboard", link: "/dashboard", icon: <AppsIcon /> },
@@ -141,6 +146,9 @@ const structure = [
 
 
 function Sidebar({ location }) {
+  const roleResourceDetails = useSelector(state => state.roleResourceDetails);
+  const { roleResource } = roleResourceDetails;
+
   var classes = useStyles();
   var theme = useTheme();
 
@@ -186,12 +194,14 @@ function Sidebar({ location }) {
       </div>
       <List className={classes.sidebarList}>
         {structure.map(link => (
+          (roleResource.find(item => {return item.urlPath === link.link})?.readOperation || link.children) &&
           <SidebarLink
             key={link.id}
             location={location}
             isSidebarOpened={isSidebarOpened}
             {...link}
           />
+          
         ))}
       </List>
     </Drawer>
@@ -205,8 +215,10 @@ function Sidebar({ location }) {
 
     if (isSmallScreen && isPermanent) {
       setPermanent(false);
+      setSidbarForMobile(layoutDispatch)
     } else if (!isSmallScreen && !isPermanent) {
       setPermanent(true);
+      setSidbarForDesktop(layoutDispatch)
     }
   }
 }

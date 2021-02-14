@@ -18,6 +18,9 @@ import useStyles from "./styles";
 // components
 import Dot from "../Dot";
 
+// redux action 
+import { useSelector } from 'react-redux';
+
 export default function SidebarLink({
   link,
   icon,
@@ -28,6 +31,10 @@ export default function SidebarLink({
   nested,
   type,
 }) {
+
+  const roleResourceDetails = useSelector(state => state.roleResourceDetails);
+  const { roleResource } = roleResourceDetails;
+
   var classes = useStyles();
 
   // local
@@ -50,9 +57,10 @@ export default function SidebarLink({
 
   if (type === "divider") return <Divider className={classes.divider} />;
 
-  if (!children)
-    return (
-      <ListItem
+  if (!children){
+      return (
+        <>
+        <ListItem
         button
         component={link && Link}
         to={link}
@@ -82,8 +90,10 @@ export default function SidebarLink({
           primary={label}
         />
       </ListItem>
+        </>
     );
-
+    
+  }
   return (
     <>
       <ListItem
@@ -112,7 +122,7 @@ export default function SidebarLink({
         />
         {isSidebarOpened && <ExpandMoreIcon className={isOpen ? classes.rotateIcon : null}/>} 
       </ListItem>
-      {children && (
+      {children &&(
         <Collapse
           in={isOpen && isSidebarOpened}
           timeout="auto"
@@ -121,6 +131,7 @@ export default function SidebarLink({
         >
           <List component="div" disablePadding>
             {children.map(childrenLink => (
+              (roleResource.find(item => {return item.urlPath === childrenLink.link})?.readOperation) &&
               <SidebarLink
                 key={childrenLink && childrenLink.link}
                 location={location}

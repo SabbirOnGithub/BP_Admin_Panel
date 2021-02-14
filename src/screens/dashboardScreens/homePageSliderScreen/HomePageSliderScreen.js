@@ -13,6 +13,8 @@ import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { useSelector, useDispatch } from 'react-redux';
 
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import AccessDeniedScreen from '../../accessDeniedScreen/AccessDeniedScreen';
 
 // redux actions
 import { deleteHomePageSlider, listHomePageSliders, saveHomePageSlider } from '../../../redux/actions/homePageSliderActions';
@@ -32,6 +34,14 @@ const headCells = [
 ]
 
 export default function HomePageSliderScreen() {
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource
+      } = usePermission();
+    
+    const { createOperation, readOperation, updateOperation, deleteOperation } =  permission; 
 
     const homePageSliderList = useSelector(state => state.homePageSliderList)
     //eslint-disable-next-line
@@ -160,17 +170,29 @@ export default function HomePageSliderScreen() {
 
 
     useEffect(() => {
-        dispatch(listHomePageSliders());
+        try{
+            if(recievedPermission){
+                setPermission({...recievedPermission})
+            }
+            if(recievedPermission?.readOperation){
+                dispatch(listHomePageSliders());
+            }
+        }catch(e){
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation])
 
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
-                <>
+            {   (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading ...." :
+                (readOperation === false) ? <AccessDeniedScreen /> :
+               (
+                   homePageSliders.length >0 &&
+                    <>
                     <PageTitle title="Home Page Slider" />
 
                     <Grid container spacing={4}>
@@ -183,6 +205,7 @@ export default function HomePageSliderScreen() {
                                 setRecordForEdit={setRecordForEdit}
                                 disableWidgetMenu
                                 addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                createOperation = {createOperation}
                             >
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                     <TblContainer>
@@ -203,23 +226,26 @@ export default function HomePageSliderScreen() {
                                                             }
                                                         </TableCell>
                                                         <TableCell>
-                                                            <Controls.ActionButton
-                                                                color="primary"
-                                                                onClick={() => { openInPopup(item) }}>
-                                                                <EditOutlinedIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                            <Controls.ActionButton
-                                                                color="secondary"
-                                                                onClick={() => {
-                                                                    setConfirmDialog({
-                                                                        isOpen: true,
-                                                                        title: 'Are you sure to delete this record?',
-                                                                        subTitle: "You can't undo this operation",
-                                                                        onConfirm: () => { onDelete(item.id) }
-                                                                    })
-                                                                }}>
-                                                                <CloseIcon fontSize="small" />
-                                                            </Controls.ActionButton>
+                                                        {updateOperation && <Controls.ActionButton
+                                                                                color="primary"
+                                                                                onClick={() => { openInPopup(item) }}>
+                                                                                <EditOutlinedIcon fontSize="small" />
+                                                                            </Controls.ActionButton>
+                                                        }
+                                                        { deleteOperation && <Controls.ActionButton
+                                                                                color="secondary"
+                                                                                onClick={() => {
+                                                                                    setConfirmDialog({
+                                                                                        isOpen: true,
+                                                                                        title: 'Are you sure to delete this record?',
+                                                                                        subTitle: "You can't undo this operation",
+                                                                                        onConfirm: () => { onDelete(item.id) }
+                                                                                    })
+                                                                                }}>
+                                                                                <CloseIcon fontSize="small" />
+                                                                            </Controls.ActionButton>
+                                                        }
+                                                        {!updateOperation && !deleteOperation && <>Access Denied</>}
                                                         </TableCell>
                                                     </TableRow>)
                                                 )
@@ -251,6 +277,7 @@ export default function HomePageSliderScreen() {
                         </Grid>
                     </Grid>
                 </>
+               )
             }
         </div>
     )

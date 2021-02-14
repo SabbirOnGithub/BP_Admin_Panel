@@ -195,6 +195,8 @@ export default function MenuSubMenuMapScreen() {
                                 setRecordForEdit={setRecordForEdit}
                                 disableWidgetMenu
                                 addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                createOperation = {true}
+
                             >
                                 <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                     <TblContainer>

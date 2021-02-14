@@ -40,14 +40,9 @@ import ContactUsMessageScreen from "../screens/dashboardScreens/contactUsMessage
 import PaymentPackageScreen from "../screens/dashboardScreens/paymentPackageScreen/PaymentPackageScreen";
 
 
-// import { searchNameByIdFromArray } from '../helpers/search';
-
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
-// import { listResources } from '../redux/actions/resourceActions';
-
 
 const DashboardScreensRoute = (props) => {
-
 
   const roleResourceDetails = useSelector(state => state.roleResourceDetails);
   const { roleResource, loading:loadingRoleResource } = roleResourceDetails;
@@ -60,12 +55,11 @@ const DashboardScreensRoute = (props) => {
   useEffect(() => {
     try{
       if(typeof roleResource === 'object' && roleResource !== null && Object.keys(roleResource).length === 0){
-        // if(roleResource === undefined || roleResource.length === 0){
           dispatch(detailsRoleResource(userInfo.userId))
         }
     }
     catch(error){
-      console.log(error)
+      console.warn(error)
     }
     
     return () => {
@@ -77,8 +71,7 @@ const DashboardScreensRoute = (props) => {
   {   loadingRoleResource ? 'loading' : 
     <CustomLayout>
       <Switch>
-        <Route exact path={`${props.match.path}/`} component={()=><HomeScreen test={roleResource}/> }/>
-        {/* <Route exact path={`${props.match.path}/`} component={HomeScreen} /> */}
+        <Route exact path={`${props.match.path}/`} component={()=><HomeScreen test={roleResource}/>}/>
         <Route exact path={`${props.match.path}/submenu`} component={SubMenuScreen} />
         <Route exact path={`${props.match.path}/homePage`} component={HomePageScreen} />
         <Route exact path={`${props.match.path}/menu`} component={MenuScreen} />
@@ -114,7 +107,6 @@ const DashboardScreensRoute = (props) => {
         <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
         <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
         <Route exact path={`${props.match.path}/roleResource`} test='tajul' component={RoleResourceScreen}  />
-
 
         <Route path="*">
           <Redirect to="/notFound" />

@@ -197,6 +197,8 @@ export default function UserScreen() {
                                     threeDotDisplay={false}
                                     disableWidgetMenu
                                     addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                    createOperation = {true}
+
                                 >
 
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
