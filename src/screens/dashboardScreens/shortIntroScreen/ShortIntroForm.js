@@ -76,7 +76,6 @@ export default function ShortIntroForm(props) {
               } catch (e) {
                 console.warn(e);
               } finally {
-                console.log('state set done')
                 const html = recordForEdit.shortDescription;
                 const contentBlock = htmlToDraft(html);
                 if (contentBlock) {

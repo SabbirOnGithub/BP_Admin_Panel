@@ -5,8 +5,6 @@ import { Editor } from 'react-draft-wysiwyg';
 export default function RichTextEditor(props) {
 
     const { editorState, name, onEditorStateChange, placeholder, ...other } = props;
-  
-    
     return (
 
         <div style={{ maxWidth: '90%', border: '1px solid lightGrey', padding: 5, borderRadius: 5 }} className='MuiFormControl-root'>

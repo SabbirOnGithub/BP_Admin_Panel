@@ -50,7 +50,7 @@ const DashboardScreensRoute = (props) => {
 
 
   const roleResourceDetails = useSelector(state => state.roleResourceDetails);
-  const { roleResource, loading:loadingResource } = roleResourceDetails;
+  const { roleResource, loading:loadingRoleResource } = roleResourceDetails;
 
   const userSignIn = useSelector( state => state.userSignin );
   const {  userInfo  } = userSignIn;
@@ -58,17 +58,23 @@ const DashboardScreensRoute = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(typeof roleResource === 'object' && roleResource !== null && Object.keys(roleResource).length === 0){
-    // if(roleResource === undefined || roleResource.length === 0){
-      dispatch(detailsRoleResource(userInfo.userId))
+    try{
+      if(typeof roleResource === 'object' && roleResource !== null && Object.keys(roleResource).length === 0){
+        // if(roleResource === undefined || roleResource.length === 0){
+          dispatch(detailsRoleResource(userInfo.userId))
+        }
     }
+    catch(error){
+      console.log(error)
+    }
+    
     return () => {
         // 
     }
 }, [dispatch, roleResource, userInfo.userId])
 
   return (<div> 
-  {   loadingResource ? 'loading' : 
+  {   loadingRoleResource ? 'loading' : 
     <CustomLayout>
       <Switch>
         <Route exact path={`${props.match.path}/`} component={()=><HomeScreen test={roleResource}/> }/>

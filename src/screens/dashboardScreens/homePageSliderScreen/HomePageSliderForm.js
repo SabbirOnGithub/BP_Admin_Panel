@@ -73,7 +73,6 @@ export default function HomepageSliderForm(props) {
               } catch (e) {
                 console.warn(e);
               } finally {
-                // console.log('state set done')
                 const html = recordForEdit.title;
                 const contentBlock = htmlToDraft(html);
                 if (contentBlock) {

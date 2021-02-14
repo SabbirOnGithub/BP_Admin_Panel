@@ -19,7 +19,7 @@ import {config} from "../../config";
 
 const BASE_API_URL = config.BASE_API_URL
 
-
+// all user role resources
 const listRoleResources = () => async (dispatch)=>{
     try{
         dispatch({type: ROLE_RESOURCE_LIST_REQUEST});
@@ -37,19 +37,19 @@ const listRoleResources = () => async (dispatch)=>{
     }
 };
 
-
+// single user role resources
 const detailsRoleResource = (id)=> async (dispatch) =>{
-    // console.log(id)
+    
     try{
-        dispatch({type:ROLE_RESOURCE_DETAILS_REQUEST});
+        dispatch({type:ROLE_RESOURCE_DETAILS_REQUEST, payload:[]});
         const { data } = await axiosWithoutToken.get("/RoleResource/GetResourcesByRole/" + id); 
         if (data.status === true) {
-            dispatch({type:ROLE_RESOURCE_DETAILS_SUCCESS, payload: data.data });
+            dispatch({type:ROLE_RESOURCE_DETAILS_SUCCESS, payload: data.data ? data.data : [] });
         }
         else{
             dispatch({ type: ROLE_RESOURCE_DETAILS_FAIL, payload: data.message });
         }
-        // console.log(data)
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: ROLE_RESOURCE_DETAILS_FAIL, payload: error.message });

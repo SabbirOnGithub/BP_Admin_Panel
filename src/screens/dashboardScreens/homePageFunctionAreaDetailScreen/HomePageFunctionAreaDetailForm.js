@@ -46,9 +46,7 @@ export default function HomePageFunctionAreaDetailForm(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
-        // if (validate()) {
-        //     addOrEdit(values, files, resetForm);
-        // }
+        
         if (validate()) {
             try{
                 values['description'] = draftToHtml(convertToRaw(values.description.getCurrentContent()))
@@ -71,7 +69,6 @@ export default function HomePageFunctionAreaDetailForm(props) {
               } catch (e) {
                 console.warn(e);
               } finally {
-                console.log('state set done')
                 const html = recordForEdit.description;
                 const contentBlock = htmlToDraft(html);
                 if (contentBlock) {

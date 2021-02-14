@@ -36,10 +36,12 @@ import { contactUsMessageDetailsReducer, contactUsMessageListReducer } from './r
 import { paymentPackageDeleteReducer, paymentPackageDetailsReducer, paymentPackageListReducer, paymentPackageSaveReducer } from './reducers/paymentPackageReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
+const roleResource = [];
 
 
 const initialState={ 
-    userSignin:{ userInfo }
+    userSignin:{ userInfo },
+    roleResourceDetails : { roleResource }
 };
 const reducer = combineReducers({
     userSignin:userSigninReducer,

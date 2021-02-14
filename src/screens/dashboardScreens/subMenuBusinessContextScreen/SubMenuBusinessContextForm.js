@@ -68,7 +68,6 @@ export default function SubMenuBusinessContextForm(props) {
               } catch (e) {
                 console.warn(e);
               } finally {
-                // console.log('state set done')
                 const html = recordForEdit.description;
                 const contentBlock = htmlToDraft(html);
                 if (contentBlock) {

@@ -45,9 +45,7 @@ export default function MenuSubMenuMapItemListItemForm(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(values)
         if (validate()) {
-            console.log(values)
             addOrEdit(values, resetForm);
         }
     }

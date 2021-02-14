@@ -5,6 +5,7 @@ export default makeStyles(theme => ({
     display: "flex",
     maxWidth: "100vw",
     overflowX: "hidden",
+    
   },
   content: {
     flexGrow: 1,

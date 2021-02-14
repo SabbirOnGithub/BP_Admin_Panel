@@ -52,7 +52,6 @@ export default function TestimonialDetailForm(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
-        // console.log(values)
         if (validate()) {
             try{
                 values['message'] = draftToHtml(convertToRaw(values.message.getCurrentContent()))
@@ -74,7 +73,6 @@ export default function TestimonialDetailForm(props) {
               } catch (e) {
                 console.warn(e);
               } finally {
-                // console.log('state set done')
                 const html = recordForEdit.message;
                 const contentBlock = htmlToDraft(html);
                 if (contentBlock) {
