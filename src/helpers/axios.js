@@ -58,6 +58,10 @@ axiosWithoutToken.interceptors.response.use(function (response) {
     // Do something with response data
     return response;
 }, function (error) {
+    if (!error.status) {
+        // network error
+        console.log('network error')
+      }
     // Do something with response error
     return Promise.reject(error);
 });

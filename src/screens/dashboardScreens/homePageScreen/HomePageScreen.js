@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 // 
 import { usePermission } from '../../../components/UsePermission/usePermission';
-import AccessDeniedScreen from '../../accessDeniedScreen/AccessDeniedScreen';
+// import AccessDeniedScreen from '../../accessDeniedScreen/AccessDeniedScreen';
 
 
 // react redux
@@ -77,9 +77,10 @@ export default function HomePageScreen() {
         permission,
         setPermission,
         recievedPermission,
-        loadingRoleResource
+        loadingRoleResource,
+        history,
+        initialPermission
       } = usePermission();
-    
     const { createOperation, readOperation, updateOperation, deleteOperation } =  permission; 
 
     const homePageDataList = useSelector(state => state.homePageDataList);
@@ -92,20 +93,14 @@ export default function HomePageScreen() {
     //eslint-disable-next-line
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = homePageDataDelete;
 
-
-
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-
-
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     //eslint-disable-next-line
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
-
-
 
     const dispatch = useDispatch();
 
@@ -191,19 +186,25 @@ export default function HomePageScreen() {
             if(recievedPermission?.readOperation){
                 dispatch(listHomePageDatas());
             }
+            if(readOperation === false){
+                history.push('/dashboard/accessDenied');
+            }
+            if(loadingRoleResource === false && !recievedPermission){
+                setPermission({...initialPermission})
+              }
         }catch(e){
             console.log(e)
         }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
     return (
 
         <>
             {
                 (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" : 
-                (readOperation === false) ? <AccessDeniedScreen /> :
+                // (readOperation === false) ? <AccessDeniedScreen /> :
                 (
                     homePageDatas.length >0 &&
                     <>

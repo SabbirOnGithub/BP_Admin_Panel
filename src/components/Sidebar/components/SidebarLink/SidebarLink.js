@@ -96,6 +96,8 @@ export default function SidebarLink({
   }
   return (
     <>
+    {
+      children.some((childrenLink=>{if((roleResource.find(item => {return item.urlPath === childrenLink.link})?.readOperation)){return true} return false})) && 
       <ListItem
         button
         component={link && Link}
@@ -122,6 +124,8 @@ export default function SidebarLink({
         />
         {isSidebarOpened && <ExpandMoreIcon className={isOpen ? classes.rotateIcon : null}/>} 
       </ListItem>
+    }
+      
       {children &&(
         <Collapse
           in={isOpen && isSidebarOpened}

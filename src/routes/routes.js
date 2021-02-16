@@ -3,7 +3,8 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import NotFoundScreen from "../screens/notFoundScreen/NotFoundScreen";
 import SignInScreen from "../screens/signInScreen/SignInScreen";
 import DashboardScreensRoute from './dashboardScreens.route';
-import WebsiteHomeScreen from '../screens/websiteScreens/WebsiteHomeScreen'
+import WebsiteHomeScreen from '../screens/websiteScreens/WebsiteHomeScreen';
+// import AccessDeniedScreen from '../screens/accessDeniedScreen/AccessDeniedScreen'
 
 // protected routing wrapper component
 import AdminProtected from './adminProtected.route';
@@ -18,6 +19,7 @@ const Baserouter = (props) => {
           <Route exact={true} path="/signin" component={SignInScreen} />
           <AdminProtected  path="/dashboard" component={DashboardScreensRoute} />
           <Route path="/notFound" component={NotFoundScreen} />
+          {/* <Route path="/accessDenied" component={AccessDeniedScreen} /> */}
 
           <Route path="*">
             <Redirect to="/notFound" />

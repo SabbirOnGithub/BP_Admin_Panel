@@ -14,7 +14,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import { useLayoutState } from "../../context/LayoutContext";
 
 const  CustomLayout = props => {
-  
+
     let classes = useStyles();
 
     // global
@@ -24,6 +24,7 @@ const  CustomLayout = props => {
     <div className={classes.root}>
     <>
       <Header history={props.history} />
+      
       <Sidebar />
       <div
         className={classnames(classes.content, {
@@ -43,75 +44,6 @@ const  CustomLayout = props => {
           alignItems={"center"}
           justifyContent="space-between"
         >
-{/*           
-          <div>
-            <Link
-              color={'primary'}
-              href={'/'}
-              target={'_blank'}
-              className={classes.link}
-            >
-              Best Practicify
-            </Link>
-            <Link
-              color={'primary'}
-              href={'/'}
-              target={'_blank'}
-              className={classes.link}
-            >
-              About Us
-            </Link>
-            <Link
-              color={'primary'}
-              href={'/'}
-              target={'_blank'}
-              className={classes.link}
-            >
-              Blog
-            </Link>
-          </div>
-          <div>
-            <Link
-              href={'/'}
-              target={'_blank'}
-            >
-              <IconButton aria-label="facebook">
-                <Icon
-                  path={FacebookIcon}
-                  size={1}
-                  color="#6E6E6E99"
-                />
-              </IconButton>
-            </Link>
-            <Link
-              href={'/'}
-              target={'_blank'}
-            >
-              <IconButton aria-label="twitter">
-                <Icon
-                  path={TwitterIcon}
-                  size={1}
-                  color="#6E6E6E99"
-                />
-              </IconButton>
-            </Link>
-            <Link
-              href={'/'}
-              target={'_blank'}
-            >
-              <IconButton
-                aria-label="github"
-                style={{marginRight: -12}}
-              >
-                <Icon
-                  path={GithubIcon}
-                  size={1}
-                  color="#6E6E6E99"
-                />
-              </IconButton>
-            </Link>
-          </div>
-         */}
         </Box>
       </div>
     </>

@@ -12,7 +12,7 @@ import {
   Person as AccountIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
-// import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import classNames from "classnames";
 
 // styles
@@ -31,15 +31,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions/userActions';
 import { useHistory } from "react-router-dom";
 
-// import { config } from "../../config";
-// const BASE_ROOT_URL = config.BASE_ROOT_URL
+import { config } from "../../config";
+const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 export default function Header(props) {
-  var classes = useStyles();
   const userSignIn = useSelector( state => state.userSignin );
   //eslint-disable-next-line
   const { userInfo  } = userSignIn;
-  // console.log(userInfo)
+
+  var classes = useStyles();
+
   // global
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
@@ -100,8 +101,10 @@ export default function Header(props) {
           aria-controls="profile-menu"
           onClick={e => setProfileMenu(e.currentTarget)}
         >
-          <AccountIcon classes={{ root: classes.headerIcon }} />
-          {/* <Avatar alt="Remy Sharp" src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} /> */}
+          {/* <AccountIcon classes={{ root: classes.headerIcon }} /> */}
+          { userInfo?.userImage ? <Avatar alt="Remy Sharp" src={BASE_ROOT_URL + "/" + userInfo.userImage.split("\\").join('/')} /> :
+            <AccountIcon classes={{ root: classes.headerIcon }} />
+          }
         </IconButton>
         
         <Menu
@@ -119,37 +122,55 @@ export default function Header(props) {
             </Typography>
             <Typography
               className={classes.profileMenuLink}
-              component="a"
               color="primary"
               href="/"
             >
               {/* {userInfo.role} */}
             </Typography>
           </div>
+
+          {/* {
+            (roleResource?.find(item => {return item.urlPath === '/dashboard/user'})?.readOperation) && 
+           
+              <MenuItem
+              className={classNames(
+                classes.profileMenuItem,
+                classes.headerMenuItem,
+              )}
+              component={Link} to={'/dashboard/user'}
+            >
+              <AccountIcon className={classes.profileMenuIcon} /> Users
+            </MenuItem>
+          } */}
+          {/* { (roleResource?.find(item => {return item.urlPath === '/dashboard/role'})?.readOperation) && 
+            <MenuItem
+              className={classNames(
+                classes.profileMenuItem,
+                classes.headerMenuItem,
+              )}
+              component={Link} to={'/dashboard/role'}
+            >
+              <AccountIcon className={classes.profileMenuIcon} /> User Role 
+            </MenuItem>
+         
+          } */}
+          
           <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem,
-            )}
-            component={Link} to={'/dashboard/user'}
-          >
-             <AccountIcon className={classes.profileMenuIcon} /> Users
-          </MenuItem>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem,
-            )}
-            component={Link} to={'/dashboard/role'}
-          >
-             <AccountIcon className={classes.profileMenuIcon} /> User Role 
-          </MenuItem>
+              className={classNames(
+                classes.profileMenuItem,
+                classes.headerMenuItem,
+              )}
+              component={Link} to={'/dashboard/userProfile'}
+              onClick={() => setProfileMenu(null)}
+            >
+              <AccountIcon className={classes.profileMenuIcon} /> Profile
+            </MenuItem>
           <div className={classes.profileMenuUser}>
             <Typography
               className={classes.profileMenuLink}
-              component="a"
               color="primary"
-              href="/"
+              component={Link} to={'/'}
+              onClick={() => setProfileMenu(null)}
             >
              Visit Website Page
             </Typography>

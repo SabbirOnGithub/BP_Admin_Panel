@@ -42,7 +42,7 @@ const structure = [
   {
     id: 1,
     label: "Home Page",
-    link: "/dashboard/homepage",
+    // link: "/dashboard/homepage",
     icon: <HomeIcon />,
     children: [
       { label: "Basic Info", link: "/dashboard/homepage" },
@@ -59,7 +59,7 @@ const structure = [
   {
     id: 2,
     label: "Menu",
-    link: "/dashboard/menu",
+    // link: "/dashboard/menu",
     icon: <MenuIcon />,
     children: [
       { label: "Menu", link: "/dashboard/menu" },
@@ -71,7 +71,7 @@ const structure = [
   {
     id: 3,
     label: "SubMenu",
-    link: "/dashboard/menu",
+    // link: "/dashboard/menu",
     icon: <SubjectIcon />,
     children: [
       { label: "Submenu", link: "/dashboard/submenu" },
@@ -83,7 +83,7 @@ const structure = [
   {
     id: 4,
     label: "Menu SubMenu",
-    link: "/dashboard/menuSubMenuMap",
+    // link: "/dashboard/menuSubMenuMap",
     icon: <FeaturedPlayListIcon />,
     children: [
       { label: "Menu SubMenu Map", link: "/dashboard/menuSubMenuMap" },
@@ -104,7 +104,7 @@ const structure = [
   {
     id: 8,
     label: "Blog",
-    link: "/dashboard/blogPost",
+    // link: "/dashboard/blogPost",
     icon: <BookIcon />,
     children: [
       { label: "Blog Post", link: "/dashboard/blogPost" },
@@ -115,10 +115,11 @@ const structure = [
   {
     id: 9,
     label: "Settings",
-    link: "/dashboard/resource",
+    // link: "/dashboard/resource",
     icon: <SettingsIcon />,
     children: [
       { label: "Role", link: "/dashboard/role" },
+      { label: "Users", link: "/dashboard/user" },
       { label: "Resource", link: "/dashboard/resource" },
       { label: "Role Resource", link: "/dashboard/roleResource" },
     ],
@@ -168,43 +169,47 @@ function Sidebar({ location }) {
   });
 
   return (
-    <Drawer
-      variant={isPermanent ? "permanent" : "temporary"}
-      className={classNames(classes.drawer, {
-        [classes.drawerOpen]: isSidebarOpened,
-        [classes.drawerClose]: !isSidebarOpened,
-      })}
-      classes={{
-        paper: classNames({
+    <>
+      { 
+        <Drawer
+        variant={isPermanent ? "permanent" : "temporary"}
+        className={classNames(classes.drawer, {
           [classes.drawerOpen]: isSidebarOpened,
           [classes.drawerClose]: !isSidebarOpened,
-        }),
-      }}
-      open={isSidebarOpened}
-    >
-      <div className={classes.toolbar} />
-      <div className={classes.mobileBackButton}>
-        <IconButton onClick={() => toggleSidebar(layoutDispatch)}>
-          <ArrowBackIcon
-            classes={{
-              root: classNames(classes.headerIcon, classes.headerIconCollapse),
-            }}
-          />
-        </IconButton>
-      </div>
-      <List className={classes.sidebarList}>
-        {structure.map(link => (
-          (roleResource.find(item => {return item.urlPath === link.link})?.readOperation || link.children) &&
-          <SidebarLink
-            key={link.id}
-            location={location}
-            isSidebarOpened={isSidebarOpened}
-            {...link}
-          />
-          
-        ))}
-      </List>
-    </Drawer>
+        })}
+        classes={{
+          paper: classNames({
+            [classes.drawerOpen]: isSidebarOpened,
+            [classes.drawerClose]: !isSidebarOpened,
+          }),
+        }}
+        open={isSidebarOpened}
+      >
+        <div className={classes.toolbar} />
+        <div className={classes.mobileBackButton}>
+          <IconButton onClick={() => toggleSidebar(layoutDispatch)}>
+            <ArrowBackIcon
+              classes={{
+                root: classNames(classes.headerIcon, classes.headerIconCollapse),
+              }}
+            />
+          </IconButton>
+        </div>
+        <List className={classes.sidebarList}>
+          {roleResource?.length>0 && structure.map(link => (
+            (roleResource?.find(item => {return item.urlPath === link.link})?.readOperation || link.children) &&
+            <SidebarLink
+              key={link.id}
+              location={location}
+              isSidebarOpened={isSidebarOpened}
+              {...link}
+            />
+            
+          ))}
+        </List>
+      </Drawer>
+      }
+    </>
   );
 
   //##################################################################

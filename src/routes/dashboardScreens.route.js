@@ -38,6 +38,8 @@ import ShortIntroScreen from "../screens/dashboardScreens/shortIntroScreen/Short
 import CtaCategoryScreen from "../screens/dashboardScreens/ctaCategoryScreen/CtaCategoryScreen";
 import ContactUsMessageScreen from "../screens/dashboardScreens/contactUsMessageScreen/ContactUsMessageScreen";
 import PaymentPackageScreen from "../screens/dashboardScreens/paymentPackageScreen/PaymentPackageScreen";
+import AccessDeniedScreen from '../screens/accessDeniedScreen/AccessDeniedScreen'
+import UserProfileScreen from '../screens/dashboardScreens/userProfileScreen/UserProfileScreen'
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -45,7 +47,7 @@ import { detailsRoleResource } from '../redux/actions/roleResourceActions';
 const DashboardScreensRoute = (props) => {
 
   const roleResourceDetails = useSelector(state => state.roleResourceDetails);
-  const { roleResource, loading:loadingRoleResource } = roleResourceDetails;
+  const { roleResource } = roleResourceDetails;
 
   const userSignIn = useSelector( state => state.userSignin );
   const {  userInfo  } = userSignIn;
@@ -54,9 +56,11 @@ const DashboardScreensRoute = (props) => {
 
   useEffect(() => {
     try{
-      if(typeof roleResource === 'object' && roleResource !== null && Object.keys(roleResource).length === 0){
-          dispatch(detailsRoleResource(userInfo.userId))
-        }
+      // if(!roleResource.length>=0){
+      //     dispatch(detailsRoleResource(userInfo.userRole))
+      // }
+      dispatch(detailsRoleResource(userInfo.userRole))
+
     }
     catch(error){
       console.warn(error)
@@ -65,56 +69,57 @@ const DashboardScreensRoute = (props) => {
     return () => {
         // 
     }
-}, [dispatch, roleResource, userInfo.userId])
+}, [dispatch, userInfo.userRole])
 
   return (<div> 
-  {   loadingRoleResource ? 'loading' : 
     <CustomLayout>
       <Switch>
-        <Route exact path={`${props.match.path}/`} component={()=><HomeScreen test={roleResource}/>}/>
-        <Route exact path={`${props.match.path}/submenu`} component={SubMenuScreen} />
-        <Route exact path={`${props.match.path}/homePage`} component={HomePageScreen} />
-        <Route exact path={`${props.match.path}/menu`} component={MenuScreen} />
-        <Route exact path={`${props.match.path}/homePageSlider`} component={HomepageSliderScreen} />
-        <Route exact path={`${props.match.path}/footerSection`} component={FooterSectionScreen} />
-        <Route exact path={`${props.match.path}/homePageCoreValueDetail`} component={HomePageCoreValueDetailScreen} />
-        <Route exact path={`${props.match.path}/homePageFunctionAreaDetail`} component={HomePageFunctionAreaDetailScreen} />
-        <Route exact path={`${props.match.path}/homeConsultationTopic`} component={HomeConsultationTopicScreen} />
-        <Route exact path={`${props.match.path}/trainingDetail`} component={TrainingDetailScreen} />
-        <Route exact path={`${props.match.path}/testimonialDetail`} component={TestimonialDetailScreen} />
-        <Route exact path={`${props.match.path}/user`} component={UserScreen} />
-        <Route exact path={`${props.match.path}/submenuBestPractice`} component={SubmenuBestPracticeScreen} />
-        <Route exact path={`${props.match.path}/subMenuOverView`} component={SubMenuOverViewScreen} />
-        <Route exact path={`${props.match.path}/menuSubMenuMapItem`} component={MenuSubMenuMapItemScreen} />
-        <Route exact path={`${props.match.path}/menuSubMenuMapItemListItem`} component={MenuSubMenuMapItemListItemScreen} />
-        <Route exact path={`${props.match.path}/menuSubMenuMap`} component={MenuSubMenuMapScreen} />
-        <Route exact path={`${props.match.path}/menuSection`} component={MenuSectionScreen} />
-        <Route exact path={`${props.match.path}/menuHeroSlider`} component={MenuHeroSliderScreen} />
-        <Route exact path={`${props.match.path}/menuSectionDetail`} component={MenuSectionDetailScreen} />
-        <Route exact path={`${props.match.path}/menuSubMenuMapDetail`} component={MenuSubMenuMapDetailScreen} />
-        <Route exact path={`${props.match.path}/blogCategory`} component={BlogCategoryScreen} />
-        <Route exact path={`${props.match.path}/blogSubCategory`} component={BlogSubCategoryScreen} />
-        <Route exact path={`${props.match.path}/blogPost`} component={BlogPostScreen} />
-        <Route exact path={`${props.match.path}/modernTechDetail`} component={ModernTechDetailScreen} />
-        <Route exact path={`${props.match.path}/personalizedServiceDetail`} component={PersonalizedServiceDetailScreen} />
-        <Route exact path={`${props.match.path}/uniqueSolutionDetail`} component={UniqueSolutionDetailScreen} />
-        <Route exact path={`${props.match.path}/subMenuBusinessContext`} component={SubMenuBusinessContextScreen} />
-        <Route exact path={`${props.match.path}/shortIntro`} component={ShortIntroScreen} />
-        <Route exact path={`${props.match.path}/ctaCategory`} component={CtaCategoryScreen} />
-        <Route exact path={`${props.match.path}/contactUs`} component={ContactUsMessageScreen} />
-        <Route exact path={`${props.match.path}/paymentPackage`} component={PaymentPackageScreen} />
-        {/* role routes */}
-        <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
-        <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
-        <Route exact path={`${props.match.path}/roleResource`} test='tajul' component={RoleResourceScreen}  />
+      <Route exact path={`${props.match.path}/`} component={()=><HomeScreen test={roleResource}/>}/>
+      <Route exact path={`${props.match.path}/homePage`} component={HomePageScreen} />
+      <Route exact path={`${props.match.path}/homePageSlider`} component={HomepageSliderScreen} />
+      <Route exact path={`${props.match.path}/footerSection`} component={FooterSectionScreen} />
+      <Route exact path={`${props.match.path}/homePageCoreValueDetail`} component={HomePageCoreValueDetailScreen} />
+      <Route exact path={`${props.match.path}/homePageFunctionAreaDetail`} component={HomePageFunctionAreaDetailScreen} />
+      <Route exact path={`${props.match.path}/homeConsultationTopic`} component={HomeConsultationTopicScreen} />
+      <Route exact path={`${props.match.path}/trainingDetail`} component={TrainingDetailScreen} />
+      <Route exact path={`${props.match.path}/testimonialDetail`} component={TestimonialDetailScreen} />
+      <Route exact path={`${props.match.path}/user`} component={UserScreen} />
+      <Route exact path={`${props.match.path}/submenu`} component={SubMenuScreen} />
+      <Route exact path={`${props.match.path}/submenuBestPractice`} component={SubmenuBestPracticeScreen} />
+      <Route exact path={`${props.match.path}/subMenuOverView`} component={SubMenuOverViewScreen} />
+      <Route exact path={`${props.match.path}/subMenuBusinessContext`} component={SubMenuBusinessContextScreen} />
+      <Route exact path={`${props.match.path}/menuSubMenuMapItem`} component={MenuSubMenuMapItemScreen} />
+      <Route exact path={`${props.match.path}/menuSubMenuMapItemListItem`} component={MenuSubMenuMapItemListItemScreen} />
+      <Route exact path={`${props.match.path}/menuSubMenuMap`} component={MenuSubMenuMapScreen} />
+      <Route exact path={`${props.match.path}/menuSubMenuMapDetail`} component={MenuSubMenuMapDetailScreen} />
+      <Route exact path={`${props.match.path}/menu`} component={MenuScreen} />
+      <Route exact path={`${props.match.path}/menuSection`} component={MenuSectionScreen} />
+      <Route exact path={`${props.match.path}/menuHeroSlider`} component={MenuHeroSliderScreen} />
+      <Route exact path={`${props.match.path}/menuSectionDetail`} component={MenuSectionDetailScreen} />
+      <Route exact path={`${props.match.path}/blogCategory`} component={BlogCategoryScreen} />
+      <Route exact path={`${props.match.path}/blogSubCategory`} component={BlogSubCategoryScreen} />
+      <Route exact path={`${props.match.path}/blogPost`} component={BlogPostScreen} />
+      <Route exact path={`${props.match.path}/modernTechDetail`} component={ModernTechDetailScreen} />
+      <Route exact path={`${props.match.path}/personalizedServiceDetail`} component={PersonalizedServiceDetailScreen} />
+      <Route exact path={`${props.match.path}/uniqueSolutionDetail`} component={UniqueSolutionDetailScreen} />
+      <Route exact path={`${props.match.path}/shortIntro`} component={ShortIntroScreen} />
+      <Route exact path={`${props.match.path}/ctaCategory`} component={CtaCategoryScreen} />
+      <Route exact path={`${props.match.path}/contactUs`} component={ContactUsMessageScreen} />
+      <Route exact path={`${props.match.path}/paymentPackage`} component={PaymentPackageScreen} />
+      {/* role routes */}
+      <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
+      <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
+      <Route exact path={`${props.match.path}/roleResource`} component={RoleResourceScreen}  />
+      <Route exact path={`${props.match.path}/userProfile`} component={UserProfileScreen}  />
 
-        <Route path="*">
-          <Redirect to="/notFound" />
-        </Route>
+      <Route path={`${props.match.path}/accessDenied`} component={AccessDeniedScreen} />
 
-      </Switch>
+      <Route path="*">
+        <Redirect to="/notFound" />
+      </Route>
+
+    </Switch>
     </CustomLayout>
-  }
   </div>
   )
 };
