@@ -7,7 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import { useSelector, useDispatch } from 'react-redux';
 import { detailsUser } from '../../../redux/actions/userActions';
-
+import { Grid, Paper } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -60,7 +62,7 @@ function UserProfileScreen() {
   const userDetails = useSelector( state => state.userDetails );
   //eslint-disable-next-line
   const { user, loading, error  } = userDetails;
-
+  console.log(user)
 
   
   const classes = useStyles();
@@ -118,6 +120,33 @@ function UserProfileScreen() {
           </div>
         </div>
       </div>
+
+      <Grid container spacing={4}>
+      <Grid item xs={12}>
+      <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                  {
+                      <Card className={classes.root} key={user?.id}>
+                          {/* <CardHeader
+                              avatar={
+                                  <Avatar aria-label="recipe" className={classes.avatar}>
+                                      {user?.id}
+                                  </Avatar>
+                              }
+                          /> */}
+                          <CardContent>
+                              <Typography variant="body2" color="textSecondary" component="span">
+                                  <Typography paragraph className={classes.customPharagraph}><b>User Name:</b> {user?.username} </Typography>
+                                  <Typography paragraph className={classes.customPharagraph}><b>Email Name:</b> {user?.email} </Typography>
+                                  <Typography paragraph className={classes.customPharagraph}><b>Address:</b> {user?.address} </Typography>
+                                  <Typography paragraph className={classes.customPharagraph}><b>Mobile:</b> {user?.mobile} </Typography>
+                              </Typography>
+                          </CardContent>
+                      </Card>
+                  }
+              </Paper>
+
+      </Grid>
+      </Grid>
     </>
     
       }
