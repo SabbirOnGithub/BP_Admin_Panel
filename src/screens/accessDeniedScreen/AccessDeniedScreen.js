@@ -30,7 +30,7 @@ export default function AccessDeniedScreen() {
             <Button 
                 component={Link}
                 className={classes.textLink} 
-                to="/dashboard"
+                to="/admin"
                 size="large"
                 color="secondary"
                 variant="contained"

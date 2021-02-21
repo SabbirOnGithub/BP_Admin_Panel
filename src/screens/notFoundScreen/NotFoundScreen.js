@@ -43,7 +43,7 @@ export default function NotFoundScreen(props) {
           variant="contained"
           color="primary"
           component={Link}
-          to="/"
+          to="/admin"
           size="large"
           className={classes.backButton}
         >

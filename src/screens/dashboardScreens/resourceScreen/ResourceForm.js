@@ -10,9 +10,9 @@ const initialFValues = {
     systemName: "",
     urlPath: "",
     ordering: "",
-    isBaseItem: false,
+    isBaseItem: true,
     isActive: false,
-    baseItemId: "",
+    // baseItemId: "",
     isWfasettingsRequired: false,
     isNotificationSettingsRequired: false,
 }
@@ -30,8 +30,8 @@ export default function ResourceForm(props) {
             temp.urlPath = fieldValues.urlPath ? "" : "This field is required."
         if ('ordering' in fieldValues)
             temp.ordering = fieldValues.ordering ? "" : "This field is required."
-        if ('baseItemId' in fieldValues)
-            temp.baseItemId = fieldValues.baseItemId ? "" : "This field is required."
+        // if ('baseItemId' in fieldValues)
+        //     temp.baseItemId = fieldValues.baseItemId ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -97,13 +97,13 @@ export default function ResourceForm(props) {
                         onChange={handleInputNumberChange}
                         error={errors.ordering}
                     />
-                    <Controls.Checkbox
+                    {/* <Controls.Checkbox
                         name="isBaseItem"
                         label="isBaseItem"
                         value={values.isBaseItem}
                         onChange={handleInputChange}
                         error={errors.isBaseItem}
-                    />
+                    /> */}
                     <Controls.Checkbox
                         name="isActive"
                         label="Active"
@@ -111,7 +111,7 @@ export default function ResourceForm(props) {
                         onChange={handleInputChange}
                         error={errors.isActive}
                     />
-                     <Controls.Input
+                     {/* <Controls.Input
                         label="Base Item Id"
                         name="baseItemId"
                         type="number"
@@ -132,7 +132,7 @@ export default function ResourceForm(props) {
                         value={values.isNotificationSettingsRequired}
                         onChange={handleInputChange}
                         error={errors.isNotificationSettingsRequired}
-                    />
+                    /> */}
                     <div>
                         {loadingSave ? (
                             <CircularProgress size={26} />

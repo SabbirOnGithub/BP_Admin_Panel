@@ -34,9 +34,13 @@ const headCells = [
     // { id: 'subMenuId', label: 'SubMenu Id' },
     { id: 'title', label: 'Title' },
     { id: 'subTitle', label: 'SubTitle' },
+    { id: 'sectionTitle', label: 'Section Title' },
+    { id: 'sectionSubTitle', label: 'sectionSubTitle' },
+    { id: 'sectionOrder', label: 'sectionOrder' },
     { id: 'header', label: 'Header' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
+    { id: 'sectionPicture', label: 'Section Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
@@ -99,6 +103,9 @@ export default function MenuSubMenuMapScreen() {
         formData.append('SubMenuId', item.subMenuId)
         formData.append('Title', item.title)
         formData.append('SubTitle', item.subTitle)
+        formData.append('sectionTitle', item.sectionTitle)
+        formData.append('sectionSubTitle', item.sectionSubTitle)
+        formData.append('sectionOrder', item.sectionOrder)
         formData.append('Header', item.header)
         formData.append('Description', item.description)
         // append for add/update image
@@ -108,6 +115,14 @@ export default function MenuSubMenuMapScreen() {
         // eslint-disable-next-line 
         if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
             formData.append('pictureUrl', item.pictureUrl)
+        }
+        // append for add/update image
+        if(typeof(item.sectionPictureUrl) === 'object'){
+            formData.append('sectionPicture', item.sectionPictureUrl)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.sectionPictureUrl) === 'null' || typeof(item.sectionPictureUrl) === 'string'){
+            formData.append('sectionPictureUrl', item.sectionPictureUrl)
         }
 
         if (formData) {
@@ -208,17 +223,27 @@ export default function MenuSubMenuMapScreen() {
                                                         <TableCell>{item.id}</TableCell>
                                                         <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
                                                         <TableCell>{searchNameByIdFromArray(subMenus, item.subMenuId)}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
-                                                        <TableCell>{item.subTitle}</TableCell>
+                                                        <TableCell>{item?.title}</TableCell>
+                                                        <TableCell>{item?.subTitle}</TableCell>
+                                                        <TableCell>{item?.sectionTitle}</TableCell>
+                                                        <TableCell>{item?.sectionSubTitle}</TableCell>
+                                                        <TableCell>{item?.sectionOrder}</TableCell>
+
                                                         <TableCell>{item.header}</TableCell>
                                                         {/* <TableCell>{item.description}</TableCell> */}
-                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
+                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item?.description}`}} /></TableCell>
 
                                                         <TableCell>
                                                             {
-                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                item?.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
                                                             }
                                                         </TableCell>
+                                                        <TableCell>
+                                                            {
+                                                                item?.sectionPictureUrl ? <img src={BASE_ROOT_URL + "/" + item?.sectionPictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                            }
+                                                        </TableCell>
+                                                        
                                                         <TableCell>
                                                             <Controls.ActionButton
                                                                 color="primary"

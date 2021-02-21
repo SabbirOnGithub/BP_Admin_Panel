@@ -45,7 +45,7 @@ export default function RoleResourceForm(props) {
         e.preventDefault()
         console.log(values)
         if (validate()) {
-            console.log(values)
+            // console.log(values)
             addOrEdit(values, resetForm);
         }
     }

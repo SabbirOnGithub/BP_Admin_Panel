@@ -43,7 +43,7 @@ function SignInScreen(props) {
 }
 useEffect(()=>{
   if(Auth.validAdmin()){
-      props.history.push('/dashboard');
+      props.history.push('/admin');
   }
   return()=>{
       // 

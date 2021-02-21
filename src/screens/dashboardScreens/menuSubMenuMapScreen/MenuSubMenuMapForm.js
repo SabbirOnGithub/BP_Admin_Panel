@@ -12,9 +12,13 @@ const initialFValues = {
     subMenuId:'',
     title: '',
     subTitle: '',
+    sectionTitle:'',
+    sectionSubTitle:'',
+    sectionOrder:'',
     header:'',
     description: EditorState.createEmpty(),
     pictureUrl: '',
+    sectionPictureUrl: '',
 }
 
 export default function MenuSubMenuMapForm(props) {
@@ -32,6 +36,12 @@ export default function MenuSubMenuMapForm(props) {
             temp.subTitle = fieldValues.subTitle ? "" : "This field is required."
         if ('header' in fieldValues)
             temp.header = fieldValues.header ? "" : "This field is required."
+        if ('sectionOrder' in fieldValues)
+            temp.sectionOrder = fieldValues.sectionOrder ? "" : "This field is required."
+        if ('sectionTitle' in fieldValues)
+            temp.sectionTitle = fieldValues.sectionTitle ? "" : "This field is required."
+        if ('sectionSubTitle' in fieldValues)
+            temp.sectionSubTitle = fieldValues.sectionSubTitle ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -129,6 +139,29 @@ export default function MenuSubMenuMapForm(props) {
                         error={errors.subTitle}
                     />
                     <Controls.Input
+                        name="sectionTitle"
+                        label="Section Title"
+                        value={values.sectionTitle}
+                        onChange={handleInputChange}
+                        error={errors.sectionTitle}
+                    />
+                    <Controls.Input
+                        label="Section Subtitle"
+                        name="sectionSubTitle"
+                        value={values.sectionSubTitle}
+                        onChange={handleInputChange}
+                        error={errors.sectionSubTitle}
+                    />
+                    <Controls.Input
+                        label="Section Order"
+                        name="sectionOrder"
+                        type="number"
+                        value={values.sectionOrder}
+                        onChange={handleInputChange}
+                        error={errors.sectionOrder}
+                       
+                    />
+                    <Controls.Input
                         label="Header"
                         name="header"
                         value={values.header}
@@ -146,6 +179,14 @@ export default function MenuSubMenuMapForm(props) {
                         value={values.pictureUrl}
                         onChange={handleFileChange}
                         error={errors.pictureUrl}
+                        resetFileInput = {resetFileInput}
+                    />
+                    <Controls.FileInput
+                        name="sectionPictureUrl"
+                        label="Section Picture"
+                        value={values.sectionPictureUrl}
+                        onChange={handleFileChange}
+                        error={errors.sectionPictureUrl}
                         resetFileInput = {resetFileInput}
                     />
                     

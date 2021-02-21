@@ -89,10 +89,10 @@ export default function Header(props) {
             />
           )}
         </IconButton>
-        <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" height='50px' width='50px' className={classes.logotypeImage} />
-        <Typography variant="h2" weight="medium" className={classes.logotype}>
-          Best Practicify
-        </Typography>
+          <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" height='50px' width='50px' className={classes.logotypeImage} />
+          <Typography variant="h2" weight="medium" className={classes.logotype}>
+            Best Practicify
+          </Typography>
         <div className={classes.grow} />
         <IconButton
           aria-haspopup="true"
@@ -130,25 +130,25 @@ export default function Header(props) {
           </div>
 
           {/* {
-            (roleResource?.find(item => {return item.urlPath === '/dashboard/user'})?.readOperation) && 
+            (roleResource?.find(item => {return item.urlPath === '/admin/user'})?.readOperation) && 
            
               <MenuItem
               className={classNames(
                 classes.profileMenuItem,
                 classes.headerMenuItem,
               )}
-              component={Link} to={'/dashboard/user'}
+              component={Link} to={'/admin/user'}
             >
               <AccountIcon className={classes.profileMenuIcon} /> Users
             </MenuItem>
           } */}
-          {/* { (roleResource?.find(item => {return item.urlPath === '/dashboard/role'})?.readOperation) && 
+          {/* { (roleResource?.find(item => {return item.urlPath === '/admin/role'})?.readOperation) && 
             <MenuItem
               className={classNames(
                 classes.profileMenuItem,
                 classes.headerMenuItem,
               )}
-              component={Link} to={'/dashboard/role'}
+              component={Link} to={'/admin/role'}
             >
               <AccountIcon className={classes.profileMenuIcon} /> User Role 
             </MenuItem>
@@ -160,7 +160,7 @@ export default function Header(props) {
                 classes.profileMenuItem,
                 classes.headerMenuItem,
               )}
-              component={Link} to={'/dashboard/userProfile'}
+              component={Link} to={'/admin/userProfile'}
               onClick={() => setProfileMenu(null)}
             >
               <AccountIcon className={classes.profileMenuIcon} /> Profile

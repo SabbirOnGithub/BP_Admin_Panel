@@ -67,6 +67,7 @@ export default function ResourceScreen() {
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
+        console.log(item)
         dispatch(saveResource(item));
         resolve();
     })

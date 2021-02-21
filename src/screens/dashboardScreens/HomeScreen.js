@@ -22,7 +22,7 @@ function HomeScreen() {
             setPermission({...recievedPermission})
         }
         if(readOperation === false ){
-            history.push('/dashboard/accessDenied');
+            history.push('/admin/accessDenied');
         }
         if(loadingRoleResource === false && !recievedPermission){
           setPermission({...initialPermission})

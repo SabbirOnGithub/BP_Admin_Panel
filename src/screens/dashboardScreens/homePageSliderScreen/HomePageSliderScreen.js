@@ -171,12 +171,7 @@ export default function HomePageSliderScreen() {
 
     useEffect(() => {
         try{
-            if(recievedPermission){
-                setPermission({...recievedPermission})
-            }
-            if(recievedPermission?.readOperation){
-                dispatch(listHomePageSliders());
-            }
+            dispatch(listHomePageSliders());
         }catch(e){
             console.log(e)
         }
