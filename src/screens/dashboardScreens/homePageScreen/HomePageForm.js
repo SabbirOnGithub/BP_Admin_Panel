@@ -108,7 +108,7 @@ export default function HomePageForm(props) {
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container>
-                <Grid item xs={6}>
+                <Grid item md={6}>
                     <Controls.Input
                         name="heroText"
                         label="Hero Text"
@@ -194,7 +194,7 @@ export default function HomePageForm(props) {
                     />
 
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item md={6}>
                     <Controls.Input
                         name="consultingTitle"
                         label="Consulting Title"

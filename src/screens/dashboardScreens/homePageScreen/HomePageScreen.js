@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function HomePageScreen() {
-
+    // permission get
     const {
         permission,
         setPermission,
@@ -82,6 +82,7 @@ export default function HomePageScreen() {
         initialPermission
       } = usePermission();
     const { createOperation, readOperation, updateOperation, deleteOperation } =  permission; 
+    // permission get end
 
     const homePageDataList = useSelector(state => state.homePageDataList);
     //eslint-disable-next-line

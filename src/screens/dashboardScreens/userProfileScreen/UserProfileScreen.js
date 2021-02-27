@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import UserProfileForm from "./UserProfileForm";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
-import EditIcon from "@material-ui/icons/Edit";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import { useSelector, useDispatch } from 'react-redux';
-import { detailsUser } from '../../../redux/actions/userActions';
-import { Grid, Paper } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Grid, Divider } from '@material-ui/core';
+import Widget from "../../../components/Widget/Widget";
+
+// redux actions
+import { detailsUser, saveUser } from '../../../redux/actions/userActions';
+
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     display: "flex",
-    flexWrap:"wrap",
+    flexWrap: "wrap",
     position: "absolute",
     width: "calc(100%)",
     top: "-70px",
@@ -46,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginRight: 0,
   },
-  nameStyle:{
-    fontSize:24,
+  nameStyle: {
+    fontSize: 24,
     fontFamily: 'Oxanium, cursive',
     fontWeight: 400,
     lineHeight: 1.5
@@ -56,101 +57,157 @@ const useStyles = makeStyles((theme) => ({
 
 
 function UserProfileScreen() {
-  const userSignIn = useSelector( state => state.userSignin );
+  const userSignIn = useSelector(state => state.userSignin);
   //eslint-disable-next-line
-  const { userInfo  } = userSignIn;
-  const userDetails = useSelector( state => state.userDetails );
+  const { userInfo } = userSignIn;
+  const userDetails = useSelector(state => state.userDetails);
   //eslint-disable-next-line
-  const { user, loading, error  } = userDetails;
-  console.log(user)
+  const { user, loading, error } = userDetails;
 
-  
+  const userSave = useSelector(state => state.userSave);
+    //eslint-disable-next-line
+  const { loading: loadingSave, success: successSave, error: errorSave } = userSave;
+  // console.log(user)
+
+
   const classes = useStyles();
-  const open = () =>{
-
-  }
+  
+  //eslint-disable-next-line
+  const [recordForEdit, setRecordForEdit] = useState(null)
+  //eslint-disable-next-line
+  const [openPopup, setOpenPopup] = useState(true)
+  //eslint-disable-next-line
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+  //eslint-disable-next-line
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
   const dispatch = useDispatch();
+      // add/update promise
+      const saveItem = (item, id) => new Promise((resolve, reject) => {
+        dispatch(saveUser(item, id));
+        resolve();
+    })
+
+   
+    //eslint-disable-next-line
+    const addOrEdit = (item, resetForm) => {
+        console.log(item)
+        const formData = new FormData();
+        item.id && formData.append('Id', item.id)
+        formData.append('Username', item.username)
+        formData.append('Password', item.password)
+        formData.append('RoleId', item.roleId)
+        formData.append('Name', item.name)
+        formData.append('IsActive', item.isActive)
+        formData.append('Mobile', item.mobile)
+        formData.append('Email', item.email)
+        formData.append('Address', item.address)
+        // append for add/update image
+        if(typeof(item.photo) === 'object'){
+            formData.append('file', item.photo)
+        }
+        // eslint-disable-next-line 
+        if(typeof(item.photo) === 'null' || typeof(item.pictureUrl) === 'string'){
+            formData.append('photo', item.photo)
+        }
+
+        if (formData) {
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
+            saveItem(formData, item.id)
+            .then(()=>{
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: "Successfull",
+                        type: 'success'
+                    })
+                }
+                
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+          
+        }
+
+    }
 
   useEffect(() => {
-    // userInfo?.userId && dispatch(detailsUser(userInfo.userId));
-    dispatch(detailsUser(userInfo.userId))
-    return () => {
-        // 
+    try{
+      dispatch(detailsUser(userInfo.userId));
+    }catch(e){
+      console.log(e)
     }
-}, [dispatch, userInfo.userId])
+    return () => {
+      // 
+    }
+  }, [dispatch, userInfo.userId, successSave])
   return (
     <div>
       {
-        loading ? "Loading" :
-      <>
-      <div
-        style={{
-          height: "200px",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          filter: "contrast(75%)",
-          backgroundImage: "url(/wallpaper.jpeg)",
-        }}
-      />
-      <div className={classes.headerContainer}>
-        <div className={classes.header}>
-          <Avatar
-            alt={'test'}
-            src={BASE_ROOT_URL + "/" + user?.photo?.split("\\").join('/')}
-            classes={{ root: classes.avatar, circle: classes.circle }}
-          />
-          <Typography className={classes.nameStyle} variant={"h5"}>{user?.name}</Typography>
-          <Chip variant={"outlined"} avatar={<Avatar>{}</Avatar>} label={user?.roleName} size='medium' />
+        loading || loadingSave ? "Loading" :
+          <>
+            <div>
+              <div
+                style={{
+                  height: "200px",
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  filter: "contrast(75%)",
+                  backgroundImage: "url(/wallpaper.jpeg)",
+                }}
+              ></div>
+              <div className={classes.headerContainer}>
+                <div className={classes.header}>
+                  <Avatar
+                    alt={'test'}
+                    src={BASE_ROOT_URL + "/" + user?.photo?.split("\\").join('/')}
+                    classes={{ root: classes.avatar, circle: classes.circle }}
+                  />
+                  <Typography className={classes.nameStyle} variant={"h5"}>{user?.name}</Typography>
+                  <Chip variant={"outlined"} avatar={<Avatar>{ }</Avatar>} label={user?.roleName} size='medium' />
+                </div>
+              </div>
+            </div>
+            <Grid container spacing={4}>
+              <Grid item xs={12}>
+                {
+                  user &&  <Widget
+                      title="Profile"
+                      upperTitle
+                      // noBodyPadding
+                      disableWidgetMenu
+                      editOne = {() => { setOpenPopup(false); }}
+                      displayEdit = {openPopup}
+                    >
+                      <Divider style={{marginBottom:16}}/>
+                      <UserProfileForm
+                        recordForEdit={user}
+                        addOrEdit={addOrEdit}
+                        loadingSave={loadingSave}
+                        setOpenPopup={setOpenPopup}
+                        openPopup={openPopup}
+                      />
+                    </Widget> 
 
-          <div className={classes.spacer} />
-          <div className={classes.actionGroup}>
-          <Button
-                  color="primary"
-                  variant="contained"
-                  startIcon={<EditIcon />}
-                  onClick={open}
-                >
-                  Edit
-                </Button>
-           
-            {/* <Button variant="outlined" startIcon={<DeleteIcon />}>
-              Delete
-            </Button> */}
-          </div>
-        </div>
-      </div>
+                }
 
-      <Grid container spacing={4}>
-      <Grid item xs={12}>
-      <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                  {
-                      <Card className={classes.root} key={user?.id}>
-                          {/* <CardHeader
-                              avatar={
-                                  <Avatar aria-label="recipe" className={classes.avatar}>
-                                      {user?.id}
-                                  </Avatar>
-                              }
-                          /> */}
-                          <CardContent>
-                              <Typography variant="body2" color="textSecondary" component="span">
-                                  <Typography paragraph className={classes.customPharagraph}><b>User Name:</b> {user?.username} </Typography>
-                                  <Typography paragraph className={classes.customPharagraph}><b>Email Name:</b> {user?.email} </Typography>
-                                  <Typography paragraph className={classes.customPharagraph}><b>Address:</b> {user?.address} </Typography>
-                                  <Typography paragraph className={classes.customPharagraph}><b>Mobile:</b> {user?.mobile} </Typography>
-                              </Typography>
-                          </CardContent>
-                      </Card>
-                  }
-              </Paper>
+              </Grid>
+            </Grid>
 
-      </Grid>
-      </Grid>
-    </>
-    
+          </>
+
       }
-      
+
     </div>
   );
 }

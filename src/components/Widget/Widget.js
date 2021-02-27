@@ -6,11 +6,11 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core";
-import { MoreVert as MoreIcon } from "@material-ui/icons";
+import { MoreVert as MoreIcon  } from "@material-ui/icons";
 import classnames from "classnames";
 import Controls from "../controls/Controls";
 import AddIcon from '@material-ui/icons/Add';
-
+import EditIcon from '@material-ui/icons/Edit';
 // styles
 import useStyles from "./styles";
 
@@ -70,6 +70,15 @@ export default function Widget({
                   onClick = {props.addNew}
               />
             }
+            {
+               props.editOne && props.displayEdit &&
+               <Controls.Button
+                  text="Edit"
+                  variant="outlined"
+                  startIcon={<EditIcon />}
+                  onClick = {props.editOne}
+              />
+            }
 
             </React.Fragment>
           )}
@@ -82,6 +91,7 @@ export default function Widget({
         >
           {children}
         </div>
+
       </Paper>
        <Menu
         id="widget-menu"
