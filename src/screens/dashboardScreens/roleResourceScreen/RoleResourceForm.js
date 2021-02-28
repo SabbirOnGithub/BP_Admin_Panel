@@ -43,7 +43,7 @@ export default function RoleResourceForm(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(values)
+        // console.log(values)
         if (validate()) {
             // console.log(values)
             addOrEdit(values, resetForm);
