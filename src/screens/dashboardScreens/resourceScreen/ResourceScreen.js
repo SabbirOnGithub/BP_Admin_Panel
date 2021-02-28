@@ -14,6 +14,9 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 
 
 import { useSelector, useDispatch } from 'react-redux';
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
 import { listResources, saveResource, deleteResource } from '../../../redux/actions/resourceActions';
@@ -35,11 +38,23 @@ const headCells = [
 ]
 
 export default function ResourceScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
+
 
     const resourceList = useSelector(state => state.resourceList);
     //eslint-disable-next-line
     const { resources, loading, error } = resourceList;
-    
+
     const resourceSave = useSelector(state => state.resourceSave);
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave } = resourceSave;
@@ -62,7 +77,7 @@ export default function ResourceScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(resources, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
@@ -83,27 +98,27 @@ export default function ResourceScreen() {
         setRecordForEdit(null)
         setOpenPopup(false)
         saveItem(item)
-        .then(()=>{
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            if (successSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submitted Successfully',
-                    type: 'success'
-                })
-            }
-            
-            if (errorSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submition Failed',
-                    type: 'warning'
-                })
-            }
-        })
-        
+            .then(() => {
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+
     }
 
     const openInPopup = item => {
@@ -117,58 +132,81 @@ export default function ResourceScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
     }
 
     useEffect(() => {
-        dispatch(listResources());
+
         return () => {
             // 
         }
     }, [dispatch, successSave, successDelete])
+    useEffect(() => {
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listResources());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
+        return () => {
+            // 
+        }
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
     return (
 
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
-                    <>
-                        <PageTitle title="Resources" />
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                    (
+                        resources.length > 0 &&
+                        <>
+                            <PageTitle title="Resources" />
 
-                        <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                <Widget
-                                    title="Resource List Table"
-                                    upperTitle
-                                    noBodyPadding
-                                    setOpenPopup={setOpenPopup}
-                                    setRecordForEdit={setRecordForEdit}
-                                    threeDotDisplay={true}
-                                    disableWidgetMenu
-                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    createOperation = {true}
-                                >
-                                    
-                                    <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                        <TblContainer>
-                                            <TblHead />
-                                            <TableBody>
-                                                {
-                                                    recordsAfterPagingAndSorting().map(item =>
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Resource List Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        threeDotDisplay={true}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
+                                    >
+
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{item.name}</TableCell>
@@ -181,12 +219,13 @@ export default function ResourceScreen() {
                                                             <TableCell>{item.isWfasettingsRequired ? "yes" : "no"}</TableCell>
                                                             <TableCell>{item.isNotificationSettingsRequired ? "yes" : "no"}</TableCell>
                                                             <TableCell>
-                                                                <Controls.ActionButton
+                                                                {updateOperation && <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
                                                                     <EditOutlinedIcon fontSize="small" />
                                                                 </Controls.ActionButton>
-                                                                <Controls.ActionButton
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
                                                                     color="secondary"
                                                                     onClick={() => {
                                                                         setConfirmDialog({
@@ -198,39 +237,42 @@ export default function ResourceScreen() {
                                                                     }}>
                                                                     <CloseIcon fontSize="small" />
                                                                 </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
                                                             </TableCell>
                                                         </TableRow>)
-                                                    )
-                                                }
-                                            </TableBody>
-                                        </TblContainer>
-                                        <TblPagination />
-                                    </Paper>
-                                    <Popup
-                                        title="Resource Form"
-                                        openPopup={openPopup}
-                                        setOpenPopup={setOpenPopup}
-                                    >
-                                        <ResourceForm
-                                            recordForEdit={recordForEdit}
-                                            addOrEdit={addOrEdit}
-                                            loadingSave={loadingSave}
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Resource Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <ResourceForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                loadingSave={loadingSave}
+                                            />
+
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
                                         />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
 
-                                    </Popup>
-                                    <Notification
-                                        notify={notify}
-                                        setNotify={setNotify}
-                                    />
-                                    <ConfirmDialog
-                                        confirmDialog={confirmDialog}
-                                        setConfirmDialog={setConfirmDialog}
-                                    />
-                                </Widget>
-
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </>
+                        </>
+                    )
             }
         </>
     )

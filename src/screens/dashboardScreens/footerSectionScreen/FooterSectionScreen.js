@@ -14,6 +14,11 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 
 import { useSelector, useDispatch } from 'react-redux';
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+
+
 // redux actions
 import { listFooterSections, saveFooterSection, deleteFooterSection } from '../../../redux/actions/footerSectionActions';
 
@@ -26,6 +31,17 @@ const headCells = [
 ]
 
 export default function FooterSectionScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
 
     const footerSectionList = useSelector(state => state.footerSectionList);
     //eslint-disable-next-line
@@ -33,14 +49,14 @@ export default function FooterSectionScreen() {
     const footerSectionSave = useSelector(state => state.footerSectionSave);
     // console.log(footerSectionSave.footerSection)
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave  } = footerSectionSave;
-    
+    const { loading: loadingSave, success: successSave, error: errorSave } = footerSectionSave;
+
     const successSaveMessage = footerSectionSave.footerSection ? footerSectionSave.footerSection.message : ResponseMessage.successSaveMessage;
 
     const footerSectionDelete = useSelector(state => state.footerSectionDelete);
     //eslint-disable-next-line
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = footerSectionDelete;
-    
+
 
 
 
@@ -57,7 +73,7 @@ export default function FooterSectionScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(footerSections, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
@@ -78,29 +94,29 @@ export default function FooterSectionScreen() {
         setOpenPopup(false)
         //call add item promise 
         saveItem(item)
-        .then(() => {
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            if (successSave) {
-                // console.log(successSave)
-                setNotify({
-                    isOpen: true,
-                    message: successSaveMessage,
-                    type: 'success'
-                })
-            }
-            if (errorSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submition Failed',
-                    type: 'warning'
-                })
-            }
-        })
-        .catch(() => {
+            .then(() => {
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    // console.log(successSave)
+                    setNotify({
+                        isOpen: true,
+                        message: successSaveMessage,
+                        type: 'success'
+                    })
+                }
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+            .catch(() => {
 
-        })
+            })
 
     }
 
@@ -116,69 +132,88 @@ export default function FooterSectionScreen() {
         })
         //call delete item promise 
         deleteItem(id)
-        .then(() => {
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
     }
 
+
     useEffect(() => {
-        dispatch(listFooterSections());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listFooterSections());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
     return (
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
-                    <>
-                        <PageTitle title="Footer Section" />
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                    (
+                        footerSections.length > 0 &&
+                        <>
+                            <PageTitle title="Footer Section" />
 
-                        <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                <Widget
-                                    title="Footer Section List Table"
-                                    upperTitle
-                                    noBodyPadding
-                                    setOpenPopup={setOpenPopup}
-                                    setRecordForEdit={setRecordForEdit}
-                                    threeDotDisplay={true}
-                                    disableWidgetMenu
-                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    createOperation = {true}
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Footer Section List Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        threeDotDisplay={true}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
 
 
-                                >
-                                    <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                        <TblContainer>
-                                            <TblHead />
-                                            <TableBody>
-                                                {
-                                                    recordsAfterPagingAndSorting().map(item =>
+                                    >
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{item.sectionName}</TableCell>
                                                             <TableCell>{item.showSection ? "yes" : "no"}</TableCell>
                                                             <TableCell>
-                                                                <Controls.ActionButton
+                                                                {updateOperation && <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
                                                                     <EditOutlinedIcon fontSize="small" />
                                                                 </Controls.ActionButton>
-                                                                <Controls.ActionButton
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
                                                                     color="secondary"
                                                                     onClick={() => {
                                                                         setConfirmDialog({
@@ -190,39 +225,42 @@ export default function FooterSectionScreen() {
                                                                     }}>
                                                                     <CloseIcon fontSize="small" />
                                                                 </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
                                                             </TableCell>
                                                         </TableRow>)
-                                                    )
-                                                }
-                                            </TableBody>
-                                        </TblContainer>
-                                        <TblPagination />
-                                    </Paper>
-                                    <Popup
-                                        title="Footer Section Form"
-                                        openPopup={openPopup}
-                                        setOpenPopup={setOpenPopup}
-                                    >
-                                        <FooterSectionForm
-                                            recordForEdit={recordForEdit}
-                                            addOrEdit={addOrEdit}
-                                            loadingSave={loadingSave}
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Footer Section Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <FooterSectionForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                loadingSave={loadingSave}
+                                            />
+
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
                                         />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
 
-                                    </Popup>
-                                    <Notification
-                                        notify={notify}
-                                        setNotify={setNotify}
-                                    />
-                                    <ConfirmDialog
-                                        confirmDialog={confirmDialog}
-                                        setConfirmDialog={setConfirmDialog}
-                                    />
-                                </Widget>
-
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </>
+                        </>
+                    )
             }
         </>
     )

@@ -16,6 +16,11 @@ import { searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+
+
 // redux actions
 import { deleteTestimonialDetail, listTestimonialDetails, saveTestimonialDetail } from '../../../redux/actions/testimonialDetailActions';
 import { listHomePageDatas } from '../../../redux/actions/homePageActions';
@@ -33,13 +38,25 @@ const headCells = [
 ]
 
 export default function TestimonialDetailScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
+
     const userList = useSelector(state => state.userList);
     //eslint-disable-next-line
-    const { users, loading:loadingUsers } = userList;
+    const { users, loading: loadingUsers } = userList;
 
     const homePageDataList = useSelector(state => state.homePageDataList);
     //eslint-disable-next-line
-    const { homePageDatas, loading:loadingHomePageDatas } = homePageDataList;
+    const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
 
     const testimonialDetailList = useSelector(state => state.testimonialDetailList)
     //eslint-disable-next-line
@@ -66,7 +83,7 @@ export default function TestimonialDetailScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(testimonialDetails, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
@@ -81,11 +98,11 @@ export default function TestimonialDetailScreen() {
         resolve();
     })
     const addOrEdit = (item, resetForm) => {
-            resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
-            saveItem(item)
-            .then(()=>{
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
+        saveItem(item)
+            .then(() => {
                 // resetForm()
                 // setRecordForEdit(null)
                 // setOpenPopup(false)
@@ -104,7 +121,7 @@ export default function TestimonialDetailScreen() {
                     })
                 }
             })
-          
+
     }
 
     const openInPopup = item => {
@@ -119,125 +136,146 @@ export default function TestimonialDetailScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
 
     }
 
 
-
     useEffect(() => {
-        dispatch(listUsers());
-        dispatch(listHomePageDatas());
-        dispatch(listTestimonialDetails());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listUsers());
+                dispatch(listHomePageDatas());
+                dispatch(listTestimonialDetails());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
 
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingHomePageDatas || loadingUsers ? "Loading ...." :
-                <>
-                    <PageTitle title="Testimonial Details" />
+            {
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingHomePageDatas || loadingUsers) ? "Loading" :
+                    (
+                        testimonialDetails.length > 0 &&
+                        <>
+                            <PageTitle title="Testimonial Details" />
 
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Widget
-                                title="Testimonial Details List Table"
-                                upperTitle
-                                noBodyPadding
-                                setOpenPopup={setOpenPopup}
-                                setRecordForEdit={setRecordForEdit}
-                                disableWidgetMenu
-                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                createOperation = {true}
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Testimonial Details List Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
 
-                            >
-                            
-                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                    <TblContainer>
-                                        <TblHead />
-                                        <TableBody>
-                                            {
-                                                recordsAfterPagingAndSorting().map(item =>
-                                                    (<TableRow key={item.id}>
-                                                        <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{item.homepageId}</TableCell>
-                                                        {/* <TableCell>{item.userId}</TableCell> */}
-                                                        <TableCell>{users ? searchNameByIdFromArray(users, item.userId) : item.userId}</TableCell>
-                                                        <TableCell>{item.userName}</TableCell>
-                                                        <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
-                                                        <TableCell>{item.displayOrder}</TableCell>
-                                                        {/* <TableCell>{item.message}</TableCell> */}
-                                                         <TableCell><div dangerouslySetInnerHTML={{__html: `${item.message}`}} /></TableCell>
+                                    >
 
-                                                        <TableCell>
-                                                            <Controls.ActionButton
-                                                                color="primary"
-                                                                onClick={() => { openInPopup(item) }}>
-                                                                <EditOutlinedIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                            <Controls.ActionButton
-                                                                color="secondary"
-                                                                onClick={() => {
-                                                                    setConfirmDialog({
-                                                                        isOpen: true,
-                                                                        title: 'Are you sure to delete this record?',
-                                                                        subTitle: "You can't undo this operation",
-                                                                        onConfirm: () => { onDelete(item.id) }
-                                                                    })
-                                                                }}>
-                                                                <CloseIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                        </TableCell>
-                                                    </TableRow>)
-                                                )
-                                            }
-                                        </TableBody>
-                                    </TblContainer>
-                                    <TblPagination />
-                                </Paper>
-                                <Popup
-                                    title="Home Page Core Value Detail Form"
-                                    openPopup={openPopup}
-                                    setOpenPopup={setOpenPopup}
-                                >
-                                    <TestimonialDetailForm
-                                        recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} 
-                                        homePageDatas = {homePageDatas}
-                                        users={users}
-                                    />
-                                </Popup>
-                                <Notification
-                                    notify={notify}
-                                    setNotify={setNotify}
-                                />
-                                <ConfirmDialog
-                                    confirmDialog={confirmDialog}
-                                    setConfirmDialog={setConfirmDialog}
-                                />
-                            </Widget>
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
+                                                        (<TableRow key={item.id}>
+                                                            <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{item.homepageId}</TableCell>
+                                                            {/* <TableCell>{item.userId}</TableCell> */}
+                                                            <TableCell>{users ? searchNameByIdFromArray(users, item.userId) : item.userId}</TableCell>
+                                                            <TableCell>{item.userName}</TableCell>
+                                                            <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{item.displayOrder}</TableCell>
+                                                            {/* <TableCell>{item.message}</TableCell> */}
+                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.message}` }} /></TableCell>
 
-                        </Grid>
-                    </Grid>
-                </>
+                                                            <TableCell>
+                                                                {updateOperation && <Controls.ActionButton
+                                                                    color="primary"
+                                                                    onClick={() => { openInPopup(item) }}>
+                                                                    <EditOutlinedIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
+                                                                    color="secondary"
+                                                                    onClick={() => {
+                                                                        setConfirmDialog({
+                                                                            isOpen: true,
+                                                                            title: 'Are you sure to delete this record?',
+                                                                            subTitle: "You can't undo this operation",
+                                                                            onConfirm: () => { onDelete(item.id) }
+                                                                        })
+                                                                    }}>
+                                                                    <CloseIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
+                                                            </TableCell>
+                                                        </TableRow>)
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Home Page Core Value Detail Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <TestimonialDetailForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                homePageDatas={homePageDatas}
+                                                users={users}
+                                            />
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
+                                        />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
+
+                                </Grid>
+                            </Grid>
+                        </>
+                    )
             }
         </div>
     )

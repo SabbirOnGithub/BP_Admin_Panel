@@ -14,6 +14,9 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchTitleByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
 import { deleteMenuSectionDetail, listMenuSectionDetails, saveMenuSectionDetail } from '../../../redux/actions/menuSectionDetailActions';
@@ -36,13 +39,25 @@ const headCells = [
 ]
 
 export default function MenuSectionDetailScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
+
     const menuList = useSelector(state => state.menuList);
     //eslint-disable-next-line
-    const { menus, loading:loadingMenus } = menuList;
+    const { menus, loading: loadingMenus } = menuList;
 
     const menuSectionList = useSelector(state => state.menuSectionList)
     //eslint-disable-next-line
-    const { menuSections, loading:loadingMenuSections } = menuSectionList;
+    const { menuSections, loading: loadingMenuSections } = menuSectionList;
 
     const menuSectionDetailList = useSelector(state => state.menuSectionDetailList)
     //eslint-disable-next-line
@@ -69,12 +84,12 @@ export default function MenuSectionDetailScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(menuSectionDetails, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveMenuSectionDetail(item,id));
+        dispatch(saveMenuSectionDetail(item, id));
         resolve();
     })
 
@@ -92,11 +107,11 @@ export default function MenuSectionDetailScreen() {
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         // append for add/update image
-        if(typeof(item.pictureUrl) === 'object'){
+        if (typeof (item.pictureUrl) === 'object') {
             formData.append('file', item.pictureUrl)
         }
         // eslint-disable-next-line 
-        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+        if (typeof (item.pictureUrl) === 'null' || typeof (item.pictureUrl) === 'string') {
             formData.append('pictureUrl', item.pictureUrl)
         }
 
@@ -105,32 +120,32 @@ export default function MenuSectionDetailScreen() {
             setRecordForEdit(null)
             setOpenPopup(false)
             saveItem(formData, item.id)
-            .then(()=>{
-                // resetForm()
-                // setRecordForEdit(null)
-                // setOpenPopup(false)
-                if (successSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submitted Successfully',
-                        type: 'success'
-                    })
-                }
-                
-                if (errorSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submition Failed',
-                        type: 'warning'
-                    })
-                }
-            })
+                .then(() => {
+                    // resetForm()
+                    // setRecordForEdit(null)
+                    // setOpenPopup(false)
+                    if (successSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submitted Successfully',
+                            type: 'success'
+                        })
+                    }
+
+                    if (errorSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submition Failed',
+                            type: 'warning'
+                        })
+                    }
+                })
         }
 
     }
 
     const openInPopup = item => {
-        let menuId =  menuSections.find( menuSectionItem => menuSectionItem.id === item.menuSectionId).menuId;
+        let menuId = menuSections.find(menuSectionItem => menuSectionItem.id === item.menuSectionId).menuId;
         item["menuId"] = menuId;
         setRecordForEdit(item)
         setOpenPopup(true)
@@ -142,124 +157,144 @@ export default function MenuSectionDetailScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
 
     }
 
-
-
     useEffect(() => {
-        dispatch(listMenus());
-        dispatch(listMenuSections());
-        dispatch(listMenuSectionDetails());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listMenus());
+                dispatch(listMenuSections());
+                dispatch(listMenuSectionDetails());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
 
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingMenuSections || loadingMenus ? "Loading ...." :
-                <>
-                    <PageTitle title="Menu Section Detail" />
+            {
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                    (
+                        menuSectionDetails.length > 0 &&
+                        <>
+                            <PageTitle title="Menu Section Detail" />
 
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Widget
-                                title="Menu Section Detail Table"
-                                upperTitle
-                                noBodyPadding
-                                setOpenPopup={setOpenPopup}
-                                setRecordForEdit={setRecordForEdit}
-                                disableWidgetMenu
-                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                createOperation = {true}
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Menu Section Detail Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
 
-                            >
-                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                    <TblContainer>
-                                        <TblHead />
-                                        <TableBody>
-                                            {
-                                                recordsAfterPagingAndSorting().map(item =>
-                                                    (<TableRow key={item.id}>
-                                                        <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{searchTitleByIdFromArray(menuSections, item.menuSectionId)}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
-                                                        {/* <TableCell>{item.description}</TableCell> */}
-                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Controls.ActionButton
-                                                                color="primary"
-                                                                onClick={() => { openInPopup(item) }}>
-                                                                <EditOutlinedIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                            <Controls.ActionButton
-                                                                color="secondary"
-                                                                onClick={() => {
-                                                                    setConfirmDialog({
-                                                                        isOpen: true,
-                                                                        title: 'Are you sure to delete this record?',
-                                                                        subTitle: "You can't undo this operation",
-                                                                        onConfirm: () => { onDelete(item.id) }
-                                                                    })
-                                                                }}>
-                                                                <CloseIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                        </TableCell>
-                                                    </TableRow>)
-                                                )
-                                            }
-                                        </TableBody>
-                                    </TblContainer>
-                                    <TblPagination />
-                                </Paper>
-                                <Popup
-                                    title="Menu Section Detail Form"
-                                    openPopup={openPopup}
-                                    setOpenPopup={setOpenPopup}
-                                >
-                                    <MenuSectionDetailForm
-                                        recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} 
-                                        menuSections= {menuSections}
-                                        menus= {menus}
-                                    />
-                                </Popup>
-                                <Notification
-                                    notify={notify}
-                                    setNotify={setNotify}
-                                />
-                                <ConfirmDialog
-                                    confirmDialog={confirmDialog}
-                                    setConfirmDialog={setConfirmDialog}
-                                />
-                            </Widget>
+                                    >
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
+                                                        (<TableRow key={item.id}>
+                                                            <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{searchTitleByIdFromArray(menuSections, item.menuSectionId)}</TableCell>
+                                                            <TableCell>{item.title}</TableCell>
+                                                            {/* <TableCell>{item.description}</TableCell> */}
+                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {updateOperation && <Controls.ActionButton
+                                                                    color="primary"
+                                                                    onClick={() => { openInPopup(item) }}>
+                                                                    <EditOutlinedIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
+                                                                    color="secondary"
+                                                                    onClick={() => {
+                                                                        setConfirmDialog({
+                                                                            isOpen: true,
+                                                                            title: 'Are you sure to delete this record?',
+                                                                            subTitle: "You can't undo this operation",
+                                                                            onConfirm: () => { onDelete(item.id) }
+                                                                        })
+                                                                    }}>
+                                                                    <CloseIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
+                                                            </TableCell>
+                                                        </TableRow>)
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Menu Section Detail Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <MenuSectionDetailForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                menuSections={menuSections}
+                                                menus={menus}
+                                            />
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
+                                        />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
 
-                        </Grid>
-                    </Grid>
-                </>
+                                </Grid>
+                            </Grid>
+                        </>
+                    )
             }
         </div>
     )

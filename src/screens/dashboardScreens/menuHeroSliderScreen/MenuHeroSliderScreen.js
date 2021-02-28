@@ -16,6 +16,10 @@ import { searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+
 // redux actions
 import { deleteMenuHeroSlider, listMenuHeroSliders, saveMenuHeroSlider } from '../../../redux/actions/menuHeroSliderActions';
 import { listMenus } from '../../../redux/actions/menuActions';
@@ -36,9 +40,21 @@ const headCells = [
 ]
 
 export default function MenuHeroSliderScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
+
     const menuList = useSelector(state => state.menuList);
     //eslint-disable-next-line
-    const { menus, loading:loadingMenus } = menuList;
+    const { menus, loading: loadingMenus } = menuList;
 
     const menuHeroSliderList = useSelector(state => state.menuHeroSliderList)
     //eslint-disable-next-line
@@ -65,12 +81,12 @@ export default function MenuHeroSliderScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(menuHeroSliders, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveMenuHeroSlider(item,id));
+        dispatch(saveMenuHeroSlider(item, id));
         resolve();
     })
 
@@ -88,11 +104,11 @@ export default function MenuHeroSliderScreen() {
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         // append for add/update image
-        if(typeof(item.pictureUrl) === 'object'){
+        if (typeof (item.pictureUrl) === 'object') {
             formData.append('file', item.pictureUrl)
         }
         // eslint-disable-next-line 
-        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+        if (typeof (item.pictureUrl) === 'null' || typeof (item.pictureUrl) === 'string') {
             formData.append('pictureUrl', item.pictureUrl)
         }
 
@@ -101,26 +117,26 @@ export default function MenuHeroSliderScreen() {
             setRecordForEdit(null)
             setOpenPopup(false)
             saveItem(formData, item.id)
-            .then(()=>{
-                // resetForm()
-                // setRecordForEdit(null)
-                // setOpenPopup(false)
-                if (successSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submitted Successfully',
-                        type: 'success'
-                    })
-                }
-                
-                if (errorSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submition Failed',
-                        type: 'warning'
-                    })
-                }
-            })
+                .then(() => {
+                    // resetForm()
+                    // setRecordForEdit(null)
+                    // setOpenPopup(false)
+                    if (successSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submitted Successfully',
+                            type: 'success'
+                        })
+                    }
+
+                    if (errorSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submition Failed',
+                            type: 'warning'
+                        })
+                    }
+                })
         }
 
     }
@@ -136,123 +152,143 @@ export default function MenuHeroSliderScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
 
     }
 
-
-
     useEffect(() => {
-        dispatch(listMenus());
-        dispatch(listMenuHeroSliders());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listMenus());
+                dispatch(listMenuHeroSliders());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
 
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingMenus ? "Loading ...." :
-                <>
-                    <PageTitle title="Menu Hero Slider" />
+            {
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                    (
+                        menuHeroSliders.length > 0 &&
+                        <>
+                            <PageTitle title="Menu Hero Slider" />
 
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Widget
-                                title="Menu Hero Slider Table"
-                                upperTitle
-                                noBodyPadding
-                                setOpenPopup={setOpenPopup}
-                                setRecordForEdit={setRecordForEdit}
-                                disableWidgetMenu
-                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                createOperation = {true}
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Menu Hero Slider Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
 
-                            >
-                              
-                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                    <TblContainer>
-                                        <TblHead />
-                                        <TableBody>
-                                            {
-                                                recordsAfterPagingAndSorting().map(item =>
-                                                    (<TableRow key={item.id}>
-                                                        <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
-                                                        {/* <TableCell>{item.description}</TableCell> */}
-                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Controls.ActionButton
-                                                                color="primary"
-                                                                onClick={() => { openInPopup(item) }}>
-                                                                <EditOutlinedIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                            <Controls.ActionButton
-                                                                color="secondary"
-                                                                onClick={() => {
-                                                                    setConfirmDialog({
-                                                                        isOpen: true,
-                                                                        title: 'Are you sure to delete this record?',
-                                                                        subTitle: "You can't undo this operation",
-                                                                        onConfirm: () => { onDelete(item.id) }
-                                                                    })
-                                                                }}>
-                                                                <CloseIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                        </TableCell>
-                                                    </TableRow>)
-                                                )
-                                            }
-                                        </TableBody>
-                                    </TblContainer>
-                                    <TblPagination />
-                                </Paper>
-                                <Popup
-                                    title="Menu Hero Slider Slider Form"
-                                    openPopup={openPopup}
-                                    setOpenPopup={setOpenPopup}
-                                >
-                                    <MenuHeroSliderForm
-                                        recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit}
-                                        menus={menus}
-                                    />
-                                </Popup>
-                                <Notification
-                                    notify={notify}
-                                    setNotify={setNotify}
-                                />
-                                <ConfirmDialog
-                                    confirmDialog={confirmDialog}
-                                    setConfirmDialog={setConfirmDialog}
-                                />
-                            </Widget>
+                                    >
 
-                        </Grid>
-                    </Grid>
-                </>
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
+                                                        (<TableRow key={item.id}>
+                                                            <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
+                                                            <TableCell>{item.title}</TableCell>
+                                                            {/* <TableCell>{item.description}</TableCell> */}
+                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {updateOperation && <Controls.ActionButton
+                                                                    color="primary"
+                                                                    onClick={() => { openInPopup(item) }}>
+                                                                    <EditOutlinedIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
+                                                                    color="secondary"
+                                                                    onClick={() => {
+                                                                        setConfirmDialog({
+                                                                            isOpen: true,
+                                                                            title: 'Are you sure to delete this record?',
+                                                                            subTitle: "You can't undo this operation",
+                                                                            onConfirm: () => { onDelete(item.id) }
+                                                                        })
+                                                                    }}>
+                                                                    <CloseIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
+                                                            </TableCell>
+                                                        </TableRow>)
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Menu Hero Slider Slider Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <MenuHeroSliderForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                menus={menus}
+                                            />
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
+                                        />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
+
+                                </Grid>
+                            </Grid>
+                        </>
+                    )
             }
         </div>
     )

@@ -15,6 +15,10 @@ import { searchNameByIdFromArray } from '../../../helpers/search';
 // 
 import { useSelector, useDispatch } from 'react-redux';
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+
 // redux actions
 import { deletePaymentPackage, listPaymentPackages, savePaymentPackage } from '../../../redux/actions/paymentPackageActions';
 import { listMenus } from '../../../redux/actions/menuActions';
@@ -32,14 +36,26 @@ const headCells = [
 ]
 
 export default function PaymentPackageScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
+
     const menuList = useSelector(state => state.menuList);
     //eslint-disable-next-line
-    const { menus, loading:loadingMenus } = menuList;
+    const { menus, loading: loadingMenus } = menuList;
 
     const subMenuList = useSelector(state => state.subMenuList)
 
     //eslint-disable-next-line
-    const { subMenus, loading:loadingSubMenus } = subMenuList;
+    const { subMenus, loading: loadingSubMenus } = subMenuList;
 
 
     const paymentPackageList = useSelector(state => state.paymentPackageList)
@@ -67,12 +83,12 @@ export default function PaymentPackageScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(paymentPackages, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(savePaymentPackage(item,id));
+        dispatch(savePaymentPackage(item, id));
         resolve();
     })
 
@@ -87,28 +103,28 @@ export default function PaymentPackageScreen() {
         setRecordForEdit(null)
         setOpenPopup(false)
         saveItem(item)
-        .then(()=>{
-            if (successSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submitted Successfully',
-                    type: 'success'
-                })
-            }
-            
-            if (errorSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submition Failed',
-                    type: 'warning'
-                })
-            }
-        })
-        
+            .then(() => {
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+
     }
 
     const openInPopup = item => {
-        
+
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -119,118 +135,141 @@ export default function PaymentPackageScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
     }
 
+
     useEffect(() => {
-        dispatch(listMenus());
-        dispatch(listSubMenus());
-        dispatch(listPaymentPackages());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listMenus());
+                dispatch(listSubMenus());
+                dispatch(listPaymentPackages());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
 
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete || loadingMenus || loadingSubMenus ? "Loading ...." :
-                <>
-                    <PageTitle title="Payment Package" />
+            {
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenus || loadingSubMenus) ? "Loading" :
+                    (
+                        paymentPackages.length > 0 &&
+                        <>
+                            <PageTitle title="Payment Package" />
 
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Widget
-                                title="Payment Package Table"
-                                upperTitle
-                                noBodyPadding
-                                setOpenPopup={setOpenPopup}
-                                setRecordForEdit={setRecordForEdit}
-                                disableWidgetMenu
-                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                createOperation = {true}
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Payment Package Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
 
-                            >
-                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                    <TblContainer>
-                                        <TblHead />
-                                        <TableBody>
-                                            {
-                                                recordsAfterPagingAndSorting().map(item =>
-                                                    (<TableRow key={item.id}>
-                                                        <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
-                                                        <TableCell>{searchNameByIdFromArray(subMenus, item.subMenuId)}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
-                                                        <TableCell>{item.payAmount}</TableCell>
-                                                        <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
-                                                        <TableCell>
-                                                            <Controls.ActionButton
-                                                                color="primary"
-                                                                onClick={() => { openInPopup(item) }}>
-                                                                <EditOutlinedIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                            <Controls.ActionButton
-                                                                color="secondary"
-                                                                onClick={() => {
-                                                                    setConfirmDialog({
-                                                                        isOpen: true,
-                                                                        title: 'Are you sure to delete this record?',
-                                                                        subTitle: "You can't undo this operation",
-                                                                        onConfirm: () => { onDelete(item.id) }
-                                                                    })
-                                                                }}>
-                                                                <CloseIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                        </TableCell>
-                                                    </TableRow>)
-                                                )
-                                            }
-                                        </TableBody>
-                                    </TblContainer>
-                                    <TblPagination />
-                                </Paper>
-                                <Popup
-                                    title="Payment Package Form"
-                                    openPopup={openPopup}
-                                    setOpenPopup={setOpenPopup}
-                                >
-                                    <PaymentPackageForm
-                                        recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} 
-                                        menus = {menus}
-                                        subMenus = {subMenus}
+                                    >
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
+                                                        (<TableRow key={item.id}>
+                                                            <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
+                                                            <TableCell>{searchNameByIdFromArray(subMenus, item.subMenuId)}</TableCell>
+                                                            <TableCell>{item.title}</TableCell>
+                                                            <TableCell>{item.payAmount}</TableCell>
+                                                            <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
+                                                            <TableCell>
+                                                                {updateOperation && <Controls.ActionButton
+                                                                    color="primary"
+                                                                    onClick={() => { openInPopup(item) }}>
+                                                                    <EditOutlinedIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
+                                                                    color="secondary"
+                                                                    onClick={() => {
+                                                                        setConfirmDialog({
+                                                                            isOpen: true,
+                                                                            title: 'Are you sure to delete this record?',
+                                                                            subTitle: "You can't undo this operation",
+                                                                            onConfirm: () => { onDelete(item.id) }
+                                                                        })
+                                                                    }}>
+                                                                    <CloseIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
+                                                            </TableCell>
+                                                        </TableRow>)
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Payment Package Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <PaymentPackageForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                menus={menus}
+                                                subMenus={subMenus}
 
+                                            />
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
                                         />
-                                </Popup>
-                                <Notification
-                                    notify={notify}
-                                    setNotify={setNotify}
-                                />
-                                <ConfirmDialog
-                                    confirmDialog={confirmDialog}
-                                    setConfirmDialog={setConfirmDialog}
-                                />
-                            </Widget>
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
 
-                        </Grid>
-                    </Grid>
-                </>
+                                </Grid>
+                            </Grid>
+                        </>
+                    )
             }
         </div>
     )

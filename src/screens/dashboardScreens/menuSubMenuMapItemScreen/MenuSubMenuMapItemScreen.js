@@ -15,10 +15,13 @@ import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../help
 
 
 import { useSelector, useDispatch } from 'react-redux';
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
 import { listMenuSubMenuMapItems, saveMenuSubMenuMapItem, deleteMenuSubMenuMapItem } from '../../../redux/actions/menuSubMenuMapItemActions';
-import {  listMenuSubMenuMaps } from '../../../redux/actions/menuSubMenuMapActions';
+import { listMenuSubMenuMaps } from '../../../redux/actions/menuSubMenuMapActions';
 import { listMenus } from '../../../redux/actions/menuActions';
 import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
@@ -35,14 +38,25 @@ const headCells = [
 ]
 
 export default function MenuSubMenuMapItemScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+
     const menuList = useSelector(state => state.menuList);
     //eslint-disable-next-line
-    const { menus, loading:loadingMenus } = menuList;
+    const { menus, loading: loadingMenus } = menuList;
 
     const subMenuList = useSelector(state => state.subMenuList)
 
     //eslint-disable-next-line
-    const { subMenus, loading:loadingSubMenus } = subMenuList;
+    const { subMenus, loading: loadingSubMenus } = subMenuList;
 
 
     const menuSubMenuMapList = useSelector(state => state.menuSubMenuMapList)
@@ -74,7 +88,7 @@ export default function MenuSubMenuMapItemScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(menuSubMenuMapItems, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
@@ -94,32 +108,32 @@ export default function MenuSubMenuMapItemScreen() {
         setRecordForEdit(null)
         setOpenPopup(false)
         saveItem(item)
-        .then(()=>{
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            if (successSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submitted Successfully',
-                    type: 'success'
-                })
-            }
-            
-            if (errorSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submition Failed',
-                    type: 'warning'
-                })
-            }
-        })
-        
+            .then(() => {
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+
     }
 
     const openInPopup = item => {
-        let menuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId;
-        let subMenuId = menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId;
+        let menuId = menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId;
+        let subMenuId = menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId;
         item["menuId"] = menuId
         item["subMenuId"] = subMenuId
 
@@ -133,80 +147,98 @@ export default function MenuSubMenuMapItemScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
     }
 
     useEffect(() => {
-        dispatch(listMenus());
-        dispatch(listSubMenus());
-        dispatch(listMenuSubMenuMaps());
-        dispatch(listMenuSubMenuMapItems());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listMenus());
+                dispatch(listSubMenus());
+                dispatch(listMenuSubMenuMaps());
+                dispatch(listMenuSubMenuMapItems());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
     return (
 
         <>
             {
-                loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps || loadingMenus || loadingSubMenus  ? "Loading" :
-                    <>
-                        <PageTitle title="Menu Sub Menu Map Items" />
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps || loadingMenus || loadingSubMenus) ? "Loading" :
+                    (
+                        menuSubMenuMapItems.length > 0 &&
+                        <>
+                            <PageTitle title="Menu Sub Menu Map Items" />
 
-                        <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                <Widget
-                                    title="Menu Sub Menu Map Item List Table"
-                                    upperTitle
-                                    noBodyPadding
-                                    setOpenPopup={setOpenPopup}
-                                    setRecordForEdit={setRecordForEdit}
-                                    threeDotDisplay={true}
-                                    disableWidgetMenu
-                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    createOperation = {true}
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Menu Sub Menu Map Item List Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        threeDotDisplay={true}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
 
-                                >
-                                   
-                                    <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                        <TblContainer>
-                                            <TblHead />
-                                            <TableBody>
-                                                {
-                                                    recordsAfterPagingAndSorting().map(item =>
+                                    >
+
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId)} /
-                                                                    {searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId)}
+                                                            <TableCell>{searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId)} /
+                                                                    {searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId)}
                                                             </TableCell>
                                                             <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell>
                                                             <TableCell>{item.title}</TableCell>
                                                             {/* <TableCell>{item.description}</TableCell> */}
-                                                            <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
+                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
                                                             <TableCell>{item.displayOrder}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
-                                                                <Controls.ActionButton
+                                                                {updateOperation && <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
                                                                     <EditOutlinedIcon fontSize="small" />
                                                                 </Controls.ActionButton>
-                                                                <Controls.ActionButton
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
                                                                     color="secondary"
                                                                     onClick={() => {
                                                                         setConfirmDialog({
@@ -218,42 +250,45 @@ export default function MenuSubMenuMapItemScreen() {
                                                                     }}>
                                                                     <CloseIcon fontSize="small" />
                                                                 </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
                                                             </TableCell>
                                                         </TableRow>)
-                                                    )
-                                                }
-                                            </TableBody>
-                                        </TblContainer>
-                                        <TblPagination />
-                                    </Paper>
-                                    <Popup
-                                        title="Menu Sub Menu Map Item Form"
-                                        openPopup={openPopup}
-                                        setOpenPopup={setOpenPopup}
-                                    >
-                                        <MenuSubMenuMapItemForm
-                                            recordForEdit={recordForEdit}
-                                            addOrEdit={addOrEdit}
-                                            loadingSave={loadingSave}
-                                            menuSubMenuMaps = {menuSubMenuMaps}
-                                            menus = {menus}
-                                            subMenus = {subMenus}
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Menu Sub Menu Map Item Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <MenuSubMenuMapItemForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                loadingSave={loadingSave}
+                                                menuSubMenuMaps={menuSubMenuMaps}
+                                                menus={menus}
+                                                subMenus={subMenus}
+                                            />
+
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
                                         />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
 
-                                    </Popup>
-                                    <Notification
-                                        notify={notify}
-                                        setNotify={setNotify}
-                                    />
-                                    <ConfirmDialog
-                                        confirmDialog={confirmDialog}
-                                        setConfirmDialog={setConfirmDialog}
-                                    />
-                                </Widget>
-
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </>
+                        </>
+                    )
             }
         </>
     )

@@ -16,6 +16,10 @@ import { searchNameByIdFromArray } from '../../../helpers/search';
 
 import { useSelector, useDispatch } from 'react-redux';
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+
 // redux actions
 import { listBlogPosts, saveBlogPost, deleteBlogPost } from '../../../redux/actions/blogPostActions';
 import { listBlogSubCategorys } from '../../../redux/actions/blogSubCategoryActions';
@@ -38,6 +42,18 @@ const headCells = [
 ]
 
 export default function BlogPostScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
+
     const blogSubCategoryList = useSelector(state => state.blogSubCategoryList);
     //eslint-disable-next-line
     const { blogSubCategorys, loading: loadingBlogSubCategorys } = blogSubCategoryList;
@@ -166,120 +182,141 @@ export default function BlogPostScreen() {
     }
 
     useEffect(() => {
-        dispatch(listBlogSubCategorys());
-        dispatch(listBlogPosts());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listBlogSubCategorys());
+                dispatch(listBlogPosts());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
     return (
 
         <>
             {
-                loading || loadingSave || loadingDelete || loadingBlogSubCategorys ? "Loading" :
-                    <>
-                        <PageTitle title="Blog Posts" />
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingBlogSubCategorys) ? "Loading" :
+                    (
+                        blogPosts.length > 0 &&
+                        <>
+                            <PageTitle title="Blog Posts" />
 
-                        <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                {
-                                    openPopup ?
-                                        <Widget
-                                            title="Blog Post Form"
-                                            upperTitle
-                                            // noBodyPadding
-                                            disableWidgetMenu
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    {
+                                        openPopup ?
+                                            <Widget
+                                                title="Blog Post Form"
+                                                upperTitle
+                                                // noBodyPadding
+                                                disableWidgetMenu
 
-                                        >
-                                            <Divider style={{ marginBottom: 16 }} />
+                                            >
+                                                <Divider style={{ marginBottom: 16 }} />
 
-                                            <BlogPostForm
-                                                recordForEdit={recordForEdit}
-                                                addOrEdit={addOrEdit}
-                                                loadingSave={loadingSave}
-                                                blogSubCategorys={blogSubCategorys}
+                                                <BlogPostForm
+                                                    recordForEdit={recordForEdit}
+                                                    addOrEdit={addOrEdit}
+                                                    loadingSave={loadingSave}
+                                                    blogSubCategorys={blogSubCategorys}
+                                                    setOpenPopup={setOpenPopup}
+                                                />
+                                            </Widget> :
+
+                                            <Widget
+                                                title="Blog Post List Table"
+                                                upperTitle
+                                                noBodyPadding
                                                 setOpenPopup={setOpenPopup}
-                                            />
-                                        </Widget> :
+                                                setRecordForEdit={setRecordForEdit}
+                                                threeDotDisplay={true}
+                                                disableWidgetMenu
+                                                addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                                createOperation={createOperation}
 
-                                        <Widget
-                                            title="Blog Post List Table"
-                                            upperTitle
-                                            noBodyPadding
-                                            setOpenPopup={setOpenPopup}
-                                            setRecordForEdit={setRecordForEdit}
-                                            threeDotDisplay={true}
-                                            disableWidgetMenu
-                                            addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                            createOperation={true}
+                                            >
 
-                                        >
+                                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                                    <TblContainer>
+                                                        <TblHead />
+                                                        <TableBody>
+                                                            {
+                                                                recordsAfterPagingAndSorting().map(item =>
+                                                                (<TableRow key={item.id}>
+                                                                    <TableCell>{item.id}</TableCell>
+                                                                    {/* <TableCell>{item.blogSubCategoryId}</TableCell> */}
+                                                                    <TableCell>{blogSubCategorys ? searchNameByIdFromArray(blogSubCategorys, item.blogSubCategoryId) : ""}</TableCell>
 
-                                            <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                                <TblContainer>
-                                                    <TblHead />
-                                                    <TableBody>
-                                                        {
-                                                            recordsAfterPagingAndSorting().map(item =>
-                                                            (<TableRow key={item.id}>
-                                                                <TableCell>{item.id}</TableCell>
-                                                                {/* <TableCell>{item.blogSubCategoryId}</TableCell> */}
-                                                                <TableCell>{blogSubCategorys ? searchNameByIdFromArray(blogSubCategorys, item.blogSubCategoryId) : ""}</TableCell>
+                                                                    <TableCell>{item.title}</TableCell>
+                                                                    {/* <TableCell>{item.content}</TableCell> */}
+                                                                    <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.content}` }} /></TableCell>
 
-                                                                <TableCell>{item.title}</TableCell>
-                                                                {/* <TableCell>{item.content}</TableCell> */}
-                                                                <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.content}` }} /></TableCell>
+                                                                    <TableCell>{item.tags}</TableCell>
+                                                                    <TableCell>{item.published ? "published" : "Not published"}</TableCell>
+                                                                    <TableCell>
+                                                                        {
+                                                                            item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                        }
+                                                                    </TableCell>
+                                                                    {/* <TableCell>{item.authorId}</TableCell> */}
+                                                                    {/* <TableCell>{item.blogCategoryId}</TableCell> */}
+                                                                    <TableCell>
+                                                                        {updateOperation && <Controls.ActionButton
+                                                                            color="primary"
+                                                                            onClick={() => { openInPopup(item) }}>
+                                                                            <EditOutlinedIcon fontSize="small" />
+                                                                        </Controls.ActionButton>
+                                                                        }
+                                                                        {deleteOperation && <Controls.ActionButton
+                                                                            color="secondary"
+                                                                            onClick={() => {
+                                                                                setConfirmDialog({
+                                                                                    isOpen: true,
+                                                                                    title: 'Are you sure to delete this record?',
+                                                                                    subTitle: "You can't undo this operation",
+                                                                                    onConfirm: () => { onDelete(item.id) }
+                                                                                })
+                                                                            }}>
+                                                                            <CloseIcon fontSize="small" />
+                                                                        </Controls.ActionButton>
+                                                                        }
+                                                                        {!updateOperation && !deleteOperation && <>Access Denied</>}
+                                                                    </TableCell>
+                                                                </TableRow>)
+                                                                )
+                                                            }
+                                                        </TableBody>
+                                                    </TblContainer>
+                                                    <TblPagination />
+                                                </Paper>
+                                                <Notification
+                                                    notify={notify}
+                                                    setNotify={setNotify}
+                                                />
+                                                <ConfirmDialog
+                                                    confirmDialog={confirmDialog}
+                                                    setConfirmDialog={setConfirmDialog}
+                                                />
+                                            </Widget>
 
-                                                                <TableCell>{item.tags}</TableCell>
-                                                                <TableCell>{item.published ? "published" : "Not published"}</TableCell>
-                                                                <TableCell>
-                                                                    {
-                                                                        item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                                    }
-                                                                </TableCell>
-                                                                {/* <TableCell>{item.authorId}</TableCell> */}
-                                                                {/* <TableCell>{item.blogCategoryId}</TableCell> */}
-                                                                <TableCell>
-                                                                    <Controls.ActionButton
-                                                                        color="primary"
-                                                                        onClick={() => { openInPopup(item) }}>
-                                                                        <EditOutlinedIcon fontSize="small" />
-                                                                    </Controls.ActionButton>
-                                                                    <Controls.ActionButton
-                                                                        color="secondary"
-                                                                        onClick={() => {
-                                                                            setConfirmDialog({
-                                                                                isOpen: true,
-                                                                                title: 'Are you sure to delete this record?',
-                                                                                subTitle: "You can't undo this operation",
-                                                                                onConfirm: () => { onDelete(item.id) }
-                                                                            })
-                                                                        }}>
-                                                                        <CloseIcon fontSize="small" />
-                                                                    </Controls.ActionButton>
-                                                                </TableCell>
-                                                            </TableRow>)
-                                                            )
-                                                        }
-                                                    </TableBody>
-                                                </TblContainer>
-                                                <TblPagination />
-                                            </Paper>
-                                            <Notification
-                                                notify={notify}
-                                                setNotify={setNotify}
-                                            />
-                                            <ConfirmDialog
-                                                confirmDialog={confirmDialog}
-                                                setConfirmDialog={setConfirmDialog}
-                                            />
-                                        </Widget>
+                                    }
 
-                                }
-
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </>
+                        </>
+                    )
             }
         </>
     )

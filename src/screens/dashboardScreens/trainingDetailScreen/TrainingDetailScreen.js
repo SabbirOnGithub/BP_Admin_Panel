@@ -14,6 +14,11 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 
 import { useSelector, useDispatch } from 'react-redux';
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+
+
 // redux actions
 import { deleteTrainingDetail, listTrainingDetails, saveTrainingDetail } from '../../../redux/actions/trainingDetailActions';
 
@@ -34,6 +39,17 @@ const headCells = [
 ]
 
 export default function TrainingDetailScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
 
     const trainingDetailList = useSelector(state => state.trainingDetailList)
     //eslint-disable-next-line
@@ -60,7 +76,7 @@ export default function TrainingDetailScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(trainingDetails, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
@@ -81,39 +97,39 @@ export default function TrainingDetailScreen() {
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         // append for add/update image
-        if(typeof(item.pictureUrl) === 'object'){
+        if (typeof (item.pictureUrl) === 'object') {
             formData.append('file', item.pictureUrl)
         }
         // eslint-disable-next-line 
-        if(typeof(item.pictureUrl) === 'null' || typeof(item.pictureUrl) === 'string'){
+        if (typeof (item.pictureUrl) === 'null' || typeof (item.pictureUrl) === 'string') {
             formData.append('pictureUrl', item.pictureUrl)
         }
-        
+
         if (formData) {
             resetForm()
             setRecordForEdit(null)
             setOpenPopup(false)
             saveItem(formData, item.id)
-            .then(()=>{
-                // resetForm()
-                // setRecordForEdit(null)
-                // setOpenPopup(false)
-                if (successSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submitted Successfully',
-                        type: 'success'
-                    })
-                }
-                if (errorSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submition Failed',
-                        type: 'warning'
-                    })
-                }
-            })
-          
+                .then(() => {
+                    // resetForm()
+                    // setRecordForEdit(null)
+                    // setOpenPopup(false)
+                    if (successSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submitted Successfully',
+                            type: 'success'
+                        })
+                    }
+                    if (errorSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submition Failed',
+                            type: 'warning'
+                        })
+                    }
+                })
+
         }
     }
 
@@ -129,119 +145,139 @@ export default function TrainingDetailScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
 
     }
 
-
-
     useEffect(() => {
-        dispatch(listTrainingDetails());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listTrainingDetails());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
 
     return (
 
         <div>
-            {loading || loadingSave || loadingDelete ? "Loading ...." :
-                <>
-                    <PageTitle title="Training Details" />
+            {
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                    (
+                        trainingDetails.length > 0 &&
+                        <>
+                            <PageTitle title="Training Details" />
 
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Widget
-                                title="Training Details List Table"
-                                upperTitle
-                                noBodyPadding
-                                setOpenPopup={setOpenPopup}
-                                setRecordForEdit={setRecordForEdit}
-                                disableWidgetMenu
-                                addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                createOperation = {true}
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Training Details List Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
 
-                            >
-                             
-                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                    <TblContainer>
-                                        <TblHead />
-                                        <TableBody>
-                                            {
-                                                recordsAfterPagingAndSorting().map(item =>
-                                                    (<TableRow key={item.id}>
-                                                        <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{item.title}</TableCell>
-                                                        {/* <TableCell>{item.description}</TableCell> */}
-                                                        <TableCell><div dangerouslySetInnerHTML={{__html: `${item.description}`}} /></TableCell>
+                                    >
 
-                                                        <TableCell>
-                                                            {
-                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }</TableCell>
-                                                        <TableCell>
-                                                            <Controls.ActionButton
-                                                                color="primary"
-                                                                onClick={() => { openInPopup(item) }}>
-                                                                <EditOutlinedIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                            <Controls.ActionButton
-                                                                color="secondary"
-                                                                onClick={() => {
-                                                                    setConfirmDialog({
-                                                                        isOpen: true,
-                                                                        title: 'Are you sure to delete this record?',
-                                                                        subTitle: "You can't undo this operation",
-                                                                        onConfirm: () => { onDelete(item.id) }
-                                                                    })
-                                                                }}>
-                                                                <CloseIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                        </TableCell>
-                                                    </TableRow>)
-                                                )
-                                            }
-                                        </TableBody>
-                                    </TblContainer>
-                                    <TblPagination />
-                                </Paper>
-                                <Popup
-                                    title="Home Page Core Value Detail Form"
-                                    openPopup={openPopup}
-                                    setOpenPopup={setOpenPopup}
-                                >
-                                    <TrainingDetailForm
-                                        recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} />
-                                </Popup>
-                                <Notification
-                                    notify={notify}
-                                    setNotify={setNotify}
-                                />
-                                <ConfirmDialog
-                                    confirmDialog={confirmDialog}
-                                    setConfirmDialog={setConfirmDialog}
-                                />
-                            </Widget>
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
+                                                        (<TableRow key={item.id}>
+                                                            <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{item.title}</TableCell>
+                                                            {/* <TableCell>{item.description}</TableCell> */}
+                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
 
-                        </Grid>
-                    </Grid>
-                </>
+                                                            <TableCell>
+                                                                {
+                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                }</TableCell>
+                                                            <TableCell>
+                                                                {updateOperation && <Controls.ActionButton
+                                                                    color="primary"
+                                                                    onClick={() => { openInPopup(item) }}>
+                                                                    <EditOutlinedIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
+                                                                    color="secondary"
+                                                                    onClick={() => {
+                                                                        setConfirmDialog({
+                                                                            isOpen: true,
+                                                                            title: 'Are you sure to delete this record?',
+                                                                            subTitle: "You can't undo this operation",
+                                                                            onConfirm: () => { onDelete(item.id) }
+                                                                        })
+                                                                    }}>
+                                                                    <CloseIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
+                                                            </TableCell>
+                                                        </TableRow>)
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Home Page Core Value Detail Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <TrainingDetailForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit} />
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
+                                        />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
+
+                                </Grid>
+                            </Grid>
+                        </>
+                    )
             }
         </div>
     )

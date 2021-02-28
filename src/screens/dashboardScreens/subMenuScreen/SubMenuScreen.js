@@ -15,6 +15,10 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 
 import { useSelector, useDispatch } from 'react-redux';
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+
 // redux actions
 import { deleteSubMenu, listSubMenus, saveSubMenu } from '../../../redux/actions/subMenuActions';
 import { listHomePageDatas } from '../../../redux/actions/homePageActions';
@@ -38,6 +42,19 @@ const headCells = [
 ]
 
 export default function SubMenuScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    //eslint-disable-next-line
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
+
     const homePageDataList = useSelector(state => state.homePageDataList);
     //eslint-disable-next-line
     const { homePageDatas, loading: loadingHomePageDatas } = homePageDataList;
@@ -70,7 +87,7 @@ export default function SubMenuScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(subMenus, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
@@ -87,7 +104,7 @@ export default function SubMenuScreen() {
     const addOrEdit = (item, resetForm) => {
 
         const formData = new FormData();
-        console.log(typeof(item.overViewBackgroundPicture))
+        console.log(typeof (item.overViewBackgroundPicture))
         console.log(item.overViewBackgroundPicture)
         // append form data 
         item.id && formData.append('Id', item.id)
@@ -100,32 +117,32 @@ export default function SubMenuScreen() {
         formData.append('OverViewSubtitle', item.overViewSubtitle)
         formData.append('BestPracticeTitle', item.bestPracticeTitle)
         formData.append('BestPracticeSubtitle', item.bestPracticeSubtitle)
-  
+
         // ---------------------------
         // append file for add/update
         // ---------------------------
-        if(typeof(item.pictureUrl) === 'object'){
+        if (typeof (item.pictureUrl) === 'object') {
             formData.append('sub_menu_image', item.pictureUrl)
         }
-        if(typeof(item.overViewBackgroundPicture) === 'object'){
+        if (typeof (item.overViewBackgroundPicture) === 'object') {
             formData.append('over_view_background', item.overViewBackgroundPicture)
         }
-        if(typeof(item.bestPracticeBackgroundPicture) === 'object'){
+        if (typeof (item.bestPracticeBackgroundPicture) === 'object') {
             formData.append('best_practice_background', item.bestPracticeBackgroundPicture)
         }
         // ------------------------
         // append file for delete
         // ------------------------
         // eslint-disable-next-line 
-        if(typeof(item.pictureUrl) === 'string' || typeof(item.pictureUrl) === 'null'){
+        if (typeof (item.pictureUrl) === 'string' || typeof (item.pictureUrl) === 'null') {
             formData.append('pictureUrl', item.pictureUrl)
         }
         // eslint-disable-next-line 
-        if(typeof(item.overViewBackgroundPicture) === 'string' || typeof(item.overViewBackgroundPicture) === 'null'){
+        if (typeof (item.overViewBackgroundPicture) === 'string' || typeof (item.overViewBackgroundPicture) === 'null') {
             formData.append('overViewBackgroundPicture', item.overViewBackgroundPicture)
         }
         // eslint-disable-next-line 
-        if(typeof(item.bestPracticeBackgroundPicture) === 'string' || typeof(item.bestPracticeBackgroundPicture) === 'null'){
+        if (typeof (item.bestPracticeBackgroundPicture) === 'string' || typeof (item.bestPracticeBackgroundPicture) === 'null') {
             formData.append('bestPracticeBackgroundPicture', item.bestPracticeBackgroundPicture)
         }
 
@@ -151,24 +168,24 @@ export default function SubMenuScreen() {
             setRecordForEdit(null)
             setOpenPopup(false)
             saveItem(formData, item.id)
-            .then(()=>{
-                if (successSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: successSaveMessage,
-                        type: 'success'
-                    })
-                }
-                
-                if (errorSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submition Failed',
-                        type: 'warning'
-                    })
-                }
-            })
-          
+                .then(() => {
+                    if (successSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: successSaveMessage,
+                            type: 'success'
+                        })
+                    }
+
+                    if (errorSave) {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submition Failed',
+                            type: 'warning'
+                        })
+                    }
+                })
+
         }
 
     }
@@ -185,136 +202,156 @@ export default function SubMenuScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
 
     }
 
-
-
     useEffect(() => {
-        dispatch(listHomePageDatas());
-        dispatch(listSubMenus());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listHomePageDatas());
+                dispatch(listSubMenus());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
 
     return (
 
         <div>
-            
-            {loading || loadingSave || loadingDelete || loadingHomePageDatas ? "Loading ...." :
-                <>
-                    <PageTitle title="Sub Menus" />
 
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Widget
-                                title="Sub Menu List Table"
-                                upperTitle
-                                noBodyPadding
-                                // setOpenPopup={setOpenPopup}
-                                setRecordForEdit={setRecordForEdit}
-                                disableWidgetMenu
-                                // addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                createOperation = {false}
+            {
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                    (
+                        subMenus.length > 0 &&
+                        <>
+                            <PageTitle title="Sub Menus" />
 
-                            >
-                               
-                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                    <TblContainer>
-                                        <TblHead />
-                                        <TableBody>
-                                            {
-                                                recordsAfterPagingAndSorting().map(item =>
-                                                    (<TableRow key={item.id}>
-                                                        <TableCell>{item.id}</TableCell>
-                                                        <TableCell>{item.name}</TableCell>
-                                                        <TableCell>{item.overViewTitle}</TableCell>
-                                                        <TableCell>{item.overViewSubtitle}</TableCell>
-                                                        <TableCell>{item.bestPracticeTitle}</TableCell>
-                                                        <TableCell>{item.bestPracticeSubtitle}</TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                item.overViewBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.overViewBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                item.bestPracticeBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.bestPracticeBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Controls.ActionButton
-                                                                color="primary"
-                                                                onClick={() => { openInPopup(item) }}>
-                                                                <EditOutlinedIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                            <Controls.ActionButton
-                                                                color="secondary"
-                                                                onClick={() => {
-                                                                    setConfirmDialog({
-                                                                        isOpen: true,
-                                                                        title: 'Are you sure to delete this record?',
-                                                                        subTitle: "You can't undo this operation",
-                                                                        onConfirm: () => { onDelete(item.id) }
-                                                                    })
-                                                                }}>
-                                                                <CloseIcon fontSize="small" />
-                                                            </Controls.ActionButton>
-                                                        </TableCell>
-                                                    </TableRow>)
-                                                )
-                                            }
-                                        </TableBody>
-                                    </TblContainer>
-                                    <TblPagination />
-                                </Paper>
-                                <Popup
-                                    title="Submenu Form"
-                                    openPopup={openPopup}
-                                    setOpenPopup={setOpenPopup}
-                                    plainForm
-                                >
-                                    <SubMenuForm
-                                        recordForEdit={recordForEdit}
-                                        addOrEdit={addOrEdit} 
-                                        homePageDatas = {homePageDatas}
-                                    />
-                                </Popup>
-                                <Notification
-                                    notify={notify}
-                                    setNotify={setNotify}
-                                />
-                                <ConfirmDialog
-                                    confirmDialog={confirmDialog}
-                                    setConfirmDialog={setConfirmDialog}
-                                />
-                            </Widget>
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Sub Menu List Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        // setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        disableWidgetMenu
+                                        // addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={false}
 
-                        </Grid>
-                    </Grid>
-                </>
+                                    >
+
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
+                                                        (<TableRow key={item.id}>
+                                                            <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{item.name}</TableCell>
+                                                            <TableCell>{item.overViewTitle}</TableCell>
+                                                            <TableCell>{item.overViewSubtitle}</TableCell>
+                                                            <TableCell>{item.bestPracticeTitle}</TableCell>
+                                                            <TableCell>{item.bestPracticeSubtitle}</TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    item.overViewBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.overViewBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    item.bestPracticeBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.bestPracticeBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {updateOperation && <Controls.ActionButton
+                                                                    color="primary"
+                                                                    onClick={() => { openInPopup(item) }}>
+                                                                    <EditOutlinedIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
+                                                                    color="secondary"
+                                                                    onClick={() => {
+                                                                        setConfirmDialog({
+                                                                            isOpen: true,
+                                                                            title: 'Are you sure to delete this record?',
+                                                                            subTitle: "You can't undo this operation",
+                                                                            onConfirm: () => { onDelete(item.id) }
+                                                                        })
+                                                                    }}>
+                                                                    <CloseIcon fontSize="small" />
+                                                                </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
+                                                            </TableCell>
+                                                        </TableRow>)
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Submenu Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                            plainForm
+                                        >
+                                            <SubMenuForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                homePageDatas={homePageDatas}
+                                            />
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
+                                        />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
+
+                                </Grid>
+                            </Grid>
+                        </>
+                    )
             }
         </div>
     )

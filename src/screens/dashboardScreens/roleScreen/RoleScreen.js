@@ -14,6 +14,9 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 
 
 import { useSelector, useDispatch } from 'react-redux';
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
 import { listRoles, saveRole, deleteRole } from '../../../redux/actions/roleActions';
@@ -28,6 +31,17 @@ const headCells = [
 ]
 
 export default function RoleScreen() {
+    // permission get
+    const {
+        permission,
+        setPermission,
+        recievedPermission,
+        loadingRoleResource,
+        history,
+        initialPermission
+    } = usePermission();
+    const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+    // permission get end
 
     const roleList = useSelector(state => state.roleList);
     //eslint-disable-next-line
@@ -54,7 +68,7 @@ export default function RoleScreen() {
         TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(roles, headCells, filterFn);
-    
+
     const dispatch = useDispatch();
 
     // add/update promise
@@ -74,27 +88,27 @@ export default function RoleScreen() {
         setRecordForEdit(null)
         setOpenPopup(false)
         saveItem(item)
-        .then(()=>{
-            // resetForm()
-            // setRecordForEdit(null)
-            // setOpenPopup(false)
-            if (successSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submitted Successfully',
-                    type: 'success'
-                })
-            }
-            
-            if (errorSave) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Submition Failed',
-                    type: 'warning'
-                })
-            }
-        })
-        
+            .then(() => {
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
+
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+
     }
 
     const openInPopup = item => {
@@ -108,69 +122,88 @@ export default function RoleScreen() {
             isOpen: false
         })
         deleteItem(id)
-        .then(()=>{
-            if (successDelete) {
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'success'
-                })
-            }
-            if (errorDelete) {
-                setNotify({
-                    isOpen: true,
-                    message:  ResponseMessage.errorDeleteMessage,
-                    type: 'warning'
-                })
-            }
-        })
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
     }
 
+
     useEffect(() => {
-        dispatch(listRoles());
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listRoles());
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete])
+    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
     return (
 
         <>
             {
-                loading || loadingSave || loadingDelete ? "Loading" :
-                    <>
-                        <PageTitle title="Roles" />
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                    (
+                        roles.length > 0 &&
+                        <>
+                            <PageTitle title="Roles" />
 
-                        <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                <Widget
-                                    title="Role List Table"
-                                    upperTitle
-                                    noBodyPadding
-                                    setOpenPopup={setOpenPopup}
-                                    setRecordForEdit={setRecordForEdit}
-                                    threeDotDisplay={true}
-                                    disableWidgetMenu
-                                    addNew = {() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    createOperation = {true}
-                                >
-                                    
-                                    <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
-                                        <TblContainer>
-                                            <TblHead />
-                                            <TableBody>
-                                                {
-                                                    recordsAfterPagingAndSorting().map(item =>
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Widget
+                                        title="Role List Table"
+                                        upperTitle
+                                        noBodyPadding
+                                        setOpenPopup={setOpenPopup}
+                                        setRecordForEdit={setRecordForEdit}
+                                        threeDotDisplay={true}
+                                        disableWidgetMenu
+                                        addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        createOperation={createOperation}
+                                    >
+
+                                        <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            <TblContainer>
+                                                <TblHead />
+                                                <TableBody>
+                                                    {
+                                                        recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{item.name}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
-                                                                <Controls.ActionButton
+                                                                {updateOperation && <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
                                                                     <EditOutlinedIcon fontSize="small" />
                                                                 </Controls.ActionButton>
-                                                                <Controls.ActionButton
+                                                                }
+                                                                {deleteOperation && <Controls.ActionButton
                                                                     color="secondary"
                                                                     onClick={() => {
                                                                         setConfirmDialog({
@@ -182,39 +215,42 @@ export default function RoleScreen() {
                                                                     }}>
                                                                     <CloseIcon fontSize="small" />
                                                                 </Controls.ActionButton>
+                                                                }
+                                                                {!updateOperation && !deleteOperation && <>Access Denied</>}
                                                             </TableCell>
                                                         </TableRow>)
-                                                    )
-                                                }
-                                            </TableBody>
-                                        </TblContainer>
-                                        <TblPagination />
-                                    </Paper>
-                                    <Popup
-                                        title="Role Form"
-                                        openPopup={openPopup}
-                                        setOpenPopup={setOpenPopup}
-                                    >
-                                        <RoleForm
-                                            recordForEdit={recordForEdit}
-                                            addOrEdit={addOrEdit}
-                                            loadingSave={loadingSave}
+                                                        )
+                                                    }
+                                                </TableBody>
+                                            </TblContainer>
+                                            <TblPagination />
+                                        </Paper>
+                                        <Popup
+                                            title="Role Form"
+                                            openPopup={openPopup}
+                                            setOpenPopup={setOpenPopup}
+                                        >
+                                            <RoleForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                loadingSave={loadingSave}
+                                            />
+
+                                        </Popup>
+                                        <Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
                                         />
+                                        <ConfirmDialog
+                                            confirmDialog={confirmDialog}
+                                            setConfirmDialog={setConfirmDialog}
+                                        />
+                                    </Widget>
 
-                                    </Popup>
-                                    <Notification
-                                        notify={notify}
-                                        setNotify={setNotify}
-                                    />
-                                    <ConfirmDialog
-                                        confirmDialog={confirmDialog}
-                                        setConfirmDialog={setConfirmDialog}
-                                    />
-                                </Widget>
-
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </>
+                        </>
+                    )
             }
         </>
     )
