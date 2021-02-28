@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 // 
 import { usePermission } from '../../../components/UsePermission/usePermission';
-// import AccessDeniedScreen from '../../accessDeniedScreen/AccessDeniedScreen';
+import { accessDeniedRoute} from '../../../routes/routeConstants';
 
 
 // react redux
@@ -188,7 +188,7 @@ export default function HomePageScreen() {
                 dispatch(listHomePageDatas());
             }
             if(readOperation === false){
-                history.push('/dashboard/accessDenied');
+                history.push(accessDeniedRoute);
             }
             if(loadingRoleResource === false && !recievedPermission){
                 setPermission({...initialPermission})

@@ -56,11 +56,7 @@ const DashboardScreensRoute = (props) => {
 
   useEffect(() => {
     try{
-      // if(!roleResource.length>=0){
-      //     dispatch(detailsRoleResource(userInfo.userRole))
-      // }
       dispatch(detailsRoleResource(userInfo.userRole))
-
     }
     catch(error){
       console.warn(error)
