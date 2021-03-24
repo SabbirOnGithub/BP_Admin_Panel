@@ -126,7 +126,7 @@ const structure = [
   },
   {
     id: 10,
-    label: "Cta Category",
+    label: "Consultancy",
     link: "/admin/ctaCategory",
     icon: <BookIcon />,
   },

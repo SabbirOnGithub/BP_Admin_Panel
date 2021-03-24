@@ -64,9 +64,9 @@ export default function Widget({
             {
                props.addNew && props.createOperation &&
                <Controls.Button
-                  text="Add New"
+                  text={props.buttonText ? props.buttonText : "Add New"}
                   variant="outlined"
-                  startIcon={<AddIcon />}
+                  startIcon={!props.buttonText && <AddIcon />}
                   onClick = {props.addNew}
               />
             }

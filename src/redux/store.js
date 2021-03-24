@@ -31,9 +31,10 @@ import { modernTechDetailDeleteReducer, modernTechDetailDetailsReducer, modernTe
 import { personalizedServiceDetailDeleteReducer, personalizedServiceDetailDetailsReducer, personalizedServiceDetailListReducer, personalizedServiceDetailSaveReducer } from './reducers/personalizedServiceDetailReducers';
 import { uniqueSolutionDetailDeleteReducer, uniqueSolutionDetailDetailsReducer, uniqueSolutionDetailListReducer, uniqueSolutionDetailSaveReducer } from './reducers/uniqueSolutionDetailReducers';
 import { subMenuBusinessContextDeleteReducer, subMenuBusinessContextDetailsReducer, subMenuBusinessContextListReducer, subMenuBusinessContextSaveReducer } from './reducers/subMenuBusinessContextReducers';
-import { ctaCategoryDetailsReducer, ctaCategoryListReducer } from './reducers/ctaCategoryReducers';
+import { ctaCategoryDetailsReducer, ctaCategoryDocumentSaveReducer, ctaCategoryListReducer, ctaCategoryModelListReducer, ctaCategorySaveReducer } from './reducers/ctaCategoryReducers';
 import { contactUsMessageDetailsReducer, contactUsMessageListReducer } from './reducers/contactUsMessageReducers';
 import { paymentPackageDeleteReducer, paymentPackageDetailsReducer, paymentPackageListReducer, paymentPackageSaveReducer } from './reducers/paymentPackageReducers';
+import { ctaFunctionDetailsReducer, ctaFunctionDocumentDeleteReducer, ctaFunctionDocumentListReducer, ctaFunctionDocumentSaveReducer, ctaFunctionListReducer, ctaFunctionModelListReducer, ctaFunctionSaveReducer } from './reducers/ctaFunctionReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -167,7 +168,17 @@ const reducer = combineReducers({
     subMenuBusinessContextSave: subMenuBusinessContextSaveReducer,
     subMenuBusinessContextDelete: subMenuBusinessContextDeleteReducer,
     ctaCategoryList:ctaCategoryListReducer,
+    ctaCategoryModelList:ctaCategoryModelListReducer,
     ctaCategoryDetails: ctaCategoryDetailsReducer,
+    ctaCategorySave:ctaCategorySaveReducer,
+    ctaCategoryDocumentSave : ctaCategoryDocumentSaveReducer,
+    ctaFunctionList:ctaFunctionListReducer,
+    ctaFunctionModelList:ctaFunctionModelListReducer,
+    ctaFunctionDetails: ctaFunctionDetailsReducer,
+    ctaFunctionSave:ctaFunctionSaveReducer,
+    ctaFunctionDocumentSave : ctaFunctionDocumentSaveReducer,
+    ctaFunctionDocumentList:ctaFunctionDocumentListReducer,
+    ctaFunctionDocumentDelete: ctaFunctionDocumentDeleteReducer,
     contactUsMessageList:contactUsMessageListReducer,
     contactUsMessageDetails: contactUsMessageDetailsReducer,
     paymentPackageList:paymentPackageListReducer,

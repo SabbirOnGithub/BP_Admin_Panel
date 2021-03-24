@@ -5,6 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles(theme => ({
     dialogWrapper: {
+        minWidth:'50vw',
         padding: theme.spacing(2),
         position: 'absolute',
         top: theme.spacing(5),
@@ -28,12 +29,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function Popup(props) {
 
-    const { title, children, openPopup, setOpenPopup } = props;
+    const { title, children, openPopup, setOpenPopup, disableDivider } = props;
     const classes = useStyles();
     
     return (
         <Dialog open={openPopup} maxWidth="md" classes={{ paper: classes.dialogWrapper }}>
-            <DialogTitle className={classes.dialogTitle}>
+            <DialogTitle className={classes.dialogTitle} >
                 <div style={{ display: 'flex' }}>
                     <Typography variant="h4" component="div" style={{ flexGrow: 1 }}>
                         {title}
@@ -45,9 +46,16 @@ export default function Popup(props) {
                     </Controls.ActionButton>
                 </div>
             </DialogTitle>
-            <DialogContent dividers>
-                {children}
-            </DialogContent>
+            {
+                disableDivider ? 
+                <DialogContent>
+                    {children}
+                </DialogContent> :
+                <DialogContent dividers>
+                    {children}
+                </DialogContent>
+            }
+            
         </Dialog>
     )
 }

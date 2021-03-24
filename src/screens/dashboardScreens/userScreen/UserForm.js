@@ -31,9 +31,11 @@ export default function UserForm(props) {
         if ('name' in fieldValues)
             temp.name = fieldValues.name ? "" : "This field is required."
         if ('email' in fieldValues)
-            temp.email = fieldValues.email ? "" : "This field is required."
+            temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+            // temp.email = fieldValues.email ? "" : "This field is required."
         if ('mobile' in fieldValues)
-            temp.mobile = fieldValues.mobile ? "" : "This field is required."
+            // temp.mobile = fieldValues.mobile ? "" : "This field is required."
+            temp.mobile = fieldValues.mobile.length > 9 ? "" : "Minimum 10 numbers required."
         if ('address' in fieldValues)
             temp.address = fieldValues.address ? "" : "This field is required."
         

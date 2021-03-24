@@ -58,7 +58,7 @@ export default function CtaCategoryDetailScreen(props) {
                     <Typography paragraph className={classes.customPharagraph}><b>BusinessStage:</b> {recordForEdit.businessStage} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Category:</b> {recordForEdit.category} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Specificity:</b> {recordForEdit.specificity} </Typography>
-                    <Typography paragraph className={classes.customPharagraph}><b>Technologies:</b> {recordForEdit.busintechnologiesessStage} </Typography>
+                    <Typography paragraph className={classes.customPharagraph}><b>Technologies:</b> {recordForEdit.technologies} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Technology Serivce Type:</b> {recordForEdit.technologySerivceType} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve:</b> {recordForEdit.goalsToAchieve} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Tell Us More:</b> {recordForEdit.tellUsMore} </Typography>

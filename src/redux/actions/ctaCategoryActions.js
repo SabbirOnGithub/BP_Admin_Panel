@@ -11,7 +11,12 @@ import {
     CTA_CATEGORY_DELETE_REQUEST,
     CTA_CATEGORY_DELETE_SUCCESS,
     CTA_CATEGORY_DELETE_FAIL,
-
+    CTA_CATEGORY_MODEL_LIST_REQUEST,
+    CTA_CATEGORY_MODEL_LIST_SUCCESS,
+    CTA_CATEGORY_MODEL_LIST_FAIL,
+    CTA_CATEGORY_DOCUMENT_SAVE_REQUEST,
+    CTA_CATEGORY_DOCUMENT_SAVE_SUCCESS,
+    CTA_CATEGORY_DOCUMENT_SAVE_FAIL
  } from '../constants/ctaCategoryConstants';
 import { axiosWithoutToken, axiosWithToken, axiosWithTokenAndMultipartData } from '../../helpers/axios';
 
@@ -41,35 +46,40 @@ const listCtaCategorys = () => async (dispatch)=>{
 const detailsCtaCategory = (id)=> async (dispatch) =>{
     try{
         dispatch({type:CTA_CATEGORY_DETAILS_REQUEST});
-        const { data } = await axiosWithoutToken.get("/CtaCategory/" + id); 
-        dispatch({type:CTA_CATEGORY_DETAILS_SUCCESS, payload: data });
+        const { data } = await axiosWithoutToken.get("/CtaCategory/detail/" + id); 
+        dispatch({type:CTA_CATEGORY_DETAILS_SUCCESS, payload: data.data });
+        // console.log(data)
     }
     catch(error){
         dispatch({ type: CTA_CATEGORY_DETAILS_FAIL, payload: error.message });
     }
 };
 
-const saveCtaCategory = (item, id) => async (dispatch) =>{
+const saveCtaCategory = (item) => async (dispatch) =>{
     try{
         dispatch({type: CTA_CATEGORY_SAVE_REQUEST, payload:item })
-        if(!id){
+        if(!item.id){
             console.log('create')
+            // console.log(item)
             //eslint-disable-next-line
             const formatData = delete item.id;
-            const { data } = await axiosWithTokenAndMultipartData.post("/CtaCategory/Create", item)
+            const { data } = await axiosWithToken.post("/CtaCategory", item)
             if (data.status === true) {
                 dispatch({type: CTA_CATEGORY_SAVE_SUCCESS, payload: data });
             }else{
                 dispatch({ type: CTA_CATEGORY_SAVE_FAIL, payload: data.message });
             }
+            // console.log(data)
         }else{
             console.log('update')
-            const { data } = await axiosWithTokenAndMultipartData.put("/CtaCategory/Update", item);
+            // console.log(item)
+            const { data } = await axiosWithToken.put("/CtaCategory", item);
             if (data.status === true) {
-                dispatch({type: CTA_CATEGORY_SAVE_SUCCESS, payload: data });            
+                dispatch({type: CTA_CATEGORY_SAVE_SUCCESS, payload: data.id });            
             }else{
                 dispatch({ type: CTA_CATEGORY_SAVE_FAIL, payload: data.message });
             }
+            // console.log(data)
         }
     } catch (error) {
         console.log(error)
@@ -92,4 +102,55 @@ const deleteCtaCategory = (id)=> async (dispatch, getState) =>{
     }
 };
 
-export { listCtaCategorys, detailsCtaCategory, saveCtaCategory, deleteCtaCategory }
+
+const listCtaCategoryModels = (id) => async (dispatch)=>{
+    // id is menu id
+    try{
+        dispatch({type: CTA_CATEGORY_MODEL_LIST_REQUEST});
+        const { data } = await axiosWithoutToken.get("/CtaCategory/CtaCategoryModel/?menuId=" + id); 
+        
+        dispatch({ type: CTA_CATEGORY_MODEL_LIST_SUCCESS, payload: data });
+        // console.log(data)
+    }
+    catch(error){
+        dispatch({ type: CTA_CATEGORY_MODEL_LIST_FAIL, payload: error.message });
+
+    }
+};
+
+const saveCtaCategoryDocument = (item, id) => async (dispatch) =>{
+    console.log('doc submit')
+    try {
+        dispatch({ type: CTA_CATEGORY_DOCUMENT_SAVE_REQUEST, payload: item })
+
+        if (!id) {
+            for (var pair of item.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }
+            console.log('create')
+            //eslint-disable-next-line
+            const formatData = delete item.id;
+            const { data } = await axiosWithTokenAndMultipartData.post("/CtaDocument/Create", item)
+            console.log(data)
+            if (data.status === true) {
+                dispatch({ type: CTA_CATEGORY_DOCUMENT_SAVE_SUCCESS, payload: data });
+            } else {
+                dispatch({ type: CTA_CATEGORY_DOCUMENT_SAVE_FAIL, payload: data.message });
+            }
+        } 
+        // else {
+        //     const { data } = await axiosWithTokenAndMultipartData.put("/HomeConsultationTopic/Update", item);
+        //     if (data.status === true) {
+        //         dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_SUCCESS, payload: data });
+        //     } else {
+        //         dispatch({ type: HOME_CONSULTATION_TOPIC_SAVE_FAIL, payload: data.message });
+        //     }
+        // }
+    } catch (error) {
+        console.log(error)
+        dispatch({ type: CTA_CATEGORY_DOCUMENT_SAVE_FAIL, payload: error.message });
+    }
+};
+
+export { listCtaCategorys, detailsCtaCategory, saveCtaCategory, deleteCtaCategory, listCtaCategoryModels, saveCtaCategoryDocument } 
+

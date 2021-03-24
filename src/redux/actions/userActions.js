@@ -43,6 +43,7 @@ const detailsUser = (id)=> async (dispatch) =>{
         dispatch({type:USER_DETAILS_REQUEST});
         const { data } = await axiosWithToken.get("/User/detail/" + id); 
         dispatch({type:USER_DETAILS_SUCCESS, payload: data.data });
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: USER_DETAILS_FAIL, payload: error.message });

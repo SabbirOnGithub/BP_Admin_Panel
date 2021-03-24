@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core";
 
 export function useForm(initialFValues, validateOnChange = false, validate) {
 
-
     const [values, setValues] = useState(initialFValues);
     const [files, setFiles] = useState(null);
     // const [fileUrl, setFileUrl] = useState(null);
@@ -13,12 +12,13 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
     const handleInputChange = e => {
         // e.target.name === "file" && console.log(e.target.files[0]) 
         const { name, value } = e.target
+        // console.log(value)
         // console.log(typeof(e.target.value))
-            setValues({
-                ...values,
-                [name]: value
-            })
-       
+        setValues({
+            ...values,
+            [name]: value
+        })
+
         if (validateOnChange)
             validate({ [name]: value })
     }
@@ -26,18 +26,18 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         // e.target.name === "file" && console.log(e.target.files[0]) 
         const { name, value } = e.target
 
-        if(e.target.value){
+        if (e.target.value) {
             setValues({
                 ...values,
                 [name]: parseInt(value)
             })
-        }else{
+        } else {
             setValues({
                 ...values,
                 [name]: ''
             })
         }
-       
+
         if (validateOnChange)
             validate({ [name]: value })
     }
@@ -48,7 +48,7 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 
         // for multiple image field in a form 
         const { name, files } = e.target
-        if(name){
+        if (name) {
             setValues({
                 ...values,
                 [name]: files[0],
@@ -57,20 +57,25 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 
     }
 
-    const handleEditorInput = (name, editorValue) =>{
-        // console.log(name)
-        // console.log(editorValue)
+    const handleEditorInput = (name, editorValue) => {
         setValues({
             ...values,
-            // [name]: editorValue.getCurrentContent().getPlainText()
-            // [name]: draftToHtml(convertToRaw(editorValue.getCurrentContent()))
             [name]: editorValue
         })
         if (validateOnChange)
             validate({ [name]: editorValue })
     }
+
+    const handleMultipleSelectInputChange = (e, value, name) => {
+        setValues({
+            ...values,
+            [name]: value
+        })
+        if (validateOnChange)
+            validate({ [name]: value })
+
+    };
     const resetForm = () => {
-        // console.log(values)
         setValues(initialFValues);
         setFiles(null)
         // setFileUrl(null)
@@ -78,8 +83,8 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
     }
 
     const resetFileInput = (name) => {
-        
-        if(name){
+
+        if (name) {
             setValues({
                 ...values,
                 [name]: null
@@ -101,7 +106,8 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         handleInputNumberChange,
         handleFileChange,
         resetForm,
-        handleEditorInput
+        handleEditorInput,
+        handleMultipleSelectInputChange
     }
 }
 
@@ -109,24 +115,67 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 const useStyles = makeStyles(theme => ({
     root: {
         '& .MuiFormControl-root': {
-            width: '90%',
+            // width: '90%',
+            width: '98%',
             margin: theme.spacing(1)
         },
-        "& .MuiInputBase-root":{
-            fontSize:18
+        "& .MuiInputBase-root": {
+            fontSize: 18
         },
-        "& .MuiFormLabel-root" :{
-            fontSize:16
+        "& .MuiFormLabel-root": {
+            fontSize: 16
         },
-        "& .MuiInputBase-input" :{
-            fontSize:16
+        "& .MuiInputBase-input": {
+            fontSize: 16
         },
-        "& .MuiTypography-body1":{
-            fontSize:16
+        "& .MuiTypography-body1": {
+            fontSize: 16
         },
-        minWidth:'80%',
-        // fontSize:30
+        minWidth: '80%',
+        // fontSize:30,
+        "& .AutoSizeAreaWrapper" : {
+            margin:8,
+            width: '98%',
+            '& p' :{
+                fontSize:16, 
+                padding:2, 
+                margin:2
+            },
+            "& .AutoSizeArea" : {
+                width:'99.7%', 
+                fontFamily:'"Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize:16, 
+                padding:'18.5px 14px',
+                border:'1px solid lightgray', 
+                borderRadius:5, 
+                outline:'none',
+            },
+            "& .AutoSizeArea:hover" : {
+                border:'1px solid black',
+            },
+            "& .AutoSizeArea:focus" : {
+                border:'2px solid #536DFE',
+            },
+            "& .ErrorMessage" : {
+                color:'red',
+            },
+            "& .ErrorArea":{
+                border: "1px solid red",
+            },
+            "& .ErrorArea:focus":{
+                border: "2px solid red",
+            },
+            "& .ErrorArea:hover":{
+                borderColor:'red'
+            },
+            "& .ErrorColor" : {
+                color:'red'
+            },
+
+        },
         
+        
+
     }
 }))
 

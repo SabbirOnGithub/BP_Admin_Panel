@@ -30,20 +30,39 @@ export default function FileInput(props) {
                     />
                 </Button>
             {/* <span style={{ marginLeft: 5 }}>{value ? value.name : 'no file'}</span> */}
-            <span >
-                {value && <>
-                    <img src={pictureUrl} style={{ maxWidth: 300, maxHeight: 100, border: '2px solid #798dfe', padding: 5, verticalAlign: 'middle' }} alt="uploaded file" />
-                    <span style={{ marginLeft: -39, verticalAlign: 'top' }}>
-                        <Controls.ActionButton
-                            color="secondary"
-                            onClick={() => { resetFileInput(name) }}
-                        // name={name}
-                        >
-                            <CloseIcon />
-                        </Controls.ActionButton>
-                    </span>
+            <span>
+               { console.log(value)}
+                {value && (
+                    value.type.includes('image') ?
+                    <>
+                        <img src={pictureUrl} style={{ maxWidth: 300, maxHeight: 100, border: '2px solid #798dfe', padding: 5, verticalAlign: 'middle' }} alt="uploaded file" />
+                        <span style={{ marginLeft: -39, verticalAlign: 'top' }}>
+                            <Controls.ActionButton
+                                color="secondary"
+                                onClick={() => { resetFileInput(name) }}
+                            // name={name}
+                            >
+                                <CloseIcon />
+                            </Controls.ActionButton>
+                        </span>
 
-                </>}
+                    </> 
+                    :
+                    <>
+                            <span> {value?.name} </span>
+                            <span style={{ marginLeft: 2, verticalAlign: 'top' }}>
+                                <Controls.ActionButton
+                                    color="secondary"
+                                    onClick={() => { resetFileInput(name) }}
+                                // name={name}
+                                >
+                                    <CloseIcon />
+                                </Controls.ActionButton>
+                            </span>
+                    </>
+                    )
+                }
+                
             </span>
             <label style={{ fontSize: 14, margin: 5, maxWidth:15 }}> {label} </label>
         </div>

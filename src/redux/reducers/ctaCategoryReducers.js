@@ -11,6 +11,12 @@ import {
     CTA_CATEGORY_DELETE_REQUEST,
     CTA_CATEGORY_DELETE_SUCCESS,
     CTA_CATEGORY_DELETE_FAIL,
+    CTA_CATEGORY_MODEL_LIST_REQUEST,
+    CTA_CATEGORY_MODEL_LIST_SUCCESS,
+    CTA_CATEGORY_MODEL_LIST_FAIL,
+    CTA_CATEGORY_DOCUMENT_SAVE_FAIL,
+    CTA_CATEGORY_DOCUMENT_SAVE_SUCCESS,
+    CTA_CATEGORY_DOCUMENT_SAVE_REQUEST
  } from '../constants/ctaCategoryConstants';
 
 
@@ -54,6 +60,19 @@ function ctaCategorySaveReducer(state={ctaCategory:{}},action){
     }
 };
 
+function ctaCategoryDocumentSaveReducer(state={ctaCategoryDocument:{}},action){
+    switch(action.type){
+        case CTA_CATEGORY_DOCUMENT_SAVE_REQUEST:
+            return { loading:true };
+        case CTA_CATEGORY_DOCUMENT_SAVE_SUCCESS:
+            return { loading:false, success:true, ctaCategoryDocument:action.payload };
+        case CTA_CATEGORY_DOCUMENT_SAVE_FAIL:
+            return { loading:false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
 function ctaCategoryDeleteReducer(state={ctaCategory:{}},action){
     switch(action.type){
         case CTA_CATEGORY_DELETE_REQUEST:
@@ -67,9 +86,24 @@ function ctaCategoryDeleteReducer(state={ctaCategory:{}},action){
     }
 };
 
+function ctaCategoryModelListReducer(state={ctaCategoryModels:{}},action){
+    switch(action.type){
+        case CTA_CATEGORY_MODEL_LIST_REQUEST:
+            return { loading:true, ctaCategoryModels:{} };
+        case CTA_CATEGORY_MODEL_LIST_SUCCESS:
+            return { loading:false, ctaCategoryModels:action.payload };
+        case CTA_CATEGORY_MODEL_LIST_FAIL:
+            return { loading:false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
 export { 
     ctaCategoryListReducer, 
     ctaCategoryDetailsReducer,
     ctaCategorySaveReducer,
-    ctaCategoryDeleteReducer
+    ctaCategoryDeleteReducer,
+    ctaCategoryModelListReducer,
+    ctaCategoryDocumentSaveReducer
  }; 

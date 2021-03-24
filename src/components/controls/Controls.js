@@ -1,12 +1,13 @@
 import Input from "./Input";
 import RadioGroup from "./RadioGroup";
-import Select from "./Select";
+import {Select, SelectMultiple} from "./Select";
 import Checkbox from "./Checkbox";
 import DatePicker from "./DatePicker";
 import Button from "./Button";
 import ActionButton from "./ActionButton";
 import RichTextEditor from "./RichTextEditor";
 import FileInput from "./FileInput";
+import InputAutoSize from './InputAutoSize';
 
 const Controls = {
     Input,
@@ -17,7 +18,9 @@ const Controls = {
     Button,
     ActionButton,
     RichTextEditor,
-    FileInput
+    FileInput,
+    SelectMultiple,
+    InputAutoSize
 }
 
 export default Controls;
