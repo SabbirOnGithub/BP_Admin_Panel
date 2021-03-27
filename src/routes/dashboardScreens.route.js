@@ -35,7 +35,7 @@ import PersonalizedServiceDetailScreen from "../screens/dashboardScreens/persona
 import UniqueSolutionDetailScreen from "../screens/dashboardScreens/uniqueSolutionDetailScreen/UniqueSolutionDetailScreen";
 import SubMenuBusinessContextScreen from "../screens/dashboardScreens/subMenuBusinessContextScreen/SubMenuBusinessContextScreen";
 import ShortIntroScreen from "../screens/dashboardScreens/shortIntroScreen/ShortIntroScreen";
-import CtaCategoryScreen from "../screens/dashboardScreens/ctaCategoryScreen/CtaCategoryScreen";
+import CtaScreen from "../screens/dashboardScreens/ctaScreen/CtaScreen";
 import ContactUsMessageScreen from "../screens/dashboardScreens/contactUsMessageScreen/ContactUsMessageScreen";
 import PaymentPackageScreen from "../screens/dashboardScreens/paymentPackageScreen/PaymentPackageScreen";
 import AccessDeniedScreen from '../screens/accessDeniedScreen/AccessDeniedScreen'
@@ -99,7 +99,7 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/personalizedServiceDetail`} component={PersonalizedServiceDetailScreen} />
       <Route exact path={`${props.match.path}/uniqueSolutionDetail`} component={UniqueSolutionDetailScreen} />
       <Route exact path={`${props.match.path}/shortIntro`} component={ShortIntroScreen} />
-      <Route exact path={`${props.match.path}/ctaCategory`} component={CtaCategoryScreen} />
+      <Route exact path={`${props.match.path}/cta`} component={CtaScreen} />
       <Route exact path={`${props.match.path}/contactUs`} component={ContactUsMessageScreen} />
       <Route exact path={`${props.match.path}/paymentPackage`} component={PaymentPackageScreen} />
       {/* role routes */}

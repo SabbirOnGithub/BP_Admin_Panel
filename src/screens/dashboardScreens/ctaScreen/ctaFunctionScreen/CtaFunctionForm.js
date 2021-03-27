@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core';
-import { useForm } from '../../../components/UseForm/useForm';
-import HorizontalStepper from '../../../components/Stepper/Stepper';
+import { useForm } from '../../../../components/UseForm/useForm';
+import HorizontalStepper from '../../../../components/Stepper/Stepper';
 import CtaFormStepOne from './CtaFormStepOne';
 import CtaFormStepTwo from './CtaFormStepTwo';
 import CtaFormStepThree from './CtaFormStepThree';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { listCtaFunctionModels, detailsCtaFunction, listCtaFunctionDocuments } from '../../../redux/actions/ctaFunctionActions';
+import { listCtaFunctionModels, detailsCtaFunction, listCtaFunctionDocuments } from '../../../../redux/actions/ctaFunctionActions';
 
 const initialFValues = {
     id: '',
@@ -40,9 +40,9 @@ const initialFValues = {
 
 }
 
-export default function CtaCategoryForm(props) {
+export default function CtaFunctionForm(props) {
 
-    const { addOrEdit, recordForEdit,  user,  setOpenPopup,  ctaFunctionSaveData, loadingCtaFunctionDocumentSave, setConfirmDialog, onDeleteCtaFunctionDocument, loadingDeleteCtaFunctionDocument } = props;
+    const { addOrEdit, recordForEdit,  user,  setOpenPopup,  ctaFunctionSaveData, loadingCtaFunctionDocumentSave, setConfirmDialog, onDeleteCtaFunctionDocument, loadingDeleteCtaFunctionDocument, loadingCtaFunctionSave } = props;
     
     const ctaFunctionDocumentList = useSelector(state => state.ctaFunctionDocumentList);
     //eslint-disable-next-line
@@ -119,7 +119,6 @@ export default function CtaCategoryForm(props) {
             case 0:
                 // step 1
                 return <CtaFormStepOne
-                            // menus={menus}
                             values={values}
                             handleInputChange={handleInputChange}
                             errors={errors}
@@ -145,22 +144,20 @@ export default function CtaCategoryForm(props) {
                 // step 3
                 return  <CtaFormStepThree
                             values={values}
-                            handleInputChange={handleInputChange}
                             handleFileChange= {handleFileChange}
                             resetFileInput= {resetFileInput}
                             handleSubmitFile = {handleSubmitFile}
                             errors={errors}
-                            user={user}
                             recordForEdit={ctaFunction}
                             setValues={setValues}
-                            ctaFunctionModels={ctaFunctionModels}
-                            handleMultipleSelectInputChange= {handleMultipleSelectInputChange}
                             ctaFunctionDocuments = {ctaFunctionDocuments}
                             setConfirmDialog={setConfirmDialog}
                             onDeleteCtaFunctionDocument= {onDeleteCtaFunctionDocument}
                             loadingCtaFunctionDocuments = {loadingCtaFunctionDocuments}
                             loadingDeleteCtaFunctionDocument = {loadingDeleteCtaFunctionDocument}
                             loadingCtaFunction= {loadingCtaFunction}
+                            loadingCtaFunctionSave ={loadingCtaFunctionSave}
+                            loadingCtaFunctionDocumentSave = {loadingCtaFunctionDocumentSave}
                         />;
             default:
                 return 'Finish';

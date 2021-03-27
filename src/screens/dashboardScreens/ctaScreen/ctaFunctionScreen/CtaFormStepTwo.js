@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core';
-import Controls from "../../../components/controls/Controls";
-import { Form } from '../../../components/UseForm/useForm';
+import Controls from "../../../../components/controls/Controls";
+import { Form } from '../../../../components/UseForm/useForm';
 
 
 export default function CtaFormStepTwo(props) {

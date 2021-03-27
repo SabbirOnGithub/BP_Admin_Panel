@@ -31,9 +31,9 @@ export default function FileInput(props) {
                 </Button>
             {/* <span style={{ marginLeft: 5 }}>{value ? value.name : 'no file'}</span> */}
             <span>
-               { console.log(value)}
+               {/* { console.log(value)} */}
                 {value && (
-                    value.type.includes('image') ?
+                    value?.type?.includes('image') ?
                     <>
                         <img src={pictureUrl} style={{ maxWidth: 300, maxHeight: 100, border: '2px solid #798dfe', padding: 5, verticalAlign: 'middle' }} alt="uploaded file" />
                         <span style={{ marginLeft: -39, verticalAlign: 'top' }}>

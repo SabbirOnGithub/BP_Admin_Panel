@@ -4,7 +4,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import SuccessDialog from '../SuccessDialog/SuccessDialog'
 const useStyles = makeStyles((theme) => ({
@@ -93,11 +93,12 @@ export default function HorizontalStepper(props) {
       <div>
         {activeStep === steps.length-1 ? (
           <div>
-            <Typography className={classes.instructions}> 
-                <SuccessDialog 
+            {/* <Typography className={classes.instructions}> 
+                
+            </Typography> */}
+            <SuccessDialog 
                     title = "Success"
                 />
-            </Typography>
             {/* <Button onClick={handleReset}>Finish</Button> */}
             <Button onClick={handleReset}>Close</Button>
           </div>

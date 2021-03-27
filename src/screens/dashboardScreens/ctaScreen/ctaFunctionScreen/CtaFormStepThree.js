@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core';
-import Controls from "../../../components/controls/Controls";
-import { Form } from '../../../components/UseForm/useForm';
-
+import Controls from "../../../../components/controls/Controls";
+import { Form } from '../../../../components/UseForm/useForm';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -13,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Loading from '../../../../components/Loading/Loading';
 
 export default function CtaFormStepThree(props) {
 
@@ -28,10 +28,12 @@ export default function CtaFormStepThree(props) {
         onDeleteCtaFunctionDocument,
         loadingCtaFunctionDocuments,
         loadingDeleteCtaFunctionDocument,
-        loadingCtaFunction
+        loadingCtaFunction,
+        loadingCtaFunctionSave,
+        loadingCtaFunctionDocumentSave
     } = props;
 
- 
+
     useEffect(() => {
         if (recordForEdit != null) {
             try {
@@ -47,7 +49,7 @@ export default function CtaFormStepThree(props) {
     return (
         <>
             {
-                !values.id || loadingCtaFunction ? 'loading' :
+                !values.id || loadingCtaFunction || loadingCtaFunctionSave || loadingCtaFunctionDocumentSave ? <Loading /> :
                     <Form onSubmit={handleSubmitFile}>
                         <Grid container>
                             <Grid item xs={12}>
@@ -73,20 +75,19 @@ export default function CtaFormStepThree(props) {
                 <div className={'classes.demo'}>
                     <List dense={false}>
 
-                        { 
-                             loadingCtaFunctionDocuments || loadingDeleteCtaFunctionDocument ? 'Loading' :
+                        {
+                            loadingCtaFunctionDocuments || loadingDeleteCtaFunctionDocument ? <Loading /> :
                                 ctaFunctionDocuments?.map(item => (
                                     <div key={item?.id}>
                                         <ListItem>
                                             <ListItemAvatar>
                                                 <Avatar >
                                                     <FolderIcon />
-                                                    {/* <img src={BASE_ROOT_URL + "/" + item?.fileUrl?.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> */}
                                                 </Avatar>
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={item?.fileUrl?.split("/").pop()}
-                                                // secondary={secondary ? 'Secondary text' : null}
+                                            // secondary={secondary ? 'Secondary text' : null}
                                             />
                                             <ListItemSecondaryAction
                                                 onClick={() => {

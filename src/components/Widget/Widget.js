@@ -5,12 +5,15 @@ import {
   Menu,
   MenuItem,
   Typography,
+ InputAdornment, 
 } from "@material-ui/core";
-import { MoreVert as MoreIcon  } from "@material-ui/icons";
+import { MoreVert as MoreIcon } from "@material-ui/icons";
 import classnames from "classnames";
 import Controls from "../controls/Controls";
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
+import { Search } from "@material-ui/icons";
+
 // styles
 import useStyles from "./styles";
 
@@ -34,10 +37,12 @@ export default function Widget({
   var [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
 
   return (
-    <div className={classes.widgetWrapper} style={style && {...style}}>
-      <Paper className={classes.paper} classes={{ root: classnames(classes.widgetRoot, {
-        [classes.noWidgetShadow]: noWidgetShadow
-        }) }}>
+    <div className={classes.widgetWrapper} style={style && { ...style }}>
+      <Paper className={classes.paper} classes={{
+        root: classnames(classes.widgetRoot, {
+          [classes.noWidgetShadow]: noWidgetShadow
+        })
+      }}>
         <div className={classnames(classes.widgetHeader, {
           [classes.noPadding]: noHeaderPadding,
           [headerClass]: headerClass
@@ -46,9 +51,24 @@ export default function Widget({
             header
           ) : (
             <React.Fragment>
-              <Typography variant="h4" color="textSecondary" noWrap>
+                        
+              <Typography variant="h4" color="textSecondary" style={{margin:4}}>
                 {title}
               </Typography>
+              { props.handleSearch && props.searchLabel &&
+                        <Controls.Input
+                        label={props.searchLabel}
+                        InputProps={{
+                            startAdornment: (<InputAdornment position="start">
+                                <Search />
+                            </InputAdornment>)
+                        }}
+                        onChange={props.handleSearch}
+                        style={{margin:4}}
+                    />
+
+              }
+
               {!disableWidgetMenu && (
                 <IconButton
                   color="primary"
@@ -61,25 +81,24 @@ export default function Widget({
                   <MoreIcon />
                 </IconButton>
               )}
-            {
-               props.addNew && props.createOperation &&
-               <Controls.Button
+              {
+                props.addNew && props.createOperation &&
+                <Controls.Button
                   text={props.buttonText ? props.buttonText : "Add New"}
                   variant="outlined"
                   startIcon={!props.buttonText && <AddIcon />}
-                  onClick = {props.addNew}
-              />
-            }
-            {
-               props.editOne && props.displayEdit &&
-               <Controls.Button
+                  onClick={props.addNew}
+                />
+              }
+              {
+                props.editOne && props.displayEdit &&
+                <Controls.Button
                   text="Edit"
                   variant="outlined"
                   startIcon={<EditIcon />}
-                  onClick = {props.editOne}
-              />
-            }
-
+                  onClick={props.editOne}
+                />
+              }
             </React.Fragment>
           )}
         </div>
@@ -93,27 +112,21 @@ export default function Widget({
         </div>
 
       </Paper>
-       <Menu
+      <Menu
         id="widget-menu"
         open={isMoreMenuOpen}
         anchorEl={moreButtonRef}
         onClose={() => setMoreMenuOpen(false)}
         disableAutoFocusItem
       >
-        <MenuItem 
-          onClick={() => { props.setOpenPopup(true); props.setRecordForEdit(null);  setMoreMenuOpen(false)}}
+        <MenuItem
+          onClick={() => { props.setOpenPopup(true); props.setRecordForEdit(null); setMoreMenuOpen(false) }}
         >
           <Typography>Add New</Typography>
         </MenuItem>
-        
-        {/* <MenuItem>
-          <Typography>Delete</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography>Print</Typography>
-        </MenuItem> */}
+
       </Menu>
-      
+
     </div>
   );
 }
