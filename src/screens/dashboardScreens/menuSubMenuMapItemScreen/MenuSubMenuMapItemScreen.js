@@ -12,6 +12,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../helpers/search';
+import Loading from '../../../components/Loading/Loading';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -193,7 +194,7 @@ export default function MenuSubMenuMapItemScreen() {
 
         <>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps || loadingMenus || loadingSubMenus) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenuSubMenuMaps || loadingMenus || loadingSubMenus) ? <Loading /> :
                     (
                         menuSubMenuMapItems.length > 0 &&
                         <>

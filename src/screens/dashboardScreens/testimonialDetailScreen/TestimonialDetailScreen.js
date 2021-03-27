@@ -12,6 +12,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
+import Loading from '../../../components/Loading/Loading';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -184,7 +185,7 @@ export default function TestimonialDetailScreen() {
 
         <div>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingHomePageDatas || loadingUsers) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingHomePageDatas || loadingUsers) ? <Loading /> :
                     (
                         testimonialDetails.length > 0 &&
                         <>

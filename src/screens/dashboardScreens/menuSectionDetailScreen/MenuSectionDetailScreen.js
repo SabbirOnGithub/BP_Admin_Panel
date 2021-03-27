@@ -12,6 +12,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchTitleByIdFromArray } from '../../../helpers/search';
+import Loading from '../../../components/Loading/Loading';
 
 import { useSelector, useDispatch } from 'react-redux';
 // permissions
@@ -204,7 +205,7 @@ export default function MenuSectionDetailScreen() {
 
         <div>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
                     (
                         menuSectionDetails.length > 0 &&
                         <>

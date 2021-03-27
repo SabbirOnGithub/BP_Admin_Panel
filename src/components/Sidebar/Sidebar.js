@@ -10,6 +10,7 @@ import BookIcon from '@material-ui/icons/Book';
 import AppsIcon from '@material-ui/icons/Apps';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import PaymentIcon from '@material-ui/icons/Payment';
+import PermDataSettingIcon from '@material-ui/icons/PermDataSetting';
 import {
   Home as HomeIcon,
   FormatSize as TypographyIcon,
@@ -141,6 +142,18 @@ const structure = [
     label: "Payment Package",
     link: "/admin/paymentPackage",
     icon: <PaymentIcon />,
+  },
+  {
+    id: 13,
+    label: "Payment Configuration",
+    // link: "/admin/resource",
+    icon: <PermDataSettingIcon />,
+    children: [
+      { label: "ConsultingType", link: "/admin/consultingType" },
+      // { label: "Users", link: "/admin/user" },
+      // { label: "Resource", link: "/admin/resource" },
+      // { label: "Role Resource", link: "/admin/roleResource" },
+    ],
   },
 ];
 

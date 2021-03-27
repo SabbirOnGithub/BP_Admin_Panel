@@ -12,6 +12,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
+import Loading from '../../../components/Loading/Loading';
 
 
 
@@ -197,7 +198,7 @@ export default function SubMenuBusinessContextScreen() {
 
         <div>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
                     (
                         subMenuBusinessContexts.length > 0 &&
                         <>

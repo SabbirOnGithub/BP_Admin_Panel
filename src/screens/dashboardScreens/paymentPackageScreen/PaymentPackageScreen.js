@@ -12,6 +12,8 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
+import Loading from '../../../components/Loading/Loading';
+
 // 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -182,7 +184,7 @@ export default function PaymentPackageScreen() {
 
         <div>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenus || loadingSubMenus) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenus || loadingSubMenus) ? <Loading /> :
                     (
                         paymentPackages.length > 0 &&
                         <>

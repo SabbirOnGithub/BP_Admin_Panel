@@ -20,6 +20,8 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
+import Loading from '../../../components/Loading/Loading';
+
 // 
 import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute} from '../../../routes/routeConstants';
@@ -204,7 +206,7 @@ export default function HomePageScreen() {
 
         <>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" : 
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> : 
                 // (readOperation === false) ? <AccessDeniedScreen /> :
                 (
                     homePageDatas.length >0 &&

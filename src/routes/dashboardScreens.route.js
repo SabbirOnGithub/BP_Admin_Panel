@@ -40,6 +40,7 @@ import ContactUsMessageScreen from "../screens/dashboardScreens/contactUsMessage
 import PaymentPackageScreen from "../screens/dashboardScreens/paymentPackageScreen/PaymentPackageScreen";
 import AccessDeniedScreen from '../screens/accessDeniedScreen/AccessDeniedScreen'
 import UserProfileScreen from '../screens/dashboardScreens/userProfileScreen/UserProfileScreen'
+import ConsultingTypeScreen from '../screens/dashboardScreens/consultingTypeScreen/ConsultingTypeScreen'
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -102,6 +103,7 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/cta`} component={CtaScreen} />
       <Route exact path={`${props.match.path}/contactUs`} component={ContactUsMessageScreen} />
       <Route exact path={`${props.match.path}/paymentPackage`} component={PaymentPackageScreen} />
+      <Route exact path={`${props.match.path}/consultingType`} component={ConsultingTypeScreen} />
       {/* role routes */}
       <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
       <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />

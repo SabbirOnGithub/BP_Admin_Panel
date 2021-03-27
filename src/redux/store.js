@@ -35,6 +35,7 @@ import { ctaCategoryDetailsReducer, ctaCategoryDocumentSaveReducer, ctaCategoryL
 import { contactUsMessageDetailsReducer, contactUsMessageListReducer } from './reducers/contactUsMessageReducers';
 import { paymentPackageDeleteReducer, paymentPackageDetailsReducer, paymentPackageListReducer, paymentPackageSaveReducer } from './reducers/paymentPackageReducers';
 import { ctaFunctionDetailsReducer, ctaFunctionDocumentDeleteReducer, ctaFunctionDocumentListReducer, ctaFunctionDocumentSaveReducer, ctaFunctionListReducer, ctaFunctionModelListReducer, ctaFunctionSaveReducer } from './reducers/ctaFunctionReducers';
+import { consultingTypeDeleteReducer, consultingTypeDetailsReducer, consultingTypeListReducer, consultingTypeSaveReducer } from './reducers/consultingTypeReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -185,6 +186,10 @@ const reducer = combineReducers({
     paymentPackageDetails: paymentPackageDetailsReducer,
     paymentPackageSave: paymentPackageSaveReducer,
     paymentPackageDelete: paymentPackageDeleteReducer,
+    consultingTypeList:consultingTypeListReducer,
+    consultingTypeDetails: consultingTypeDetailsReducer,
+    consultingTypeSave: consultingTypeSaveReducer,
+    consultingTypeDelete: consultingTypeDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

@@ -11,6 +11,8 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import Loading from '../../../components/Loading/Loading';
+
 //eslint-disable-next-line
 import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../helpers/search';
 
@@ -210,7 +212,7 @@ export default function MenuSubMenuMapItemListItemScreen() {
     return (
         <>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenuSubMenuMapItem) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenuSubMenuMapItem) ? <Loading /> :
                     (
                         menuSubMenuMapItemListItems.length > 0 &&
                         <>

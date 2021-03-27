@@ -7,6 +7,7 @@ import Chip from "@material-ui/core/Chip";
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Divider } from '@material-ui/core';
 import Widget from "../../../components/Widget/Widget";
+import Loading from '../../../components/Loading/Loading';
 
 // redux actions
 import { detailsUser, saveUser } from '../../../redux/actions/userActions';
@@ -154,7 +155,7 @@ function UserProfileScreen() {
   return (
     <div>
       {
-        loading || loadingSave ? "Loading" :
+        loading || loadingSave ? <Loading /> :
           <>
             <div>
               <div

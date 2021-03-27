@@ -11,6 +11,8 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
+import Loading from '../../../components/Loading/Loading';
+
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -202,7 +204,7 @@ export default function HomePageCoreValueDetailScreen() {
 
         <div>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
 
                     (homePageCoreValueDetails.length > 0 &&
                         <>

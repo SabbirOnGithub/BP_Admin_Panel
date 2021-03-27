@@ -12,6 +12,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
+import Loading from '../../../components/Loading/Loading';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -207,9 +208,9 @@ export default function BlogPostScreen() {
 
         <>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingBlogSubCategorys) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingBlogSubCategorys) ? <Loading /> :
                     (
-                        blogPosts.length > 0 &&
+                        blogPosts.length >= 0 &&
                         <>
                             <PageTitle title="Blog Posts" />
 

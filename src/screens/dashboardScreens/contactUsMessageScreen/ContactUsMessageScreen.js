@@ -8,6 +8,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import DetailsIcon from '@material-ui/icons/Details';
+import Loading from '../../../components/Loading/Loading';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -66,7 +67,7 @@ export default function ContactUsMessageScreen() {
 
         <>
             {
-                loading ? "Loading" :
+                loading ? <Loading /> :
                     <>
                         <PageTitle title="Contact Us Message" />
 

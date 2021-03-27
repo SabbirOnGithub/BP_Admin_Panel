@@ -13,6 +13,8 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { useSelector, useDispatch } from 'react-redux';
+import Loading from '../../../components/Loading/Loading';
+
 
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
@@ -210,7 +212,7 @@ export default function ShortIntroScreen() {
 
         <div>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
 
                     subMenus.length > 0 &&
                     (

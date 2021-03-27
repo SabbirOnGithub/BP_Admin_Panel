@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 // import AccessDeniedScreen from '../accessDeniedScreen/AccessDeniedScreen'
 import { usePermission } from '../../components/UsePermission/usePermission';
+import Loading from '../../components/Loading/Loading';
 
 
 function HomeScreen() {
@@ -37,7 +38,7 @@ function HomeScreen() {
 
     return(
       <>
-      { loadingRoleResource ? "Loading" : 
+      { loadingRoleResource ? <Loading /> : 
         <><h1 style={{textAlign:'center',display:'flex', justifyContent:'center'}}> {'Welcome to Best Practicify Dashboard' } </h1> </> 
       }
       </>

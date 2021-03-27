@@ -12,6 +12,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { useSelector, useDispatch } from 'react-redux';
+import Loading from '../../../components/Loading/Loading';
 
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
@@ -30,7 +31,7 @@ const headCells = [
     { id: 'title', label: 'Title' },
     { id: 'subTitle', label: 'Sub Title' },
     { id: 'isActive', label: 'Active' },
-    { id: 'displayOrder', label: 'DisplayOrder' },
+    { id: 'displayOrder', label: 'Display Order' },
     { id: 'pictureUrl', label: 'Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
@@ -189,7 +190,7 @@ export default function HomePageSliderScreen() {
 
         <div>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? "Loading" :
+                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
 
                     (
                         homePageSliders.length > 0 &&
