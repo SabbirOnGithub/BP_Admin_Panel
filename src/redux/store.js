@@ -40,6 +40,7 @@ import { ctaHourDeleteReducer, ctaHourDetailsReducer, ctaHourListReducer, ctaHou
 import { ctaPackageDailyDeleteReducer, ctaPackageDailyDetailsReducer, ctaPackageDailyListReducer, ctaPackageDailySaveReducer } from './reducers/ctaPackageDailyReducers';
 import { companyTypeDeleteReducer, companyTypeDetailsReducer, companyTypeListReducer, companyTypeSaveReducer } from './reducers/companyTypeReducers';
 import { ctaPackageHourlyDeleteReducer, ctaPackageHourlyDetailsReducer, ctaPackageHourlyListReducer, ctaPackageHourlySaveReducer } from './reducers/ctaPackageHourlyReducers';
+import { ctaPackageMonthlyYearlyListReducer, ctaPackageMonthlyYearlyDetailsReducer, ctaPackageMonthlyYearlySaveReducer, ctaPackageMonthlyYearlyDeleteReducer } from './reducers/ctaPackageMonthlyYearlyReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -210,6 +211,10 @@ const reducer = combineReducers({
     ctaPackageHourlyDetails: ctaPackageHourlyDetailsReducer,
     ctaPackageHourlySave: ctaPackageHourlySaveReducer,
     ctaPackageHourlyDelete: ctaPackageHourlyDeleteReducer,
+    ctaPackageMonthlyYearlyList:ctaPackageMonthlyYearlyListReducer,
+    ctaPackageMonthlyYearlyDetails: ctaPackageMonthlyYearlyDetailsReducer,
+    ctaPackageMonthlyYearlySave: ctaPackageMonthlyYearlySaveReducer,
+    ctaPackageMonthlyYearlyDelete: ctaPackageMonthlyYearlyDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

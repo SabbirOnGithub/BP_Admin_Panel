@@ -154,6 +154,7 @@ const structure = [
       { label: "Cta Package Daily", link: "/admin/ctaPackageDaily" },
       { label: "Company Type", link: "/admin/companyType" },
       { label: "Cta Package Hourly", link: "/admin/ctaPackageHourly" },
+      { label: "Cta Package Monthly Yearly", link: "/admin/ctaPackageMonthlyYearly" },
     ],
   },
 ];

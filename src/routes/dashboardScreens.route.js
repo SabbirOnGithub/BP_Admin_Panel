@@ -45,6 +45,7 @@ import CtaHourScreen from '../screens/dashboardScreens/ctaHourScreen/CtaHourScre
 import CtaPackageDailyScreen from '../screens/dashboardScreens/ctaPackageDailyScreen/CtaPackageDailyScreen'
 import CompanyTypeScreen from '../screens/dashboardScreens/companyTypeScreen/CompanyTypeScreen'
 import CtaPackageHourlyScreen from '../screens/dashboardScreens/ctaPackageHourlyScreen/CtaPackageHourlyScreen'
+import CtaPackageMonthlyYearlyScreen from '../screens/dashboardScreens/ctaPackageMonthlyYearlyScreen/CtaPackageMonthlyYearlyScreen'
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -112,6 +113,7 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/ctaPackageDaily`} component={CtaPackageDailyScreen} />
       <Route exact path={`${props.match.path}/companyType`} component={CompanyTypeScreen} />
       <Route exact path={`${props.match.path}/ctaPackageHourly`} component={CtaPackageHourlyScreen} />
+      <Route exact path={`${props.match.path}/ctaPackageMonthlyYearly`} component={CtaPackageMonthlyYearlyScreen} />
       {/* role routes */}
       <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
       <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />
