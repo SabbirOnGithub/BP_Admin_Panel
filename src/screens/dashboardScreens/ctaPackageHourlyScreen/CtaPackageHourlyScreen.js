@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import CtaPackageDailyForm from "./CtaPackageDailyForm";
+import CtaPackageHourlyForm from "./CtaPackageHourlyForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -21,9 +21,9 @@ import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
-import { listCtaPackageDailys, saveCtaPackageDaily, deleteCtaPackageDaily } from '../../../redux/actions/ctaPackageDailyActions';
+import { listCtaPackageHourlys, saveCtaPackageHourly, deleteCtaPackageHourly } from '../../../redux/actions/ctaPackageHourlyActions';
+import { listCtaHours } from '../../../redux/actions/ctaHourActions';
 import { listCompanyTypes } from '../../../redux/actions/companyTypeActions';
-import { listSubMenus} from '../../../redux/actions/subMenuActions';
 
 
 
@@ -31,12 +31,13 @@ const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
     { id: 'companyTypeId', label: 'Company Type' },
-    { id: 'submenuId', label: 'Submenu' },
+    { id: 'ctaHourId', label: 'Cta Hour' },
+    { id: 'validity', label: 'Validity' },
     { id: 'rate', label: 'Rate' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function CtaPackageDailyScreen() {
+export default function CtaPackageHourlyScreen() {
     // permission get
     const {
         permission,
@@ -49,23 +50,23 @@ export default function CtaPackageDailyScreen() {
     const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
     // permission get end
 
+    const ctaHourList = useSelector(state => state.ctaHourList);
+    //eslint-disable-next-line
+    const { ctaHours, loading: loadingCtaHours, error: errorCtaHours } = ctaHourList;
+
     const companyTypeList = useSelector(state => state.companyTypeList);
     //eslint-disable-next-line
-    const { companyTypes, loading:loadingCompanyTypes, error:errorCompanyTypes } = companyTypeList;
+    const { companyTypes, loading: loadingCompanyTypes, error: errorCompanyTypes } = companyTypeList;
 
-    const subMenuList = useSelector(state => state.subMenuList)
+    const ctaPackageHourlyList = useSelector(state => state.ctaPackageHourlyList);
     //eslint-disable-next-line
-    const { subMenus, loading:loadingSubMenus, error: errorSubMenus } = subMenuList;
-
-    const ctaPackageDailyList = useSelector(state => state.ctaPackageDailyList);
+    const { ctaPackageHourlys, loading, error } = ctaPackageHourlyList;
+    const ctaPackageHourlySave = useSelector(state => state.ctaPackageHourlySave);
     //eslint-disable-next-line
-    const { ctaPackageDailys, loading, error } = ctaPackageDailyList;
-    const ctaPackageDailySave = useSelector(state => state.ctaPackageDailySave);
+    const { loading: loadingSave, success: successSave, error: errorSave } = ctaPackageHourlySave;
+    const ctaPackageHourlyDelete = useSelector(state => state.ctaPackageHourlyDelete);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = ctaPackageDailySave;
-    const ctaPackageDailyDelete = useSelector(state => state.ctaPackageDailyDelete);
-    //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = ctaPackageDailyDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = ctaPackageHourlyDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -81,19 +82,19 @@ export default function CtaPackageDailyScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(ctaPackageDailys, headCells, filterFn);
+    } = useTable(ctaPackageHourlys, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveCtaPackageDaily(item));
+        dispatch(saveCtaPackageHourly(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteCtaPackageDaily(id));
+        dispatch(deleteCtaPackageHourly(id));
         resolve();
     })
 
@@ -160,9 +161,10 @@ export default function CtaPackageDailyScreen() {
                 setPermission({ ...recievedPermission })
             }
             if (recievedPermission?.readOperation) {
+                dispatch(listCtaHours());
                 dispatch(listCompanyTypes());
-                dispatch(listSubMenus());
-                dispatch(listCtaPackageDailys());
+                dispatch(listCtaPackageHourlys());
+
             }
             if (readOperation === false) {
                 history.push(accessDeniedRoute);
@@ -181,16 +183,16 @@ export default function CtaPackageDailyScreen() {
 
         <>
             {
-                (loadingRoleResource || loading || loadingSubMenus || loadingCompanyTypes || loadingSave || loadingDelete) ? <Loading /> :
+                (loadingRoleResource || loading || loadingCtaHours || loadingCompanyTypes || loadingSave || loadingDelete) ? <Loading /> :
                     (
-                        ctaPackageDailys.length >= 0 &&
+                        ctaPackageHourlys.length >= 0 &&
                         <>
-                            <PageTitle title="Cta Package Dailys" />
+                            <PageTitle title="Cta Packages Hourly" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Cta Package Daily List Table"
+                                        title="Cta Packages Hourly List Table"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
@@ -212,7 +214,8 @@ export default function CtaPackageDailyScreen() {
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{item.name}</TableCell>
                                                             <TableCell>{searchNameByIdFromArray(companyTypes, item.companyTypeId)}</TableCell>
-                                                            <TableCell>{searchNameByIdFromArray(subMenus, item.submenuId)}</TableCell>
+                                                            <TableCell>{searchNameByIdFromArray(ctaHours, item.ctaHourId)}</TableCell>
+                                                            <TableCell>{item.validity}</TableCell>
                                                             <TableCell>{item.rate}</TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
@@ -244,16 +247,16 @@ export default function CtaPackageDailyScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Cta Package Daily Form"
+                                            title="Cta Package Hourly Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >
-                                            <CtaPackageDailyForm
+                                            <CtaPackageHourlyForm
                                                 recordForEdit={recordForEdit}
                                                 addOrEdit={addOrEdit}
                                                 loadingSave={loadingSave}
-                                                subMenus={subMenus}
-                                                companyTypes ={companyTypes}
+                                                ctaHours={ctaHours}
+                                                companyTypes={companyTypes}
                                             />
 
                                         </Popup>

@@ -39,6 +39,7 @@ import { consultingTypeDeleteReducer, consultingTypeDetailsReducer, consultingTy
 import { ctaHourDeleteReducer, ctaHourDetailsReducer, ctaHourListReducer, ctaHourSaveReducer } from './reducers/ctaHourReducers';
 import { ctaPackageDailyDeleteReducer, ctaPackageDailyDetailsReducer, ctaPackageDailyListReducer, ctaPackageDailySaveReducer } from './reducers/ctaPackageDailyReducers';
 import { companyTypeDeleteReducer, companyTypeDetailsReducer, companyTypeListReducer, companyTypeSaveReducer } from './reducers/companyTypeReducers';
+import { ctaPackageHourlyDeleteReducer, ctaPackageHourlyDetailsReducer, ctaPackageHourlyListReducer, ctaPackageHourlySaveReducer } from './reducers/ctaPackageHourlyReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -205,6 +206,10 @@ const reducer = combineReducers({
     companyTypeDetails: companyTypeDetailsReducer,
     companyTypeSave: companyTypeSaveReducer,
     companyTypeDelete: companyTypeDeleteReducer,
+    ctaPackageHourlyList:ctaPackageHourlyListReducer,
+    ctaPackageHourlyDetails: ctaPackageHourlyDetailsReducer,
+    ctaPackageHourlySave: ctaPackageHourlySaveReducer,
+    ctaPackageHourlyDelete: ctaPackageHourlyDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 
