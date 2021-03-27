@@ -149,8 +149,8 @@ const structure = [
     // link: "/admin/resource",
     icon: <PermDataSettingIcon />,
     children: [
-      { label: "ConsultingType", link: "/admin/consultingType" },
-      // { label: "Users", link: "/admin/user" },
+      { label: "Consulting Type", link: "/admin/consultingType" },
+      { label: "Cta Hour", link: "/admin/ctaHour" },
       // { label: "Resource", link: "/admin/resource" },
       // { label: "Role Resource", link: "/admin/roleResource" },
     ],

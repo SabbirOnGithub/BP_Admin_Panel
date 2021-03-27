@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ResourceForm from "./ResourceForm";
+import CtaHourForm from "./CtaHourForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -20,25 +20,18 @@ import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
-import { listResources, saveResource, deleteResource } from '../../../redux/actions/resourceActions';
+import { listCtaHours, saveCtaHour, deleteCtaHour } from '../../../redux/actions/ctaHourActions';
 
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
-    { id: 'systemName', label: 'System Name' },
-    { id: 'urlPath', label: 'Url Path' },
-    { id: 'ordering', label: 'Ordering' },
-    { id: 'isBaseItem', label: 'Is Base Item' },
-    { id: 'isActive', label: 'Active' },
-    { id: 'baseItemId', label: 'Base Item Id' },
-    { id: 'isWfasettingsRequired', label: 'Is Wfasettings Required' },
-    { id: 'isNotificationSettingsRequired', label: 'Is Notification Settings Required' },
+    { id: 'validity', label: 'Validity' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function ResourceScreen() {
+export default function CtaHourScreen() {
     // permission get
     const {
         permission,
@@ -51,17 +44,15 @@ export default function ResourceScreen() {
     const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
     // permission get end
 
-
-    const resourceList = useSelector(state => state.resourceList);
+    const ctaHourList = useSelector(state => state.ctaHourList);
     //eslint-disable-next-line
-    const { resources, loading, error } = resourceList;
-
-    const resourceSave = useSelector(state => state.resourceSave);
+    const { ctaHours, loading, error } = ctaHourList;
+    const ctaHourSave = useSelector(state => state.ctaHourSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = resourceSave;
-    const resourceDelete = useSelector(state => state.resourceDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = ctaHourSave;
+    const ctaHourDelete = useSelector(state => state.ctaHourDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = resourceDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = ctaHourDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -77,20 +68,19 @@ export default function ResourceScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(resources, headCells, filterFn);
+    } = useTable(ctaHours, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        // console.log(item)
-        dispatch(saveResource(item));
+        dispatch(saveCtaHour(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteResource(id));
+        dispatch(deleteCtaHour(id));
         resolve();
     })
 
@@ -152,18 +142,13 @@ export default function ResourceScreen() {
     }
 
     useEffect(() => {
-
-        return () => {
-            // 
-        }
-    }, [dispatch, loadingSave, loadingDelete])
-    useEffect(() => {
         try {
             if (recievedPermission) {
                 setPermission({ ...recievedPermission })
             }
             if (recievedPermission?.readOperation) {
-                dispatch(listResources());
+                dispatch(listCtaHours());
+
             }
             if (readOperation === false) {
                 history.push(accessDeniedRoute);
@@ -184,14 +169,14 @@ export default function ResourceScreen() {
             {
                 (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
                     (
-                        resources.length > 0 &&
+                        ctaHours.length >= 0 &&
                         <>
-                            <PageTitle title="Resources" />
+                            <PageTitle title="Cta Hours" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Resource List Table"
+                                        title="Cta Hour List Table"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
@@ -200,6 +185,7 @@ export default function ResourceScreen() {
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
+
                                     >
 
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -211,14 +197,7 @@ export default function ResourceScreen() {
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{item.name}</TableCell>
-                                                            <TableCell>{item.systemName}</TableCell>
-                                                            <TableCell>{item.urlPath}</TableCell>
-                                                            <TableCell>{item.ordering}</TableCell>
-                                                            <TableCell>{item.isBaseItem ? "yes" : "no"}</TableCell>
-                                                            <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
-                                                            <TableCell>{item.baseItemId}</TableCell>
-                                                            <TableCell>{item.isWfasettingsRequired ? "yes" : "no"}</TableCell>
-                                                            <TableCell>{item.isNotificationSettingsRequired ? "yes" : "no"}</TableCell>
+                                                            <TableCell>{item.validity}</TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
                                                                     color="primary"
@@ -249,11 +228,11 @@ export default function ResourceScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Resource Form"
+                                            title="Cta Hour Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >
-                                            <ResourceForm
+                                            <CtaHourForm
                                                 recordForEdit={recordForEdit}
                                                 addOrEdit={addOrEdit}
                                                 loadingSave={loadingSave}
