@@ -42,6 +42,8 @@ import AccessDeniedScreen from '../screens/accessDeniedScreen/AccessDeniedScreen
 import UserProfileScreen from '../screens/dashboardScreens/userProfileScreen/UserProfileScreen'
 import ConsultingTypeScreen from '../screens/dashboardScreens/consultingTypeScreen/ConsultingTypeScreen'
 import CtaHourScreen from '../screens/dashboardScreens/ctaHourScreen/CtaHourScreen'
+import CtaPackageDailyScreen from '../screens/dashboardScreens/ctaPackageDailyScreen/CtaPackageDailyScreen'
+import CompanyTypeScreen from '../screens/dashboardScreens/companyTypeScreen/CompanyTypeScreen'
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -106,6 +108,8 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/paymentPackage`} component={PaymentPackageScreen} />
       <Route exact path={`${props.match.path}/consultingType`} component={ConsultingTypeScreen} />
       <Route exact path={`${props.match.path}/ctaHour`} component={CtaHourScreen} />
+      <Route exact path={`${props.match.path}/ctaPackageDaily`} component={CtaPackageDailyScreen} />
+      <Route exact path={`${props.match.path}/companyType`} component={CompanyTypeScreen} />
       {/* role routes */}
       <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
       <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />

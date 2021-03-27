@@ -151,8 +151,8 @@ const structure = [
     children: [
       { label: "Consulting Type", link: "/admin/consultingType" },
       { label: "Cta Hour", link: "/admin/ctaHour" },
-      // { label: "Resource", link: "/admin/resource" },
-      // { label: "Role Resource", link: "/admin/roleResource" },
+      { label: "Cta Package Daily", link: "/admin/ctaPackageDaily" },
+      { label: "Company Type", link: "/admin/companyType" },
     ],
   },
 ];
