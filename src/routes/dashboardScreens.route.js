@@ -46,6 +46,10 @@ import CtaPackageDailyScreen from '../screens/dashboardScreens/ctaPackageDailySc
 import CompanyTypeScreen from '../screens/dashboardScreens/companyTypeScreen/CompanyTypeScreen'
 import CtaPackageHourlyScreen from '../screens/dashboardScreens/ctaPackageHourlyScreen/CtaPackageHourlyScreen'
 import CtaPackageMonthlyYearlyScreen from '../screens/dashboardScreens/ctaPackageMonthlyYearlyScreen/CtaPackageMonthlyYearlyScreen'
+import BusinessPrincipalDescriptorScreen from '../screens/dashboardScreens/businessPrincipalDescriptorScreen/BusinessPrincipalDescriptorScreen'
+import ConsultationOverviewScreen from '../screens/dashboardScreens/consultationOverviewScreen/ConsultationOverviewScreen'
+import TrainingCandidateDescriptorScreen from '../screens/dashboardScreens/trainingCandidateDescriptorScreen/TrainingCandidateDescriptorScreen'
+import TrainingOverviewScreen from '../screens/dashboardScreens/trainingOverviewScreen/TrainingOverviewScreen'
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -114,6 +118,10 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/companyType`} component={CompanyTypeScreen} />
       <Route exact path={`${props.match.path}/ctaPackageHourly`} component={CtaPackageHourlyScreen} />
       <Route exact path={`${props.match.path}/ctaPackageMonthlyYearly`} component={CtaPackageMonthlyYearlyScreen} />
+      <Route exact path={`${props.match.path}/businessPrincipalDescriptor`} component={BusinessPrincipalDescriptorScreen} />
+      <Route exact path={`${props.match.path}/consultationOverview`} component={ConsultationOverviewScreen} />
+      <Route exact path={`${props.match.path}/trainingCandidateDescriptor`} component={TrainingCandidateDescriptorScreen} />
+      <Route exact path={`${props.match.path}/trainingOverview`} component={TrainingOverviewScreen} />
       {/* role routes */}
       <Route exact path={`${props.match.path}/role`} component={RoleScreen} />
       <Route exact path={`${props.match.path}/resource`} component={ResourceScreen} />

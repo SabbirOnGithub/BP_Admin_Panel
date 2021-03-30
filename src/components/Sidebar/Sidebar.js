@@ -157,6 +157,18 @@ const structure = [
       { label: "Cta Package Monthly Yearly", link: "/admin/ctaPackageMonthlyYearly" },
     ],
   },
+  {
+    id: 14, label: "Business Principal Descriptor", link: "/admin/businessPrincipalDescriptor", icon: <TypographyIcon />,
+  },
+  {
+    id: 15, label: "Consultation Overview", link: "/admin/consultationOverview", icon: <TypographyIcon />,
+  },
+  {
+    id: 16, label: "Training Candidate Descriptor", link: "/admin/trainingCandidateDescriptor", icon: <TypographyIcon />,
+  },
+  {
+    id: 17, label: "Training Overview", link: "/admin/trainingOverview", icon: <TypographyIcon />,
+  },
 ];
 
 

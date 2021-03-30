@@ -41,6 +41,10 @@ import { ctaPackageDailyDeleteReducer, ctaPackageDailyDetailsReducer, ctaPackage
 import { companyTypeDeleteReducer, companyTypeDetailsReducer, companyTypeListReducer, companyTypeSaveReducer } from './reducers/companyTypeReducers';
 import { ctaPackageHourlyDeleteReducer, ctaPackageHourlyDetailsReducer, ctaPackageHourlyListReducer, ctaPackageHourlySaveReducer } from './reducers/ctaPackageHourlyReducers';
 import { ctaPackageMonthlyYearlyListReducer, ctaPackageMonthlyYearlyDetailsReducer, ctaPackageMonthlyYearlySaveReducer, ctaPackageMonthlyYearlyDeleteReducer } from './reducers/ctaPackageMonthlyYearlyReducers';
+import { businessPrincipalDescriptorDeleteReducer, businessPrincipalDescriptorDetailsReducer, businessPrincipalDescriptorListReducer, businessPrincipalDescriptorSaveReducer } from './reducers/businessPrincipalDescriptorReducers';
+import { consultationOverviewDeleteReducer, consultationOverviewDetailsReducer, consultationOverviewListReducer, consultationOverviewSaveReducer } from './reducers/consultationOverviewReducers';
+import { trainingCandidateDescriptorDeleteReducer, trainingCandidateDescriptorDetailsReducer, trainingCandidateDescriptorListReducer, trainingCandidateDescriptorSaveReducer } from './reducers/trainingCandidateDescriptorReducers';
+import { trainingOverviewDeleteReducer, trainingOverviewDetailsReducer, trainingOverviewListReducer, trainingOverviewSaveReducer } from './reducers/trainingOverviewReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -215,6 +219,23 @@ const reducer = combineReducers({
     ctaPackageMonthlyYearlyDetails: ctaPackageMonthlyYearlyDetailsReducer,
     ctaPackageMonthlyYearlySave: ctaPackageMonthlyYearlySaveReducer,
     ctaPackageMonthlyYearlyDelete: ctaPackageMonthlyYearlyDeleteReducer,
+    businessPrincipalDescriptorList:businessPrincipalDescriptorListReducer,
+    businessPrincipalDescriptorDetails: businessPrincipalDescriptorDetailsReducer,
+    businessPrincipalDescriptorSave: businessPrincipalDescriptorSaveReducer,
+    businessPrincipalDescriptorDelete: businessPrincipalDescriptorDeleteReducer,
+    consultationOverviewList:consultationOverviewListReducer,
+    consultationOverviewDetails: consultationOverviewDetailsReducer,
+    consultationOverviewSave: consultationOverviewSaveReducer,
+    consultationOverviewDelete: consultationOverviewDeleteReducer,
+    trainingCandidateDescriptorList:trainingCandidateDescriptorListReducer,
+    trainingCandidateDescriptorDetails: trainingCandidateDescriptorDetailsReducer,
+    trainingCandidateDescriptorSave: trainingCandidateDescriptorSaveReducer,
+    trainingCandidateDescriptorDelete: trainingCandidateDescriptorDeleteReducer,
+    trainingOverviewList:trainingOverviewListReducer,
+    trainingOverviewDetails: trainingOverviewDetailsReducer,
+    trainingOverviewSave: trainingOverviewSaveReducer,
+    trainingOverviewDelete: trainingOverviewDeleteReducer,
+    
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

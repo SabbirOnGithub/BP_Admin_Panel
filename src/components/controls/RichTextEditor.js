@@ -7,7 +7,7 @@ export default function RichTextEditor(props) {
     const { editorState, name, onEditorStateChange, placeholder, ...other } = props;
     return (
 
-        <div style={{ maxWidth: '90%', border: '1px solid lightGrey', padding: 5, borderRadius: 5 }} className='MuiFormControl-root'>
+        <div style={{ maxWidth: '98%', border: '1px solid lightGrey', padding: 5, borderRadius: 5 }} className='MuiFormControl-root'>
             <Editor
                 wrapperClassName="rich-editor demo-wrapper"
                 editorClassName="demo-editor"
