@@ -172,6 +172,9 @@ const structure = [
   {
     id: 18, label: "Training Type", link: "/admin/trainingType", icon: <TypographyIcon />,
   },
+  {
+    id: 19, label: "Software", link: "/admin/software", icon: <TypographyIcon />,
+  },
   
 ];
 

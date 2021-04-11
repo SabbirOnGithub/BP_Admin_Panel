@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SubmenuBestPracticeForm from "./SubmenuBestPracticeForm";
+import SoftwareForm from "./SoftwareForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -11,34 +11,31 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
-import { searchNameByIdFromArray } from '../../../helpers/search';
 import Loading from '../../../components/Loading/Loading';
+import { searchNameByIdFromArray } from '../../../helpers/search';
+
 
 import { useSelector, useDispatch } from 'react-redux';
-
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
-import { deleteSubmenuBestPractice, listSubmenuBestPractices, saveSubmenuBestPractice } from '../../../redux/actions/submenuBestPracticeActions';
+import { listSoftwares, saveSoftware, deleteSoftware } from '../../../redux/actions/softwareActions';
 import { listSubMenus } from '../../../redux/actions/subMenuActions';
-
-import { config } from "../../../config";
-const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'subMenuId', label: 'SubMenu' },
-    { id: 'title', label: 'Title' },
-    { id: 'description', label: 'Description' },
-    { id: 'pictureUrl', label: 'Picture' },
+    { id: 'submenuId', label: 'Sub Menu' },
+    { id: 'name', label: 'Name' },
+    { id: 'displayOrder', label: 'Display Order' },
+    { id: 'isActive', label: 'Active' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function SubmenuBestPracticeScreen() {
+export default function SoftwareScreen() {
     // permission get
     const {
         permission,
@@ -50,25 +47,24 @@ export default function SubmenuBestPracticeScreen() {
     } = usePermission();
     const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
     // permission get end
-
     const subMenuList = useSelector(state => state.subMenuList)
 
     //eslint-disable-next-line
     const { subMenus, loading: loadingSubMenus } = subMenuList;
 
-    const submenuBestPracticeList = useSelector(state => state.submenuBestPracticeList)
+    const softwareList = useSelector(state => state.softwareList);
     //eslint-disable-next-line
-    const { submenuBestPractices, loading, error } = submenuBestPracticeList;
+    const { softwares, loading, error } = softwareList;
+    const softwareSave = useSelector(state => state.softwareSave);
     //eslint-disable-next-line
-    const submenuBestPracticeSave = useSelector(state => state.submenuBestPracticeSave);
+    const { loading: loadingSave, success: successSave, error: errorSave } = softwareSave;
+    const softwareDelete = useSelector(state => state.softwareDelete);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = submenuBestPracticeSave;
-    const submenuBestPracticeDelete = useSelector(state => state.submenuBestPracticeDelete);
-    //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = submenuBestPracticeDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = softwareDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
+    // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
@@ -80,67 +76,51 @@ export default function SubmenuBestPracticeScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(submenuBestPractices, headCells, filterFn);
+    } = useTable(softwares, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
-    const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveSubmenuBestPractice(item, id));
+    const saveItem = (item) => new Promise((resolve, reject) => {
+        dispatch(saveSoftware(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteSubmenuBestPractice(id));
+        dispatch(deleteSoftware(id));
         resolve();
     })
-    const addOrEdit = (item, resetForm) => {
-        const formData = new FormData();
-        console.log(item.id)
-        item.id && formData.append('Id', item.id)
-        formData.append('SubMenuId', item.subMenuId)
-        formData.append('Title', item.title)
-        formData.append('Description', item.description)
-        // append for add/update image
-        if (typeof (item.pictureUrl) === 'object') {
-            formData.append('file', item.pictureUrl)
-        }
-        // eslint-disable-next-line 
-        if (typeof (item.pictureUrl) === 'null' || typeof (item.pictureUrl) === 'string') {
-            formData.append('pictureUrl', item.pictureUrl)
-        }
-        if (formData) {
-            resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
-            saveItem(formData, item.id)
-                .then(() => {
-                    // resetForm()
-                    // setRecordForEdit(null)
-                    // setOpenPopup(false)
-                    if (successSave) {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submitted Successfully',
-                            type: 'success'
-                        })
-                    }
 
-                    if (errorSave) {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submition Failed',
-                            type: 'warning'
-                        })
-                    }
-                })
+    const addOrEdit = async (item, resetForm) => {
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
+        saveItem(item)
+            .then(() => {
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
 
-        }
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
+
     }
 
     const openInPopup = item => {
-        // console.log(homePageCoreValueDetails)
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -166,7 +146,6 @@ export default function SubmenuBestPracticeScreen() {
                         type: 'warning'
                     })
                 }
-
             })
     }
 
@@ -177,7 +156,8 @@ export default function SubmenuBestPracticeScreen() {
             }
             if (recievedPermission?.readOperation) {
                 dispatch(listSubMenus());
-                dispatch(listSubmenuBestPractices());
+                dispatch(listSoftwares());
+
             }
             if (readOperation === false) {
                 history.push(accessDeniedRoute);
@@ -192,30 +172,31 @@ export default function SubmenuBestPracticeScreen() {
             // 
         }
     }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
-
     return (
 
-        <div>
+        <>
             {
                 (loadingRoleResource || loadingSubMenus || loading || loadingSave || loadingDelete) ? <Loading /> :
                     (
-                        submenuBestPractices.length > 0 &&
+                        softwares.length >= 0 &&
                         <>
-                            <PageTitle title="Submenu Best Practice" />
+                            <PageTitle title="Softwares" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Submenu Best Practice List Table"
+                                        title="Software List Table"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
                                         setRecordForEdit={setRecordForEdit}
+                                        threeDotDisplay={true}
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
 
                                     >
+
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                             <TblContainer>
                                                 <TblHead />
@@ -224,14 +205,10 @@ export default function SubmenuBestPracticeScreen() {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{subMenus ? searchNameByIdFromArray(subMenus, item.subMenuId) : item.subMenuId}</TableCell>
-                                                            <TableCell>{item.title}</TableCell>
-                                                            {/* <TableCell>{item.description}</TableCell> */}
-                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
-                                                            <TableCell>
-                                                                {
-                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
-                                                                }</TableCell>
+                                                            <TableCell>{subMenus ? searchNameByIdFromArray(subMenus, item.submenuId) : item.submenuId}</TableCell>
+                                                            <TableCell>{item.name}</TableCell>
+                                                            <TableCell>{item.displayOrder ? item.displayOrder : 'no input given'}</TableCell>
+                                                            <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
                                                                     color="primary"
@@ -262,15 +239,17 @@ export default function SubmenuBestPracticeScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Submenu Best Practice Form"
+                                            title="Software Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >
-                                            <SubmenuBestPracticeForm
+                                            <SoftwareForm
                                                 recordForEdit={recordForEdit}
                                                 addOrEdit={addOrEdit}
+                                                loadingSave={loadingSave}
                                                 subMenus={subMenus}
                                             />
+
                                         </Popup>
                                         <Notification
                                             notify={notify}
@@ -287,6 +266,6 @@ export default function SubmenuBestPracticeScreen() {
                         </>
                     )
             }
-        </div>
+        </>
     )
 }

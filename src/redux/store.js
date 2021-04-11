@@ -46,6 +46,7 @@ import { consultationOverviewDeleteReducer, consultationOverviewDetailsReducer, 
 import { trainingCandidateDescriptorDeleteReducer, trainingCandidateDescriptorDetailsReducer, trainingCandidateDescriptorListReducer, trainingCandidateDescriptorSaveReducer } from './reducers/trainingCandidateDescriptorReducers';
 import { trainingOverviewDeleteReducer, trainingOverviewDetailsReducer, trainingOverviewListReducer, trainingOverviewSaveReducer } from './reducers/trainingOverviewReducers';
 import { trainingTypeDeleteReducer, trainingTypeDetailsReducer, trainingTypeListReducer, trainingTypeSaveReducer } from './reducers/trainingTypeReducers';
+import { softwareDeleteReducer, softwareDetailsReducer, softwareListReducer, softwareSaveReducer } from './reducers/softwareReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -240,6 +241,10 @@ const reducer = combineReducers({
     trainingTypeDetails: trainingTypeDetailsReducer,
     trainingTypeSave: trainingTypeSaveReducer,
     trainingTypeDelete: trainingTypeDeleteReducer,
+    softwareList:softwareListReducer,
+    softwareDetails: softwareDetailsReducer,
+    softwareSave: softwareSaveReducer,
+    softwareDelete: softwareDeleteReducer,
     
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
