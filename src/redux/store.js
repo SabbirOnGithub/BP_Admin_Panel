@@ -48,6 +48,7 @@ import { trainingOverviewDeleteReducer, trainingOverviewDetailsReducer, training
 import { trainingTypeDeleteReducer, trainingTypeDetailsReducer, trainingTypeListReducer, trainingTypeSaveReducer } from './reducers/trainingTypeReducers';
 import { softwareDeleteReducer, softwareDetailsReducer, softwareListReducer, softwareSaveReducer } from './reducers/softwareReducers';
 import { courseBenefitDeleteReducer, courseBenefitDetailsReducer, courseBenefitListReducer, courseBenefitSaveReducer } from './reducers/courseBenefitReducers';
+import { courseContentDeleteReducer, courseContentDetailsReducer, courseContentListReducer, courseContentSaveReducer } from './reducers/courseContentReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -250,6 +251,10 @@ const reducer = combineReducers({
     courseBenefitDetails: courseBenefitDetailsReducer,
     courseBenefitSave: courseBenefitSaveReducer,
     courseBenefitDelete: courseBenefitDeleteReducer,
+    courseContentList:courseContentListReducer,
+    courseContentDetails: courseContentDetailsReducer,
+    courseContentSave: courseContentSaveReducer,
+    courseContentDelete: courseContentDeleteReducer,
     
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

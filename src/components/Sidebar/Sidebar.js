@@ -178,7 +178,9 @@ const structure = [
   {
     id: 20, label: "Course Benefit", link: "/admin/courseBenefit", icon: <TypographyIcon />,
   },
-  
+  {
+    id: 21, label: "Course Content", link: "/admin/courseContent", icon: <TypographyIcon />,
+  },
 ];
 
 
