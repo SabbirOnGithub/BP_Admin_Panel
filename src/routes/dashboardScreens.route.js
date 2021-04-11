@@ -56,6 +56,8 @@ import CourseBenefitScreen from '../screens/dashboardScreens/courseBenefitScreen
 import CourseContentScreen from '../screens/dashboardScreens/courseContentScreen/CourseContentScreen'
 import CourseRequirementScreen from '../screens/dashboardScreens/courseRequirementScreen/CourseRequirementScreen'
 import SoftwareTrainingSummaryScreen from '../screens/dashboardScreens/softwareTrainingSummaryScreen/SoftwareTrainingSummaryScreen'
+import SoftwareTrainingPriceScreen from '../screens/dashboardScreens/softwareTrainingPriceScreen/SoftwareTrainingPriceScreen'
+
 
 
 
@@ -136,6 +138,8 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/courseContent`} component={CourseContentScreen} />
       <Route exact path={`${props.match.path}/courseRequirement`} component={CourseRequirementScreen} />
       <Route exact path={`${props.match.path}/softwareTrainingSummary`} component={SoftwareTrainingSummaryScreen} />
+      <Route exact path={`${props.match.path}/softwareTrainingPrice`} component={SoftwareTrainingPriceScreen} />
+
 
 
 
