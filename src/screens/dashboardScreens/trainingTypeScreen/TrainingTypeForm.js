@@ -35,6 +35,7 @@ export default function TrainingTypeForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -70,16 +71,17 @@ export default function TrainingTypeForm(props) {
                         name="displayOrder"
                         type="number"
                         value={values.displayOrder}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.displayOrder}
                        
                     />
+                    
                     <Controls.Input
                         label="Payment Discount"
                         name="paymentDiscount"
                         type="number"
                         value={values.paymentDiscount}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.paymentDiscount}
                        
                     />

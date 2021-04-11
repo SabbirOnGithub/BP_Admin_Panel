@@ -32,6 +32,7 @@ export default function CtaHourForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -67,7 +68,7 @@ export default function CtaHourForm(props) {
                         name="validity"
                         type="number"
                         value={values.validity}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.validity}
                        
                     />

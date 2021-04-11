@@ -41,6 +41,7 @@ export default function CtaPackageHourlyForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -92,7 +93,7 @@ export default function CtaPackageHourlyForm(props) {
                         name="validity"
                         type="number"
                         value={values.validity}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.validity}
                     />
                     <Controls.Input
@@ -100,7 +101,7 @@ export default function CtaPackageHourlyForm(props) {
                         name="rate"
                         type="number"
                         value={values.rate}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.rate}
                     />
 

@@ -38,6 +38,7 @@ export default function CtaPackageMonthlyYearlyForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -86,17 +87,19 @@ export default function CtaPackageMonthlyYearlyForm(props) {
                     />
                     <Controls.Input
                         name="monthlyRate"
-                        label="MonthlyRate"
+                        label="Monthly Rate"
                         value={values.monthlyRate}
-                        onChange={handleInputChange}
+                        type="number"
+                        onChange={handleInputNumberChange}
                         error={errors.monthlyRate}
                     />
                     
                     <Controls.Input
                         name="yearlyRate"
-                        label="yearlyRate"
+                        label="Yearly Rate"
                         value={values.yearlyRate}
-                        onChange={handleInputChange}
+                        type="number"
+                        onChange={handleInputNumberChange}
                         error={errors.namyearlyRatee}
                     />
                     <div>

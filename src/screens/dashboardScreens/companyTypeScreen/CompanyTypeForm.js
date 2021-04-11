@@ -32,6 +32,7 @@ export default function CompanyTypeForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -67,7 +68,7 @@ export default function CompanyTypeForm(props) {
                         name="displayOrder"
                         type="number"
                         value={values.displayOrder}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.displayOrder}
                     />
                     <div>

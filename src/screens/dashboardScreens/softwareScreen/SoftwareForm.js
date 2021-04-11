@@ -37,6 +37,7 @@ export default function SoftwareForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -80,7 +81,7 @@ export default function SoftwareForm(props) {
                         name="displayOrder"
                         type="number"
                         value={values.displayOrder}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.displayOrder}
                        
                     />

@@ -34,6 +34,7 @@ export default function ConsultingTypeForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -69,7 +70,7 @@ export default function ConsultingTypeForm(props) {
                         name="displayOrder"
                         type="number"
                         value={values.displayOrder}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.displayOrder}
                        
                     />

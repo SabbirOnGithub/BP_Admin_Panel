@@ -38,6 +38,7 @@ export default function CtaPackageDailyForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -90,7 +91,7 @@ export default function CtaPackageDailyForm(props) {
                         name="rate"
                         type="number"
                         value={values.rate}
-                        onChange={handleInputChange}
+                        onChange={handleInputNumberChange}
                         error={errors.rate}
                     />
                   
