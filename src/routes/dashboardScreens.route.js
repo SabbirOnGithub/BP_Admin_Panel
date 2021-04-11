@@ -54,6 +54,8 @@ import TrainingTypeScreen from '../screens/dashboardScreens/trainingTypeScreen/T
 import SoftwareScreen from '../screens/dashboardScreens/softwareScreen/SoftwareScreen'
 import CourseBenefitScreen from '../screens/dashboardScreens/courseBenefitScreen/CourseBenefitScreen'
 import CourseContentScreen from '../screens/dashboardScreens/courseContentScreen/CourseContentScreen'
+import CourseRequirementScreen from '../screens/dashboardScreens/courseRequirementScreen/CourseRequirementScreen'
+
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -130,6 +132,8 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/software`} component={SoftwareScreen} />
       <Route exact path={`${props.match.path}/courseBenefit`} component={CourseBenefitScreen} />
       <Route exact path={`${props.match.path}/courseContent`} component={CourseContentScreen} />
+      <Route exact path={`${props.match.path}/courseRequirement`} component={CourseRequirementScreen} />
+
 
 
       {/* role routes */}

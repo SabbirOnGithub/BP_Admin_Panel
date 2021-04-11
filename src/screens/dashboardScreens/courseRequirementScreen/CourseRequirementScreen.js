@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import CourseContentForm from "./CourseContentForm";
+import CourseRequirementForm from "./CourseRequirementForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -21,7 +21,7 @@ import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
-import { listCourseContents, saveCourseContent, deleteCourseContent } from '../../../redux/actions/courseContentActions';
+import { listCourseRequirements, saveCourseRequirement, deleteCourseRequirement } from '../../../redux/actions/courseRequirementActions';
 import { listSoftwares } from '../../../redux/actions/softwareActions';
 import { listTrainingTypes } from '../../../redux/actions/trainingTypeActions';
 
@@ -29,14 +29,14 @@ import { listTrainingTypes } from '../../../redux/actions/trainingTypeActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'courseContentText', label: 'Course Content Text' },
+    { id: 'requirement', label: 'Requirement' },
     { id: 'softwareId', label: 'Software' },
     { id: 'trainingTypeId', label: 'Training Type' },
     { id: 'displayOrder', label: 'Display Order' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function CourseContentScreen() {
+export default function CourseRequirementScreen() {
     // permission get
     const {
         permission,
@@ -57,15 +57,15 @@ export default function CourseContentScreen() {
     //eslint-disable-next-line
     const { softwares, loading: loadingSoftwares, error:errorSoftwares } = softwareList;
 
-    const courseContentList = useSelector(state => state.courseContentList);
+    const courseRequirementList = useSelector(state => state.courseRequirementList);
     //eslint-disable-next-line
-    const { courseContents, loading, error } = courseContentList;
-    const courseContentSave = useSelector(state => state.courseContentSave);
+    const { courseRequirements, loading, error } = courseRequirementList;
+    const courseRequirementSave = useSelector(state => state.courseRequirementSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = courseContentSave;
-    const courseContentDelete = useSelector(state => state.courseContentDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = courseRequirementSave;
+    const courseRequirementDelete = useSelector(state => state.courseRequirementDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = courseContentDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = courseRequirementDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -81,19 +81,19 @@ export default function CourseContentScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(courseContents, headCells, filterFn);
+    } = useTable(courseRequirements, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveCourseContent(item));
+        dispatch(saveCourseRequirement(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteCourseContent(id));
+        dispatch(deleteCourseRequirement(id));
         resolve();
     })
 
@@ -162,7 +162,7 @@ export default function CourseContentScreen() {
             if (recievedPermission?.readOperation) {
                 dispatch(listSoftwares());
                 dispatch(listTrainingTypes());
-                dispatch(listCourseContents());
+                dispatch(listCourseRequirements());
 
             }
             if (readOperation === false) {
@@ -184,14 +184,14 @@ export default function CourseContentScreen() {
             {
                 (loadingRoleResource || loading || loadingSoftwares || loadingTrainingTypes || loadingSave || loadingDelete) ? <Loading /> :
                     (
-                        courseContents.length >= 0 &&
+                        courseRequirements.length >= 0 &&
                         <>
-                            <PageTitle title="Course Contents" />
+                            <PageTitle title="Course Requirements" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Course Content List Table"
+                                        title="Course Requirement List Table"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
@@ -211,7 +211,7 @@ export default function CourseContentScreen() {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.courseContentText}</TableCell>
+                                                            <TableCell>{item.requirement}</TableCell>
                                                             <TableCell>{softwares ? searchNameByIdFromArray(softwares, item.softwareId) : item.softwareId}</TableCell>
                                                             <TableCell>{trainingTypes ? searchNameByIdFromArray(trainingTypes, item.trainingTypeId) : item.trainingTypeId}</TableCell>
                                                             <TableCell>{item.displayOrder}</TableCell>
@@ -245,11 +245,11 @@ export default function CourseContentScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Course Content Form"
+                                            title="Course Requirement Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >
-                                            <CourseContentForm
+                                            <CourseRequirementForm
                                                 recordForEdit={recordForEdit}
                                                 addOrEdit={addOrEdit}
                                                 loadingSave={loadingSave}
