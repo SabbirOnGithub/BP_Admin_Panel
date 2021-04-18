@@ -52,6 +52,7 @@ import { courseContentDeleteReducer, courseContentDetailsReducer, courseContentL
 import { courseRequirementDeleteReducer, courseRequirementDetailsReducer, courseRequirementListReducer, courseRequirementSaveReducer } from './reducers/courseRequirementReducers';
 import { softwareTrainingSummaryDeleteReducer, softwareTrainingSummaryDetailsReducer, softwareTrainingSummaryListReducer, softwareTrainingSummarySaveReducer } from './reducers/softwareTrainingSummaryReducers';
 import { softwareTrainingPriceDeleteReducer, softwareTrainingPriceDetailsReducer, softwareTrainingPriceListReducer, softwareTrainingPriceSaveReducer } from './reducers/softwareTrainingPriceReducers';
+import { softwareTrainingTypeAndLengthDeleteReducer, softwareTrainingTypeAndLengthDetailsReducer, softwareTrainingTypeAndLengthListReducer, softwareTrainingTypeAndLengthSaveReducer } from './reducers/softwareTrainingTypeAndLengthReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -270,6 +271,10 @@ const reducer = combineReducers({
     softwareTrainingPriceDetails: softwareTrainingPriceDetailsReducer,
     softwareTrainingPriceSave: softwareTrainingPriceSaveReducer,
     softwareTrainingPriceDelete: softwareTrainingPriceDeleteReducer,
+    softwareTrainingTypeAndLengthList:softwareTrainingTypeAndLengthListReducer,
+    softwareTrainingTypeAndLengthDetails: softwareTrainingTypeAndLengthDetailsReducer,
+    softwareTrainingTypeAndLengthSave: softwareTrainingTypeAndLengthSaveReducer,
+    softwareTrainingTypeAndLengthDelete: softwareTrainingTypeAndLengthDeleteReducer,
     
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

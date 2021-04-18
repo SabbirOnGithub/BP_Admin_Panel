@@ -60,6 +60,7 @@ export default function useTable(records, headCells, filterFn) {
                                 <TableSortLabel
                                     active={orderBy === headCell.id}
                                     direction={orderBy === headCell.id ? order : 'asc'}
+                                    // direction={orderBy === headCell.id ? order : 'desc'}
                                     onClick={() => { handleSortRequest(headCell.id) }}>
                                     {headCell.label}
                                 </TableSortLabel>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SoftwareTrainingPriceForm from "./SoftwareTrainingPriceForm";
+import SoftwareTrainingTypeAndLengthForm from "./SoftwareTrainingTypeAndLengthForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -21,7 +21,7 @@ import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
-import { listSoftwareTrainingPrices, saveSoftwareTrainingPrice, deleteSoftwareTrainingPrice } from '../../../redux/actions/softwareTrainingPriceActions';
+import { listSoftwareTrainingTypeAndLengths, saveSoftwareTrainingTypeAndLength, deleteSoftwareTrainingTypeAndLength } from '../../../redux/actions/softwareTrainingTypeAndLengthActions';
 import { listSoftwares } from '../../../redux/actions/softwareActions';
 import { listTrainingTypes } from '../../../redux/actions/trainingTypeActions';
 
@@ -29,14 +29,14 @@ import { listTrainingTypes } from '../../../redux/actions/trainingTypeActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
+    { id: 'classType', label: 'Class Type' },
     { id: 'softwareId', label: 'Software' },
     { id: 'trainingTypeId', label: 'Training Type' },
-    { id: 'price', label: 'price' },
-    { id: 'discountPrice', label: 'discountPrice' },
+    { id: 'classLength', label: 'Class Length' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function SoftwareTrainingPriceScreen() {
+export default function SoftwareTrainingTypeAndLengthScreen() {
     // permission get
     const {
         permission,
@@ -44,7 +44,7 @@ export default function SoftwareTrainingPriceScreen() {
         recievedPermission,
         loadingRoleResource,
         history,
-        initialPermission,
+        initialPermission
     } = usePermission();
     const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
     // permission get end
@@ -57,15 +57,15 @@ export default function SoftwareTrainingPriceScreen() {
     //eslint-disable-next-line
     const { softwares, loading: loadingSoftwares, error:errorSoftwares } = softwareList;
 
-    const softwareTrainingPriceList = useSelector(state => state.softwareTrainingPriceList);
+    const softwareTrainingTypeAndLengthList = useSelector(state => state.softwareTrainingTypeAndLengthList);
     //eslint-disable-next-line
-    const { softwareTrainingPrices, loading, error } = softwareTrainingPriceList;
-    const softwareTrainingPriceSave = useSelector(state => state.softwareTrainingPriceSave);
+    const { softwareTrainingTypeAndLengths, loading, error } = softwareTrainingTypeAndLengthList;
+    const softwareTrainingTypeAndLengthSave = useSelector(state => state.softwareTrainingTypeAndLengthSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = softwareTrainingPriceSave;
-    const softwareTrainingPriceDelete = useSelector(state => state.softwareTrainingPriceDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = softwareTrainingTypeAndLengthSave;
+    const softwareTrainingTypeAndLengthDelete = useSelector(state => state.softwareTrainingTypeAndLengthDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = softwareTrainingPriceDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = softwareTrainingTypeAndLengthDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -81,19 +81,19 @@ export default function SoftwareTrainingPriceScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(softwareTrainingPrices, headCells, filterFn);
+    } = useTable(softwareTrainingTypeAndLengths, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveSoftwareTrainingPrice(item));
+        dispatch(saveSoftwareTrainingTypeAndLength(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteSoftwareTrainingPrice(id));
+        dispatch(deleteSoftwareTrainingTypeAndLength(id));
         resolve();
     })
 
@@ -162,7 +162,7 @@ export default function SoftwareTrainingPriceScreen() {
             if (recievedPermission?.readOperation) {
                 dispatch(listSoftwares());
                 dispatch(listTrainingTypes());
-                dispatch(listSoftwareTrainingPrices());
+                dispatch(listSoftwareTrainingTypeAndLengths());
 
             }
             if (readOperation === false) {
@@ -184,14 +184,14 @@ export default function SoftwareTrainingPriceScreen() {
             {
                 (loadingRoleResource || loading || loadingSoftwares || loadingTrainingTypes || loadingSave || loadingDelete) ? <Loading /> :
                     (
-                        softwareTrainingPrices.length >= 0 &&
+                        softwareTrainingTypeAndLengths.length >= 0 &&
                         <>
-                            <PageTitle title="Software Training Prices" />
+                            <PageTitle title="Software Training Type And Lengths" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Software Training Price List Table"
+                                        title="Software Training Type And Length List Table"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
@@ -211,10 +211,10 @@ export default function SoftwareTrainingPriceScreen() {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
+                                                            <TableCell>{item.classType}</TableCell>
                                                             <TableCell>{softwares ? searchNameByIdFromArray(softwares, item.softwareId) : item.softwareId}</TableCell>
                                                             <TableCell>{trainingTypes ? searchNameByIdFromArray(trainingTypes, item.trainingTypeId) : item.trainingTypeId}</TableCell>
-                                                            <TableCell>{item.price}</TableCell>
-                                                            <TableCell>{item.discountPrice}</TableCell>
+                                                            <TableCell>{item.classLength}</TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
                                                                     color="primary"
@@ -245,11 +245,11 @@ export default function SoftwareTrainingPriceScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Software Training Price Form"
+                                            title="Software Training Type And Length Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >
-                                            <SoftwareTrainingPriceForm
+                                            <SoftwareTrainingTypeAndLengthForm
                                                 recordForEdit={recordForEdit}
                                                 addOrEdit={addOrEdit}
                                                 loadingSave={loadingSave}
