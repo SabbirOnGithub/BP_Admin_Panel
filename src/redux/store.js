@@ -32,7 +32,7 @@ import { personalizedServiceDetailDeleteReducer, personalizedServiceDetailDetail
 import { uniqueSolutionDetailDeleteReducer, uniqueSolutionDetailDetailsReducer, uniqueSolutionDetailListReducer, uniqueSolutionDetailSaveReducer } from './reducers/uniqueSolutionDetailReducers';
 import { subMenuBusinessContextDeleteReducer, subMenuBusinessContextDetailsReducer, subMenuBusinessContextListReducer, subMenuBusinessContextSaveReducer } from './reducers/subMenuBusinessContextReducers';
 import { ctaCategoryDetailsReducer, ctaCategoryDocumentSaveReducer, ctaCategoryListReducer, ctaCategoryModelListReducer, ctaCategorySaveReducer } from './reducers/ctaCategoryReducers';
-import { contactUsMessageDetailsReducer, contactUsMessageListReducer } from './reducers/contactUsMessageReducers';
+import { contactUsMessageListReducer } from './reducers/contactUsMessageReducers';
 import { paymentPackageDeleteReducer, paymentPackageDetailsReducer, paymentPackageListReducer, paymentPackageSaveReducer } from './reducers/paymentPackageReducers';
 import { ctaFunctionDetailsReducer, ctaFunctionDocumentDeleteReducer, ctaFunctionDocumentListReducer, ctaFunctionDocumentSaveReducer, ctaFunctionListReducer, ctaFunctionModelListReducer, ctaFunctionSaveReducer } from './reducers/ctaFunctionReducers';
 import { consultingTypeDeleteReducer, consultingTypeDetailsReducer, consultingTypeListReducer, consultingTypeSaveReducer } from './reducers/consultingTypeReducers';
@@ -53,6 +53,7 @@ import { courseRequirementDeleteReducer, courseRequirementDetailsReducer, course
 import { softwareTrainingSummaryDeleteReducer, softwareTrainingSummaryDetailsReducer, softwareTrainingSummaryListReducer, softwareTrainingSummarySaveReducer } from './reducers/softwareTrainingSummaryReducers';
 import { softwareTrainingPriceDeleteReducer, softwareTrainingPriceDetailsReducer, softwareTrainingPriceListReducer, softwareTrainingPriceSaveReducer } from './reducers/softwareTrainingPriceReducers';
 import { softwareTrainingTypeAndLengthDeleteReducer, softwareTrainingTypeAndLengthDetailsReducer, softwareTrainingTypeAndLengthListReducer, softwareTrainingTypeAndLengthSaveReducer } from './reducers/softwareTrainingTypeAndLengthReducers';
+import { coursePurchaseListReducer } from './reducers/coursePurchaseReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -198,7 +199,7 @@ const reducer = combineReducers({
     ctaFunctionDocumentList:ctaFunctionDocumentListReducer,
     ctaFunctionDocumentDelete: ctaFunctionDocumentDeleteReducer,
     contactUsMessageList:contactUsMessageListReducer,
-    contactUsMessageDetails: contactUsMessageDetailsReducer,
+    // contactUsMessageDetails: contactUsMessageDetailsReducer,
     paymentPackageList:paymentPackageListReducer,
     paymentPackageDetails: paymentPackageDetailsReducer,
     paymentPackageSave: paymentPackageSaveReducer,
@@ -275,6 +276,8 @@ const reducer = combineReducers({
     softwareTrainingTypeAndLengthDetails: softwareTrainingTypeAndLengthDetailsReducer,
     softwareTrainingTypeAndLengthSave: softwareTrainingTypeAndLengthSaveReducer,
     softwareTrainingTypeAndLengthDelete: softwareTrainingTypeAndLengthDeleteReducer,
+    coursePurchaseList:coursePurchaseListReducer,
+    // coursePurchaseDetails: coursePurchaseDetailsReducer,
     
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

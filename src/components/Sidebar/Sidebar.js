@@ -193,6 +193,9 @@ const structure = [
   {
     id: 25, label: "Software Training Type And Length", link: "/admin/softwareTrainingTypeAndLength", icon: <TypographyIcon />,
   },
+  {
+    id: 26, label: "Course Purchase", link: "/admin/coursePurchase", icon: <TypographyIcon />,
+  },
 ];
 
 

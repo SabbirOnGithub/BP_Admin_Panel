@@ -58,6 +58,7 @@ import CourseRequirementScreen from '../screens/dashboardScreens/courseRequireme
 import SoftwareTrainingSummaryScreen from '../screens/dashboardScreens/softwareTrainingSummaryScreen/SoftwareTrainingSummaryScreen'
 import SoftwareTrainingPriceScreen from '../screens/dashboardScreens/softwareTrainingPriceScreen/SoftwareTrainingPriceScreen'
 import SoftwareTrainingTypeAndLengthScreen from '../screens/dashboardScreens/softwareTrainingTypeAndLengthScreen/SoftwareTrainingTypeAndLengthScreen'
+import CoursePurchaseScreen from "../screens/dashboardScreens/coursePurchaseScreen/CoursePurchaseScreen";
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -138,9 +139,7 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/softwareTrainingSummary`} component={SoftwareTrainingSummaryScreen} />
       <Route exact path={`${props.match.path}/softwareTrainingPrice`} component={SoftwareTrainingPriceScreen} />
       <Route exact path={`${props.match.path}/softwareTrainingTypeAndLength`} component={SoftwareTrainingTypeAndLengthScreen} />
-
-
-
+      <Route exact path={`${props.match.path}/coursePurchase`} component={CoursePurchaseScreen} />
 
 
       {/* role routes */}
