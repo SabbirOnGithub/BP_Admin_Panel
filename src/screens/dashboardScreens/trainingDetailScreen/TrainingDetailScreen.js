@@ -94,7 +94,8 @@ export default function TrainingDetailScreen() {
     const addOrEdit = (item, resetForm) => {
         const formData = new FormData();
         console.log(item.id)
-        formData.append('HompageId', item.id)
+        item.id && formData.append('Id', item.id)
+        formData.append('HompageId', item.homepageId ? item.homepageId : Number(1))
         formData.append('Title', item.title)
         formData.append('Description', item.description)
         // append for add/update image

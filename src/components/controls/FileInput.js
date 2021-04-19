@@ -33,7 +33,8 @@ export default function FileInput(props) {
             <span>
                {/* { console.log(value)} */}
                 {value && (
-                    value?.type?.includes('image') ?
+                    // value?.type?.includes('image') ?
+                    pictureUrl ?
                     <>
                         <img src={pictureUrl} style={{ maxWidth: 300, maxHeight: 100, border: '2px solid #798dfe', padding: 5, verticalAlign: 'middle' }} alt="uploaded file" />
                         <span style={{ marginLeft: -39, verticalAlign: 'top' }}>
