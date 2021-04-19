@@ -258,7 +258,7 @@ export default function TrainingDetailScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Home Page Core Value Detail Form"
+                                            title="Training Details Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >

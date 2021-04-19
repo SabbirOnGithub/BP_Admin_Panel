@@ -99,6 +99,9 @@ export default function CoursePurchaseScreen() {
                                     <CoursePurchaseDetailScreen
                                             recordForEdit={recordForEdit}
                                             setOpenPopup={setOpenPopup}
+                                            softwares = {softwares}
+                                            trainingTypes = {trainingTypes}
+
                                         />
                                 </Widget> : 
                                 
@@ -124,7 +127,7 @@ export default function CoursePurchaseScreen() {
                                                             <TableCell>{item.email}</TableCell>
                                                             <TableCell>{softwares ? searchNameByIdFromArray(softwares, item.softwareId) : item.softwareId}</TableCell>
                                                             <TableCell>{trainingTypes ? searchNameByIdFromArray(trainingTypes, item.trainingTypeId) : item.trainingTypeId}</TableCell>
-                                                            <TableCell>{item?.paymentStatus>0 ? 'True' : 'False'}</TableCell>
+                                                            <TableCell>{item?.paymentStatus>0 ? 'Paid' : 'Unpaid'}</TableCell>
                                                             <TableCell>{item.attendenceCount}</TableCell>
                                                             <TableCell>
                                                                 <Controls.ActionButton
