@@ -5,6 +5,7 @@ import HorizontalStepper from '../../../../components/Stepper/Stepper';
 import CtaFormStepOne from './CtaFormStepOne';
 import CtaFormStepTwo from './CtaFormStepTwo';
 import CtaFormStepThree from './CtaFormStepThree';
+import CtaFormStepFour from './CtaFormStepFour';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -42,7 +43,21 @@ const initialFValues = {
 
 export default function CtaFunctionForm(props) {
 
-    const { addOrEdit, recordForEdit,  user,  setOpenPopup,  ctaFunctionSaveData, loadingCtaFunctionDocumentSave, setConfirmDialog, onDeleteCtaFunctionDocument, loadingDeleteCtaFunctionDocument, loadingCtaFunctionSave } = props;
+    const { addOrEdit, recordForEdit,  
+            user,  setOpenPopup,  
+            ctaFunctionSaveData, 
+            loadingCtaFunctionDocumentSave, 
+            setConfirmDialog, 
+            onDeleteCtaFunctionDocument, 
+            loadingDeleteCtaFunctionDocument, 
+            loadingCtaFunctionSave,
+            ctaPackageHourlys,
+            loadingCtaPackageHourlys,
+            ctaPackageDailys,
+            loadingCtaPackageDailys,
+            ctaPackageMonthlyYearlys,
+            loadingCtaPackageMonthlyYearlys
+         } = props;
     
     const ctaFunctionDocumentList = useSelector(state => state.ctaFunctionDocumentList);
     //eslint-disable-next-line
@@ -111,7 +126,7 @@ export default function CtaFunctionForm(props) {
     const [activeStep, setActiveStep] = React.useState(0);
 
     const getSteps = () => {
-        return ['Info', 'Selection', 'File Submit', 'Finish'];
+        return ['Info', 'Selection', 'File Submit', 'Purchase', 'Finish'];
     }
 
     const getStepContent = (stepIndex) => {
@@ -159,6 +174,23 @@ export default function CtaFunctionForm(props) {
                             loadingCtaFunctionSave ={loadingCtaFunctionSave}
                             loadingCtaFunctionDocumentSave = {loadingCtaFunctionDocumentSave}
                         />;
+            case 3:
+                return <CtaFormStepFour 
+                            values={values}
+                            handleFileChange= {handleFileChange}
+                            resetFileInput= {resetFileInput}
+                            handleSubmitFile = {handleSubmitFile}
+                            errors={errors}
+                            recordForEdit={ctaFunction}
+                            setValues={setValues}
+                            ctaPackageHourlys = {ctaPackageHourlys}
+                            loadingCtaPackageHourlys = {loadingCtaPackageHourlys}
+                            ctaPackageDailys ={ctaPackageDailys}
+                            loadingCtaPackageDailys ={loadingCtaPackageDailys}
+                            ctaPackageMonthlyYearlys ={ctaPackageMonthlyYearlys}
+                            loadingCtaPackageMonthlyYearlys ={loadingCtaPackageMonthlyYearlys}
+
+                        />
             default:
                 return 'Finish';
         }

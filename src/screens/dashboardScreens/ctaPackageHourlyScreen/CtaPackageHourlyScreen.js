@@ -61,6 +61,7 @@ export default function CtaPackageHourlyScreen() {
     const ctaPackageHourlyList = useSelector(state => state.ctaPackageHourlyList);
     //eslint-disable-next-line
     const { ctaPackageHourlys, loading, error } = ctaPackageHourlyList;
+    
     const ctaPackageHourlySave = useSelector(state => state.ctaPackageHourlySave);
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave } = ctaPackageHourlySave;

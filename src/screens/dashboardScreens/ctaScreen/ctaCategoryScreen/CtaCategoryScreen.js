@@ -25,10 +25,15 @@ const headCells = [
 ]
 
 export default function CtaFunctionScreen() {
+    const userSignIn = useSelector(state => state.userSignin);
+    //eslint-disable-next-line
+    const { userInfo } = userSignIn;
 
     const ctaCategoryList = useSelector(state => state.ctaCategoryList);
     //eslint-disable-next-line
     const { ctaCategorys, loading, error } = ctaCategoryList;
+
+    const ctaCategorysFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaCategorys : (userInfo?.userRole === 3 ? [] : ctaCategorys.filter(item=>item.email === userInfo.email))
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     //eslint-disable-next-line
@@ -43,7 +48,7 @@ export default function CtaFunctionScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(ctaCategorys, headCells, filterFn);
+    } = useTable(ctaCategorysFilterByUser, headCells, filterFn);
 
     const dispatch = useDispatch();
 

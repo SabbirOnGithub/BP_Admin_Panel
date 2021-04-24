@@ -18,6 +18,9 @@ import { ResponseMessage } from "../../../../themes/responseMessage";
 import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
 import { listCtaFunctions, saveCtaFunction, saveCtaFunctionDocument, deleteCtaFunctionDocument } from '../../../../redux/actions/ctaFunctionActions';
 import { detailsUser } from '../../../../redux/actions/userActions';
+import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
+import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
+import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -40,9 +43,23 @@ export default function CtaFunctionScreen(props) {
     //eslint-disable-next-line
     const { user, loading: loadingUserdetail, error: errorUserDetail } = userDetails;
 
+    const ctaPackageHourlyList = useSelector(state => state.ctaPackageHourlyList);
+    //eslint-disable-next-line
+    const { ctaPackageHourlys, loading:loadingCtaPackageHourlys, error:errorCtaPackageHourlys } = ctaPackageHourlyList;
+
+    const ctaPackageDailyList = useSelector(state => state.ctaPackageDailyList);
+    //eslint-disable-next-line
+    const { ctaPackageDailys, loading:loadingCtaPackageDailys, error:errorCtaPackageDailys } = ctaPackageDailyList;
+
+    const ctaPackageMonthlyYearlyList = useSelector(state => state.ctaPackageMonthlyYearlyList);
+    //eslint-disable-next-line
+    const { ctaPackageMonthlyYearlys, loading:loadingCtaPackageMonthlyYearlys, error:errorCtaPackageMonthlyYearlys } = ctaPackageMonthlyYearlyList;
+    
     const ctaFunctionList = useSelector(state => state.ctaFunctionList);
     //eslint-disable-next-line
     const { ctaFunctions, loading: loadingCtaFunctions, error: errorCtaFunctions } = ctaFunctionList;
+    // 1-superadmin, 2-admin, 3- member, 4- client 
+    const ctaFunctionsFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaFunctions : (userInfo?.userRole === 3 ? [] : ctaFunctions.filter(item=>item.email === userInfo.email))
 
     const ctaFunctionSave = useSelector(state => state.ctaFunctionSave);
     //eslint-disable-next-line
@@ -72,7 +89,7 @@ export default function CtaFunctionScreen(props) {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(ctaFunctions, headCells, filterFn);
+    } = useTable(ctaFunctionsFilterByUser, headCells, filterFn);
 
     const dispatch = useDispatch();
     // search from table
@@ -192,6 +209,10 @@ export default function CtaFunctionScreen(props) {
             dispatch(detailsUser(userInfo.userId));
             dispatch(listCtaCategorys());
             dispatch(listCtaFunctions());
+            dispatch(listCtaPackageHourlys());
+            dispatch(listCtaPackageDailys());
+            dispatch(listCtaPackageMonthlyYearlys());
+
         } catch (e) {
             console.log(e)
         }
@@ -296,6 +317,13 @@ export default function CtaFunctionScreen(props) {
                                                     loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
                                                     loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
                                                     loadingCtaFunctionSave={loadingCtaFunctionSave}
+                                                    // ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
+                                                    ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===1 )}
+                                                    loadingCtaPackageHourlys={loadingCtaPackageHourlys}
+                                                    ctaPackageDailys={ctaPackageDailys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
+                                                    loadingCtaPackageDailys={loadingCtaPackageDailys}
+                                                    ctaPackageMonthlyYearlys={ctaPackageMonthlyYearlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId)}
+                                                    loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
 
                                                 />
                                             </Popup>
