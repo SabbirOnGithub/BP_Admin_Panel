@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputSharpIcon from '@material-ui/icons/InputSharp';
 import Button from '@material-ui/core/Button';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import Typography from '@material-ui/core/Typography';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,11 +32,27 @@ const useStyles = makeStyles((theme) => ({
             background: '#282828',
         },
     },
+    ctaHourName:{
+        color: '#9999a5',
+        fontSize: '18px',
+        textTransform: 'uppercase',
+    },
+    subText:{
+        fontSize: '16px',
+        padding:10,
+    },
+    validity:{
+        color: '#666',
+        display: 'inline-block',
+        fontSize: '40px',
+        fontWeight: 'normal',
+        lineHeight: 'normal',
+    },
 
 }));
 
 
-export default function CtaFormStepThree(props) {
+export default function CtaFormStepFour(props) {
 
     const { values,
         // errors,
@@ -50,7 +67,9 @@ export default function CtaFormStepThree(props) {
         ctaPackageDailys,
         loadingCtaPackageDailys,
         ctaPackageMonthlyYearlys,
-        loadingCtaPackageMonthlyYearlys
+        loadingCtaPackageMonthlyYearlys,
+        handleNextToPaymentScreen,
+        setHideNext
     } = props;
 
     const classes = useStyles();
@@ -68,6 +87,8 @@ export default function CtaFormStepThree(props) {
     
 
     useEffect(() => {
+        setHideNext(true)
+
         if (recordForEdit != null) {
             try {
                 setValues({
@@ -77,13 +98,12 @@ export default function CtaFormStepThree(props) {
                 console.warn(e);
             }
         }
-    }, [recordForEdit, setValues])
+    }, [recordForEdit, setValues, setHideNext])
 
     return (
         <>
             {
                 !values.id || loadingCtaFunction || loadingCtaFunctionSave || loadingCtaFunctionDocumentSave || loadingCtaPackageHourlys || loadingCtaPackageDailys || loadingCtaPackageMonthlyYearlys ? <Loading /> :
-                    // <Form onSubmit={handleSubmitFile}>
                     <Form>
                         <TabLayout>
                             <AppBar position="static" color="default">
@@ -113,25 +133,41 @@ export default function CtaFormStepThree(props) {
                                                     ctaPackageHourlys?.map(item => (
                                                         <Grid item md={4} xs={12} key={item.id}>
                                                             <Paper className={classes.paper}>
+                                                                        
                                                                 <div className="pricingTable">
                                                                     <div className="pricingTable-header">
-                                                                        <h3>{item?.ctaHourName}</h3>
+                                                                    <Typography variant="subtitle1" className={classes.ctaHourName}>
+                                                                        {item?.ctaHourName}
+                                                                    </Typography>
                                                                     </div>
-                                                                    <p>Buy as many hours as needed</p>
-                                                                    <p>On-Demand</p>
+                                                                    <Typography variant="subtitle1"  className={classes.subText}>
+                                                                        Buy as many hours as needed
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1" className={classes.subText}>
+                                                                        On-Demand
+                                                                    </Typography>
                                                                     <div className="price-value">
-                                                                        <p className="">Price</p>
+                                                                    <Typography  variant="subtitle1" className={classes.subText}>
+                                                                         Price
+                                                                    </Typography>
                                                                         <small>
                                                                             <AttachMoneyIcon />
                                                                         </small>
-                                                                        
-                                                                        <span>{item?.rate}</span>
+                                                                        <Typography variant="subtitle1" className={classes.validity}>
+                                                                             {item?.rate}
+                                                                        </Typography>
                                                                     </div>
 
                                                                     <div className="price-value">
-                                                                        <p className="">Validity</p>
-                                                                        <span>{item?.validity}</span>
-                                                                        <span className="subtitle">days</span>
+                                                                        <Typography variant="subtitle1" className={classes.subText}>
+                                                                            Validity
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1" className={classes.validity}>
+                                                                            {item?.validity}
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1"className={classes.subText}>
+                                                                             days
+                                                                        </Typography>
                                                                     </div>
                                                                     <div className="pricingTable-sign-up">
                                                                         <Button
@@ -140,6 +176,7 @@ export default function CtaFormStepThree(props) {
                                                                             className={classes.button}
                                                                             endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
                                                                             size="large"
+                                                                            onClick = {()=>handleNextToPaymentScreen(item)}
                                                                         >
                                                                             Purchase
                                                                         </Button>
@@ -269,8 +306,6 @@ export default function CtaFormStepThree(props) {
                                 }
                             </TabPanel>
                         </TabLayout>
-
-
                     </Form>
             }
         </>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Grid } from '@material-ui/core';
 import { useForm } from '../../../../components/UseForm/useForm';
 import HorizontalStepper from '../../../../components/Stepper/Stepper';
@@ -6,6 +6,7 @@ import CtaFormStepOne from './CtaFormStepOne';
 import CtaFormStepTwo from './CtaFormStepTwo';
 import CtaFormStepThree from './CtaFormStepThree';
 import CtaFormStepFour from './CtaFormStepFour';
+import CtaFormStepFive from './CtaFormStepFive';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -56,7 +57,12 @@ export default function CtaFunctionForm(props) {
             ctaPackageDailys,
             loadingCtaPackageDailys,
             ctaPackageMonthlyYearlys,
-            loadingCtaPackageMonthlyYearlys
+            loadingCtaPackageMonthlyYearlys,
+            handleCtaPayment,
+            loadingCtaPaymentSave,
+            successCtaPaymentSave,
+            loadingCtaPurchaseHistorySave,
+            successCtaPurchaseHistorySave,
          } = props;
     
     const ctaFunctionDocumentList = useSelector(state => state.ctaFunctionDocumentList);
@@ -77,16 +83,6 @@ export default function CtaFunctionForm(props) {
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if (activeStep === 0) {
-            // if ('menuId' in fieldValues)
-            //     temp.menuId = fieldValues.menuId.length !== 0 ? "" : "This field is required."
-            // if ('firstName' in fieldValues)
-            //     temp.firstName = fieldValues.firstName ? "" : "This field is required."
-            // if ('companyName' in fieldValues)
-            //     temp.companyName = fieldValues.companyName ? "" : "This field is required."
-            // if ('email' in fieldValues)
-            //     temp.email = fieldValues.email ? "" : "This field is required."
-            // if ('phone' in fieldValues)
-            //     temp.phone = fieldValues.phone ? "" : "This field is required."
             if ('solutionSpecificity' in fieldValues)
                 temp.solutionSpecificity = fieldValues.solutionSpecificity ? "" : "This field is required."
             if ('goalsToAchieveSolution' in fieldValues)
@@ -99,6 +95,14 @@ export default function CtaFunctionForm(props) {
                 temp.technologyPreference = fieldValues.technologyPreference ? "" : "This field is required."
             if ('goalsToAchieveTechnology' in fieldValues)
                 temp.goalsToAchieveTechnology = fieldValues.goalsToAchieveTechnology ? "" : "This field is required."
+        }
+        if (activeStep === 1) {
+            if ('estimation' in fieldValues)
+                temp.estimation = fieldValues.estimation ? "" : "This field is required."
+            if ('tellUsMore' in fieldValues)
+                temp.tellUsMore = fieldValues.tellUsMore ? "" : "This field is required."
+            if ('description' in fieldValues)
+                temp.description = fieldValues.description ? "" : "This field is required."
         }
 
         setErrors({
@@ -123,10 +127,12 @@ export default function CtaFunctionForm(props) {
     const dispatch = useDispatch();
 
     // stepper
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = useState(0);
+    const [hideNext, setHideNext] = useState(false);
+    const [createOrder, setCreateOrder] = useState({});
 
     const getSteps = () => {
-        return ['Info', 'Selection', 'File Submit', 'Purchase', 'Finish'];
+        return ['Info', 'Selection', 'File Submit', 'Purchase', 'Payment', 'Finish'];
     }
 
     const getStepContent = (stepIndex) => {
@@ -154,6 +160,7 @@ export default function CtaFunctionForm(props) {
                             setValues={setValues}
                             ctaFunctionModels={ctaFunctionModels}
                             handleMultipleSelectInputChange= {handleMultipleSelectInputChange}
+                            setHideNext = {setHideNext}
                         />;
             case 2:
                 // step 3
@@ -173,8 +180,11 @@ export default function CtaFunctionForm(props) {
                             loadingCtaFunction= {loadingCtaFunction}
                             loadingCtaFunctionSave ={loadingCtaFunctionSave}
                             loadingCtaFunctionDocumentSave = {loadingCtaFunctionDocumentSave}
+                            setHideNext = {setHideNext}
+
                         />;
             case 3:
+                // step 4
                 return <CtaFormStepFour 
                             values={values}
                             handleFileChange= {handleFileChange}
@@ -189,7 +199,25 @@ export default function CtaFunctionForm(props) {
                             loadingCtaPackageDailys ={loadingCtaPackageDailys}
                             ctaPackageMonthlyYearlys ={ctaPackageMonthlyYearlys}
                             loadingCtaPackageMonthlyYearlys ={loadingCtaPackageMonthlyYearlys}
-
+                            handleNextToPaymentScreen = {handleNextToPaymentScreen}
+                            setHideNext ={setHideNext}
+                        />
+            case 4:
+                // step 5
+                return <CtaFormStepFive
+                            values={values}
+                            recordForEdit={ctaFunction}
+                            setValues={setValues}
+                            createOrder = {createOrder}
+                            setHideNext ={setHideNext}
+                            handleCtaPayment = {handleCtaPayment}
+                            loadingCtaPaymentSave = {loadingCtaPaymentSave}
+                            successCtaPaymentSave={successCtaPaymentSave}
+                            loadingCtaPurchaseHistorySave = {loadingCtaPurchaseHistorySave}
+                            successCtaPurchaseHistorySave ={successCtaPurchaseHistorySave}
+                            setActiveStep ={setActiveStep}
+                            
+                            
                         />
             default:
                 return 'Finish';
@@ -197,6 +225,13 @@ export default function CtaFunctionForm(props) {
     }
     const handleNext = (e) => {
         e.preventDefault();
+        // before increment
+        if(activeStep ===2 || activeStep ===3){
+            setHideNext(true)
+        }
+        else{
+            setHideNext(false)
+        }
 
         if (validate()) {
             if(activeStep ===0){
@@ -207,8 +242,14 @@ export default function CtaFunctionForm(props) {
             }
             addOrEdit(values, resetForm);
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            
         }
     };
+
+    const handleNextToPaymentScreen = (order) => {
+        setCreateOrder(order)
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
     const handleSubmitFile = (e) => {
         e.preventDefault();
         if (validate()) {
@@ -217,6 +258,11 @@ export default function CtaFunctionForm(props) {
     };
 
     const handleBack = () => {
+        if(activeStep ===3 || activeStep ===4){
+            setHideNext(true)
+        }else{
+            setHideNext(false)
+        }
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
@@ -239,6 +285,8 @@ export default function CtaFunctionForm(props) {
            if(values?.id){
                 dispatch(listCtaFunctionDocuments(values?.id))
            }
+           
+            
         } catch (e) {
             console.log(e)
         }
@@ -250,13 +298,13 @@ export default function CtaFunctionForm(props) {
         values?.id, 
         loadingCtaFunctionDocumentSave, 
         loadingDeleteCtaFunctionDocument, 
-        ctaFunctionModels?.id
+        ctaFunctionModels?.id,
+        successCtaPurchaseHistorySave
     ])
 
     return (
         <Grid container>
             <Grid item xs={12}>
-
                 <HorizontalStepper
                     getSteps={getSteps}
                     getStepContent={getStepContent}
@@ -266,6 +314,7 @@ export default function CtaFunctionForm(props) {
                     activeStep={activeStep}
                     progressBar={true}
                     loading = {true}
+                    hideNext ={hideNext}
                 />
             </Grid>
         </Grid>

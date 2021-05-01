@@ -129,16 +129,6 @@ body{
   padding-top: 48px;
 }
 
-.pricingTable .pricingTable-header h3 {
-  color: #9999a5;
-  font-size: 18px;
-  text-transform: uppercase;
-}
-.pricingTable p{
-  font-size: 16px;
-  padding:10px;
-}
-
 .pricingTable .price-value {
   background: #fafafa;
   color: #666;
@@ -174,14 +164,6 @@ body{
   color: #666;
   font-weight: 900;
   padding: 15px 10px;
-}
-
-.pricingTable .price-value-daily span {
-  color: #666;
-  display: inline-block;
-  font-size: 40px;
-  font-weight: normal;
-  line-height: normal;
 }
 
 .pricingTable .price-value-daily small {

@@ -13,6 +13,7 @@ import Controls from "../controls/Controls";
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import { Search } from "@material-ui/icons";
+import CloseIcon from '@material-ui/icons/Close';
 
 // styles
 import useStyles from "./styles";
@@ -98,6 +99,20 @@ export default function Widget({
                   startIcon={<EditIcon />}
                   onClick={props.editOne}
                 />
+              }
+              {
+                props.closePopup &&
+                // <Controls.Button
+                //   text=""
+                //   variant="outlined"
+                //   startIcon={<CloseIcon />}
+                //   onClick={props.closePopup}
+                // />
+                <Controls.ActionButton
+                        color="secondary"
+                        onClick={props.closePopup}>
+                        <CloseIcon />
+                    </Controls.ActionButton>
               }
             </React.Fragment>
           )}

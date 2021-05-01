@@ -68,7 +68,13 @@ function SelectMultiple(props) {
       )}
       // style={{ width: 500 }}
       renderInput={(params) => (
-        <TextField {...params} variant="outlined" label={label} placeholder="" />
+        <TextField {...params} 
+          variant="outlined" 
+          label={label} 
+          placeholder="" 
+          error={error ? true :false}
+          helperText={error}
+          />
       )}
     />
   );

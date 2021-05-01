@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 export default function HorizontalStepper(props) {
-  const { getSteps, getStepContent, handleNext, handleBack, handleReset, activeStep, progressBar } = props;
-
+  const { getSteps, getStepContent, handleNext, handleBack, handleReset, activeStep, progressBar, hideNext } = props;
+  // console.log(hideNext)
   const classes = useStyles();
   //   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -100,7 +100,7 @@ export default function HorizontalStepper(props) {
                     title = "Success"
                 />
             {/* <Button onClick={handleReset}>Finish</Button> */}
-            <Button onClick={handleReset}>Close</Button>
+            <Button variant="contained" color="secondary" onClick={handleReset} style={{display:'flex'}}>Close</Button>
           </div>
         ) : (
           <div>
@@ -116,10 +116,13 @@ export default function HorizontalStepper(props) {
               >
                 Back
               </Button>
+              {
+                hideNext  ? '' : 
               <Button variant="contained" color="primary" onClick={handleNext}>
-                  {/* {activeStep === steps.length - 1 ? 'Finish' : 'Next'} */}
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
               </Button>
+              }
+              
             </div>
           </div>
         )}

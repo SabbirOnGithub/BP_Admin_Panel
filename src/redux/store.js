@@ -54,6 +54,8 @@ import { softwareTrainingSummaryDeleteReducer, softwareTrainingSummaryDetailsRed
 import { softwareTrainingPriceDeleteReducer, softwareTrainingPriceDetailsReducer, softwareTrainingPriceListReducer, softwareTrainingPriceSaveReducer } from './reducers/softwareTrainingPriceReducers';
 import { softwareTrainingTypeAndLengthDeleteReducer, softwareTrainingTypeAndLengthDetailsReducer, softwareTrainingTypeAndLengthListReducer, softwareTrainingTypeAndLengthSaveReducer } from './reducers/softwareTrainingTypeAndLengthReducers';
 import { coursePurchaseListReducer } from './reducers/coursePurchaseReducers';
+import { ctaPaymentSaveReducer } from './reducers/ctaPaymentReducers';
+import { ctaPurchaseHistorySaveReducer } from './reducers/ctaPurchaseHistoryReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -278,6 +280,9 @@ const reducer = combineReducers({
     softwareTrainingTypeAndLengthDelete: softwareTrainingTypeAndLengthDeleteReducer,
     coursePurchaseList:coursePurchaseListReducer,
     // coursePurchaseDetails: coursePurchaseDetailsReducer,
+    ctaPaymentSave: ctaPaymentSaveReducer,
+    ctaPurchaseHistorySave: ctaPurchaseHistorySaveReducer,
+    
     
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

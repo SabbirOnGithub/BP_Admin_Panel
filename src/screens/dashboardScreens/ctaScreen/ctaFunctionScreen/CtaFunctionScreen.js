@@ -9,7 +9,7 @@ import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../../components/PageTitle/PageTitle";
 import Widget from "../../../../components/Widget/Widget";
 import DetailsIcon from '@material-ui/icons/Details';
-import Popup from "../../../../components/Popup/Popup";
+// import Popup from "../../../../components/Popup/Popup";
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
 import { ResponseMessage } from "../../../../themes/responseMessage";
@@ -21,6 +21,8 @@ import { detailsUser } from '../../../../redux/actions/userActions';
 import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
 import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
 import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
+import { saveCtaPayment } from '../../../../redux/actions/ctaPaymentActions';
+import { saveCtaPurchaseHistory } from '../../../../redux/actions/ctaPurchaseHistoryActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -33,7 +35,7 @@ const headCells = [
 
 export default function CtaFunctionScreen(props) {
 
-    const { createOperation } = props;
+    const { createOperation, openPopup, setOpenPopup } = props;
 
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
@@ -42,6 +44,14 @@ export default function CtaFunctionScreen(props) {
     const userDetails = useSelector(state => state.userDetails);
     //eslint-disable-next-line
     const { user, loading: loadingUserdetail, error: errorUserDetail } = userDetails;
+
+    const ctaPaymentSave = useSelector(state => state.ctaPaymentSave);
+    //eslint-disable-next-line
+    const { loading: loadingCtaPaymentSave, success: successCtaPaymentSave, error: errorCtaPaymentSave } = ctaPaymentSave;
+
+    const ctaPurchaseHistorySave = useSelector(state => state.ctaPurchaseHistorySave);
+    //eslint-disable-next-line
+    const { loading: loadingCtaPurchaseHistorySave, success: successCtaPurchaseHistorySave, error: errorCtaPurchaseHistorySave } = ctaPurchaseHistorySave;
 
     const ctaPackageHourlyList = useSelector(state => state.ctaPackageHourlyList);
     //eslint-disable-next-line
@@ -79,7 +89,7 @@ export default function CtaFunctionScreen(props) {
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
-    const [openPopup, setOpenPopup] = useState(false)
+    // const [openPopup, setOpenPopup] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -169,6 +179,48 @@ export default function CtaFunctionScreen(props) {
                 })
         }
     }
+    const handleCtaPayment = (token, item, resetActiveStep) => {
+        if(token && item){
+            const formateData = {
+                token: token.id,
+                amount: parseInt(item.rate),
+                description: token.email,
+              };
+              try{
+                dispatch(saveCtaPayment(formateData))
+                .then(res=>{
+                    console.log(res.data.id)
+                    if(res.status===true){
+                        const formatePurchaseHistoryData = {
+                            transectionId: res.data.id,
+                            isPaid:res.data.paid,
+                            amount: parseInt(item.rate),
+                        }
+                        item.ctaHourId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
+                        item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
+                        item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
+                        dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData))
+                        .then(res=>{
+                            if(res.status===true){
+                                // stepper step auto increment
+                                resetActiveStep((prevActiveStep) => prevActiveStep + 1);
+                            }
+                        })
+                    }
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
+
+              }catch(err){
+                  console.log(err)
+              }
+            
+            
+
+        }
+
+    }
     const openInPopup = item => {
         setRecordForEdit(item)
         setShowDetail(true)
@@ -180,10 +232,11 @@ export default function CtaFunctionScreen(props) {
     })
 
     const onDeleteCtaFunctionDocument = id => {
-        setConfirmDialog({
-            ...confirmDialog,
-            isOpen: false
-        })
+        console.log(id)
+        // setConfirmDialog({
+        //     ...confirmDialog,
+        //     isOpen: false
+        // })
         deleteItem(id)
             .then(() => {
                 if (successDeleteCtaFunctionDocument) {
@@ -220,7 +273,8 @@ export default function CtaFunctionScreen(props) {
         return () => {
             // 
         }
-    }, [dispatch, userInfo.userId, loadingCtaFunctionSave, loadingCtaFunctionDocumentSave, loadingDeleteCtaFunctionDocument])
+    }, [dispatch, userInfo.userId, loadingCtaFunctionSave, loadingCtaFunctionDocumentSave, loadingDeleteCtaFunctionDocument, loadingCtaPurchaseHistorySave])
+
     return (
 
         <>
@@ -240,11 +294,13 @@ export default function CtaFunctionScreen(props) {
                                     />
                                 </div>
                             }
+                            showButton = {!openPopup}
                             
                         />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
+
 
                                 {
                                     showDetail ?
@@ -259,22 +315,58 @@ export default function CtaFunctionScreen(props) {
                                                 setOpenPopup={setShowDetail}
                                             />
                                         </Widget> :
+                                            (openPopup ? 
+                                            (<Widget
+                                                title="Schedule a consult"
+                                                upperTitle
+                                                // noBodyPadding
+                                                disableWidgetMenu
+                                                closePopup = {()=>setOpenPopup(false)}
+                                            >
+                                             <CtaFunctionForm
+                                                recordForEdit={recordForEdit}
+                                                addOrEdit={addOrEdit}
+                                                user={user}
+                                                setOpenPopup={setOpenPopup}
+                                                ctaFunctionSaveData={ctaFunctionSaveData}
+                                                setConfirmDialog={setConfirmDialog}
+                                                onDeleteCtaFunctionDocument={onDeleteCtaFunctionDocument}
+                                                loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
+                                                loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
+                                                loadingCtaFunctionSave={loadingCtaFunctionSave}
+                                                // ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
+                                                ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===1 )}
+                                                loadingCtaPackageHourlys={loadingCtaPackageHourlys}
+                                                ctaPackageDailys={ctaPackageDailys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
+                                                loadingCtaPackageDailys={loadingCtaPackageDailys}
+                                                ctaPackageMonthlyYearlys={ctaPackageMonthlyYearlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId)}
+                                                loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
+                                                handleCtaPayment = {handleCtaPayment}
+                                                loadingCtaPaymentSave = {loadingCtaPaymentSave}
+                                                successCtaPaymentSave={successCtaPaymentSave}
+                                                loadingCtaPurchaseHistorySave = {loadingCtaPurchaseHistorySave}
+                                                successCtaPurchaseHistorySave ={successCtaPurchaseHistorySave}
 
-                                        <Widget
-                                            title="Cta Function List Table"
-                                            upperTitle
-                                            noBodyPadding
-                                            setOpenPopup={setOpenPopup}
-                                            setRecordForEdit={setRecordForEdit}
-                                            threeDotDisplay={true}
-                                            disableWidgetMenu
-                                            addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                            buttonText='Schedule a consult'
-                                            createOperation={false}
-                                            handleSearch = {handleSearch}
-                                            searchLabel = 'Search by email'
-                                        >
-                                            <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                            />
+                                            </Widget>
+                                            )
+                                            :
+
+                                            <Widget
+                                                title="Cta Function List Table"
+                                                upperTitle
+                                                noBodyPadding
+                                                setOpenPopup={setOpenPopup}
+                                                setRecordForEdit={setRecordForEdit}
+                                                threeDotDisplay={true}
+                                                disableWidgetMenu
+                                                addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                                buttonText='Schedule a consult'
+                                                createOperation={false}
+                                                handleSearch = {handleSearch}
+                                                searchLabel = 'Search by email'
+                                            >
+                                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                                 <TblContainer>
                                                     <TblHead />
                                                     <TableBody>
@@ -300,7 +392,7 @@ export default function CtaFunctionScreen(props) {
                                                 </TblContainer>
                                                 <TblPagination />
                                             </Paper>
-                                            <Popup
+                                            {/* <Popup
                                                 title="Schedule a consult"
                                                 openPopup={openPopup}
                                                 setOpenPopup={setOpenPopup}
@@ -317,8 +409,7 @@ export default function CtaFunctionScreen(props) {
                                                     loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
                                                     loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
                                                     loadingCtaFunctionSave={loadingCtaFunctionSave}
-                                                    // ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
-                                                    ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===1 )}
+                                                    ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
                                                     loadingCtaPackageHourlys={loadingCtaPackageHourlys}
                                                     ctaPackageDailys={ctaPackageDailys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
                                                     loadingCtaPackageDailys={loadingCtaPackageDailys}
@@ -326,7 +417,7 @@ export default function CtaFunctionScreen(props) {
                                                     loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
 
                                                 />
-                                            </Popup>
+                                            </Popup> */}
                                             <Notification
                                                 notify={notify}
                                                 setNotify={setNotify}
@@ -336,7 +427,8 @@ export default function CtaFunctionScreen(props) {
                                                 setConfirmDialog={setConfirmDialog}
                                             />
                                         </Widget>
-                                }
+                                
+                                            )}
 
                             </Grid>
                         </Grid>

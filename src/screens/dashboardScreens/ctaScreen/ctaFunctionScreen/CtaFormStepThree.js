@@ -24,15 +24,21 @@ export default function CtaFormStepThree(props) {
         resetFileInput,
         handleSubmitFile,
         ctaFunctionDocuments,
-        setConfirmDialog,
+        // setConfirmDialog,
         onDeleteCtaFunctionDocument,
         loadingCtaFunctionDocuments,
         loadingDeleteCtaFunctionDocument,
         loadingCtaFunction,
         loadingCtaFunctionSave,
-        loadingCtaFunctionDocumentSave
+        loadingCtaFunctionDocumentSave,
+        // setHideNext
     } = props;
 
+    // if(!values.id || loadingCtaFunction || loadingCtaFunctionSave || loadingCtaFunctionDocumentSave){
+    //     setHideNext(true)
+    // }else{
+    //     setHideNext(false)
+    // }
 
     useEffect(() => {
         if (recordForEdit != null) {
@@ -91,12 +97,13 @@ export default function CtaFormStepThree(props) {
                                             />
                                             <ListItemSecondaryAction
                                                 onClick={() => {
-                                                    setConfirmDialog({
-                                                        isOpen: true,
-                                                        title: 'Are you sure to delete this record?',
-                                                        subTitle: "You can't undo this operation",
-                                                        onConfirm: () => { onDeleteCtaFunctionDocument(item.id) }
-                                                    })
+                                                    onDeleteCtaFunctionDocument(item.id)
+                                                    // setConfirmDialog({
+                                                    //     isOpen: true,
+                                                    //     title: 'Are you sure to delete this record?',
+                                                    //     subTitle: "You can't undo this operation",
+                                                    //     onConfirm: () => { onDeleteCtaFunctionDocument(item.id) }
+                                                    // })
                                                 }}
                                             >
                                                 <IconButton edge="end" aria-label="delete">

@@ -17,7 +17,8 @@ export default function InputAutoSize(props) {
                     rowsMin={minRow ? minRow : 3} 
                     placeholder={placeholder? placeholder : ''}
             />
-            <span className="ErrorMessage">{error && error }</span>
+            <span className="ErrorMessage MuiFormHelperText-contained">{error && error }</span>
+             
         </div>
     )
 }

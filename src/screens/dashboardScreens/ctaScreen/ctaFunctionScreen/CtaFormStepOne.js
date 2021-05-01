@@ -38,14 +38,6 @@ export default function CtaFormStepOne(props) {
                     <Form>
                         <Grid container>
                             <Grid item xs={12}>
-                                {/* <Controls.Select
-                                    name="menuId"
-                                    label="Select Category"
-                                    value={values.menuId}
-                                    onChange={handleInputChange}
-                                    error={errors.menuId}
-                                    options={menus ? menus : []}
-                                /> */}
                                 <Controls.Select
                                     name="solutionSpecificity"
                                     label="Solution Specificity"
@@ -83,7 +75,7 @@ export default function CtaFormStepOne(props) {
                                     label="Technology Preference"
                                     value={values?.technologyPreference ? values?.technologyPreference : []}
                                     onChange={(event, values) => { handleMultipleSelectInputChange(event, values, 'technologyPreference') }}
-                                    error={errors.technologies}
+                                    error={errors.technologyPreference}
                                     options={ctaFunctionModels?.techStacks ? ctaFunctionModels?.techStacks : []}
                                 />
                                 <Controls.InputAutoSize
@@ -94,6 +86,7 @@ export default function CtaFormStepOne(props) {
                                     onChange={handleInputChange}
                                     error={errors.goalsToAchieveTechnology}
                                 />
+
                             </Grid>
                         </Grid>
                     </Form>

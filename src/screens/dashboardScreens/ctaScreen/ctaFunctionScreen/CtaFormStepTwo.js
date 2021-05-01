@@ -2,13 +2,20 @@ import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core';
 import Controls from "../../../../components/controls/Controls";
 import { Form } from '../../../../components/UseForm/useForm';
+import Loading from '../../../../components/Loading/Loading';
 
 
 export default function CtaFormStepTwo(props) {
 
-    const { values, handleInputChange, errors, recordForEdit, setValues, ctaFunctionModels } = props;
-
+    const { values, handleInputChange, errors, recordForEdit, setValues, ctaFunctionModels, setHideNext } = props;
+ 
     useEffect(() => {
+        if(!values.id || !ctaFunctionModels){
+            setHideNext(true)
+        }
+        else{
+            setHideNext(false)
+        }
         if (recordForEdit != null) {
             try {
                 setValues({
@@ -18,10 +25,10 @@ export default function CtaFormStepTwo(props) {
                 console.warn(e);
             }
         }
-    }, [recordForEdit, setValues])
+    }, [recordForEdit, setValues, values.id, ctaFunctionModels, setHideNext])
     return (
         <>
-            {!values.id || !ctaFunctionModels ? 'loading' :
+            {!values.id || !ctaFunctionModels ? <Loading /> :
                 <Form>
                     <Grid container>
                         <Grid item xs={12}>

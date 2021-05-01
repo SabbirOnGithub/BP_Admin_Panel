@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 import CtaCategoryScreen from './ctaCategoryScreen/CtaCategoryScreen';
 import CtaFunctionScreen from './ctaFunctionScreen/CtaFunctionScreen';
-
-
 
 
 export default function CtaScreen() {
@@ -22,6 +20,9 @@ export default function CtaScreen() {
     //eslint-disable-next-line
     const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
     // permission get end
+
+    const [openPopup, setOpenPopup] = useState(false)
+
 
     useEffect(() => {
         try {
@@ -49,11 +50,14 @@ export default function CtaScreen() {
 
                         <>
                             <CtaFunctionScreen
-                                createOperation
+                                createOperation = {createOperation}
+                                openPopup = {openPopup}
+                                setOpenPopup ={setOpenPopup}
                             />
-                            <CtaCategoryScreen />
-
-
+                            {
+                                openPopup === false && <CtaCategoryScreen />
+                            }
+                            
                         </>
                     )
             }

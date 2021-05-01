@@ -14,7 +14,7 @@ export default function PageTitle(props) {
       <Typography className={classes.typo} variant="h1">
         {props.title}
       </Typography>
-      {props.button && props.button}
+      {(props.button && props.showButton) && props.button}
     </div>
   );
 }

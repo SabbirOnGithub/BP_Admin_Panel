@@ -157,21 +157,23 @@ const useStyles = makeStyles(theme => ({
                 border:'2px solid #536DFE',
             },
             "& .ErrorMessage" : {
-                color:'red',
+                color:'#f44336',
             },
             "& .ErrorArea":{
-                border: "1px solid red",
+                border: "1px solid #f44336",
+            },
+            "& .ErrorArea::placeholder":{
+                color: "#f44336",
             },
             "& .ErrorArea:focus":{
-                border: "2px solid red",
+                border: "2px solid #f44336",
             },
             "& .ErrorArea:hover":{
-                borderColor:'red'
+                borderColor:'#f44336'
             },
             "& .ErrorColor" : {
-                color:'red'
+                color:'#f44336'
             },
-
         },
         
         
