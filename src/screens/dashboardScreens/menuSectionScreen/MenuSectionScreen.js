@@ -35,6 +35,7 @@ const headCells = [
     { id: 'menuId', label: 'Menu Title' },
     { id: 'title', label: 'Title' },
     { id: 'pictureUrl', label: 'Picture' },
+    { id: 'systemName', label: 'System Name' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
@@ -101,6 +102,7 @@ export default function MenuSectionScreen() {
         item.id && formData.append('Id', item.id)
         formData.append('Title', item.title)
         formData.append('MenuId', item.menuId)
+        formData.append('SystemName', item.systemName)
         // append for add/update image
         if (typeof (item.pictureUrl) === 'object') {
             formData.append('file', item.pictureUrl)
@@ -230,6 +232,9 @@ export default function MenuSectionScreen() {
                                                                 {
                                                                     item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
                                                                 }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {item.systemName}
                                                             </TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton

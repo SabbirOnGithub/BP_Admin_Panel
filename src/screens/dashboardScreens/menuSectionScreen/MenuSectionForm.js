@@ -9,6 +9,7 @@ const initialFValues = {
     menuId: '',
     title: '',
     pictureUrl: '',
+    systemName: '',
 }
 
 export default function MenuSectionForm(props) {
@@ -20,8 +21,8 @@ export default function MenuSectionForm(props) {
             temp.title = fieldValues.title ? "" : "This field is required."
         if ('menuId' in fieldValues)
             temp.menuId = fieldValues.menuId ? "" : "This field is required."
-        
-        
+
+
         setErrors({
             ...temp
         })
@@ -74,13 +75,20 @@ export default function MenuSectionForm(props) {
                         onChange={handleInputChange}
                         error={errors.title}
                     />
+                    <Controls.Input
+                        name="systemName"
+                        label="System Name"
+                        value={values.systemName}
+                        onChange={handleInputChange}
+                        error={errors.systemName}
+                    />
                     <Controls.FileInput
                         name="pictureUrl"
                         label="Picture"
                         value={values.pictureUrl}
                         onChange={handleFileChange}
                         error={errors.pictureUrl}
-                        resetFileInput = {resetFileInput}
+                        resetFileInput={resetFileInput}
                     />
                     <div>
                         <Controls.Button
