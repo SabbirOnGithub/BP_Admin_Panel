@@ -240,7 +240,8 @@ export default function MenuSubMenuMapItemListItemScreen() {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell> /
+                                                            <TableCell>
+                                                                {item.menuName} / {item.subMenuName}
                                                                 {
                                                                     // console.log(menuSubMenuMapItems.find(menuSubMenuMapItem =>menuSubMenuMapItem.id = item.menuSubMenuMapItemId).menuSubMenuMapId)
                                                                     // console.log(menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === menuSubMenuMapItems.find(menuSubMenuMapItem =>menuSubMenuMapItem.id = item.menuSubMenuMapItemId).menuSubMenuMapId).menuId)
