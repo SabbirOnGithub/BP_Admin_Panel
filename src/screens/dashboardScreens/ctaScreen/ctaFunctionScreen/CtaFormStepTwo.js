@@ -7,7 +7,14 @@ import Loading from '../../../../components/Loading/Loading';
 
 export default function CtaFormStepTwo(props) {
 
-    const { values, handleInputChange, errors, recordForEdit, setValues, ctaFunctionModels, setHideNext } = props;
+    const { values, 
+            handleInputChange,
+            errors, 
+            recordForEdit, 
+            setValues, 
+            ctaFunctionModels, 
+            setHideNext 
+        } = props;
  
     useEffect(() => {
         if(!values.id || !ctaFunctionModels){
@@ -25,7 +32,7 @@ export default function CtaFormStepTwo(props) {
                 console.warn(e);
             }
         }
-    }, [recordForEdit, setValues, values.id, ctaFunctionModels, setHideNext])
+    }, [values.id, ctaFunctionModels, setHideNext, recordForEdit, setValues])
     return (
         <>
             {!values.id || !ctaFunctionModels ? <Loading /> :

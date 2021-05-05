@@ -23,7 +23,7 @@ const listSubMenuBusinessContexts = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/SubMenuBusinessContext');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: SUBMENU_BUSINESS_CONTEXT_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: SUBMENU_BUSINESS_CONTEXT_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: SUBMENU_BUSINESS_CONTEXT_LIST_FAIL, payload: data.message });
         }

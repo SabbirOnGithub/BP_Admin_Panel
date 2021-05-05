@@ -27,7 +27,7 @@ const listMenuSubMenuMapItemListItems = () => async (dispatch)=>{
         // console.log(data.data)
 
         if (data.status === true) {
-            dispatch({ type: MENU_SUBMENU_MAP_ITEM_LIST_ITEM_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: MENU_SUBMENU_MAP_ITEM_LIST_ITEM_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: MENU_SUBMENU_MAP_ITEM_LIST_ITEM_LIST_FAIL, payload: data.message });
         }

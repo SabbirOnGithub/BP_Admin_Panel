@@ -1,6 +1,6 @@
 import React,  { useState } from 'react'
 import { Grid, makeStyles } from '@material-ui/core';
-import Controls from "../../../../components/controls/Controls";
+// import Controls from "../../../../components/controls/Controls";
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 // import useTable from "../../../components/UseTable/useTable";
@@ -31,7 +31,9 @@ const useStyles = makeStyles(theme => ({
 //     { id: 'name', label: 'Name' },
 // ]
 export default function CtaCategoryDetailScreen(props) {
-    const { recordForEdit, setOpenPopup } = props
+    const { recordForEdit, 
+        // setOpenPopup 
+    } = props
     const classes = useStyles();
 
     //eslint-disable-next-line
@@ -73,7 +75,7 @@ export default function CtaCategoryDetailScreen(props) {
                                 Set aside off of the heat to let rest for 10 minutes, and then serve.
                             </Typography> */}
                 </CardContent>
-                    <div>
+                    {/* <div>
                         <>
                             <Controls.Button
                                 text="Back"
@@ -81,7 +83,7 @@ export default function CtaCategoryDetailScreen(props) {
                                 onClick={()=>{setOpenPopup(false)}}
                             />
                         </>
-                    </div>
+                    </div> */}
                 </Grid>
             </Grid>
     )

@@ -28,8 +28,13 @@ const useStyles = makeStyles((theme) => ({
   MuiMobileStepperProgress: {
     width: '90%',
 
+  },
+  '& .MuiLinearProgress-barColorPrimary':{
+    backgroundColor:'red !important'
   }
 }));
+
+
 
 // function getSteps() {
 //   return ['Select master blaster campaign settings', 'Create an ad group', 'Create an ad'];
@@ -100,7 +105,8 @@ export default function HorizontalStepper(props) {
                     title = "Success"
                 />
             {/* <Button onClick={handleReset}>Finish</Button> */}
-            <Button variant="contained" color="secondary" onClick={handleReset} style={{display:'flex'}}>Close</Button>
+            <div  style={{marginTop:10,}}><Button variant="contained" color="secondary" onClick={handleReset} style={{display:'flex', margin:'auto'}}>Finish</Button></div>
+            
           </div>
         ) : (
           <div>

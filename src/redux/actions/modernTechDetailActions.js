@@ -23,7 +23,7 @@ const listModernTechDetails = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/ModernTechDetail');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: MODERN_TECH_DETAIL_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: MODERN_TECH_DETAIL_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: MODERN_TECH_DETAIL_LIST_FAIL, payload: data.message });
         }

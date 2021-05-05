@@ -15,6 +15,7 @@ import { listCtaFunctionModels, detailsCtaFunction, listCtaFunctionDocuments } f
 const initialFValues = {
     id: '',
     subMenuId: null,
+    name:'',
     firstName: "",
     lastName: "",
     companyName: "",
@@ -44,7 +45,8 @@ const initialFValues = {
 
 export default function CtaFunctionForm(props) {
 
-    const { addOrEdit, recordForEdit,  
+    const { addOrEdit, recordForEdit, 
+            // setRecordForEdit, 
             user,  setOpenPopup,  
             ctaFunctionSaveData, 
             loadingCtaFunctionDocumentSave, 
@@ -64,6 +66,9 @@ export default function CtaFunctionForm(props) {
             loadingCtaPurchaseHistorySave,
             successCtaPurchaseHistorySave,
          } = props;
+
+    // const { email, mobile: phone, name: firstName } = user
+    
     
     const ctaFunctionDocumentList = useSelector(state => state.ctaFunctionDocumentList);
     //eslint-disable-next-line
@@ -148,6 +153,7 @@ export default function CtaFunctionForm(props) {
                             setValues={setValues}
                             ctaFunctionModels={ctaFunctionModels}
                             handleMultipleSelectInputChange = {handleMultipleSelectInputChange}
+                            loadingCtaFunctionSave ={loadingCtaFunctionSave}
                         />;
             case 1:
                 // step 2
@@ -234,19 +240,38 @@ export default function CtaFunctionForm(props) {
         }
 
         if (validate()) {
+            const formatData = {
+                ...values
+            }
             if(activeStep ===0){
-                if(values.technologyPreference){
-                    let technologyPreference = values?.technologyPreference?.map((item) => item.id);
-                    values.technologyPreference = technologyPreference.toString();
+                (formatData?.technologyPreference && typeof (formatData?.technologyPreference) === 'object') && (formatData['technologyPreference'] = formatData?.technologyPreference?.map((item) => item.id).toString());
+                formatData['name'] = user?.name
+                formatData['firstName'] = user?.firstName
+                formatData['lastName'] = user?.lastName
+                formatData['businessName'] = user?.companyName
+                formatData['email'] = user?.email
+                formatData['phone'] = user?.mobile
+                // if(values.technologyPreference){
+                //     let technologyPreference = values?.technologyPreference?.map((item) => item.id);
+                //     values.technologyPreference = technologyPreference.toString();
+                // }
+            }
+            if(activeStep ===1){
+                if(formatData.estimation){
+                    // console.log(values.estimation)
+                    formatData.estimation = values.estimation.toISOString();
                 }
             }
-            addOrEdit(values, resetForm);
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            // console.log(user)
+            // console.log(formatData)
+            addOrEdit(formatData, values, resetForm, activeStep, setActiveStep, setValues);
+            // setActiveStep((prevActiveStep) => prevActiveStep + 1);
             
         }
     };
 
     const handleNextToPaymentScreen = (order) => {
+        // send to next step with product details
         setCreateOrder(order)
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -264,6 +289,9 @@ export default function CtaFunctionForm(props) {
             setHideNext(false)
         }
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        // setRecordForEdit({
+        //     ...values,
+        // })
     };
 
     const handleReset = () => {
@@ -275,6 +303,12 @@ export default function CtaFunctionForm(props) {
 
     useEffect(() => {
         try {
+            // if (recordForEdit != null){
+            //     setValues({
+            //         ...recordForEdit
+            //     })
+            // }
+            
             if (ctaFunctionId) {
                 dispatch(detailsCtaFunction(ctaFunctionId))
                 dispatch(listCtaFunctionDocuments(ctaFunctionId))
@@ -285,8 +319,6 @@ export default function CtaFunctionForm(props) {
            if(values?.id){
                 dispatch(listCtaFunctionDocuments(values?.id))
            }
-           
-            
         } catch (e) {
             console.log(e)
         }
@@ -299,7 +331,7 @@ export default function CtaFunctionForm(props) {
         loadingCtaFunctionDocumentSave, 
         loadingDeleteCtaFunctionDocument, 
         ctaFunctionModels?.id,
-        successCtaPurchaseHistorySave
+        // successCtaPurchaseHistorySave
     ])
 
     return (

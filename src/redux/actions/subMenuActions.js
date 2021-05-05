@@ -22,7 +22,7 @@ const listSubMenus = () => async (dispatch)=>{
         dispatch({type: SUBMENU_LIST_REQUEST});
         const { data } = await axiosWithoutToken.get('/SubMenu',{isHomePageSubMenu:true});
         if(data.status===true){
-            dispatch({ type: SUBMENU_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: SUBMENU_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: SUBMENU_LIST_FAIL, payload: data.message });
         }

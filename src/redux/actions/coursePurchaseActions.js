@@ -25,7 +25,7 @@ const listCoursePurchases = () => async (dispatch)=>{
         dispatch({type: COURSE_PURCHASE_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CoursePurchase`);
         if (data.status === true) {
-            dispatch({ type: COURSE_PURCHASE_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: COURSE_PURCHASE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: data.message });
         }
@@ -41,8 +41,11 @@ const listCoursePurchases = () => async (dispatch)=>{
 const detailsCoursePurchase = (id)=> async (dispatch) =>{
     try{
         dispatch({type:COURSE_PURCHASE_DETAILS_REQUEST});
-        const { data } = await axiosWithoutToken.get("/CoursePurchase/" + id); 
-        dispatch({type:COURSE_PURCHASE_DETAILS_SUCCESS, payload: data });
+        const { data } = await axiosWithoutToken.get("/CoursePurchase/detail/" + id); 
+        if(data.status===true){
+            dispatch({type:COURSE_PURCHASE_DETAILS_SUCCESS, payload: data.data ? data.data : {}});
+        }
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: COURSE_PURCHASE_DETAILS_FAIL, payload: error.message });

@@ -25,7 +25,7 @@ const listHomePageSliders = () => async (dispatch) => {
         dispatch({ type: HOMEPAGE_SLIDER_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/HomepageSlider`);
         if (data.status === true) {
-            dispatch({ type: HOMEPAGE_SLIDER_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: HOMEPAGE_SLIDER_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: HOMEPAGE_SLIDER_LIST_FAIL, payload: data.message });
         }

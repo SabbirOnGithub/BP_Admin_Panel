@@ -23,7 +23,7 @@ const listSubmenuBestPractices = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/SubmenuBestPractice');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: SUBMENU_BEST_PRACTICE_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: SUBMENU_BEST_PRACTICE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: SUBMENU_BEST_PRACTICE_LIST_FAIL, payload: data.message });
         }

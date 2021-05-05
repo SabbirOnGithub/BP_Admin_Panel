@@ -222,16 +222,17 @@ export default function MenuSubMenuMapItemScreen() {
                                                     {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
-                                                            <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId)} /
-                                                                    {searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId)}
+                                                            <TableCell>{item?.id}</TableCell>
+                                                            <TableCell>
+                                                                {searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId)?.menuId)} /
+                                                                {searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem => menuSubMenuMapItem.id === item.menuSubMenuMapId)?.subMenuId)}
                                                             </TableCell>
-                                                            <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell>
+                                                            <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item?.menuSubMenuMapId)}</TableCell>
                                                             <TableCell>{item.title}</TableCell>
                                                             {/* <TableCell>{item.description}</TableCell> */}
-                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
-                                                            <TableCell>{item.displayOrder}</TableCell>
-                                                            <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
+                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item?.description}` }} /></TableCell>
+                                                            <TableCell>{item?.displayOrder}</TableCell>
+                                                            <TableCell>{item?.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
                                                                     color="primary"

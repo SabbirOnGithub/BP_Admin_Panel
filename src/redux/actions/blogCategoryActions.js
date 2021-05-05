@@ -25,7 +25,7 @@ const listBlogCategorys = () => async (dispatch)=>{
         dispatch({type: BLOG_CATEGORY_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/BlogCategory`);
         if (data.status === true) {
-            dispatch({ type: BLOG_CATEGORY_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: BLOG_CATEGORY_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: BLOG_CATEGORY_LIST_FAIL, payload: data.message });
         }

@@ -25,7 +25,7 @@ const listRoleResources = () => async (dispatch)=>{
         dispatch({type: ROLE_RESOURCE_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/RoleResource`);
         if (data.status === true) {
-            dispatch({ type: ROLE_RESOURCE_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: ROLE_RESOURCE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: ROLE_RESOURCE_LIST_FAIL, payload: data.message });
         }

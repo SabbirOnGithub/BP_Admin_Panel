@@ -27,7 +27,7 @@ const listUsers = () => async (dispatch) => {
         dispatch({ type: USER_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User/searchAll`);
         if (data.status === true) {
-            dispatch({ type: USER_LIST_SUCCESS, payload: data.data ? data.data.item1 : [] });
+            dispatch({ type: USER_LIST_SUCCESS, payload: data.data ? data.data.item1?.reverse() : [] });
             // console.log(data)
         } else {
             dispatch({ type: USER_LIST_FAIL, payload: data.message });

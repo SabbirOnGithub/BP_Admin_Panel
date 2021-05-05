@@ -4,6 +4,7 @@ import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 import CtaCategoryScreen from './ctaCategoryScreen/CtaCategoryScreen';
 import CtaFunctionScreen from './ctaFunctionScreen/CtaFunctionScreen';
+import Loading from '../../../components/Loading/Loading';
 
 
 export default function CtaScreen() {
@@ -45,7 +46,7 @@ export default function CtaScreen() {
     return (
         <>
             {
-                (loadingRoleResource) ? "Loading" :
+                (loadingRoleResource) ? <Loading /> :
                     (
 
                         <>

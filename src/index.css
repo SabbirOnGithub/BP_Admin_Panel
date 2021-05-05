@@ -247,3 +247,9 @@ body{
 /* ----------------------- */
  /* cta price card css end*/
 /* ----------------------- */
+
+
+/* stepper css override */
+.MuiLinearProgress-barColorPrimary {
+  background-color: #28a745 !important;
+}

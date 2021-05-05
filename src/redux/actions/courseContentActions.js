@@ -25,7 +25,7 @@ const listCourseContents = () => async (dispatch)=>{
         dispatch({type: COURSE_CONTENT_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CourseContent`);
         if (data.status === true) {
-            dispatch({ type: COURSE_CONTENT_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: COURSE_CONTENT_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
         }else{
             dispatch({ type: COURSE_CONTENT_LIST_FAIL, payload: data.message });
         }

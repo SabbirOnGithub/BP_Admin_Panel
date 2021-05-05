@@ -4,7 +4,7 @@ import DateFnsUtils from "@date-io/date-fns";
 
 export default function DatePicker(props) {
 
-    const { name, label, value, error=null, onChange, message, ...other } = props
+    const { name, label, value, error=null, onChange, message, readOnly, ...other } = props
 
     // console.log(typeof value)
     const convertToDefEventPara = (name, value) => ({
@@ -15,6 +15,7 @@ export default function DatePicker(props) {
     })
 
     return (
+        <div>
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
                 <KeyboardDatePicker disableToolbar variant="inline" inputVariant="outlined"
                     className={error && ' errorDatePickerArea'}
@@ -25,8 +26,10 @@ export default function DatePicker(props) {
                     onChange={date =>onChange(convertToDefEventPara(name,date))}
                     {...other}
                     {...(error && {error:true,helperText:error})}
+                    InputProps={{ readOnly: readOnly }}
                 />
                 <span style={{margin:'0px 20px 8px 0px', float:'right', fontSize:12}}>{message}</span>
             </MuiPickersUtilsProvider>
+        </div>
     )
 }
