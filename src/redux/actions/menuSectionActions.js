@@ -25,7 +25,7 @@ const listMenuSections = () => async (dispatch) => {
         dispatch({ type: MENU_SECTION_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/MenuSection`);
         if (data.status === true) {
-            dispatch({ type: MENU_SECTION_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: MENU_SECTION_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
             // console.log(data)
         } else {
             dispatch({ type: MENU_SECTION_LIST_FAIL, payload: data.message });

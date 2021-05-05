@@ -33,7 +33,7 @@ const listCtaFunctions = () => async (dispatch)=>{
         dispatch({type: CTA_FUNCTION_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CtaFunction`);
         if (data.status === true) {
-            dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
         }else{
             dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: data.message });
         }
@@ -44,7 +44,6 @@ const listCtaFunctions = () => async (dispatch)=>{
 
     }
 };
-
 
 const detailsCtaFunction = (id)=> async (dispatch) =>{
     try{
@@ -59,6 +58,7 @@ const detailsCtaFunction = (id)=> async (dispatch) =>{
 };
 
 const saveCtaFunction = (item) => async (dispatch) =>{
+    console.log(item)
     try{
         dispatch({type: CTA_FUNCTION_SAVE_REQUEST, payload:item })
         if(!item.id){
@@ -68,17 +68,20 @@ const saveCtaFunction = (item) => async (dispatch) =>{
             const formatData = delete item.id;
             const { data } = await axiosWithToken.post("/CtaFunction", item)
             if (data.status === true) {
-                dispatch({type: CTA_FUNCTION_SAVE_SUCCESS, payload: data });
+                dispatch({type: CTA_FUNCTION_SAVE_SUCCESS, payload: data })
+                
+                // console.log(data)
             }else{
-                dispatch({ type: CTA_FUNCTION_SAVE_FAIL, payload: data.message });
+                dispatch({ type: CTA_FUNCTION_SAVE_FAIL, payload: data.message })
             }
-            // console.log(data)
+            return data
         }else{
             console.log('update')
-            // console.log(item)
+            console.log(item)
             const { data } = await axiosWithToken.put("/CtaFunction", item);
             if (data.status === true) {
-                dispatch({type: CTA_FUNCTION_SAVE_SUCCESS, payload: data.id });            
+                dispatch({type: CTA_FUNCTION_SAVE_SUCCESS, payload: data.id });  
+                return data
             }else{
                 dispatch({ type: CTA_FUNCTION_SAVE_FAIL, payload: data.message });
             }
@@ -104,7 +107,6 @@ const listCtaFunctionModels = () => async (dispatch)=>{
 
     }
 };
-
 
 const listCtaFunctionDocuments = (id) => async (dispatch)=>{
     try{
@@ -158,6 +160,7 @@ const deleteCtaFunctionDocument = (id)=> async (dispatch, getState) =>{
         }else{
             dispatch({ type: CTA_FUNCTION_DOCUMENT_DELETE_FAIL, payload: data.message });
         }
+        console.log(data)
     }
     catch(error){
         dispatch({ type: CTA_FUNCTION_DOCUMENT_DELETE_FAIL, payload: error.message });

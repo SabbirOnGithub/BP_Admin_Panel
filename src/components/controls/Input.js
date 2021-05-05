@@ -4,10 +4,10 @@ import { TextField } from '@material-ui/core';
 
 export default function Input(props) {
 
-    const { name, label, value, error=null, onChange, readOnly, ...other } = props;
+    const { name, label, value, error=null, onChange, readOnly, size, ...other } = props;
     return (
         <TextField
-            // size= "medium"
+            // size= {size ? size :"medium"} // "medium" "large" "small"
             variant="outlined"
             label={label}
             name={name}

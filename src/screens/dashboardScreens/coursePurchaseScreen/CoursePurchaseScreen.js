@@ -9,7 +9,7 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import DetailsIcon from '@material-ui/icons/Details';
 import Loading from '../../../components/Loading/Loading';
-import { searchNameByIdFromArray } from '../../../helpers/search';
+import { searchNameByIdFromArray, getFilterDataByUser } from '../../../helpers/search';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { listCoursePurchases } from '../../../redux/actions/coursePurchaseActions';
 import { listSoftwares } from '../../../redux/actions/softwareActions';
 import { listTrainingTypes } from '../../../redux/actions/trainingTypeActions';
+import { saveCourseAvailabilityDate } from '../../../redux/actions/courseAvailabilityDateActions';
 
 
 const headCells = [
@@ -48,6 +49,9 @@ export default function CoursePurchaseScreen() {
     //eslint-disable-next-line
     const { coursePurchases, loading, error } = coursePurchaseList;
 
+    const coursePurchasesFilterByUser = getFilterDataByUser(coursePurchases, userInfo);
+
+
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
@@ -61,13 +65,46 @@ export default function CoursePurchaseScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(coursePurchases, headCells, filterFn);
+    } = useTable(coursePurchasesFilterByUser, headCells, filterFn);
     
     const dispatch = useDispatch();
 
     const openInPopup = item => {
         setRecordForEdit(item)
         setOpenPopup(true)
+    }
+
+    // add/update promise
+    const saveItem = (item) => new Promise((resolve, reject) => {
+        dispatch(saveCourseAvailabilityDate(item));
+        resolve();
+    })
+
+    const addOrEdit = async (item, resetForm) => {
+        console.log(item)
+        // resetForm()
+        // setRecordForEdit(null)
+        // setOpenPopup(false)
+        saveItem(item)
+            .then(() => {
+                
+                // if (successSave) {
+                //     setNotify({
+                //         isOpen: true,
+                //         message: 'Submitted Successfully',
+                //         type: 'success'
+                //     })
+                // }
+
+                // if (errorSave) {
+                //     setNotify({
+                //         isOpen: true,
+                //         message: 'Submition Failed',
+                //         type: 'warning'
+                //     })
+                // }
+            })
+
     }
 
     useEffect(() => {
@@ -95,12 +132,14 @@ export default function CoursePurchaseScreen() {
                                     upperTitle
                                     // noBodyPadding
                                     disableWidgetMenu
+                                    closePopup = {()=>setOpenPopup(false)}
                                 >
                                     <CoursePurchaseDetailScreen
                                             recordForEdit={recordForEdit}
                                             setOpenPopup={setOpenPopup}
                                             softwares = {softwares}
                                             trainingTypes = {trainingTypes}
+                                            addOrEdit = {addOrEdit}
 
                                         />
                                 </Widget> : 

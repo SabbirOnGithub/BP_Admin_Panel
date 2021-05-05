@@ -23,7 +23,7 @@ const listUniqueSolutionDetails = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/UniqueSolutionDetail');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: UNIQUE_SOLUTION_DETAIL_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: UNIQUE_SOLUTION_DETAIL_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: UNIQUE_SOLUTION_DETAIL_LIST_FAIL, payload: data.message });
         }

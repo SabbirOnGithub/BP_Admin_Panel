@@ -23,7 +23,7 @@ const listTestimonialDetails = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/TestimonialDetail');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: TESTIMONIAL_DETAIL_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: TESTIMONIAL_DETAIL_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: TESTIMONIAL_DETAIL_LIST_FAIL, payload: data.message });
         }

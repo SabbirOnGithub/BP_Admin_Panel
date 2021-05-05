@@ -25,7 +25,7 @@ const listPaymentPackages = () => async (dispatch)=>{
         dispatch({type: PAYMENT_PACKAGE_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/PaymentPackege`);
         if (data.status === true) {
-            dispatch({ type: PAYMENT_PACKAGE_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: PAYMENT_PACKAGE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: PAYMENT_PACKAGE_LIST_FAIL, payload: data.message });
         }

@@ -23,7 +23,7 @@ const listConsultationOverview = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/ConsultationOverview');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: CONSULTATION_OVERVIEW_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: CONSULTATION_OVERVIEW_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
         } else {
             dispatch({ type: CONSULTATION_OVERVIEW_LIST_FAIL, payload: data.message });
         }

@@ -97,6 +97,7 @@ export default function useTable(records, headCells, filterFn) {
             if (order !== 0) return order;
             return a[1] - b[1];
         });
+
         return stabilizedThis.map((el) => el[0]);
     }
 

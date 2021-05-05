@@ -23,7 +23,7 @@ const listPersonalizedServiceDetails = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/PersonalizedServiceDetail');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: PERSONALIZED_SERVICE_DETAIL_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: PERSONALIZED_SERVICE_DETAIL_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: PERSONALIZED_SERVICE_DETAIL_LIST_FAIL, payload: data.message });
         }

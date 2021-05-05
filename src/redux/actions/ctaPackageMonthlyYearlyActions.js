@@ -25,7 +25,7 @@ const listCtaPackageMonthlyYearlys = () => async (dispatch)=>{
         dispatch({type: CTA_PACKAGE_MONTHLY_YEARLY_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CtaPackageMonthlyYearly`);
         if (data.status === true) {
-            dispatch({ type: CTA_PACKAGE_MONTHLY_YEARLY_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: CTA_PACKAGE_MONTHLY_YEARLY_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
         }else{
             dispatch({ type: CTA_PACKAGE_MONTHLY_YEARLY_LIST_FAIL, payload: data.message });
         }

@@ -23,7 +23,7 @@ const listSubMenuOverViews = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/SubMenuOverView');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: SUBMENU_OVERVIEW_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: SUBMENU_OVERVIEW_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: SUBMENU_OVERVIEW_LIST_FAIL, payload: data.message });
         }

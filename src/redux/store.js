@@ -53,9 +53,10 @@ import { courseRequirementDeleteReducer, courseRequirementDetailsReducer, course
 import { softwareTrainingSummaryDeleteReducer, softwareTrainingSummaryDetailsReducer, softwareTrainingSummaryListReducer, softwareTrainingSummarySaveReducer } from './reducers/softwareTrainingSummaryReducers';
 import { softwareTrainingPriceDeleteReducer, softwareTrainingPriceDetailsReducer, softwareTrainingPriceListReducer, softwareTrainingPriceSaveReducer } from './reducers/softwareTrainingPriceReducers';
 import { softwareTrainingTypeAndLengthDeleteReducer, softwareTrainingTypeAndLengthDetailsReducer, softwareTrainingTypeAndLengthListReducer, softwareTrainingTypeAndLengthSaveReducer } from './reducers/softwareTrainingTypeAndLengthReducers';
-import { coursePurchaseListReducer } from './reducers/coursePurchaseReducers';
+import { coursePurchaseDetailsReducer, coursePurchaseListReducer } from './reducers/coursePurchaseReducers';
 import { ctaPaymentSaveReducer } from './reducers/ctaPaymentReducers';
 import { ctaPurchaseHistorySaveReducer } from './reducers/ctaPurchaseHistoryReducers';
+import { courseAvailabilityDateSaveReducer } from './reducers/courseAvailabilityDateReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -279,9 +280,12 @@ const reducer = combineReducers({
     softwareTrainingTypeAndLengthSave: softwareTrainingTypeAndLengthSaveReducer,
     softwareTrainingTypeAndLengthDelete: softwareTrainingTypeAndLengthDeleteReducer,
     coursePurchaseList:coursePurchaseListReducer,
-    // coursePurchaseDetails: coursePurchaseDetailsReducer,
+    coursePurchaseDetails: coursePurchaseDetailsReducer,
     ctaPaymentSave: ctaPaymentSaveReducer,
     ctaPurchaseHistorySave: ctaPurchaseHistorySaveReducer,
+    courseAvailabilityDateSave: courseAvailabilityDateSaveReducer,
+
+    
     
     
 });

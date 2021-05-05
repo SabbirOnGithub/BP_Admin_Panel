@@ -23,7 +23,7 @@ const listTrainingDetails = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/TrainingDetail');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: TRAINING_DETAIL_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: TRAINING_DETAIL_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: TRAINING_DETAIL_LIST_FAIL, payload: data.message });
         }

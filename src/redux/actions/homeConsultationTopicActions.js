@@ -22,7 +22,7 @@ const listHomeConsultationTopics = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/HomeConsultationTopic');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: HOME_CONSULTATION_TOPIC_LIST_FAIL, payload: data.message });
         }

@@ -25,7 +25,7 @@ const listFooterSections = () => async (dispatch) => {
         dispatch({ type: FOOTER_SECTION_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/FooterSection`);
         if (data.status === true) {
-            dispatch({ type: FOOTER_SECTION_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: FOOTER_SECTION_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
         } else {
             dispatch({ type: FOOTER_SECTION_LIST_FAIL, payload: data.message });
         }

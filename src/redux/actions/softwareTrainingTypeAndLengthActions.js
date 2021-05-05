@@ -25,7 +25,7 @@ const listSoftwareTrainingTypeAndLengths = () => async (dispatch)=>{
         dispatch({type: SOFTWARE_TRAINING_TYPE_AND_LENGTH_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/SoftwareTrainingTypeAndLength`);
         if (data.status === true) {
-            dispatch({ type: SOFTWARE_TRAINING_TYPE_AND_LENGTH_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: SOFTWARE_TRAINING_TYPE_AND_LENGTH_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: SOFTWARE_TRAINING_TYPE_AND_LENGTH_LIST_FAIL, payload: data.message });
         }

@@ -25,7 +25,7 @@ const listTrainingTypes = () => async (dispatch)=>{
         dispatch({type: TRAINING_TYPE_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/TrainingType`);
         if (data.status === true) {
-            dispatch({ type: TRAINING_TYPE_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: TRAINING_TYPE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: TRAINING_TYPE_LIST_FAIL, payload: data.message });
         }

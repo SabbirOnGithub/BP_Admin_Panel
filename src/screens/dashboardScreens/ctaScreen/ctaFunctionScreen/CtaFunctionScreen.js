@@ -13,6 +13,8 @@ import DetailsIcon from '@material-ui/icons/Details';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
 import { ResponseMessage } from "../../../../themes/responseMessage";
+import { getFilterDataByUser } from '../../../../helpers/search';
+
 
 // redux actions
 import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
@@ -23,6 +25,7 @@ import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyA
 import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
 import { saveCtaPayment } from '../../../../redux/actions/ctaPaymentActions';
 import { saveCtaPurchaseHistory } from '../../../../redux/actions/ctaPurchaseHistoryActions';
+import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -69,7 +72,8 @@ export default function CtaFunctionScreen(props) {
     //eslint-disable-next-line
     const { ctaFunctions, loading: loadingCtaFunctions, error: errorCtaFunctions } = ctaFunctionList;
     // 1-superadmin, 2-admin, 3- member, 4- client 
-    const ctaFunctionsFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaFunctions : (userInfo?.userRole === 3 ? [] : ctaFunctions.filter(item=>item.email === userInfo.email))
+    // const ctaFunctionsFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaFunctions : (userInfo?.userRole === 3 ? [] : ctaFunctions.filter(item=>item.email === userInfo.email))
+    const ctaFunctionsFilterByUser = getFilterDataByUser(ctaFunctions, userInfo);
 
     const ctaFunctionSave = useSelector(state => state.ctaFunctionSave);
     //eslint-disable-next-line
@@ -84,11 +88,16 @@ export default function CtaFunctionScreen(props) {
     //eslint-disable-next-line
     const { loading: loadingDeleteCtaFunctionDocument, success: successDeleteCtaFunctionDocument, error: errorDeleteCtaFunctionDocument } = ctaFunctionDocumentDelete;
 
+    const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
+    //eslint-disable-next-line
+    const { ctaFunctionModels } = ctaFunctionModelList;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [recordForDetails, setRecordForDetails] = useState(null)
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
+    // openPopUp passed from cta screen
     // const [openPopup, setOpenPopup] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -121,14 +130,15 @@ export default function CtaFunctionScreen(props) {
             dispatch(saveCtaFunctionDocument(item));
             resolve();
         } else {
-            dispatch(saveCtaFunction(item));
-            // dispatch(saveCtaCategory(item));
-            resolve();
+            dispatch(saveCtaFunction(item))
+            .then(res=>{
+                resolve(res)
+            })
         }
 
     })
 
-    const addOrEdit = async (item, resetForm) => {
+    const addOrEdit = async (item,  values, resetForm, activeStep, setActiveStep) => {
         if (item.file) {
             const formData = new FormData();
             formData.append("CtaFunctionId", item.id);
@@ -159,23 +169,50 @@ export default function CtaFunctionScreen(props) {
                 })
 
         } else {
+            resetForm()
+            // console.log(item)
             saveItem(item)
-                .then(() => {
-
-                    if (successCtaFunctionSave) {
+                .then((res) => {
+                    // console.log(res)
+                    if(res?.status===true){
                         setNotify({
                             isOpen: true,
                             message: 'Submitted Successfully',
                             type: 'success'
                         })
-                    }
-                    if (errorCtaFunctionSave) {
+                        setActiveStep(activeStep + 1)
+                        delete item.id
+                        setRecordForEdit({
+                            ...values,
+                            id: res.data.id
+                        })
+                    }else{
                         setNotify({
                             isOpen: true,
                             message: 'Submition Failed',
                             type: 'warning'
                         })
                     }
+                    // console.log(res)
+                    // if (successCtaFunctionSave) {
+                    //     // setRecordForEdit(item)
+                    //     setActiveStep(activeStep+1);
+                    //     setNotify({
+                    //         isOpen: true,
+                    //         message: 'Submitted Successfully',
+                    //         type: 'success'
+                    //     })
+                    // }
+                    // if (errorCtaFunctionSave) {
+                    //     setNotify({
+                    //         isOpen: true,
+                    //         message: 'Submition Failed',
+                    //         type: 'warning'
+                    //     })
+                    // }
+                })
+                .catch(err=>{
+                    console.log('err occured'+ err)
                 })
         }
     }
@@ -189,7 +226,7 @@ export default function CtaFunctionScreen(props) {
               try{
                 dispatch(saveCtaPayment(formateData))
                 .then(res=>{
-                    console.log(res.data.id)
+                    // console.log(res.data.id)
                     if(res.status===true){
                         const formatePurchaseHistoryData = {
                             transectionId: res.data.id,
@@ -222,7 +259,7 @@ export default function CtaFunctionScreen(props) {
 
     }
     const openInPopup = item => {
-        setRecordForEdit(item)
+        setRecordForDetails(item)
         setShowDetail(true)
     }
     // delete promise
@@ -262,6 +299,7 @@ export default function CtaFunctionScreen(props) {
             dispatch(detailsUser(userInfo.userId));
             dispatch(listCtaCategorys());
             dispatch(listCtaFunctions());
+            dispatch(listCtaFunctionModels());
             dispatch(listCtaPackageHourlys());
             dispatch(listCtaPackageDailys());
             dispatch(listCtaPackageMonthlyYearlys());
@@ -273,7 +311,15 @@ export default function CtaFunctionScreen(props) {
         return () => {
             // 
         }
-    }, [dispatch, userInfo.userId, loadingCtaFunctionSave, loadingCtaFunctionDocumentSave, loadingDeleteCtaFunctionDocument, loadingCtaPurchaseHistorySave])
+    }, [
+        dispatch, 
+        userInfo.userId, 
+        // loadingCtaFunctionSave, 
+        loadingCtaFunctionDocumentSave, 
+        loadingDeleteCtaFunctionDocument, 
+        loadingCtaPurchaseHistorySave,
+        recordForEdit
+    ])
 
     return (
 
@@ -290,7 +336,7 @@ export default function CtaFunctionScreen(props) {
                                         text='Schedule a consult'
                                         variant="outlined"
                                         // startIcon={<AddIcon />}
-                                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        onClick={() => { setShowDetail(false); setOpenPopup(true); setRecordForEdit(null);  }}
                                     />
                                 </div>
                             }
@@ -309,10 +355,12 @@ export default function CtaFunctionScreen(props) {
                                             upperTitle
                                             // noBodyPadding
                                             disableWidgetMenu
+                                            closePopup = {()=>setShowDetail(false)}
                                         >
                                             <CtaFunctionDetailScreen
-                                                recordForEdit={recordForEdit}
-                                                setOpenPopup={setShowDetail}
+                                                recordForDetails={recordForDetails}
+                                                ctaFunctionModels = {ctaFunctionModels}
+                                                // setOpenPopup={setShowDetail}
                                             />
                                         </Widget> :
                                             (openPopup ? 
@@ -321,10 +369,11 @@ export default function CtaFunctionScreen(props) {
                                                 upperTitle
                                                 // noBodyPadding
                                                 disableWidgetMenu
-                                                closePopup = {()=>setOpenPopup(false)}
+                                                closePopup = {()=>{setOpenPopup(false); setRecordForEdit(null)}}
                                             >
                                              <CtaFunctionForm
                                                 recordForEdit={recordForEdit}
+                                                // setRecordForEdit = {setRecordForEdit}
                                                 addOrEdit={addOrEdit}
                                                 user={user}
                                                 setOpenPopup={setOpenPopup}
@@ -334,8 +383,8 @@ export default function CtaFunctionScreen(props) {
                                                 loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
                                                 loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
                                                 loadingCtaFunctionSave={loadingCtaFunctionSave}
-                                                // ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
-                                                ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===1 )}
+                                                ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
+                                                // ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===1 )}
                                                 loadingCtaPackageHourlys={loadingCtaPackageHourlys}
                                                 ctaPackageDailys={ctaPackageDailys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
                                                 loadingCtaPackageDailys={loadingCtaPackageDailys}
@@ -375,6 +424,7 @@ export default function CtaFunctionScreen(props) {
                                                             (<TableRow key={item.id}>
                                                                 <TableCell>{item.id}</TableCell>
                                                                 <TableCell>{item.firstName + ' ' + item.lastName}</TableCell>
+                                                                {/* <TableCell>{item.name}</TableCell> */}
                                                                 <TableCell>{item.companyName}</TableCell>
                                                                 <TableCell>{item.email}</TableCell>
                                                                 <TableCell>{item.phone}</TableCell>

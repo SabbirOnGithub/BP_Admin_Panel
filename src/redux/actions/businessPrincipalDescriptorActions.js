@@ -23,7 +23,7 @@ const listBusinessPrincipalDescriptor = () => async (dispatch) => {
         const { data } = await axiosWithoutToken.get('/BusinessPrincipalDescriptor');
         // console.log(data)
         if (data.status === true) {
-            dispatch({ type: BUSINESS_PRINCIPAL_DESCRIPTOR_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: BUSINESS_PRINCIPAL_DESCRIPTOR_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
         } else {
             dispatch({ type: BUSINESS_PRINCIPAL_DESCRIPTOR_LIST_FAIL, payload: data.message });
         }

@@ -98,10 +98,12 @@ export default function CtaFunctionScreen() {
                                             upperTitle
                                             // noBodyPadding
                                             disableWidgetMenu
+                                            closePopup = {()=>setShowDetail(false)}
+
                                         >
                                             <CtaCategoryDetailScreen
                                                 recordForEdit={recordForEdit}
-                                                setOpenPopup={setShowDetail}
+                                                // setOpenPopup={setShowDetail}
                                             />
                                         </Widget> :
                                         <Widget

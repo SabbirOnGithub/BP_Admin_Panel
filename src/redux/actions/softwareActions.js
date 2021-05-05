@@ -25,7 +25,7 @@ const listSoftwares = () => async (dispatch)=>{
         dispatch({type: Software_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/Software`);
         if (data.status === true) {
-            dispatch({ type: Software_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: Software_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         }else{
             dispatch({ type: Software_LIST_FAIL, payload: data.message });
         }

@@ -25,7 +25,7 @@ const listMenuSubMenuMaps = () => async (dispatch) => {
         dispatch({ type: MENU_SUBMENU_MAP_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/MenuSubMenuMap`);
         if (data.status === true) {
-            dispatch({ type: MENU_SUBMENU_MAP_LIST_SUCCESS, payload: data.data ? data.data : [] });
+            dispatch({ type: MENU_SUBMENU_MAP_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
         } else {
             dispatch({ type: MENU_SUBMENU_MAP_LIST_FAIL, payload: data.message });
         }

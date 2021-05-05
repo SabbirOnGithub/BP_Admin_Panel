@@ -20,15 +20,15 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.secondary,
     },
     button: {
+        border: 'none',
+        borderRadius: '4px',
         margin: theme.spacing(1),
-        background: '#666',
+        background: '#32325d',
         textTransform: 'none',
         fontSize: 16,
-        border: 'none',
-        borderRadius: 0,
         // padding:10,
         '&:hover': {
-            background: '#282828',
+            background: '#43458b',
         },
     },
     ctaHourName: {
@@ -108,9 +108,10 @@ export default function CtaFormStepFive (props) {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    // className={classes.button}
+                                    className={classes.button}
                                     // endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
                                     size="large"
+                                    // style={{fontSize:'1.5rem'}}
                                 >
                                     Pay ${createOrder?.rate} with Stripe
                                 </Button>

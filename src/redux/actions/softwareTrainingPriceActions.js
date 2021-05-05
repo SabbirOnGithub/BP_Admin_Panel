@@ -25,8 +25,8 @@ const listSoftwareTrainingPrices = () => async (dispatch)=>{
         dispatch({type: SOFTWARE_TRAINING_PRICE_LIST_REQUEST});
         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/SoftwareTrainingPrice`);
         if (data.status === true) {
-            const formatDataByDescOrder =  data?.data?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
-            dispatch({ type: SOFTWARE_TRAINING_PRICE_LIST_SUCCESS, payload: formatDataByDescOrder ? formatDataByDescOrder : [] });
+            // const formatDataByDescOrder =  data?.data?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id));
+            dispatch({ type: SOFTWARE_TRAINING_PRICE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
             // dispatch({ type: SOFTWARE_TRAINING_PRICE_LIST_SUCCESS, payload: data.data ? data.data : [] });
         }else{
             dispatch({ type: SOFTWARE_TRAINING_PRICE_LIST_FAIL, payload: data.message });
