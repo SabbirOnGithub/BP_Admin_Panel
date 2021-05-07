@@ -10,6 +10,7 @@ import Widget from "../../../../components/Widget/Widget";
 import DetailsIcon from '@material-ui/icons/Details';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
+import { getFilterDataByUser } from '../../../../helpers/search';
 
 // redux actions
 // import { listCtaFunctions } from '../../../../redux/actions/ctaFunctionActions';
@@ -33,8 +34,9 @@ export default function CtaFunctionScreen() {
     //eslint-disable-next-line
     const { ctaCategorys, loading, error } = ctaCategoryList;
 
-    const ctaCategorysFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaCategorys : (userInfo?.userRole === 3 ? [] : ctaCategorys.filter(item=>item.email === userInfo.email))
-
+    // const ctaCategorysFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaCategorys : (userInfo?.userRole === 3 ? [] : ctaCategorys.filter(item=>item.email === userInfo.email))
+    const ctaCategorysFilterByUser = getFilterDataByUser(ctaCategorys, userInfo);
+    
     const [recordForEdit, setRecordForEdit] = useState(null)
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })

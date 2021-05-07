@@ -9,7 +9,7 @@ import InputSharpIcon from '@material-ui/icons/InputSharp';
 import Button from '@material-ui/core/Button';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import Typography from '@material-ui/core/Typography';
-
+import PopOver from '../../../../components/PopOver/PopOver'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,14 +51,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-
 export default function CtaFormStepFour(props) {
 
     const { values,
-        // errors,
         recordForEdit,
         setValues,
-        // handleSubmitFile,
         loadingCtaFunction,
         loadingCtaFunctionSave,
         loadingCtaFunctionDocumentSave,
@@ -84,7 +81,6 @@ export default function CtaFormStepFour(props) {
         handleTabChange,
         a11yPropsFullwidth
     } = useTab();
-    
 
     useEffect(() => {
         setHideNext(true)
@@ -150,9 +146,9 @@ export default function CtaFormStepFour(props) {
                                                                     <Typography  variant="subtitle1" className={classes.subText}>
                                                                          Price
                                                                     </Typography>
-                                                                        <small>
-                                                                            <AttachMoneyIcon />
-                                                                        </small>
+                                                                        <sup>
+                                                                            <AttachMoneyIcon style={{ fontSize: 30 }}/>
+                                                                        </sup>
                                                                         <Typography variant="subtitle1" className={classes.validity}>
                                                                              {item?.rate}
                                                                         </Typography>
@@ -165,7 +161,7 @@ export default function CtaFormStepFour(props) {
                                                                         <Typography variant="subtitle1" className={classes.validity}>
                                                                             {item?.validity}
                                                                         </Typography>
-                                                                        <Typography variant="subtitle1"className={classes.subText}>
+                                                                        <Typography variant="subtitle1"className={classes.subText} style={{fontStyle:'italic'}}>
                                                                              days
                                                                         </Typography>
                                                                     </div>
@@ -205,26 +201,38 @@ export default function CtaFormStepFour(props) {
                                                 
                                                 {
                                                     ctaPackageDailys?.map(item => (
-                                                        <Grid item md={3} xs={12} key={item.id}>
+                                                       
+                                                        <Grid item md={4} xs={12} key={item.id}>
                                                             <Paper className={classes.paper}>
+                                                                        
                                                                 <div className="pricingTable">
-                                                                    <div className="pricingTable-header" pt={5} >
-                                                                        <h3>{item?.submenuName}</h3>
+                                                                    <div className="pricingTable-header">
+                                                                    <Typography variant="subtitle1" className={classes.ctaHourName}>
+                                                                        {item?.submenuName}
+                                                                    </Typography>
                                                                     </div>
-                                                                    <p pt={4} >Buy as many hours as needed</p>
-                                                                    <p>On-Demand</p>
+                                                                    <Typography variant="subtitle1"  className={classes.subText}>
+                                                                        Buy as many hours as needed
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1" className={classes.subText}>
+                                                                        On-Demand
+                                                                    </Typography>
                                                                     <div className="price-value">
-                                                                        <p className="">Price</p>
-                                                                        <small>
-                                                                            <AttachMoneyIcon />
-
-                                                                        </small>
-                                                                        <span>{item?.rate}</span>
-                                                                       
+                                                                    <Typography  variant="subtitle1" className={classes.subText}>
+                                                                         Price
+                                                                    </Typography>
+                                                                        <sup>
+                                                                            <AttachMoneyIcon style={{ fontSize: 30 }}/>
+                                                                        </sup>
+                                                                        <Typography variant="subtitle1" className={classes.validity}>
+                                                                             {item?.rate}
+                                                                        </Typography>
                                                                     </div>
 
                                                                     <div className="price-value">
-                                                                        <span className="subtitle"> per day</span>
+                                                                        <Typography variant="subtitle1"className={classes.subText} style={{fontStyle:'italic'}}>
+                                                                             per day
+                                                                        </Typography>
                                                                     </div>
                                                                     <div className="pricingTable-sign-up">
                                                                         <Button
@@ -233,13 +241,16 @@ export default function CtaFormStepFour(props) {
                                                                             className={classes.button}
                                                                             endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
                                                                             size="large"
+                                                                            onClick = {()=>handleNextToPaymentScreen(item)}
                                                                         >
                                                                             Purchase
-                                                                </Button>
+                                                                        </Button>
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </Paper>
                                                         </Grid>
+                                                      
                                                     ))
                                                 }
                                             </Grid>
@@ -260,41 +271,88 @@ export default function CtaFormStepFour(props) {
                                                 
                                                 {
                                                     ctaPackageMonthlyYearlys?.map(item => (
-                                                        <Grid item md={3} xs={12} key={item.id}>
+                                                        <>
+                                                        <Grid item md={4} xs={12} key={item.id}>
                                                             <Paper className={classes.paper}>
+                                                                        
                                                                 <div className="pricingTable">
-                                                                    <div className="pricingTable-header" pt={5} >
-                                                                        <h3>{item?.submenuName}</h3>
+                                                                    <div className="pricingTable-header">
+                                                                    <Typography variant="subtitle1" className={classes.ctaHourName}>
+                                                                        {item?.submenuName}
+                                                                    </Typography>
                                                                     </div>
-                                                                    <p pt={4} >One-day Workshop</p>
-                                                                    <p>Get a personalized solution defined in one day</p>
+                                                                    <Typography variant="subtitle1"  className={classes.subText}>
+                                                                         One-day Workshop
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1" className={classes.subText}>
+                                                                         Get a personalized solution defined in one day
+                                                                    </Typography>
                                                                     <div className="price-value">
-                                                                        <p className="">Price</p>
-                                                                        <small className="fa fa-usd"></small>
-                                                                        <span>{item?.monthlyRate}</span>
-                                                                        <span class="subtitle">per month</span>
+                                                                    <Typography  variant="subtitle1" className={classes.subText}>
+                                                                         Price
+                                                                    </Typography>
+                                                                        <sup>
+                                                                            <AttachMoneyIcon style={{ fontSize: 30 }}/>
+                                                                        </sup>
+                                                                        <Typography variant="subtitle1" className={classes.validity}>
+                                                                            {item?.monthlyRate}
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1"className={classes.subText} style={{fontStyle:'italic'}}>
+                                                                            per month
+                                                                        </Typography>
                                                                     </div>
+
                                                                     <div className="price-value">
-                                                                        <small>
-                                                                            <AttachMoneyIcon />
-                                                                        </small>
-                                                                        <span>{item?.monthlyRate}</span>
-                                                                        <span class="subtitle">per year</span>
+                                                                        <sup>
+                                                                            <AttachMoneyIcon style={{ fontSize: 30 }}/>
+                                                                        </sup>
+                                                                        <Typography variant="subtitle1" className={classes.validity}>
+                                                                            {item?.yearlyRate}
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1"className={classes.subText} style={{fontStyle:'italic'}}>
+                                                                            per year
+                                                                        </Typography>
                                                                     </div>
+                                                                   
+                                                                   
                                                                     <div className="pricingTable-sign-up">
-                                                                        <Button
-                                                                            variant="contained"
-                                                                            color="primary"
-                                                                            className={classes.button}
-                                                                            endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
-                                                                            size="large"
+                                                                        <PopOver 
+                                                                         variant="contained"
+                                                                         color="primary"
+                                                                         className={classes.button}
+                                                                         endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
+                                                                         size="large"
+                                                                         
                                                                         >
-                                                                            Purchase
-                                                                </Button>
+                                                                            <Button
+                                                                                variant="contained"
+                                                                                color="primary"
+                                                                                className={classes.button}
+                                                                                endIcon={<InputSharpIcon>Monthly</InputSharpIcon>}
+                                                                                size="small"
+                                                                                onClick = {()=>handleNextToPaymentScreen({...item, rate:item.monthlyRate})}
+                                                                            >
+                                                                                Monthly
+                                                                            </Button>
+                                                                            <Button
+                                                                                variant="contained"
+                                                                                color="primary"
+                                                                                className={classes.button}
+                                                                                endIcon={<InputSharpIcon>Yearly</InputSharpIcon>}
+                                                                                size="small"
+                                                                                onClick = {()=>handleNextToPaymentScreen({...item, rate:item.yearlyRate})}
+                                                                            >
+                                                                                Yearly
+                                                                            </Button>
+                                                                        </PopOver>
+                                                                       
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </Paper>
                                                         </Grid>
+                                                       
+                                                        </>
                                                     ))
                                                 }
                                             </Grid>

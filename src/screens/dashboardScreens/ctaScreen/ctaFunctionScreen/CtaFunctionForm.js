@@ -207,6 +207,7 @@ export default function CtaFunctionForm(props) {
                             loadingCtaPackageMonthlyYearlys ={loadingCtaPackageMonthlyYearlys}
                             handleNextToPaymentScreen = {handleNextToPaymentScreen}
                             setHideNext ={setHideNext}
+                            handleInputChange ={handleInputChange}
                         />
             case 4:
                 // step 5

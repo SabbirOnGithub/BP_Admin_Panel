@@ -217,9 +217,10 @@ export default function CtaFunctionScreen(props) {
         }
     }
     const handleCtaPayment = (token, item, resetActiveStep) => {
+        const tokenId = item.paypal ? token?.paymentToken : token?.id;
         if(token && item){
             const formateData = {
-                token: token.id,
+                token: tokenId,
                 amount: parseInt(item.rate),
                 description: token.email,
               };

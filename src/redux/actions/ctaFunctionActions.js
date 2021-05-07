@@ -58,7 +58,7 @@ const detailsCtaFunction = (id)=> async (dispatch) =>{
 };
 
 const saveCtaFunction = (item) => async (dispatch) =>{
-    console.log(item)
+    // console.log(item)
     try{
         dispatch({type: CTA_FUNCTION_SAVE_REQUEST, payload:item })
         if(!item.id){
@@ -77,7 +77,7 @@ const saveCtaFunction = (item) => async (dispatch) =>{
             return data
         }else{
             console.log('update')
-            console.log(item)
+            // console.log(item)
             const { data } = await axiosWithToken.put("/CtaFunction", item);
             if (data.status === true) {
                 dispatch({type: CTA_FUNCTION_SAVE_SUCCESS, payload: data.id });  

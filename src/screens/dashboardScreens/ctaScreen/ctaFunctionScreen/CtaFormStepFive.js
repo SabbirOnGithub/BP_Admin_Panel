@@ -5,10 +5,12 @@ import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 import { Form } from '../../../../components/UseForm/useForm';
 import StripeCheckout from "react-stripe-checkout";
+import PaypalExpressBtn from "react-paypal-express-checkout";
 
 import {config} from "../../../../config";
 
-const REACT_APP_STRIPE_KEY = config.REACT_APP_STRIPE_KEY
+// const REACT_APP_STRIPE_KEY = config.REACT_APP_STRIPE_KEY
+const {REACT_APP_STRIPE_KEY, REACT_APP_PAYPAL_SANDBOX_APP_ID, REACT_APP_PAYPAL_PRODUCTION_APP_ID} = config
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,6 +76,11 @@ export default function CtaFormStepFive (props) {
 
     const classes = useStyles();
 
+    const client = {
+        sandbox: REACT_APP_PAYPAL_SANDBOX_APP_ID,
+        production: REACT_APP_PAYPAL_PRODUCTION_APP_ID
+      };
+
     useEffect(() => {
         setHideNext(true)
         
@@ -119,7 +126,18 @@ export default function CtaFormStepFive (props) {
                         }
                             
                         </div>
-                        <div></div>
+                        <div style={{marginTop:15}}>
+                            <PaypalExpressBtn
+                                env={ "sandbox"}
+                                client={client}
+                                currency={'USD'}
+                                total={createOrder?.rate}
+                                onError={(err)=>console.log(err)}
+                                onSuccess={(paymentAsToken)=>handleCtaPayment(paymentAsToken, {...createOrder, paypal:true}, setActiveStep)}
+                                onCancel={(data)=>console.log(data)}
+
+                            />
+                        </div>
                         </div>
                         
                             
