@@ -4,7 +4,7 @@ import { Grid, makeStyles, TableBody, TableRow, TableCell, Paper } from '@materi
 import Controls from "../../../components/controls/Controls";
 import Typography from '@material-ui/core/Typography';
 import useTable from "../../../components/UseTable/useTable";
-import { searchNameByIdFromArray } from '../../../helpers/search';
+// import { searchNameByIdFromArray } from '../../../helpers/search';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../components/Loading/Loading';
 import { useForm, Form } from '../../../components/UseForm/useForm';
@@ -59,8 +59,8 @@ const headCells = [
 export default function CoursePurchaseDetailScreen(props) {
     const { recordForEdit, 
             // setOpenPopup, 
-            trainingTypes, 
-            softwares,
+            // trainingTypes, 
+            // softwares,
             addOrEdit 
         } = props
 
@@ -82,10 +82,10 @@ export default function CoursePurchaseDetailScreen(props) {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        if ('selectedDateFrom' in fieldValues)
-            temp.selectedDateFrom = fieldValues.selectedDateFrom ? "" : "This field is required."
-        if ('selectedDateTo' in fieldValues)
-            temp.selectedDateTo = fieldValues.selectedDateTo ? "" : "This field is required."
+        // if ('selectedDateFrom' in fieldValues)
+        //     temp.selectedDateFrom = fieldValues.selectedDateFrom ? "" : "This field is required."
+        // if ('selectedDateTo' in fieldValues)
+        //     temp.selectedDateTo = fieldValues.selectedDateTo ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -143,6 +143,11 @@ export default function CoursePurchaseDetailScreen(props) {
             addOrEdit(values, resetForm);
         }
     }
+
+    // const softwareName = () =>{
+    //     return searchNameByIdFromArray(softwares, coursePurchase?.softwareId)
+    // }
+// console.log(loadingCoursePurchaseDetail)
 // console.log(coursePurchase)
 // console.log(recordForEdit)
     useEffect(() => {
@@ -173,42 +178,64 @@ export default function CoursePurchaseDetailScreen(props) {
     return (
         <>
             {
-               loadingCoursePurchaseDetail ? <Loading /> :
+               loadingCoursePurchaseDetail || !coursePurchase ? <Loading /> :
 
                     <Grid container>
                         <Grid item xs={12}>
-                            <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
-                                <Grid container>
-                                    <Grid item md={6}>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Name:</b> {coursePurchase.name} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Email:</b> {coursePurchase.email} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Software:</b> {softwares ? searchNameByIdFromArray(softwares, coursePurchase.softwareId) : coursePurchase.softwareId} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Attendence Count:</b> {coursePurchase.attendenceCount} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Total Amount:</b> {coursePurchase?.totalAmount} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Course Availability Dates:</b> {coursePurchase?.courseAvailabilityDates} </Typography>
+                            {
+                                coursePurchase &&
+                                (
+                                    <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
+                                    <Grid container>
+                                        <Grid item md={6}>
+                                            <h1>User details</h1>
+
+                                            <Typography paragraph className={classes.customPharagraph}><b>Name:</b> {coursePurchase?.name} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Email:</b> {coursePurchase?.email} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Phone:</b> {coursePurchase?.phone} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>CompanyName:</b> {coursePurchase?.companyName} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Company Size:</b> {coursePurchase?.companySize?.name} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Company Type:</b> {coursePurchase?.companyType?.name} </Typography>
+                                            <h1>Training details</h1>
+                                            {/* <Typography paragraph className={classes.customPharagraph}><b>Software:</b> {softwares ? searchNameByIdFromArray(softwares, coursePurchase?.softwareId) : coursePurchase?.softwareId} </Typography> */}
+                                            {/* <Typography paragraph className={classes.customPharagraph}><b>Training Type :</b> {trainingTypes ? searchNameByIdFromArray(trainingTypes, coursePurchase?.trainingTypeId) : coursePurchase?.trainingTypeId} </Typography> */}
+                                            <Typography paragraph className={classes.customPharagraph}><b>Software:</b> {coursePurchase?.software?.name} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Training Type :</b> {coursePurchase?.trainingType?.name} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Attendence Count:</b> {coursePurchase?.attendenceCount} </Typography>
+
+                                        </Grid>
+                                        <Grid item md={6}>
+                                            <h1>Payment  details:</h1>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Payment Status:</b> {coursePurchase?.paymentStatus > 0 ? 'Paid' : 'Unpaid'} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {coursePurchase?.transectionId} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Total Amount:</b> {coursePurchase?.totalAmount} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Total Discount:</b> {coursePurchase?.totalDiscount} </Typography>
+                                            <h1>Course availability dates:</h1>
+                                            <Typography paragraph className={classes.customPharagraph}><b>First Date:</b> {coursePurchase?.courseAvailabilityDates?.firstDate} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Second Date:</b> {coursePurchase?.courseAvailabilityDates?.secondDate} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Third Date:</b> {coursePurchase?.courseAvailabilityDates?.thirdDate} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Selected Date From:</b> {coursePurchase?.courseAvailabilityDates?.selectedDateFrom} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Selected Date To:</b> {coursePurchase?.courseAvailabilityDates?.selectedDateTo} </Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item md={6}>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Phone:</b> {coursePurchase.phone} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Training Type :</b> {trainingTypes ? searchNameByIdFromArray(trainingTypes, coursePurchase?.trainingTypeId) : coursePurchase?.trainingTypeId} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Status:</b> {coursePurchase?.paymentStatus > 0 ? 'Paid' : 'Unpaid'} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {coursePurchase.transectionId} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Total Discount:</b> {coursePurchase?.totalDiscount} </Typography>
-                                    </Grid>
-                                </Grid>
-                            </Paper>
+                                </Paper>
+                                )
+                            }
+                          
                             <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
+                                <h1>Course attendees</h1>
                                 <TblContainer>
                                     <TblHead />
                                     <TableBody>
                                         {
-                                            recordsAfterPagingAndSorting().map(item =>
+                                            recordsAfterPagingAndSorting()?.map(item =>
                                             (<TableRow key={item.id}>
-                                                <TableCell>{item.id}</TableCell>
-                                                <TableCell>{item.coursePurchaseId}</TableCell>
-                                                <TableCell>{item.title}</TableCell>
-                                                <TableCell>{item.firstName}</TableCell>
-                                                <TableCell>{item.lastName}</TableCell>
-                                                <TableCell>{item.email}</TableCell>
+                                                <TableCell>{item?.id}</TableCell>
+                                                <TableCell>{item?.coursePurchaseId}</TableCell>
+                                                <TableCell>{item?.title}</TableCell>
+                                                <TableCell>{item?.firstName}</TableCell>
+                                                <TableCell>{item?.lastName}</TableCell>
+                                                <TableCell>{item?.email}</TableCell>
                                             </TableRow>)
                                             )
                                         }
@@ -219,6 +246,8 @@ export default function CoursePurchaseDetailScreen(props) {
 
                             <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
                                 <div>
+                                    <h1>Date submission form</h1>
+
                                     <Form>
                                         <Grid container>
                                             <Grid item md={4} xs={12}>
@@ -301,15 +330,7 @@ export default function CoursePurchaseDetailScreen(props) {
                                 </div>
 
                             </Paper>
-                            {/* <div>
-                                <>
-                                    <Controls.Button
-                                        text="Back"
-                                        color="default"
-                                        onClick={() => { setOpenPopup(false) }}
-                                    />
-                                </>
-                            </div> */}
+                           
                         </Grid>
                     </Grid>
             }

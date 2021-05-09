@@ -96,10 +96,10 @@ export default function CtaFunctionDetailScreen(props) {
                                                 {/* {ctaFunction?.technologyPreference} */}
                                                 {
                                                      ctaFunction?.technologyPreference && (ctaFunction?.technologyPreference).split(',').map((itemId, index)=>{
-                                                         if((ctaFunction?.technologyPreference).split(',').length === index+1){
-                                                            return <span> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}</span>
+                                                         if((ctaFunction?.technologyPreference).split(',')?.length === index+1){
+                                                            return <span key = {itemId}> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}</span>
                                                          }else{
-                                                            return <span> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}, </span>
+                                                            return <span  key = {itemId}> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}, </span>
                                                          }
 
                                                     })
@@ -123,7 +123,7 @@ export default function CtaFunctionDetailScreen(props) {
                                 </Grid>
                                 <h1>Payment History</h1>
                                 {
-                                   ctaFunction?.ctaPurchaseHistories.length > 0 ?  ctaFunction?.ctaPurchaseHistories?.map(item=>
+                                   ctaFunction?.ctaPurchaseHistories?.length > 0 ?  ctaFunction?.ctaPurchaseHistories?.map(item=>
                                             <div key={item.id}>
                                                 <Grid container>
                                                     <Grid item md={6}>
