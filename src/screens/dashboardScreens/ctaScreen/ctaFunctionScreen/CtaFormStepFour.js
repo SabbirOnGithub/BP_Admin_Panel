@@ -172,7 +172,7 @@ export default function CtaFormStepFour(props) {
                                                                             className={classes.button}
                                                                             endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
                                                                             size="large"
-                                                                            onClick = {()=>handleNextToPaymentScreen(item)}
+                                                                            onClick = {()=>handleNextToPaymentScreen({...item, ctaFunctionId: values?.id, getCtaHourlyId:item.id})}
                                                                         >
                                                                             Purchase
                                                                         </Button>
@@ -241,7 +241,7 @@ export default function CtaFormStepFour(props) {
                                                                             className={classes.button}
                                                                             endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
                                                                             size="large"
-                                                                            onClick = {()=>handleNextToPaymentScreen(item)}
+                                                                            onClick = {()=>handleNextToPaymentScreen({...item, ctaFunctionId: values?.id, getCtaDailyId:item.id})}
                                                                         >
                                                                             Purchase
                                                                         </Button>
@@ -330,7 +330,7 @@ export default function CtaFormStepFour(props) {
                                                                                 className={classes.button}
                                                                                 endIcon={<InputSharpIcon>Monthly</InputSharpIcon>}
                                                                                 size="small"
-                                                                                onClick = {()=>handleNextToPaymentScreen({...item, rate:item.monthlyRate})}
+                                                                                onClick = {()=>handleNextToPaymentScreen({...item, rate:item.monthlyRate, ctaFunctionId: values?.id, isMonthlySubscription:true, getCtaMonthlyYearlyId:item.id})}
                                                                             >
                                                                                 Monthly
                                                                             </Button>
@@ -340,7 +340,7 @@ export default function CtaFormStepFour(props) {
                                                                                 className={classes.button}
                                                                                 endIcon={<InputSharpIcon>Yearly</InputSharpIcon>}
                                                                                 size="small"
-                                                                                onClick = {()=>handleNextToPaymentScreen({...item, rate:item.yearlyRate})}
+                                                                                onClick = {()=>handleNextToPaymentScreen({...item, rate:item.yearlyRate, ctaFunctionId: values?.id, isYearlySubscription:true, getCtaMonthlyYearlyId:item.id})}
                                                                             >
                                                                                 Yearly
                                                                             </Button>

@@ -127,6 +127,7 @@ const listCtaFunctionDocuments = (id) => async (dispatch)=>{
 };
 
 const saveCtaFunctionDocument = (item, id) => async (dispatch) =>{
+    // console.log(item)
     try {
         dispatch({ type: CTA_FUNCTION_DOCUMENT_SAVE_REQUEST, payload: item })
 
@@ -144,6 +145,8 @@ const saveCtaFunctionDocument = (item, id) => async (dispatch) =>{
             } else {
                 dispatch({ type: CTA_FUNCTION_DOCUMENT_SAVE_FAIL, payload: data.message });
             }
+
+            return data;
         } 
     } catch (error) {
         console.log(error)

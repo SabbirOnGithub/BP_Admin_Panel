@@ -143,7 +143,8 @@ export default function CoursePurchaseDetailScreen(props) {
             addOrEdit(values, resetForm);
         }
     }
-console.log(values)
+// console.log(coursePurchase)
+// console.log(recordForEdit)
     useEffect(() => {
 
         try{
@@ -179,19 +180,19 @@ console.log(values)
                             <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
                                 <Grid container>
                                     <Grid item md={6}>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Name:</b> {recordForEdit.name} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Email:</b> {recordForEdit.email} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Software:</b> {softwares ? searchNameByIdFromArray(softwares, recordForEdit.softwareId) : recordForEdit.softwareId} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Attendence Count:</b> {recordForEdit.attendenceCount} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Total Amount:</b> {recordForEdit?.totalAmount} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Course Availability Dates:</b> {recordForEdit?.courseAvailabilityDates} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Name:</b> {coursePurchase.name} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Email:</b> {coursePurchase.email} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Software:</b> {softwares ? searchNameByIdFromArray(softwares, coursePurchase.softwareId) : coursePurchase.softwareId} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Attendence Count:</b> {coursePurchase.attendenceCount} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Total Amount:</b> {coursePurchase?.totalAmount} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Course Availability Dates:</b> {coursePurchase?.courseAvailabilityDates} </Typography>
                                     </Grid>
                                     <Grid item md={6}>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Phone:</b> {recordForEdit.phone} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Training Type :</b> {trainingTypes ? searchNameByIdFromArray(trainingTypes, recordForEdit?.trainingTypeId) : recordForEdit?.trainingTypeId} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Status:</b> {recordForEdit?.paymentStatus > 0 ? 'Paid' : 'Unpaid'} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {recordForEdit.transectionId} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Total Discount:</b> {recordForEdit?.totalDiscount} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Phone:</b> {coursePurchase.phone} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Training Type :</b> {trainingTypes ? searchNameByIdFromArray(trainingTypes, coursePurchase?.trainingTypeId) : coursePurchase?.trainingTypeId} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Status:</b> {coursePurchase?.paymentStatus > 0 ? 'Paid' : 'Unpaid'} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {coursePurchase.transectionId} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Total Discount:</b> {coursePurchase?.totalDiscount} </Typography>
                                     </Grid>
                                 </Grid>
                             </Paper>

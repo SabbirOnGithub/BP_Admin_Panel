@@ -50,7 +50,7 @@ export default function CtaFormStepThree(props) {
                 console.warn(e);
             }
         }
-    }, [recordForEdit, setValues])
+    }, [values.id, recordForEdit, setValues])
 
     return (
         <>

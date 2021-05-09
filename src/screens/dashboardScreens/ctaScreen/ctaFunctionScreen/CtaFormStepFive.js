@@ -10,7 +10,11 @@ import PaypalExpressBtn from "react-paypal-express-checkout";
 import {config} from "../../../../config";
 
 // const REACT_APP_STRIPE_KEY = config.REACT_APP_STRIPE_KEY
-const {REACT_APP_STRIPE_KEY, REACT_APP_PAYPAL_SANDBOX_APP_ID, REACT_APP_PAYPAL_PRODUCTION_APP_ID} = config
+const { REACT_APP_STRIPE_KEY, 
+        REACT_APP_PAYPAL_SANDBOX_APP_ID, 
+        REACT_APP_PAYPAL_PRODUCTION_APP_ID,
+        REACT_APP_PAYPAL_ENV 
+    } = config
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,10 +26,15 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.secondary,
     },
     button: {
+        minWidth:'245px',
         border: 'none',
-        borderRadius: '4px',
+        fontStyle:'14px',
+        // borderRadius: '4px',
+        borderRadius: '20px',
         margin: theme.spacing(1),
-        background: '#32325d',
+        marginBottom: theme.spacing(3),
+        // background: '#32325d',
+        background: '#5469d4',
         textTransform: 'none',
         fontSize: 16,
         // padding:10,
@@ -57,7 +66,13 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-
+const stylePaypal = {
+    'label':'pay', 
+    'tagline': true, 
+    'size':'medium', 
+    'shape':'pill', 
+    'color':'gold'
+};
 export default function CtaFormStepFive (props) {
 
     const { values,
@@ -80,6 +95,7 @@ export default function CtaFormStepFive (props) {
         sandbox: REACT_APP_PAYPAL_SANDBOX_APP_ID,
         production: REACT_APP_PAYPAL_PRODUCTION_APP_ID
       };
+    
 
     useEffect(() => {
         setHideNext(true)
@@ -103,6 +119,8 @@ export default function CtaFormStepFive (props) {
                 <Form>
                 <Grid container>
                     <Grid item xs={12}>
+                        <h1 style={{alignSelf:'center', textAlign:'center'}}> Amount : $ {createOrder?.rate} </h1>
+
                         <div className={classes.paymentArea}>
                         <div>
                             {createOrder?.rate && 
@@ -116,11 +134,11 @@ export default function CtaFormStepFive (props) {
                                     variant="contained"
                                     color="primary"
                                     className={classes.button}
+                                    // startIcon={<img src={process.env.PUBLIC_URL+"/stripe_icon.png"}  height='25px' width='25px' alt='stripe logo' />}
                                     // endIcon={<InputSharpIcon>Purchase</InputSharpIcon>}
-                                    size="large"
-                                    // style={{fontSize:'1.5rem'}}
+                                    size="medium"
                                 >
-                                    Pay ${createOrder?.rate} with Stripe
+                                    Pay with Stripe
                                 </Button>
                             </StripeCheckout>
                         }
@@ -128,13 +146,14 @@ export default function CtaFormStepFive (props) {
                         </div>
                         <div style={{marginTop:15}}>
                             <PaypalExpressBtn
-                                env={ "sandbox"}
+                                env={REACT_APP_PAYPAL_ENV}
                                 client={client}
                                 currency={'USD'}
                                 total={createOrder?.rate}
                                 onError={(err)=>console.log(err)}
                                 onSuccess={(paymentAsToken)=>handleCtaPayment(paymentAsToken, {...createOrder, paypal:true}, setActiveStep)}
                                 onCancel={(data)=>console.log(data)}
+                                style={stylePaypal}
 
                             />
                         </div>

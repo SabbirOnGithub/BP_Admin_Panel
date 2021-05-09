@@ -46,6 +46,7 @@ const initialFValues = {
 export default function CtaFunctionForm(props) {
 
     const { addOrEdit, recordForEdit, 
+            addOrEditCtaFunctionDocument,
             // setRecordForEdit, 
             user,  setOpenPopup,  
             ctaFunctionSaveData, 
@@ -167,6 +168,8 @@ export default function CtaFunctionForm(props) {
                             ctaFunctionModels={ctaFunctionModels}
                             handleMultipleSelectInputChange= {handleMultipleSelectInputChange}
                             setHideNext = {setHideNext}
+                            loadingCtaFunctionSave ={loadingCtaFunctionSave}
+
                         />;
             case 2:
                 // step 3
@@ -195,7 +198,7 @@ export default function CtaFunctionForm(props) {
                             values={values}
                             handleFileChange= {handleFileChange}
                             resetFileInput= {resetFileInput}
-                            handleSubmitFile = {handleSubmitFile}
+                            // handleSubmitFile = {handleSubmitFile}
                             errors={errors}
                             recordForEdit={ctaFunction}
                             setValues={setValues}
@@ -252,10 +255,16 @@ export default function CtaFunctionForm(props) {
                 formatData['businessName'] = user?.companyName
                 formatData['email'] = user?.email
                 formatData['phone'] = user?.mobile
+                formatData['businessIndustry'] = user?.businessIndustry
+                formatData['companyName'] = user?.companyName
+                formatData['companyTypeId'] = user?.companyTypeId
+                formatData['companySizeId'] = user?.companySizeId
+
                 // if(values.technologyPreference){
                 //     let technologyPreference = values?.technologyPreference?.map((item) => item.id);
                 //     values.technologyPreference = technologyPreference.toString();
                 // }
+
             }
             if(activeStep ===1){
                 if(formatData.estimation){
@@ -263,15 +272,18 @@ export default function CtaFunctionForm(props) {
                     formatData.estimation = values.estimation.toISOString();
                 }
             }
-            // console.log(user)
-            // console.log(formatData)
-            addOrEdit(formatData, values, resetForm, activeStep, setActiveStep, setValues);
-            // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            if(activeStep<2){
+                // for first 2 step use this
+                addOrEdit(formatData, values, resetForm, activeStep, setActiveStep, setValues);
+            }else{
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            }
             
         }
     };
 
     const handleNextToPaymentScreen = (order) => {
+        // console.log(order)
         // send to next step with product details
         setCreateOrder(order)
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -279,7 +291,7 @@ export default function CtaFunctionForm(props) {
     const handleSubmitFile = (e) => {
         e.preventDefault();
         if (validate()) {
-            addOrEdit(values, resetForm);
+            addOrEditCtaFunctionDocument(values, resetForm);
         }
     };
 

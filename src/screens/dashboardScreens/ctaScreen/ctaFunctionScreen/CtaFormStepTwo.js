@@ -13,7 +13,8 @@ export default function CtaFormStepTwo(props) {
             recordForEdit, 
             setValues, 
             ctaFunctionModels, 
-            setHideNext 
+            setHideNext,
+            loadingCtaFunctionSave, 
         } = props;
  
     useEffect(() => {
@@ -35,7 +36,7 @@ export default function CtaFormStepTwo(props) {
     }, [values.id, ctaFunctionModels, setHideNext, recordForEdit, setValues])
     return (
         <>
-            {!values.id || !ctaFunctionModels ? <Loading /> :
+            {!values.id || !ctaFunctionModels || loadingCtaFunctionSave ? <Loading /> :
                 <Form>
                     <Grid container>
                         <Grid item xs={12}>

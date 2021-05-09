@@ -5,4 +5,5 @@ export const config = {
     REACT_APP_STRIPE_KEY : process.env.REACT_APP_STRIPE_KEY || '',
     REACT_APP_PAYPAL_SANDBOX_APP_ID : process.env.REACT_APP_PAYPAL_SANDBOX_APP_ID || '',
     REACT_APP_PAYPAL_PRODUCTION_APP_ID : process.env.REACT_APP_PAYPAL_PRODUCTION_APP_ID || '',
+    REACT_APP_PAYPAL_ENV : process.env.REACT_APP_PAYPAL_ENV || 'sandbox',
 }

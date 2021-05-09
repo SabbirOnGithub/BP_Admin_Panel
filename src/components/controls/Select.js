@@ -22,7 +22,7 @@ function Select(props) {
       <MuiSelect
         label={label}
         name={name}
-        value={value}
+        value={options.length > 0 ? value : ''}
         onChange={onChange}>
         <MenuItem value="">None</MenuItem>
         {

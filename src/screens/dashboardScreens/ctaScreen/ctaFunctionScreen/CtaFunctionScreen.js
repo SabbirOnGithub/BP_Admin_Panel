@@ -9,7 +9,6 @@ import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
 import PageTitle from "../../../../components/PageTitle/PageTitle";
 import Widget from "../../../../components/Widget/Widget";
 import DetailsIcon from '@material-ui/icons/Details';
-// import Popup from "../../../../components/Popup/Popup";
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
 import { ResponseMessage } from "../../../../themes/responseMessage";
@@ -126,55 +125,62 @@ export default function CtaFunctionScreen(props) {
     }
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        if (id) {
-            dispatch(saveCtaFunctionDocument(item));
-            resolve();
-        } else {
-            dispatch(saveCtaFunction(item))
+        dispatch(saveCtaFunction(item))
             .then(res=>{
                 resolve(res)
             })
-        }
-
+            .catch(err=>{
+                console.log('err occured'+ err)
+                reject(err)
+            })
     })
 
+    const addOrEditCtaFunctionDocument = (item, resetForm)=>{
+        // console.log(item)
+        if(item?.id && item?.file){
+                const formData = new FormData();
+                formData.append("CtaFunctionId", item.id);
+                formData.append("file", item.file);
+    
+                //  no update applied id send for applying condition toabove method
+                dispatch(saveCtaFunctionDocument(formData))
+                    .then((res) => {
+                        if(res?.status===true){
+                            resetForm()
+                            delete item['file']
+                            
+                            setRecordForEdit(item)
+                            // setOpenPopup(false)
+                            if (successCtaFunctionDocumentSave) {
+                                setNotify({
+                                    isOpen: true,
+                                    message: 'Submitted Successfully',
+                                    type: 'success'
+                                })
+                            }
+        
+                            if (errorCtaFunctionDocumentSave) {
+                                setNotify({
+                                    isOpen: true,
+                                    message: 'Submition Failed',
+                                    type: 'warning'
+                                })
+                            }
+                        }
+                        
+                    })
+        }
+
+    }
+
     const addOrEdit = async (item,  values, resetForm, activeStep, setActiveStep) => {
-        if (item.file) {
-            const formData = new FormData();
-            formData.append("CtaFunctionId", item.id);
-            formData.append("file", item.file);
-
-            //  no update applied id send for applying condition toabove method
-            saveItem(formData, item.id)
-                .then(() => {
-                    delete item['file']
-                    // resetForm()
-                    setRecordForEdit(item)
-                    // setOpenPopup(false)
-                    if (successCtaFunctionDocumentSave) {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submitted Successfully',
-                            type: 'success'
-                        })
-                    }
-
-                    if (errorCtaFunctionDocumentSave) {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submition Failed',
-                            type: 'warning'
-                        })
-                    }
-                })
-
-        } else {
-            resetForm()
+            // resetForm()
             // console.log(item)
             saveItem(item)
                 .then((res) => {
                     // console.log(res)
                     if(res?.status===true){
+                        resetForm()
                         setNotify({
                             isOpen: true,
                             message: 'Submitted Successfully',
@@ -186,6 +192,7 @@ export default function CtaFunctionScreen(props) {
                             ...values,
                             id: res.data.id
                         })
+                        // console.log(values)
                     }else{
                         setNotify({
                             isOpen: true,
@@ -193,62 +200,81 @@ export default function CtaFunctionScreen(props) {
                             type: 'warning'
                         })
                     }
-                    // console.log(res)
-                    // if (successCtaFunctionSave) {
-                    //     // setRecordForEdit(item)
-                    //     setActiveStep(activeStep+1);
-                    //     setNotify({
-                    //         isOpen: true,
-                    //         message: 'Submitted Successfully',
-                    //         type: 'success'
-                    //     })
-                    // }
-                    // if (errorCtaFunctionSave) {
-                    //     setNotify({
-                    //         isOpen: true,
-                    //         message: 'Submition Failed',
-                    //         type: 'warning'
-                    //     })
-                    // }
+                   
                 })
                 .catch(err=>{
                     console.log('err occured'+ err)
                 })
-        }
+        
     }
     const handleCtaPayment = (token, item, resetActiveStep) => {
-        const tokenId = item.paypal ? token?.paymentToken : token?.id;
-        if(token && item){
-            const formateData = {
-                token: tokenId,
-                amount: parseInt(item.rate),
-                description: token.email,
-              };
-              try{
-                dispatch(saveCtaPayment(formateData))
-                .then(res=>{
-                    // console.log(res.data.id)
-                    if(res.status===true){
-                        const formatePurchaseHistoryData = {
-                            transectionId: res.data.id,
-                            isPaid:res.data.paid,
-                            amount: parseInt(item.rate),
-                        }
-                        item.ctaHourId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
-                        item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
-                        item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
-                        dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData))
-                        .then(res=>{
-                            if(res.status===true){
-                                // stepper step auto increment
-                                resetActiveStep((prevActiveStep) => prevActiveStep + 1);
-                            }
-                        })
+        // const tokenId = token?.id;
+        console.log(item)
+        if(token && (item?.getCtaHourlyId || item?.getCtaDailyId || item?.getCtaMonthlyYearlyId)){
+            
+            try{
+                if(item.paypal){
+                    const paypalFormatPurchaseHistoryData = {
+                        transectionId: token?.paymentID,
+                        isPaid:token?.paid,
+                        amount: parseInt(item.rate),
+                        ctaFunctionId: item?.ctaFunctionId,
+                        paymentGateway: 'paypal',
+                        userEmail : user?.email,
                     }
-                })
-                .catch(err=>{
-                    console.log(err)
-                })
+
+                    item.getCtaHourlyId && (paypalFormatPurchaseHistoryData['ctaPackageHourlyId'] = item.id);
+                    item.getCtaDailyId && (paypalFormatPurchaseHistoryData['ctaPackageDailyId'] = item.id);
+                    item.getCtaMonthlyYearlyId && (paypalFormatPurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.id);
+
+                    item.isMonthlySubscription && (paypalFormatPurchaseHistoryData['isMonthlySubscription'] = item.isMonthlySubscription);
+                    item.isYearlySubscription && (paypalFormatPurchaseHistoryData['isYearlySubscription'] = item.isYearlySubscription);
+
+                    dispatch(saveCtaPurchaseHistory(paypalFormatPurchaseHistoryData))
+                    .then(res=>{
+                        if(res.status===true){
+                            // stepper step auto increment
+                            resetActiveStep((prevActiveStep) => prevActiveStep + 1);
+                        }
+                    })
+                }
+                else{
+                    const formatData = {
+                        token: token?.id,
+                        amount: parseInt(item.rate),
+                        description: token.email,
+                    }
+
+                    dispatch(saveCtaPayment(formatData))
+                    .then(res=>{
+                        // console.log(res.data.id)
+                        if(res.status===true){
+                            const formatePurchaseHistoryData = {
+                                transectionId: res.data.id,
+                                isPaid:res.data.paid,
+                                amount: parseInt(item.rate),
+                                ctaFunctionId: item?.ctaFunctionId,
+                                paymentGateway: 'stripe',
+                                userEmail : user.email
+
+                            }
+                            item.ctaHourId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
+                            item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
+                            item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
+                            dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData))
+                            .then(res=>{
+                                if(res.status===true){
+                                    // stepper step auto increment
+                                    resetActiveStep((prevActiveStep) => prevActiveStep + 1);
+                                }
+                            })
+                        }
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
+                }
+                
 
               }catch(err){
                   console.log(err)
@@ -270,7 +296,7 @@ export default function CtaFunctionScreen(props) {
     })
 
     const onDeleteCtaFunctionDocument = id => {
-        console.log(id)
+        // console.log(id)
         // setConfirmDialog({
         //     ...confirmDialog,
         //     isOpen: false
@@ -300,10 +326,10 @@ export default function CtaFunctionScreen(props) {
             dispatch(detailsUser(userInfo.userId));
             dispatch(listCtaCategorys());
             dispatch(listCtaFunctions());
-            dispatch(listCtaFunctionModels());
             dispatch(listCtaPackageHourlys());
             dispatch(listCtaPackageDailys());
             dispatch(listCtaPackageMonthlyYearlys());
+            dispatch(listCtaFunctionModels());
 
         } catch (e) {
             console.log(e)
@@ -319,7 +345,7 @@ export default function CtaFunctionScreen(props) {
         loadingCtaFunctionDocumentSave, 
         loadingDeleteCtaFunctionDocument, 
         loadingCtaPurchaseHistorySave,
-        recordForEdit
+        recordForEdit,
     ])
 
     return (
@@ -376,6 +402,7 @@ export default function CtaFunctionScreen(props) {
                                                 recordForEdit={recordForEdit}
                                                 // setRecordForEdit = {setRecordForEdit}
                                                 addOrEdit={addOrEdit}
+                                                addOrEditCtaFunctionDocument = {addOrEditCtaFunctionDocument}
                                                 user={user}
                                                 setOpenPopup={setOpenPopup}
                                                 ctaFunctionSaveData={ctaFunctionSaveData}
@@ -385,7 +412,6 @@ export default function CtaFunctionScreen(props) {
                                                 loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
                                                 loadingCtaFunctionSave={loadingCtaFunctionSave}
                                                 ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
-                                                // ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===1 )}
                                                 loadingCtaPackageHourlys={loadingCtaPackageHourlys}
                                                 ctaPackageDailys={ctaPackageDailys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
                                                 loadingCtaPackageDailys={loadingCtaPackageDailys}
@@ -443,32 +469,6 @@ export default function CtaFunctionScreen(props) {
                                                 </TblContainer>
                                                 <TblPagination />
                                             </Paper>
-                                            {/* <Popup
-                                                title="Schedule a consult"
-                                                openPopup={openPopup}
-                                                setOpenPopup={setOpenPopup}
-                                                disableDivider
-                                            >
-                                                <CtaFunctionForm
-                                                    recordForEdit={recordForEdit}
-                                                    addOrEdit={addOrEdit}
-                                                    user={user}
-                                                    setOpenPopup={setOpenPopup}
-                                                    ctaFunctionSaveData={ctaFunctionSaveData}
-                                                    setConfirmDialog={setConfirmDialog}
-                                                    onDeleteCtaFunctionDocument={onDeleteCtaFunctionDocument}
-                                                    loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
-                                                    loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
-                                                    loadingCtaFunctionSave={loadingCtaFunctionSave}
-                                                    ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
-                                                    loadingCtaPackageHourlys={loadingCtaPackageHourlys}
-                                                    ctaPackageDailys={ctaPackageDailys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
-                                                    loadingCtaPackageDailys={loadingCtaPackageDailys}
-                                                    ctaPackageMonthlyYearlys={ctaPackageMonthlyYearlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId)}
-                                                    loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
-
-                                                />
-                                            </Popup> */}
                                             <Notification
                                                 notify={notify}
                                                 setNotify={setNotify}

@@ -254,12 +254,3 @@ body{
   background-color: #28a745 !important;
 }
 
-/* paypal button customiz */
-
-.paypal-button:not(.paypal-button-card) {
-  height: 60px !important;
-}
-
-.paypal-button-container {
-  font-size: 13px !important;
-}

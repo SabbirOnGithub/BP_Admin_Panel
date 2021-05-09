@@ -3,7 +3,7 @@ import store from '../redux/store'
 const searchNameByIdFromArray = (arr, id) =>{
     // console.log(arr)
     // console.log(id)
-    const name = Array.isArray(arr) && typeof(id)!=='undefined' ?  arr.find( item => item.id === id)?.name : "no data found";
+    const name = Array.isArray(arr) && typeof(id)!=='undefined' ?  arr.find( item => item.id === Number(id))?.name : "no data found";
     return name
 }
 const searchTitleByIdFromArray = (arr, id) =>{

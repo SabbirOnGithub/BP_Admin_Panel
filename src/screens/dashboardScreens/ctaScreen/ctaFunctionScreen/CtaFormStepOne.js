@@ -1,5 +1,4 @@
 import React from 'react'
-// import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core';
 import Controls from "../../../../components/controls/Controls";
 import { Form } from '../../../../components/UseForm/useForm';
@@ -9,28 +8,10 @@ export default function CtaFormStepOne(props) {
     const { values, 
             handleInputChange, 
             errors, 
-            // recordForEdit, 
-            // setValues, 
-            // user, 
             ctaFunctionModels, 
             handleMultipleSelectInputChange,
             loadingCtaFunctionSave 
         } = props;
-        
-    // const { email, mobile: phone, name: firstName } = user
-
-    // useEffect(() => {
-    //     console.log(recordForEdit)
-    //     if (recordForEdit != null) {
-    //         try {
-    //             setValues({
-    //                 ...recordForEdit,
-    //             })
-    //         } catch (e) {
-    //             console.warn(e);
-    //         }
-    //     }
-    // }, [recordForEdit, setValues])
 
     return (
         <>
