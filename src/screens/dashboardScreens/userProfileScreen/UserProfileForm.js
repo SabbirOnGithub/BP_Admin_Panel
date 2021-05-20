@@ -21,7 +21,15 @@ const initialFValues = {
 }
 
 export default function UserProfileForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave, setOpenPopup, openPopup } = props
+    const { addOrEdit, 
+            recordForEdit, 
+            loadingSave, 
+            setOpenPopup, 
+            openPopup, 
+            // companySizes, 
+            // companyTypes, 
+            consultingTypes 
+        } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -30,12 +38,23 @@ export default function UserProfileForm(props) {
             temp.username = fieldValues.username ? "" : "This field is required."
         if ('firstName' in fieldValues)
             temp.firstName = fieldValues.firstName ? "" : "This field is required."
-        // if ('businessIndustry' in fieldValues)
-        //     temp.businessIndustry = fieldValues.businessIndustry ? "" : "This field is required."
-        // if ('businessName' in fieldValues)
-        //     temp.businessName = fieldValues.businessName ? "" : "This field is required."
-        // if ('lastName' in fieldValues)
-        //     temp.lastName = fieldValues.lastName ? "" : "This field is required."
+        if ('businessIndustry' in fieldValues)
+            temp.businessIndustry = fieldValues.businessIndustry ? "" : "This field is required."
+        if ('businessName' in fieldValues)
+            temp.businessName = fieldValues.businessName ? "" : "This field is required."
+        if ('lastName' in fieldValues)
+            temp.lastName = fieldValues.lastName ? "" : "This field is required."
+        if ('address' in fieldValues)
+            temp.address = fieldValues.address ? "" : "This field is required."
+        if ('mobile' in fieldValues)
+            temp.mobile = fieldValues.mobile ? "" : "This field is required."
+        // if ('companySizeId' in fieldValues)
+        //     temp.companySizeId = fieldValues.companySizeId ? "" : "This field is required."
+        // if ('companyTypeId' in fieldValues)
+        //     temp.companyTypeId = fieldValues.companyTypeId ? "" : "This field is required."
+        if ('currentConsultingTypeId' in fieldValues)
+            temp.currentConsultingTypeId = fieldValues.currentConsultingTypeId ? "" : "This field is required."
+        
         setErrors({
             ...temp
         })
@@ -58,7 +77,6 @@ export default function UserProfileForm(props) {
         e.preventDefault()
         if (validate()) {
             try {
-                console.log(values)
                 addOrEdit(values, resetForm);
             }
             catch (e) {
@@ -110,7 +128,7 @@ export default function UserProfileForm(props) {
                         error={errors.lastName}
                         disabled={openPopup}
                     />
-                     {/* <Controls.Input
+                     <Controls.Input
                         name="businessIndustry"
                         label="Business Industry"
                         value={values?.businessIndustry}
@@ -125,12 +143,10 @@ export default function UserProfileForm(props) {
                         onChange={handleInputChange}
                         error={errors.businessName}
                         disabled={openPopup}
-                    /> */}
+                    />
                     
                 </Grid>
                 <Grid item md={6}>
-
-
                     <Controls.Input
                         name="address"
                         label="Address"
@@ -148,33 +164,54 @@ export default function UserProfileForm(props) {
                         disabled={openPopup}
                     />
 
-                    {/* <Controls.Select
-                        name="companySizeId"
-                        label="companySizeId"
-                        value={values?.companySizeId}
-                        onChange={handleInputChange}
-                        error={errors.companySizeId}
-                        // options={roles ? roles : []}
-                        options={[]}
-                    /> */}
+                   
 
                     {!openPopup &&
+                    <>
+                        {/* <Controls.Select
+                            name="companySizeId"
+                            label="Company Size"
+                            value={values?.companySizeId ? values?.companySizeId : ""}
+                            onChange={handleInputChange}
+                            error={errors.companySizeId}
+                            options={companySizes ? companySizes : []}
 
-                    <Controls.FileInput
-                        name="photo"
-                        label="Photo"
-                        value={values.photo}
-                        onChange={handleFileChange}
-                        error={errors.photo}
-                        resetFileInput={resetFileInput}
-                    />
+                        />
+                        <Controls.Select
+                            name="companyTypeId"
+                            label="Company Type"
+                            value={values?.companyTypeId ? values?.companyTypeId : ""}
+                            onChange={handleInputChange}
+                            error={errors.companyTypeId}
+                            options={companyTypes ? companyTypes : []}
+
+                        /> */}
+
+                        <Controls.Select
+                            name="currentConsultingTypeId"
+                            label="Current Consulting Type"
+                            value={values?.currentConsultingTypeId ? values?.currentConsultingTypeId : ""}
+                            onChange={handleInputChange}
+                            error={errors.currentConsultingTypeId}
+                            options={consultingTypes ? consultingTypes : []}
+                        />
+                    </>
                     }
 
                 </Grid>
 
                 <Grid item md={6}>
                 {!openPopup &&
+                        
                         <div>
+                              <Controls.FileInput
+                                    name="photo"
+                                    label="Photo"
+                                    value={values.photo}
+                                    onChange={handleFileChange}
+                                    error={errors.photo}
+                                    resetFileInput={resetFileInput}
+                                />
                             {loadingSave ? (
                                 <CircularProgress size={26} />
                             ) : (<>

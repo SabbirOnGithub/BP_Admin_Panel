@@ -129,11 +129,11 @@ export default {
       },
       head: {
         // fontSize: "0.95rem",
-        fontSize: "1.8rem",
+        fontSize: "1.6rem",
       },
       body: {
         // fontSize: "0.95rem",
-        fontSize: "1.8rem",
+        fontSize: "1.6rem",
       },
       
     },

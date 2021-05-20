@@ -32,7 +32,7 @@ const listUsers = () => async (dispatch) => {
         } else {
             dispatch({ type: USER_LIST_FAIL, payload: data.message });
         }
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch (error) {
         dispatch({ type: USER_LIST_FAIL, payload: error.message });
@@ -43,7 +43,7 @@ const detailsUser = (id)=> async (dispatch) =>{
         dispatch({type:USER_DETAILS_REQUEST});
         const { data } = await axiosWithToken.get("/User/detail/" + id); 
         dispatch({type:USER_DETAILS_SUCCESS, payload: data.data });
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: USER_DETAILS_FAIL, payload: error.message });
@@ -68,12 +68,10 @@ const saveUser = (item, id) => async (dispatch) => {
             }
         } else {
             console.log('update')
-            console.log(item)
-            // Read key
             // Display the values
-            for (var value of item.values()) {
-                console.log(value);
-            }
+            // for (var value of item.values()) {
+            //     console.log(value);
+            // }
             const { data } = await axiosWithTokenAndMultipartData.put("/User/UpdateUser", item);
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
@@ -109,7 +107,6 @@ const signin = (email,password) => async(dispatch) => {
         const {data} = await axiosWithoutToken.post(`${BASE_API_URL}/Auth/Login`, { username, password });
         if(data && data.data !== null){
             dispatch({type:USER_SIGNIN_SUCCESS,payload:data.data});
-            console.log(data.data);
             // console.log(data.data.token);
             Cookie.set('userInfo', JSON.stringify(data.data));
             Cookie.set('userToken', data.data.token);

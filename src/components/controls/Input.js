@@ -11,8 +11,8 @@ export default function Input(props) {
             variant="outlined"
             label={label}
             name={name}
-            // value={value ? value :''}
-            value={value}
+            value={value ? value :''}
+            // value={value}
             onChange={onChange}
             {...other}
             {...(error && {error:true,helperText:error})}

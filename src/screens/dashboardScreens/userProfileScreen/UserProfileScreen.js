@@ -11,6 +11,9 @@ import Loading from '../../../components/Loading/Loading';
 
 // redux actions
 import { detailsUser, saveUser } from '../../../redux/actions/userActions';
+import { listCompanyTypes } from '../../../redux/actions/companyTypeActions';
+import { listCompanySizes} from '../../../redux/actions/companySizeActions';
+import { listConsultingTypes } from '../../../redux/actions/consultingTypeActions';
 
 
 import { config } from "../../../config";
@@ -70,6 +73,17 @@ function UserProfileScreen() {
   const { loading: loadingSave, success: successSave, error: errorSave } = userSave;
   // console.log(user)
 
+  const companySizeList = useSelector(state => state.companySizeList);
+  //eslint-disable-next-line
+  const { companySizes, loading:loadingCompanySize, error:errorCompanySize } = companySizeList;
+
+  const companyTypeList = useSelector(state => state.companyTypeList);
+  //eslint-disable-next-line
+  const { companyTypes, loading:loadingCompanyType, error:errorCompanyType } = companyTypeList;
+
+  const consultingTypeList = useSelector(state => state.consultingTypeList);
+  //eslint-disable-next-line
+  const { consultingTypes, loading:loadingConsultingType, error: errorConsultingType } = consultingTypeList;
 
   const classes = useStyles();
   
@@ -94,17 +108,19 @@ function UserProfileScreen() {
     const addOrEdit = (item, resetForm) => {
         console.log(item)
         const formData = new FormData()
-        item.id && formData.append('Id', item.id)
-        formData.append('FirstName', item.firstName)
-        formData.append('LastName', item.lastName)
-        formData.append('Password', 'Pass@123')
-        formData.append('RoleId', item.roleId)
-        formData.append('Name', item.name)
-        formData.append('IsActive', item.isActive)
-        formData.append('Mobile', item.mobile)
-        formData.append('Username', item.username)
-        formData.append('Address', item.address)
-        formData.append('CurrentConsultationTypeId', 1)
+        item.id && formData.append('Id', item?.id)
+        formData.append('FirstName', item?.firstName)
+        formData.append('LastName', item?.lastName)
+        // formData.append('Password', 'Pass@123')
+        formData.append('RoleId', item?.roleId)
+        formData.append('Name', item?.name)
+        formData.append('IsActive', item?.isActive)
+        formData.append('Mobile', item?.mobile)
+        formData.append('Username', item?.username)
+        formData.append('Address', item?.address)
+        formData.append('BusinessIndustry', item?.businessIndustry)
+        formData.append('BusinessName', item?.businessName)
+        formData.append('CurrentConsultationTypeId', item?.currentConsultingTypeId)
         // append for add/update image
         if(typeof(item.photo) === 'object'){
             formData.append('file', item.photo)
@@ -115,9 +131,9 @@ function UserProfileScreen() {
         }
 
         if (formData) {
-            // resetForm()
+            resetForm()
             // setRecordForEdit(null)
-            // setOpenPopup(false)
+            setOpenPopup(true)
             saveItem(formData, item.id)
             .then(()=>{
                 // resetForm()
@@ -146,6 +162,10 @@ function UserProfileScreen() {
 
   useEffect(() => {
     try{
+      dispatch(listCompanySizes())
+      dispatch(listCompanyTypes())
+      dispatch(listConsultingTypes())
+
       if(userInfo?.userId){
         dispatch(detailsUser(userInfo?.userId));
       }
@@ -159,7 +179,7 @@ function UserProfileScreen() {
   return (
     <div>
       {
-        loading || loadingSave ? <Loading /> :
+        loading || loadingSave || loadingCompanySize || loadingCompanyType || loadingConsultingType ? <Loading /> :
           <>
             <div>
               <div
@@ -196,11 +216,15 @@ function UserProfileScreen() {
                     >
                       <Divider style={{marginBottom:16}}/>
                       <UserProfileForm
-                        recordForEdit={user}
-                        addOrEdit={addOrEdit}
+                        recordForEdit = {user}
+                        // recordForEdit = {recordForEdit}
+                        addOrEdit = {addOrEdit}
                         loadingSave={loadingSave}
                         setOpenPopup={setOpenPopup}
                         openPopup={openPopup}
+                        companySizes ={companySizes}
+                        companyTypes ={companyTypes}
+                        consultingTypes = {consultingTypes}
                       />
                     </Widget> 
 

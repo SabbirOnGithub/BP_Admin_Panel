@@ -39,6 +39,8 @@ export default function Header(props) {
   //eslint-disable-next-line
   const { userInfo  } = userSignIn;
 
+  console.log(userInfo)
+
   var classes = useStyles();
 
   // global
@@ -90,10 +92,32 @@ export default function Header(props) {
           )}
         </IconButton>
           <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" height='50px' width='50px' className={classes.logotypeImage} />
-          <Typography variant="h2" weight="medium" className={classes.logotype}>
+          <Typography 
+            variant="h2" 
+            weight="medium" 
+            className={classNames(
+              classes.profileMenuLink,
+              classes.logotype,
+            )}
+            component={Link} to={'/admin'}
+          >
             Best Practicify
           </Typography>
         <div className={classes.grow} />
+
+        <Typography
+            className={classNames(
+              classes.profileMenuLink,
+              classes.logotype,
+            )}
+            variant="h2" 
+            weight="medium"
+            component={Link} to={'/admin/userProfile'}
+          >
+            {userInfo?.consultationTypeName}
+          </Typography>
+        
+        
         <IconButton
           aria-haspopup="true"
           color="inherit"
@@ -123,7 +147,9 @@ export default function Header(props) {
             <Typography
               className={classes.profileMenuLink}
               color="primary"
-              href="/"
+              // href="/"
+              component={Link} to={'/'}
+
             >
               {/* {userInfo.role} */}
             </Typography>

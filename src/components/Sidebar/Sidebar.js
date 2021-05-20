@@ -261,6 +261,7 @@ function Sidebar({ location }) {
               location={location}
               isSidebarOpened={isSidebarOpened}
               {...link}
+              onClick={() => toggleSidebar(layoutDispatch)}
             />
             
           ))}
@@ -284,6 +285,10 @@ function Sidebar({ location }) {
       setSidbarForDesktop(layoutDispatch)
     }
   }
+
+  // const closeDrawer = () =>{
+  //   setSidbarForMobile(layoutDispatch)
+  // }
 }
 
 export default withRouter(Sidebar);

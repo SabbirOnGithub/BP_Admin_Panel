@@ -121,6 +121,7 @@ export default function SidebarLink({
             }),
           }}
           primary={label}
+
         />
         {isSidebarOpened && <ExpandMoreIcon className={isOpen ? classes.rotateIcon : null}/>} 
       </ListItem>
