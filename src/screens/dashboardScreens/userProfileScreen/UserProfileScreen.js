@@ -93,16 +93,18 @@ function UserProfileScreen() {
     //eslint-disable-next-line
     const addOrEdit = (item, resetForm) => {
         console.log(item)
-        const formData = new FormData();
+        const formData = new FormData()
         item.id && formData.append('Id', item.id)
-        formData.append('Username', item.username)
-        formData.append('Password', item.password)
+        formData.append('FirstName', item.firstName)
+        formData.append('LastName', item.lastName)
+        formData.append('Password', 'Pass@123')
         formData.append('RoleId', item.roleId)
         formData.append('Name', item.name)
         formData.append('IsActive', item.isActive)
         formData.append('Mobile', item.mobile)
-        formData.append('Email', item.email)
+        formData.append('Username', item.username)
         formData.append('Address', item.address)
+        formData.append('CurrentConsultationTypeId', 1)
         // append for add/update image
         if(typeof(item.photo) === 'object'){
             formData.append('file', item.photo)
@@ -113,9 +115,9 @@ function UserProfileScreen() {
         }
 
         if (formData) {
-            resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
+            // resetForm()
+            // setRecordForEdit(null)
+            // setOpenPopup(false)
             saveItem(formData, item.id)
             .then(()=>{
                 // resetForm()
@@ -144,14 +146,16 @@ function UserProfileScreen() {
 
   useEffect(() => {
     try{
-      dispatch(detailsUser(userInfo.userId));
+      if(userInfo?.userId){
+        dispatch(detailsUser(userInfo?.userId));
+      }
     }catch(e){
       console.log(e)
     }
     return () => {
       // 
     }
-  }, [dispatch, userInfo.userId, successSave])
+  }, [dispatch, userInfo?.userId, successSave])
   return (
     <div>
       {

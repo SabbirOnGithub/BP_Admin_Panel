@@ -18,7 +18,7 @@ import {
 } from "../constants/userConstants";
 import {config} from "../../config";
 import Cookie from 'js-cookie';
-import { axiosWithoutToken, axiosWithToken } from "../../helpers/axios";
+import { axiosWithoutToken, axiosWithToken, axiosWithTokenAndMultipartData } from "../../helpers/axios";
 
 const BASE_API_URL = config.BASE_API_URL
 
@@ -27,12 +27,12 @@ const listUsers = () => async (dispatch) => {
         dispatch({ type: USER_LIST_REQUEST });
         const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User/searchAll`);
         if (data.status === true) {
-            dispatch({ type: USER_LIST_SUCCESS, payload: data.data ? data.data.item1?.reverse() : [] });
+            dispatch({ type: USER_LIST_SUCCESS, payload: data?.data?.item1 ? data.data.item1?.reverse() : [] });
             // console.log(data)
         } else {
             dispatch({ type: USER_LIST_FAIL, payload: data.message });
         }
-        // console.log(data.data)
+        console.log(data.data)
     }
     catch (error) {
         dispatch({ type: USER_LIST_FAIL, payload: error.message });
@@ -43,7 +43,7 @@ const detailsUser = (id)=> async (dispatch) =>{
         dispatch({type:USER_DETAILS_REQUEST});
         const { data } = await axiosWithToken.get("/User/detail/" + id); 
         dispatch({type:USER_DETAILS_SUCCESS, payload: data.data });
-        // console.log(data.data)
+        console.log(data.data)
     }
     catch(error){
         dispatch({ type: USER_DETAILS_FAIL, payload: error.message });
@@ -52,7 +52,7 @@ const detailsUser = (id)=> async (dispatch) =>{
 
 // register and update user
 const saveUser = (item, id) => async (dispatch) => {
-    console.log(item)
+    // console.log(item)
     try {
         dispatch({ type: USER_SAVE_REQUEST, payload: item })
         if (!id) {
@@ -68,7 +68,13 @@ const saveUser = (item, id) => async (dispatch) => {
             }
         } else {
             console.log('update')
-            const { data } = await axiosWithToken.put("/User/UpdateUser", item);
+            console.log(item)
+            // Read key
+            // Display the values
+            for (var value of item.values()) {
+                console.log(value);
+            }
+            const { data } = await axiosWithTokenAndMultipartData.put("/User/UpdateUser", item);
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
             } else {

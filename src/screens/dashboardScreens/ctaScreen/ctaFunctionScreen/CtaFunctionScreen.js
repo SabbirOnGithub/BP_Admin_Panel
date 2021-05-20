@@ -368,7 +368,7 @@ export default function CtaFunctionScreen(props) {
                                 <div>
                                     <Controls.Button
                                         text='Schedule a consult'
-                                        variant="outlined"
+                                        // variant="outlined"
                                         // startIcon={<AddIcon />}
                                         onClick={() => { setShowDetail(false); setOpenPopup(true); setRecordForEdit(null);  }}
                                     />

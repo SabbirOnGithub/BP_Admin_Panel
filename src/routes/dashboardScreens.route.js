@@ -44,6 +44,7 @@ import ConsultingTypeScreen from '../screens/dashboardScreens/consultingTypeScre
 import CtaHourScreen from '../screens/dashboardScreens/ctaHourScreen/CtaHourScreen'
 import CtaPackageDailyScreen from '../screens/dashboardScreens/ctaPackageDailyScreen/CtaPackageDailyScreen'
 import CompanyTypeScreen from '../screens/dashboardScreens/companyTypeScreen/CompanyTypeScreen'
+import CompanySizeScreen from '../screens/dashboardScreens/companySizeScreen/CompanySizeScreen'
 import CtaPackageHourlyScreen from '../screens/dashboardScreens/ctaPackageHourlyScreen/CtaPackageHourlyScreen'
 import CtaPackageMonthlyYearlyScreen from '../screens/dashboardScreens/ctaPackageMonthlyYearlyScreen/CtaPackageMonthlyYearlyScreen'
 import BusinessPrincipalDescriptorScreen from '../screens/dashboardScreens/businessPrincipalDescriptorScreen/BusinessPrincipalDescriptorScreen'
@@ -126,6 +127,7 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/ctaHour`} component={CtaHourScreen} />
       <Route exact path={`${props.match.path}/ctaPackageDaily`} component={CtaPackageDailyScreen} />
       <Route exact path={`${props.match.path}/companyType`} component={CompanyTypeScreen} />
+      <Route exact path={`${props.match.path}/companySize`} component={CompanySizeScreen} />
       <Route exact path={`${props.match.path}/ctaPackageHourly`} component={CtaPackageHourlyScreen} />
       <Route exact path={`${props.match.path}/ctaPackageMonthlyYearly`} component={CtaPackageMonthlyYearlyScreen} />
       <Route exact path={`${props.match.path}/businessPrincipalDescriptor`} component={BusinessPrincipalDescriptorScreen} />

@@ -4,11 +4,21 @@ import { Button as MuiButton, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        margin: theme.spacing(0.5)
+        margin: theme.spacing(0.5),
+        padding: '5px 40px',
+        fontSize: '1.5rem',
+        border:0,
+        borderRadius:0,
+        // textTransform: 'capitalize',
+        [theme.breakpoints.down("sm")]: {
+            padding: '5px 30px',
+            fontSize: '1rem',
+        },
     },
     label: {
-        textTransform: 'none'
-    }
+        // textTransform: 'none'
+        // textTransform: 'capitalize',
+    },
 }))
 
 export default function Button(props) {
@@ -23,7 +33,9 @@ export default function Button(props) {
             color={color || "primary"}
             onClick={onClick}
             {...other}
-            classes={{ root: classes.root, label: classes.label }}>
+            classes={{ root: classes.root, label: classes.label }}
+        >
+            
             {text}
         </MuiButton>
     )

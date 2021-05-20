@@ -7,10 +7,17 @@ const initialFValues = {
     id: '',
     username: '',
     name: '',
+    firstName:'',
+    lastName:'',
     address: '',
     email: '',
     mobile: '',
-    photo: ''
+    photo: '',
+    businessIndustry:'',
+    businessName:'',
+    companySizeId : '',
+    companyTypeId:'', 
+    currentConsultingTypeId:'',
 }
 
 export default function UserProfileForm(props) {
@@ -21,8 +28,14 @@ export default function UserProfileForm(props) {
 
         if ('username' in fieldValues)
             temp.username = fieldValues.username ? "" : "This field is required."
-        if ('name' in fieldValues)
-            temp.name = fieldValues.name ? "" : "This field is required."
+        if ('firstName' in fieldValues)
+            temp.firstName = fieldValues.firstName ? "" : "This field is required."
+        // if ('businessIndustry' in fieldValues)
+        //     temp.businessIndustry = fieldValues.businessIndustry ? "" : "This field is required."
+        // if ('businessName' in fieldValues)
+        //     temp.businessName = fieldValues.businessName ? "" : "This field is required."
+        // if ('lastName' in fieldValues)
+        //     temp.lastName = fieldValues.lastName ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -45,6 +58,7 @@ export default function UserProfileForm(props) {
         e.preventDefault()
         if (validate()) {
             try {
+                console.log(values)
                 addOrEdit(values, resetForm);
             }
             catch (e) {
@@ -59,6 +73,7 @@ export default function UserProfileForm(props) {
                 setValues({
                     ...recordForEdit
                 })
+                
             } catch (e) {
                 console.warn(e);
             }
@@ -73,54 +88,45 @@ export default function UserProfileForm(props) {
                     <Controls.Input
                         name="username"
                         label="Username"
-                        value={values.username}
+                        value={values?.username}
                         onChange={handleInputChange}
                         error={errors.username}
                         disabled={openPopup}
 
                     />
                     <Controls.Input
-                        name="name"
-                        label="Name"
-                        value={values.name}
+                        name="firstName"
+                        label="First Name"
+                        value={values?.firstName}
                         onChange={handleInputChange}
-                        error={errors.name}
+                        error={errors.firstName}
                         disabled={openPopup}
                     />
-                    {!openPopup &&
-
-                        <Controls.FileInput
-                            name="photo"
-                            label="Photo"
-                            value={values.photo}
-                            onChange={handleFileChange}
-                            error={errors.photo}
-                            resetFileInput={resetFileInput}
-                        />
-                    }
-
-                    {!openPopup &&
-                        <div>
-                            {loadingSave ? (
-                                <CircularProgress size={26} />
-                            ) : (<>
-                                <Controls.Button
-                                    type="submit"
-                                    text="Submit" />
-                                <Controls.Button
-                                    text="Reset"
-                                    color="default"
-                                    onClick={resetForm} />
-                                <Controls.Button
-                                    text="Back"
-                                    color="default"
-                                    onClick={() => { setOpenPopup(!openPopup) }}
-                                />
-                            </>
-                                )
-                            }
-                        </div>
-                    }
+                     <Controls.Input
+                        name="lastName"
+                        label="Last Name"
+                        value={values?.lastName}
+                        onChange={handleInputChange}
+                        error={errors.lastName}
+                        disabled={openPopup}
+                    />
+                     {/* <Controls.Input
+                        name="businessIndustry"
+                        label="Business Industry"
+                        value={values?.businessIndustry}
+                        onChange={handleInputChange}
+                        error={errors.businessIndustry}
+                        disabled={openPopup}
+                    />
+                     <Controls.Input
+                        name="businessName"
+                        label="Business Name"
+                        value={values?.businessName}
+                        onChange={handleInputChange}
+                        error={errors.businessName}
+                        disabled={openPopup}
+                    /> */}
+                    
                 </Grid>
                 <Grid item md={6}>
 
@@ -142,11 +148,55 @@ export default function UserProfileForm(props) {
                         disabled={openPopup}
                     />
 
+                    {/* <Controls.Select
+                        name="companySizeId"
+                        label="companySizeId"
+                        value={values?.companySizeId}
+                        onChange={handleInputChange}
+                        error={errors.companySizeId}
+                        // options={roles ? roles : []}
+                        options={[]}
+                    /> */}
 
+                    {!openPopup &&
 
+                    <Controls.FileInput
+                        name="photo"
+                        label="Photo"
+                        value={values.photo}
+                        onChange={handleFileChange}
+                        error={errors.photo}
+                        resetFileInput={resetFileInput}
+                    />
+                    }
 
                 </Grid>
 
+                <Grid item md={6}>
+                {!openPopup &&
+                        <div>
+                            {loadingSave ? (
+                                <CircularProgress size={26} />
+                            ) : (<>
+                                <Controls.Button
+                                    type="submit"
+                                    text="Submit" />
+                                <Controls.Button
+                                    text="Reset"
+                                    color="default"
+                                    onClick={resetForm} />
+                                <Controls.Button
+                                    text="Back"
+                                    color="default"
+                                    onClick={() => { setOpenPopup(!openPopup) }}
+                                />
+                            </>
+                                )
+                            }
+                        </div>
+                    }
+
+                </Grid>
             </Grid>
         </Form>
     )

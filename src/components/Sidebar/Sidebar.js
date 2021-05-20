@@ -153,6 +153,7 @@ const structure = [
       { label: "Cta Hour", link: "/admin/ctaHour" },
       { label: "Cta Package Daily", link: "/admin/ctaPackageDaily" },
       { label: "Company Type", link: "/admin/companyType" },
+      { label: "Company Size", link: "/admin/companySize" },
       { label: "Cta Package Hourly", link: "/admin/ctaPackageHourly" },
       { label: "Cta Package Monthly Yearly", link: "/admin/ctaPackageMonthlyYearly" },
     ],

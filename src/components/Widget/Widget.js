@@ -53,7 +53,7 @@ export default function Widget({
           ) : (
             <React.Fragment>
                         
-              <Typography variant="h4" color="textSecondary" style={{margin:4}}>
+              <Typography variant="h2" color="textSecondary" style={{margin:4}}>
                 {title}
               </Typography>
               { props.handleSearch && props.searchLabel &&
@@ -86,7 +86,9 @@ export default function Widget({
                 props.addNew && props.createOperation &&
                 <Controls.Button
                   text={props.buttonText ? props.buttonText : "Add New"}
-                  variant="outlined"
+                  variant="contained"
+                  size="large"
+                  // variant="outlined"
                   startIcon={!props.buttonText && <AddIcon />}
                   onClick={props.addNew}
                 />
@@ -95,7 +97,7 @@ export default function Widget({
                 props.editOne && props.displayEdit &&
                 <Controls.Button
                   text="Edit"
-                  variant="outlined"
+                  // variant="outlined"
                   startIcon={<EditIcon />}
                   onClick={props.editOne}
                 />

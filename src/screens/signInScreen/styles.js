@@ -26,10 +26,16 @@ export default makeStyles(theme => ({
       display: "none",
     },
   },
+  logoWrapper : {
+    width:180,
+    height:180,
+    borderRadius:'10px',
+    background:'#1a335b',
+    textAlign:'center'
+  },
   logotypeImage: {
     width: 165,
     marginBottom: theme.spacing(4),
-    
   },
   logImageInMobile:{
     fontWeight: 500,

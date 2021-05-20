@@ -10,11 +10,12 @@ const initialFValues = {
     password: "",
     roleId: "",
     name: "",
-    isActive: false,
+    // isActive: false,
     email: "",
     mobile: "",
     address: "",
-    photo:""
+    photo:"",
+    isActive: false,
 }
 
 export default function UserForm(props) {
@@ -81,7 +82,7 @@ export default function UserForm(props) {
                     <Controls.Input
                         name="username"
                         label="User Name"
-                        value={values.username}
+                        value={values?.username}
                         onChange={handleInputChange}
                         error={errors.username}
                     />
@@ -89,14 +90,14 @@ export default function UserForm(props) {
                         name="password"
                         label="Password"
                         type="password"
-                        value={values.password}
+                        value={values?.password}
                         onChange={handleInputChange}
                         error={errors.password}
                     />
                     <Controls.Select
                         name="roleId"
                         label="Role"
-                        value={values.roleId}
+                        value={values?.roleId}
                         onChange={handleInputChange}
                         error={errors.roleId}
                         options={roles ? roles : []}
@@ -104,7 +105,7 @@ export default function UserForm(props) {
                     <Controls.Input
                         name="name"
                         label="Name"
-                        value={values.name}
+                        value={values?.name}
                         onChange={handleInputChange}
                         error={errors.name}
                     />
@@ -112,7 +113,7 @@ export default function UserForm(props) {
                         name="email"
                         label="Email"
                         type="email"
-                        value={values.email}
+                        value={values?.email}
                         onChange={handleInputChange}
                         error={errors.email}
                     />
@@ -120,24 +121,25 @@ export default function UserForm(props) {
                         name="mobile"
                         label="Mobile"
                         type="tel"
-                        value={values.mobile}
+                        value={values?.mobile}
                         onChange={handleInputChange}
                         error={errors.mobile}
                     />
                     <Controls.Input
                         name="address"
                         label="Address"
-                        value={values.address}
+                        value={values?.address}
                         onChange={handleInputChange}
                         error={errors.address}
                     />
                     <Controls.Checkbox
                         name="isActive"
                         label="Is Active"
-                        value={values.isActive}
+                        value={values?.isActive ? values?.isActive : false}
                         onChange={handleInputChange}
                         error={errors.isActive}
                     />
+                   
                     <Controls.FileInput
                         name="photo"
                         label="Photo"

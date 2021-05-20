@@ -13,7 +13,8 @@ import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import Loading from '../../../components/Loading/Loading';
 import { searchNameByIdFromArray } from '../../../helpers/search';
-
+// import DeleteIcon from '@material-ui/icons/Delete';
+// import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 import { useSelector, useDispatch } from 'react-redux';
 // permissions
@@ -227,6 +228,7 @@ export default function SoftwareScreen() {
                                                                         })
                                                                     }}>
                                                                     <CloseIcon fontSize="small" />
+                                                                    {/* <DeleteOutlinedIcon fontSize="large" /> */}
                                                                 </Controls.ActionButton>
                                                                 }
                                                                 {!updateOperation && !deleteOperation && <>Access Denied</>}

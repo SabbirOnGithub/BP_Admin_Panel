@@ -9,9 +9,15 @@ const useStyles = makeStyles(theme => ({
     },
     secondary: {
         backgroundColor: theme.palette.secondary.light,
+        // backgroundColor: 'none',
         '& .MuiButton-label': {
             color: theme.palette.secondary.main,
-        }
+            // color:'rgb(220, 0, 78)'
+        },
+        // "&:hover": {
+        //     backgroundColor: theme.palette.primary.main,
+        //     color: "rgba(255, 255, 255, 0.35)",
+        //   },
     },
     primary: {
         backgroundColor: theme.palette.primary.light,
@@ -29,7 +35,8 @@ export default function ActionButton(props) {
     return (
         <Button
             className={`${classes.root} ${classes[color]}`}
-            onClick={onClick}>
+            onClick={onClick}
+        >
             {children}
         </Button>
     )

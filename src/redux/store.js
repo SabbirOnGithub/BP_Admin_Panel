@@ -58,6 +58,7 @@ import { ctaPaymentSaveReducer } from './reducers/ctaPaymentReducers';
 import { ctaPurchaseHistorySaveReducer } from './reducers/ctaPurchaseHistoryReducers';
 import { courseAvailabilityDateSaveReducer } from './reducers/courseAvailabilityDateReducers';
 import { subscriptionDeleteReducer, subscriptionDetailsReducer, subscriptionListReducer, subscriptionSaveReducer } from './reducers/subscriptionReducers';
+import { companySizeDeleteReducer, companySizeDetailsReducer, companySizeListReducer, companySizeSaveReducer } from './reducers/companySizeReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -289,6 +290,10 @@ const reducer = combineReducers({
     subscriptionDetails: subscriptionDetailsReducer,
     subscriptionSave: subscriptionSaveReducer,
     subscriptionDelete: subscriptionDeleteReducer,
+    companySizeList:companySizeListReducer,
+    companySizeDetails: companySizeDetailsReducer,
+    companySizeSave: companySizeSaveReducer,
+    companySizeDelete: companySizeDeleteReducer,
     
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

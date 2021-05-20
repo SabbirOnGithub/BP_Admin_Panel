@@ -54,7 +54,10 @@ useEffect(()=>{
   return (
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>
-        <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" className={classes.logotypeImage} />
+        <div className ={classes.logoWrapper}>
+            <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" className={classes.logotypeImage} />
+        </div>
+      
         <Typography className={classes.logotypeText}> Best Practicify </Typography>
       </div>
       <div className={classes.formContainer}>

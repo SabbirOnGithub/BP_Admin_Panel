@@ -12,6 +12,9 @@ export default makeStyles(theme => ({
     justifyContent: "space-between",
     alignItems: "center",
     flexWrap:"wrap",
+    [theme.breakpoints.down("sm")]: {
+      // flexDirection:'column'
+    },
 
   },
   widgetRoot: {
