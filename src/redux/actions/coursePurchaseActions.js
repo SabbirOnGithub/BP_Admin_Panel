@@ -45,7 +45,9 @@ const detailsCoursePurchase = (id)=> async (dispatch) =>{
         if(data.status===true){
             dispatch({type:COURSE_PURCHASE_DETAILS_SUCCESS, payload: data.data ? data.data : {}});
         }
-        // console.log(data.data)
+        // console.log(data)
+
+        return data
     }
     catch(error){
         dispatch({ type: COURSE_PURCHASE_DETAILS_FAIL, payload: error.message });

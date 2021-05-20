@@ -9,6 +9,7 @@ export default function CtaFormStepTwo(props) {
 
     const { values, 
             handleInputChange,
+            handleDateInput,
             errors, 
             recordForEdit, 
             setValues, 
@@ -40,11 +41,11 @@ export default function CtaFormStepTwo(props) {
                 <Form>
                     <Grid container>
                         <Grid item xs={12}>
-                        <Controls.DatePicker
+                            <Controls.DatePickerCustom
                                 name="estimation"
                                 label="Estimation"
                                 value={values.estimation ? values.estimation : null}
-                                onChange={handleInputChange}
+                                onChange={handleDateInput}
                                 error={errors.estimation}
                                 placeholder = 'When do you need to have this solution created?'
                                 disablePast

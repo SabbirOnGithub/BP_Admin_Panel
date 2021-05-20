@@ -67,10 +67,9 @@ export default function CtaCategoryDetailScreen(props) {
                     <Typography paragraph className={classes.customPharagraph}><b>Estimation:</b> {recordForEdit.estimation} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {recordForEdit.description} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Payment Status:</b> {recordForEdit.paymentStatus} </Typography>
-                    <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {recordForEdit.transectionId} </Typography>
+                    {/* <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {recordForEdit.transectionId} </Typography> */}
                     <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {recordForEdit.transectionId} </Typography>
                     <Typography paragraph className={classes.customPharagraph}><b>Amount:</b> {recordForEdit.amount} </Typography>
-                    <Typography paragraph className={classes.customPharagraph}><b>Menu Id:</b> {recordForEdit.menuId} </Typography>
                     {/* <Typography>
                                 Set aside off of the heat to let rest for 10 minutes, and then serve.
                             </Typography> */}

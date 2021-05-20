@@ -127,7 +127,9 @@ export default function CtaFunctionForm(props) {
         resetForm,
         handleMultipleSelectInputChange,
         handleFileChange,
-        resetFileInput
+        resetFileInput,
+        handleDateInput,
+
     } = useForm(initialFValues, true, validate);
 
     const dispatch = useDispatch();
@@ -169,7 +171,7 @@ export default function CtaFunctionForm(props) {
                             handleMultipleSelectInputChange= {handleMultipleSelectInputChange}
                             setHideNext = {setHideNext}
                             loadingCtaFunctionSave ={loadingCtaFunctionSave}
-
+                            handleDateInput = {handleDateInput}
                         />;
             case 2:
                 // step 3
@@ -268,8 +270,8 @@ export default function CtaFunctionForm(props) {
             }
             if(activeStep ===1){
                 if(formatData.estimation){
-                    // console.log(values.estimation)
-                    formatData.estimation = values.estimation.toISOString();
+                    // formatData.estimation = values.estimation.toISOString();
+                    // formatData.estimation = values.estimation.toString();
                 }
             }
             if(activeStep<2){

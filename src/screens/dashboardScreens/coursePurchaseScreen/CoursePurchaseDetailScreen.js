@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../components/Loading/Loading';
 import { useForm, Form } from '../../../components/UseForm/useForm';
 
+
 import { detailsCoursePurchase } from '../../../redux/actions/coursePurchaseActions';
 
 const useStyles = makeStyles(theme => ({
@@ -24,8 +25,11 @@ const useStyles = makeStyles(theme => ({
     customPharagraph: {
         fontSize: '1.5rem',
         "& b": {
-            color: '#536DFE'
-        }
+            color: '#0096ff',
+            marginRight:5
+        },
+        marginRight:5,
+        padding:10,
     },
     margin: {
         margin: theme.spacing(1),
@@ -33,9 +37,12 @@ const useStyles = makeStyles(theme => ({
     padding: {
         padding: theme.spacing(1),
     },
-    // textField: {
-    //     width: '25ch',
-    // },
+    subHeadlineText :{
+        background:'skyblue', 
+        padding:5, 
+        marginRight:5
+    }
+    
 }))
 
 const initialFValues = {
@@ -57,11 +64,11 @@ const headCells = [
     { id: 'email', label: 'Email' },
 ]
 export default function CoursePurchaseDetailScreen(props) {
-    const { recordForEdit, 
-            // setOpenPopup, 
-            // trainingTypes, 
-            // softwares,
-            addOrEdit 
+
+    const { 
+            recordForEdit,
+            addOrEdit,
+            loadingCourseAvailabilityDateSave 
         } = props
 
     const classes = useStyles();
@@ -82,10 +89,10 @@ export default function CoursePurchaseDetailScreen(props) {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        // if ('selectedDateFrom' in fieldValues)
-        //     temp.selectedDateFrom = fieldValues.selectedDateFrom ? "" : "This field is required."
-        // if ('selectedDateTo' in fieldValues)
-        //     temp.selectedDateTo = fieldValues.selectedDateTo ? "" : "This field is required."
+        if ('selectedDateFrom' in fieldValues)
+            temp.selectedDateFrom = fieldValues.selectedDateFrom ? "" : "This field is required."
+        if ('selectedDateTo' in fieldValues)
+            temp.selectedDateTo = fieldValues.selectedDateTo ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -93,13 +100,15 @@ export default function CoursePurchaseDetailScreen(props) {
             return Object.values(temp).every(x => x === "")
     }
     
-
+    // console.log(coursePurchase?.courseAvailabilityDates)
     const {
         values,
         setValues,
         errors,
         setErrors,
-        handleInputChange,
+        handleDateInput,
+        // handleInputChange,
+        // handleEditorInput,
         resetForm,
     } = useForm(initialFValues, true, validate);
 
@@ -109,76 +118,53 @@ export default function CoursePurchaseDetailScreen(props) {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            // if(values?.firstDate || values.secondDate){
-            //     var mydate = new Date('2014-04-03');
-            //     const formatSecondDate = new Date(values.secondDate);
-            //     const formatThirdDate = new Date(values.thirdDate);
-            //     values.firstDate = formatFirstDate
-            //     values.secondDate = formatSecondDate
-            //     values.thirdDate = formatThirdDate
-            // }
-            // values.firstDate && (values.firstDate = new Date(values.firstDate))
-            console.log(values?.firstDate)
-            
-            let firstDate =values.firstDate.split('-')
-            let secondDate =values.secondDate.split('-')
-            let thirdDate =values.thirdDate.split('-')
-
-            values.firstDate = new Date(firstDate[2], firstDate[1], firstDate[0]).toISOString();
-            values.secondDate = new Date(secondDate[2], secondDate[1], secondDate[0]).toISOString();
-            values.thirdDate = new Date(thirdDate[2], thirdDate[1], thirdDate[0]).toISOString();
-
-            values.selectedDateFrom = values?.selectedDateFrom?.toISOString();
-            values.selectedDateTo = values?.selectedDateTo?.toISOString();
-            // .toUTCString()
-            
-            // values.selectedDateFrom = values.selectedDateFrom.toLocaleDateString()
-            // values.selectedDateTo = values.selectedDateTo.toLocaleDateString()
-            // values.selectedDateFrom = values.selectedDateFrom.toString()
-            // values.selectedDateTo = values.selectedDateTo.toString()
-            
-            // const formatedData = {
-            //     'courseAvailabilityDates':{...values}
-            // }
             addOrEdit(values, resetForm);
         }
     }
 
-    // const softwareName = () =>{
-    //     return searchNameByIdFromArray(softwares, coursePurchase?.softwareId)
-    // }
-// console.log(loadingCoursePurchaseDetail)
-// console.log(coursePurchase)
-// console.log(recordForEdit)
     useEffect(() => {
-
+       
         try{
-            dispatch(detailsCoursePurchase(recordForEdit.id));
+            dispatch(detailsCoursePurchase(recordForEdit.id))
+            .then(res=>{
+                if(res.status===true){
+                    // console.log(res.data)
+                    if (res?.data?.courseAvailabilityDates) {
+
+                        const recordForeditFormat = {
+                            ...res?.data?.courseAvailabilityDates
+                        }
+               
+                        setValues({
+                            ...recordForeditFormat,
+                            firstDate : new Date(new Date(`${recordForeditFormat.firstDate} GMT`).toString()),
+                            secondDate : new Date(new Date(`${recordForeditFormat.secondDate} GMT`).toString()),
+                            thirdDate : new Date(new Date(`${recordForeditFormat.thirdDate} GMT`).toString()),
+                            selectedDateFrom:null,
+                            selectedDateTo: null
+                        })
+                    }
+                    
+                }
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+       
         }catch(err){
             console.log(err)
-        }finally{
-            if (coursePurchase?.courseAvailabilityDates) {
-
-                const recordForeditFormat = {
-                    ...coursePurchase?.courseAvailabilityDates
-                }
-                recordForeditFormat?.firstDate && (recordForeditFormat['firstDate'] = new Date(...recordForeditFormat?.firstDate.split('-').reverse())).toLocaleDateString();
-                setValues({
-                    ...recordForeditFormat
-                })
-                // console.log(coursePurchase)
-            }
         }
+
         return () => {
             // 
         }
 
         // eslint-disable-next-line
-    }, [dispatch, recordForEdit.id])
+    }, [dispatch, recordForEdit?.id, loadingCourseAvailabilityDateSave, setValues])
     return (
         <>
             {
-               loadingCoursePurchaseDetail || !coursePurchase ? <Loading /> :
+               loadingCoursePurchaseDetail || !coursePurchase || !values ? <Loading /> :
 
                     <Grid container>
                         <Grid item xs={12}>
@@ -188,7 +174,8 @@ export default function CoursePurchaseDetailScreen(props) {
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
                                     <Grid container>
                                         <Grid item md={6}>
-                                            <h1>User details</h1>
+                                        
+                                            <h1 className={classes.subHeadlineText}>User details</h1>
 
                                             <Typography paragraph className={classes.customPharagraph}><b>Name:</b> {coursePurchase?.name} </Typography>
                                             <Typography paragraph className={classes.customPharagraph}><b>Email:</b> {coursePurchase?.email} </Typography>
@@ -196,7 +183,8 @@ export default function CoursePurchaseDetailScreen(props) {
                                             <Typography paragraph className={classes.customPharagraph}><b>CompanyName:</b> {coursePurchase?.companyName} </Typography>
                                             <Typography paragraph className={classes.customPharagraph}><b>Company Size:</b> {coursePurchase?.companySize?.name} </Typography>
                                             <Typography paragraph className={classes.customPharagraph}><b>Company Type:</b> {coursePurchase?.companyType?.name} </Typography>
-                                            <h1>Training details</h1>
+
+                                            <h1 className={classes.subHeadlineText}>Training details</h1>
                                             {/* <Typography paragraph className={classes.customPharagraph}><b>Software:</b> {softwares ? searchNameByIdFromArray(softwares, coursePurchase?.softwareId) : coursePurchase?.softwareId} </Typography> */}
                                             {/* <Typography paragraph className={classes.customPharagraph}><b>Training Type :</b> {trainingTypes ? searchNameByIdFromArray(trainingTypes, coursePurchase?.trainingTypeId) : coursePurchase?.trainingTypeId} </Typography> */}
                                             <Typography paragraph className={classes.customPharagraph}><b>Software:</b> {coursePurchase?.software?.name} </Typography>
@@ -205,17 +193,31 @@ export default function CoursePurchaseDetailScreen(props) {
 
                                         </Grid>
                                         <Grid item md={6}>
-                                            <h1>Payment  details:</h1>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Payment Status:</b> {coursePurchase?.paymentStatus > 0 ? 'Paid' : 'Unpaid'} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {coursePurchase?.transectionId} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Total Amount:</b> {coursePurchase?.totalAmount} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Total Discount:</b> {coursePurchase?.totalDiscount} </Typography>
-                                            <h1>Course availability dates:</h1>
-                                            <Typography paragraph className={classes.customPharagraph}><b>First Date:</b> {coursePurchase?.courseAvailabilityDates?.firstDate} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Second Date:</b> {coursePurchase?.courseAvailabilityDates?.secondDate} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Third Date:</b> {coursePurchase?.courseAvailabilityDates?.thirdDate} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Selected Date From:</b> {coursePurchase?.courseAvailabilityDates?.selectedDateFrom} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Selected Date To:</b> {coursePurchase?.courseAvailabilityDates?.selectedDateTo} </Typography>
+                                            <h1 className={classes.subHeadlineText}>Payment  details:</h1>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Payment Status: </b> {coursePurchase?.paymentStatus > 0 ? 'Paid' : 'Unpaid'} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Transection Id: </b> {coursePurchase?.transectionId} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Total Amount: </b> {coursePurchase?.totalAmount} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Total Discount: </b> {coursePurchase?.totalDiscount} </Typography>
+
+                                            <h1 className={classes.subHeadlineText}>Course availability dates:</h1>
+                                            <Typography paragraph className={classes.customPharagraph}><b>First Date: </b> {new Date(`${coursePurchase?.courseAvailabilityDates?.firstDate} UTC`).toLocaleDateString()}</Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Second Date: </b> {new Date(`${coursePurchase?.courseAvailabilityDates?.secondDate} UTC`).toLocaleDateString()} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Third Date: </b> {new Date(`${coursePurchase?.courseAvailabilityDates?.thirdDate} UTC`).toLocaleDateString()}</Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Selected Date and Time From: </b> 
+                                                {  coursePurchase?.courseAvailabilityDates?.selectedDateFrom ? ( 
+                                                        new Date(`${coursePurchase?.courseAvailabilityDates?.selectedDateFrom} UTC`).toLocaleDateString() + '  ' + 
+                                                        new Date(`${coursePurchase?.courseAvailabilityDates?.selectedDateFrom} UTC`).toLocaleTimeString()
+                                                    ) : 'No date available'
+                                                }  
+                                                </Typography>
+                                            {/* <Typography paragraph className={classes.customPharagraph}><b>Selected Date From:</b> {console.log(new Date(Date.parse(`${coursePurchase?.courseAvailabilityDates?.selectedDateFrom} UTC`)))} </Typography> */}
+                                            <Typography paragraph className={classes.customPharagraph}><b>Selected Date and Time To: </b> 
+                                                {  coursePurchase?.courseAvailabilityDates?.selectedDateTo ? (
+                                                        new Date(`${coursePurchase?.courseAvailabilityDates?.selectedDateTo} UTC`).toLocaleDateString() + '  ' + 
+                                                        new Date(`${coursePurchase?.courseAvailabilityDates?.selectedDateTo} UTC`).toLocaleTimeString()
+                                                    ) : 'No date available'
+                                                } 
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </Paper>
@@ -243,94 +245,121 @@ export default function CoursePurchaseDetailScreen(props) {
                                 </TblContainer>
                                 <TblPagination />
                             </Paper>
+                            
+                            
+                            {
+                                // !(values.firstDate && values.secondDate && values.thirdDate) ? <Loading /> :
+                                (
 
-                            <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
-                                <div>
-                                    <h1>Date submission form</h1>
-
-                                    <Form>
-                                        <Grid container>
-                                            <Grid item md={4} xs={12}>
-                                                <Controls.Input
-                                                    name="firstDate"
-                                                    label="First Date"
-                                                    value={values.firstDate ? values.firstDate  : 'No date found'}
-                                                    readOnly={true}
-                                                    className={clsx(classes.padding, classes.textField)}
-                                                />
-
+                                    <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
+                                    <div>
+                                        <h1>Date submission form</h1>
+                                        <Form>
+                                            <Grid container>
+                                                <Grid item md={4} xs={12}>
+                                                <Controls.DateTimePickerCustom
+                                                        name="firstDate"
+                                                        label="First Date"
+                                                        value={values.firstDate ? values.firstDate  : 'No date found'}
+                                                       onChange={handleDateInput}
+                                                        error={errors.firstDate}
+                                                        placeholder='Set the start date'
+                                                        disabled
+                                                        format="MM/dd/yyyy"
+                                                        // message="If you're unsure, please give the estimate you can."
+                                                        className={clsx(classes.padding, classes.textField)}
+                                                    />
+                                                    
+    
+                                                </Grid>
+                                                <Grid item md={4} xs={12}>
+                                                    
+                                                     <Controls.DateTimePickerCustom
+                                                        name="secondDate"
+                                                        label="Second Date"
+                                                        value={values.secondDate ? values.secondDate : 'No date found'}
+                                                       onChange={handleDateInput}
+                                                        error={errors.secondDate}
+                                                        placeholder='Set the start date'
+                                                        disabled
+                                                        format="MM/dd/yyyy"
+                                                        // message="If you're unsure, please give the estimate you can."
+                                                        className={clsx(classes.padding, classes.textField)}
+                                                    />
+    
+                                                </Grid>
+                                                <Grid item md={4} xs={12}>
+                                                 
+                                                    <Controls.DateTimePickerCustom
+                                                       name="thirdDate"
+                                                       label="Third Date"
+                                                       value={values.thirdDate ? values.thirdDate : 'No date found'}
+                                                       onChange={handleDateInput}
+                                                        error={errors.thirdDate}
+                                                        placeholder='Set the start date'
+                                                        disabled
+                                                        format="MM/dd/yyyy"
+                                                        // message="If you're unsure, please give the estimate you can."
+                                                        className={clsx(classes.padding, classes.textField)}
+                                                    />
+    
+                                                </Grid>
                                             </Grid>
-                                            <Grid item md={4} xs={12}>
-                                                <Controls.Input
-                                                    name="secondDate"
-                                                    label="Second Date"
-                                                    value={values.secondDate ? values.secondDate : 'No date found'}
-                                                    readOnly={true}
-                                                    className={clsx(classes.padding, classes.textField)}
-                                                />
-
+                                        </Form>
+                                    </div>
+                                    <div>
+                                        <Form onSubmit={handleSubmit}>
+                                            <Grid container>
+                                                <Grid item md={5} xs={12}>
+                                                    <Controls.DateTimePickerCustom
+                                                        name="selectedDateFrom"
+                                                        label="From date and time"
+                                                        value={values.selectedDateFrom}
+                                                        onChange={handleDateInput}
+                                                        error={errors.selectedDateFrom}
+                                                        placeholder='From date and time'
+                                                        disablePast
+                                                        // format="dd-MM-yyyy"
+                                                        // message="If you're unsure, please give the estimate you can."
+                                                        className={clsx(classes.padding, classes.textField)}
+                                                    />
+                                                </Grid>
+                                                <Grid item md={5} xs={12}>
+                                                    <Controls.DateTimePickerCustom
+                                                       name="selectedDateTo"
+                                                       label="To date and time"
+                                                       value={values.selectedDateTo}
+                                                       onChange={handleDateInput}
+                                                       error={errors.selectedDateTo}
+                                                       placeholder='To date and time'
+                                                       disablePast
+                                                       // message="If you're unsure, please give the estimate you can."
+                                                       className={clsx(classes.padding, classes.textField)}
+                                                       minDate={values.selectedDateFrom ? values.selectedDateFrom : new Date()}
+                                                       disabled = {values.selectedDateFrom ? false : true}
+                                                    />
+    
+                                                </Grid>
+                                                <Grid item md={2} xs={12} style={{ alignSelf: 'center', display:'flex', justifyContent:'center' }}>
+                                                    <div >
+                                                        <>
+                                                            <Controls.Button
+                                                                type="submit"
+                                                                text="Submit"
+                                                                size='large'
+                                                            />
+                                                        </>
+                                                    </div>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item md={4} xs={12}>
-                                                <Controls.Input
-                                                    name="thirdDate"
-                                                    label="Third Date"
-                                                    value={values.thirdDate ? values.thirdDate : 'No date found'}
-                                                    readOnly={true}
-                                                    className={clsx(classes.padding, classes.textField)}
-                                                />
-
-                                            </Grid>
-                                        </Grid>
-                                    </Form>
-                                </div>
-                                <div>
-                                    <Form onSubmit={handleSubmit}>
-                                        <Grid container>
-                                            <Grid item md={5} xs={12}>
-                                                <Controls.DatePicker
-                                                    name="selectedDateFrom"
-                                                    label="Selected Date From"
-                                                    value={values.selectedDateFrom}
-                                                    onChange={handleInputChange}
-                                                    error={errors.selectedDateFrom}
-                                                    placeholder='Set the start date'
-                                                    disablePast
-                                                    // message="If you're unsure, please give the estimate you can."
-                                                    className={clsx(classes.padding, classes.textField)}
-
-                                                />
-                                            </Grid>
-                                            <Grid item md={5} xs={12}>
-                                                <Controls.DatePicker
-                                                    name="selectedDateTo"
-                                                    label="Selected Date To"
-                                                    value={values.selectedDateTo}
-                                                    onChange={handleInputChange}
-                                                    error={errors.selectedDateTo}
-                                                    placeholder='When do you need to have this solution created?'
-                                                    disablePast
-                                                    // message="If you're unsure, please give the estimate you can."
-                                                    className={clsx(classes.padding, classes.textField)}
-
-                                                />
-                                            </Grid>
-                                            <Grid item md={2} xs={12} style={{ alignSelf: 'center', display:'flex', justifyContent:'center' }}>
-                                                <div >
-                                                    <>
-                                                        <Controls.Button
-                                                            type="submit"
-                                                            text="Submit"
-                                                            size='large'
-                                                        />
-                                                    </>
-                                                </div>
-                                            </Grid>
-                                        </Grid>
-                                    </Form>
-                                </div>
-
-                            </Paper>
-                           
+                                        </Form>
+                                    </div>
+    
+                                </Paper>
+                               
+                                )
+                            }
+                            
                         </Grid>
                     </Grid>
             }

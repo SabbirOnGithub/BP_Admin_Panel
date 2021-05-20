@@ -258,9 +258,16 @@ export default function CtaFunctionScreen(props) {
                                 userEmail : user.email
 
                             }
-                            item.ctaHourId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
-                            item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
-                            item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
+                            // item.getCtaHourlyId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
+                            // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
+                            // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
+                            
+                            item.getCtaHourlyId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.id);
+                            item.getCtaDailyId && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.id);
+                            item.getCtaMonthlyYearlyId && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.id);
+                            item.isMonthlySubscription && (formatePurchaseHistoryData['isMonthlySubscription'] = item.isMonthlySubscription);
+                            item.isYearlySubscription && (formatePurchaseHistoryData['isYearlySubscription'] = item.isYearlySubscription);
+
                             dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData))
                             .then(res=>{
                                 if(res.status===true){

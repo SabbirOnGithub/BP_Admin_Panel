@@ -2,7 +2,7 @@ import Input from "./Input";
 import RadioGroup from "./RadioGroup";
 import {Select, SelectMultiple} from "./Select";
 import Checkbox from "./Checkbox";
-import DatePicker from "./DatePicker";
+import {DatePickerCustom, DateTimePickerCustom} from "./DatePicker";
 import Button from "./Button";
 import ActionButton from "./ActionButton";
 import RichTextEditor from "./RichTextEditor";
@@ -14,7 +14,8 @@ const Controls = {
     RadioGroup,
     Select,
     Checkbox,
-    DatePicker,
+    DatePickerCustom,
+    DateTimePickerCustom,
     Button,
     ActionButton,
     RichTextEditor,

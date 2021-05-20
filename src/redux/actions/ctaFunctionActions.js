@@ -50,7 +50,7 @@ const detailsCtaFunction = (id)=> async (dispatch) =>{
         dispatch({type:CTA_FUNCTION_DETAILS_REQUEST});
         const { data } = await axiosWithoutToken.get("/CtaFunction/detail/" + id); 
         dispatch({type:CTA_FUNCTION_DETAILS_SUCCESS, payload: data.data });
-        // console.log(data.data)
+        console.log(data.data)
     }
     catch(error){
         dispatch({ type: CTA_FUNCTION_DETAILS_FAIL, payload: error.message });

@@ -23,10 +23,17 @@ const useStyles = makeStyles(theme => ({
     customPharagraph: {
         fontSize: '1.5rem',
         "& b": {
-            color: '#536DFE'
+            color: '#0096ff',
+            marginRight:5
         },
+        marginRight:5,
         padding:10,
     },
+    subHeadlineText :{
+        background:'skyblue', 
+        padding:5, 
+        marginRight:5
+    }
 
 
 }))
@@ -83,14 +90,14 @@ export default function CtaFunctionDetailScreen(props) {
             <Grid container>
                 <Grid item xs={12}>
                 <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
-                                <h1>Details</h1>
+                                <h1 className={classes.subHeadlineText}>Details</h1>
 
                                 <Grid container>
                                     <Grid item md={6}>
-                                        <Typography paragraph className={classes.customPharagraph}><b>First Name:</b> {ctaFunction?.firstName} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Phone:</b> {ctaFunction?.phone} </Typography> 
-                                        <Typography paragraph className={classes.customPharagraph}><b>Company Name:</b> {ctaFunction?.companyName} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Service Specificity:</b> {searchNameByIdFromArray(ctaFunctionModels?.serviceSpecificities,ctaFunction?.serviceSpecificity)} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>First Name: </b> {ctaFunction?.firstName} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Phone: </b> {ctaFunction?.phone} </Typography> 
+                                        <Typography paragraph className={classes.customPharagraph}><b>Company Name: </b> {ctaFunction?.companyName} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Service Specificity: </b> {searchNameByIdFromArray(ctaFunctionModels?.serviceSpecificities,ctaFunction?.serviceSpecificity)} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}>
                                             <b>Technology Preference:</b> 
                                                 {/* {ctaFunction?.technologyPreference} */}
@@ -106,32 +113,46 @@ export default function CtaFunctionDetailScreen(props) {
                                                 }
                                         
                                         </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Service:</b> {ctaFunction?.goalsToAchieveService} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Technology:</b> {ctaFunction?.goalsToAchieveTechnology} </Typography>
-                            
-                                        
+                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Service: </b> {ctaFunction?.goalsToAchieveService} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Technology: </b> {ctaFunction?.goalsToAchieveTechnology} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Estimation: </b> {ctaFunction?.estimation} </Typography>
                                     </Grid>
                                     <Grid item md={6}>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Last Name:</b> {ctaFunction?.lastName} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Email:</b> {ctaFunction?.email} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Solution Specificity:</b> {searchNameByIdFromArray(ctaFunctionModels?.solutionSpecificities, ctaFunction?.solutionSpecificity)} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution:</b> {ctaFunction?.goalsToAchieveSolution} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Tell Us More:</b> {ctaFunction?.tellUsMore} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Last Name: </b> {ctaFunction?.lastName} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {ctaFunction?.email} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Solution Specificity: </b> {searchNameByIdFromArray(ctaFunctionModels?.solutionSpecificities, ctaFunction?.solutionSpecificity)} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution: </b> {ctaFunction?.goalsToAchieveSolution} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Tell Us More: </b> {ctaFunction?.tellUsMore} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {ctaFunction?.description} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Estimation:</b> {ctaFunction?.estimation} </Typography>
                                     </Grid>
                                 </Grid>
-                                <h1>Payment History</h1>
+                                <h1 className={classes.subHeadlineText}>Payment History</h1>
                                 {
                                    ctaFunction?.ctaPurchaseHistories?.length > 0 ?  ctaFunction?.ctaPurchaseHistories?.map(item=>
                                             <div key={item.id}>
                                                 <Grid container>
                                                     <Grid item md={6}>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Status:</b> {item?.paymentStatus} </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Transection Id:</b> {item?.transectionId} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Status: </b> {item?.isPaid ? 'Paid' : 'Un-paid'} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Transection Id: </b> {item?.transectionId} </Typography>
+                                                        {/* <Typography paragraph className={classes.customPharagraph}><b>ctaPackageHourlyId:</b> {item?.ctaPackageHourlyId} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>ctaPackageDailyId:</b> {item?.ctaPackageDailyId} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>ctaPackageMonthlyYearlyId:</b> {item?.ctaPackageMonthlyYearlyId} </Typography> */}
+                                                       
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Consultation Type Name: </b> {item?.consultationTypeName} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Subscription: </b> 
+                                                            {item?.isYearlySubscription && 'Yearly'} 
+                                                            {item?.isMonthlySubscription && 'Monthly'} 
+                                                            { item?.ctaPackageDailyId && 'Daily'}
+                                                            { item?.ctaPackageHourlyId && 'Hourly'}
+                                                        </Typography>
+                                                        {/* <Typography paragraph className={classes.customPharagraph}><b>Subscription:</b>  </Typography> */}
                                                     </Grid>
                                                     <Grid item md={6}>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Amount:</b> $ {item?.amount} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Amount: </b> ${item?.amount} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Gateway: </b> {item?.paymentGateway} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Purchase Date: </b> {item?.purchaseDate} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Completion Date: </b> {item?.completionDate} </Typography>
+
                                                         
                                                     </Grid>
                                                 </Grid>

@@ -52,6 +52,7 @@ const detailsUser = (id)=> async (dispatch) =>{
 
 // register and update user
 const saveUser = (item, id) => async (dispatch) => {
+    console.log(item)
     try {
         dispatch({ type: USER_SAVE_REQUEST, payload: item })
         if (!id) {
@@ -102,7 +103,7 @@ const signin = (email,password) => async(dispatch) => {
         const {data} = await axiosWithoutToken.post(`${BASE_API_URL}/Auth/Login`, { username, password });
         if(data && data.data !== null){
             dispatch({type:USER_SIGNIN_SUCCESS,payload:data.data});
-            // console.log(data.data);
+            console.log(data.data);
             // console.log(data.data.token);
             Cookie.set('userInfo', JSON.stringify(data.data));
             Cookie.set('userToken', data.data.token);

@@ -1,35 +1,67 @@
 import React from 'react'
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import { 
+    MuiPickersUtilsProvider, 
+    // KeyboardDatePicker,
+    DatePicker,
+    DateTimePicker
+} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-export default function DatePicker(props) {
+// 
+
+function DatePickerCustom(props) {
 
     const { name, label, value, error=null, onChange, message, readOnly, ...other } = props
 
-    // console.log(typeof value)
-    const convertToDefEventPara = (name, value) => ({
-        target: {
-            // name, value : value?.toISOString()?.substring(0, 10)
-            name, value
-        }
-    })
+    // const convertToDefEventPara = (name, value) => ({
+    //     target: {
+    //         name, value
+    //     }
+    // })
 
     return (
         <div>
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                <KeyboardDatePicker disableToolbar variant="inline" inputVariant="outlined"
-                    className={error && ' errorDatePickerArea'}
+                <DatePicker 
+                    inputVariant="outlined"
                     label={label}
                     format="MM/dd/yyyy"
                     name={name}
+                    // value={new Date()}
                     value={value}
-                    onChange={date =>onChange(convertToDefEventPara(name,date))}
+                    // onChange={date =>onChange(name,date.toISOString())}
+                    onChange={date =>onChange(name,date)}
                     {...other}
                     {...(error && {error:true,helperText:error})}
                     InputProps={{ readOnly: readOnly }}
                 />
-                <span style={{margin:'0px 20px 8px 0px', float:'right', fontSize:12}}>{message}</span>
             </MuiPickersUtilsProvider>
         </div>
     )
 }
+
+
+function DateTimePickerCustom(props) {
+
+    const { name, label, value, error=null, onChange, message, readOnly, ...other } = props
+    return (
+        <div>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                <DateTimePicker 
+                    inputVariant="outlined"
+                    label={label}
+                    // onChange = {(dateTime)=>onChange(name, dateTime.toISOString())}
+                    onChange = {(dateTime)=>onChange(name, dateTime)}
+                    format="MM/dd/yyyy HH:mm:ss"
+                    value={value}
+                    {...other}
+                    {...(error && {error:true,helperText:error})}
+                    InputProps={{ readOnly: readOnly }}
+                />
+            </MuiPickersUtilsProvider>
+        </div>
+    )
+}
+
+
+export {DatePickerCustom, DateTimePickerCustom}

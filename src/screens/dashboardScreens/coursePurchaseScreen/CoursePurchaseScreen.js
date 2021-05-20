@@ -51,6 +51,9 @@ export default function CoursePurchaseScreen() {
 
     const coursePurchasesFilterByUser = getFilterDataByUser(coursePurchases, userInfo);
 
+    const courseAvailabilityDateSave = useSelector(state => state.courseAvailabilityDateSave);
+    //eslint-disable-next-line
+    const { loading: loadingCourseAvailabilityDateSave, success: successCourseAvailabilityDateSave, error: errorCourseAvailabilityDateSave } = courseAvailabilityDateSave;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
@@ -70,39 +73,31 @@ export default function CoursePurchaseScreen() {
     const dispatch = useDispatch();
 
     const openInPopup = item => {
-        setRecordForEdit(item)
-        setOpenPopup(true)
+        setRecordForEdit(null);
+        setRecordForEdit(item);
+        setOpenPopup(true);
     }
-
-    // add/update promise
-    const saveItem = (item) => new Promise((resolve, reject) => {
-        dispatch(saveCourseAvailabilityDate(item));
-        resolve();
-    })
 
     const addOrEdit = async (item, resetForm) => {
         console.log(item)
-        // resetForm()
+        resetForm();
         // setRecordForEdit(null)
-        // setOpenPopup(false)
-        saveItem(item)
-            .then(() => {
-                
-                // if (successSave) {
-                //     setNotify({
-                //         isOpen: true,
-                //         message: 'Submitted Successfully',
-                //         type: 'success'
-                //     })
-                // }
-
-                // if (errorSave) {
-                //     setNotify({
-                //         isOpen: true,
-                //         message: 'Submition Failed',
-                //         type: 'warning'
-                //     })
-                // }
+        setOpenPopup(false)
+        dispatch(saveCourseAvailabilityDate(item))
+            .then((res) => {
+                if(res.status===true){
+                    setNotify({
+                                isOpen: true,
+                                message: 'Submitted Successfully',
+                                type: 'success'
+                            })
+                }else{
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submition Failed',
+                            type: 'warning'
+                        })
+                    }
             })
 
     }
@@ -114,12 +109,12 @@ export default function CoursePurchaseScreen() {
         return () => {
             // 
         }
-    }, [dispatch])
+    }, [dispatch, loadingCourseAvailabilityDateSave])
     return (
 
         <>
             {
-                loading ? <Loading /> :
+                loading || loadingCourseAvailabilityDateSave ? <Loading /> :
                     <>
                         <PageTitle title="Course Purchase" />
 
@@ -132,14 +127,16 @@ export default function CoursePurchaseScreen() {
                                     upperTitle
                                     // noBodyPadding
                                     disableWidgetMenu
-                                    closePopup = {()=>{setOpenPopup(false); setRecordForEdit(null)}}
+                                    closePopup = {()=>{setOpenPopup(false); setRecordForEdit(null);}}
                                 >
                                     <CoursePurchaseDetailScreen
                                             recordForEdit={recordForEdit}
+                                            setRecordForEdit = {setRecordForEdit}
                                             setOpenPopup={setOpenPopup}
                                             softwares = {softwares}
                                             trainingTypes = {trainingTypes}
                                             addOrEdit = {addOrEdit}
+                                            loadingCourseAvailabilityDateSave= {loadingCourseAvailabilityDateSave}
 
                                         />
                                 </Widget> : 

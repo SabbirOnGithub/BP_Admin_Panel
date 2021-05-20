@@ -13,7 +13,7 @@ import { axiosWithToken } from '../../helpers/axios';
 
 
 const saveCourseAvailabilityDate = (item) => async (dispatch) =>{
-    console.log(item)
+    // console.log(item)
     try{
         dispatch({type: COURSE_AVAILABILITY_DATE_SAVE_REQUEST, payload:item })
         if(!item.id){
@@ -35,8 +35,7 @@ const saveCourseAvailabilityDate = (item) => async (dispatch) =>{
             }else{
                 dispatch({ type: COURSE_AVAILABILITY_DATE_SAVE_FAIL, payload: data.message });
             }
-
-            console.log(data)
+            return data
         }
     } catch (error) {
         console.log(error)

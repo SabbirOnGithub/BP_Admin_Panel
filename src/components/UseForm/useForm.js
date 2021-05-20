@@ -65,6 +65,14 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         if (validateOnChange)
             validate({ [name]: editorValue })
     }
+    const handleDateInput = (name, date) => {
+        setValues({
+            ...values,
+            [name]: date
+        })
+        if (validateOnChange)
+            validate({ [name]: date })
+    }
 
     const handleMultipleSelectInputChange = (e, value, name) => {
         setValues({
@@ -107,6 +115,7 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         handleFileChange,
         resetForm,
         handleEditorInput,
+        handleDateInput,
         handleMultipleSelectInputChange
     }
 }
