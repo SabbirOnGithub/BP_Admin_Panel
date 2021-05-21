@@ -1,11 +1,16 @@
 import tinycolor from "tinycolor2";
 
-// const primary = "#536DFE";
-const primary = "#6264A7"; // light
+// const primary = "#536DFE"; // previous
 // const primary = "#464775"; // dark
+const primary = "#6264A7"; // medium light
 
 // ---------------------------
-const secondary = "#FF5C93";
+// const secondary = "#FF5C93"; // previous
+const secondary = "#df4759"; // light red
+
+
+// ---------------------------
+
 const warning = "#FFC260";
 const success = "#3CD4A0";
 const info = "#9013FE";
@@ -136,6 +141,7 @@ export default {
         fontSize: "1.6rem",
       },
       
+      
     },
     PrivateSwitchBase: {
       root: {
@@ -144,4 +150,5 @@ export default {
     },
     
   },
+  
 };

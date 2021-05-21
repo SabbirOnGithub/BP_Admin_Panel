@@ -9,21 +9,29 @@ const useStyles = makeStyles(theme => ({
     },
     secondary: {
         backgroundColor: theme.palette.secondary.light,
-        // backgroundColor: 'none',
+        // backgroundColor: theme.palette.warning.light,
         '& .MuiButton-label': {
-            color: theme.palette.secondary.main,
-            // color:'rgb(220, 0, 78)'
+            // color: theme.palette.secondary.main,
+            color:theme.palette.secondary.contrastText
         },
-        // "&:hover": {
-        //     backgroundColor: theme.palette.primary.main,
-        //     color: "rgba(255, 255, 255, 0.35)",
-        //   },
+        "&:hover": {
+            // backgroundColor: "lightgreen",
+            '& .MuiButton-label': {
+                color: theme.palette.secondary.main,
+            },
+          },
     },
     primary: {
         backgroundColor: theme.palette.primary.light,
         '& .MuiButton-label': {
-            color: theme.palette.primary.main,
-        }
+            // color: theme.palette.primary.main,
+            color:theme.palette.secondary.contrastText
+        },
+        "&:hover": {
+            '& .MuiButton-label': {
+                color: theme.palette.primary.main,
+            },
+          },
     },
 }))
 

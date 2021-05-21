@@ -39,10 +39,12 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(1),
     },
     subHeadlineText :{
-        // background:'skyblue',
-        color:'#1a335b',
-        background:'#c7d4e7', 
-        padding:5, 
+        // background:'skyblue', 
+        // color:'#1a335b',
+        color:'#252423',
+        // background:'#c7d4e7', 
+        background:'#f3f2f1', 
+        padding:15, 
         marginRight:5
     }
     
@@ -176,7 +178,7 @@ export default function CoursePurchaseDetailScreen(props) {
                                 (
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
                                     <Grid container>
-                                        <Grid item md={6}>
+                                        <Grid item md={6} sm={12}>
                                         
                                             <h1 className={classes.subHeadlineText}>User details</h1>
 
@@ -195,7 +197,7 @@ export default function CoursePurchaseDetailScreen(props) {
                                             <Typography paragraph className={classes.customPharagraph}><b>Attendence Count:</b> {coursePurchase?.attendenceCount} </Typography>
 
                                         </Grid>
-                                        <Grid item md={6}>
+                                        <Grid item md={6} sm={12}>
                                             <h1 className={classes.subHeadlineText}>Payment  details:</h1>
                                             <Typography paragraph className={classes.customPharagraph}><b>Payment Status: </b> {coursePurchase?.paymentStatus > 0 ? 'Paid' : 'Unpaid'} </Typography>
                                             <Typography paragraph className={classes.customPharagraph}><b>Transection Id: </b> {coursePurchase?.transectionId} </Typography>

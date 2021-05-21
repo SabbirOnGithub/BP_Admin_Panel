@@ -14,7 +14,7 @@ export default function InputAutoSize(props) {
                     onChange={onChange}
                     {...other}
                     aria-label="minimum height" 
-                    rowsMin={minRow ? minRow : 3} 
+                    rows={minRow ? minRow : 3} 
                     placeholder={placeholder? placeholder : ''}
             />
             <span className="ErrorMessage MuiFormHelperText-contained">{error && error }</span>

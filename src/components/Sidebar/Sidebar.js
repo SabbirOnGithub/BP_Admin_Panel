@@ -203,20 +203,42 @@ const structure = [
 ];
 
 
-
 function Sidebar({ location }) {
+
+  const classes = useStyles();
+  const theme = useTheme();
+
+
+  // redux state
   const roleResourceDetails = useSelector(state => state.roleResourceDetails);
   const { roleResource } = roleResourceDetails;
 
-  var classes = useStyles();
-  var theme = useTheme();
+  // global variables
+  const { isSidebarOpened } = useLayoutState();
+  const layoutDispatch = useLayoutDispatch();
 
-  // global
-  var { isSidebarOpened } = useLayoutState();
-  var layoutDispatch = useLayoutDispatch();
+  // local variables
+  const [isPermanent, setPermanent] = useState(true);
 
-  // local
-  var [isPermanent, setPermanent] = useState(true);
+//##################################################################
+
+// functions list
+
+  const handleWindowWidthChange = () => {
+    const windowWidth = window.innerWidth;
+    const breakpointWidth = theme.breakpoints.values.md;
+    const isSmallScreen = windowWidth < breakpointWidth;
+
+    if (isSmallScreen && isPermanent) {
+      setPermanent(false);
+      setSidbarForMobile(layoutDispatch)
+    } else if (!isSmallScreen && !isPermanent) {
+      setPermanent(true);
+      setSidbarForDesktop(layoutDispatch)
+    }
+  }
+//##################################################################
+
 
   useEffect(function () {
     window.addEventListener("resize", handleWindowWidthChange);
@@ -230,6 +252,9 @@ function Sidebar({ location }) {
     <>
       { 
         <Drawer
+        ModalProps={{
+          onBackdropClick : ()=>{ toggleSidebar(layoutDispatch)}
+        }}
         variant={isPermanent ? "permanent" : "temporary"}
         className={classNames(classes.drawer, {
           [classes.drawerOpen]: isSidebarOpened,
@@ -261,7 +286,6 @@ function Sidebar({ location }) {
               location={location}
               isSidebarOpened={isSidebarOpened}
               {...link}
-              onClick={() => toggleSidebar(layoutDispatch)}
             />
             
           ))}
@@ -271,24 +295,6 @@ function Sidebar({ location }) {
     </>
   );
 
-  //##################################################################
-  function handleWindowWidthChange() {
-    var windowWidth = window.innerWidth;
-    var breakpointWidth = theme.breakpoints.values.md;
-    var isSmallScreen = windowWidth < breakpointWidth;
-
-    if (isSmallScreen && isPermanent) {
-      setPermanent(false);
-      setSidbarForMobile(layoutDispatch)
-    } else if (!isSmallScreen && !isPermanent) {
-      setPermanent(true);
-      setSidbarForDesktop(layoutDispatch)
-    }
-  }
-
-  // const closeDrawer = () =>{
-  //   setSidbarForMobile(layoutDispatch)
-  // }
 }
 
 export default withRouter(Sidebar);

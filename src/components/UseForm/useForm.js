@@ -163,7 +163,9 @@ const useStyles = makeStyles(theme => ({
                 border:'1px solid black',
             },
             "& .AutoSizeArea:focus" : {
-                border:'2px solid #536DFE',
+                // border:'2px solid #536DFE',
+                border: `2px solid ${theme.palette.primary.main}`,
+                
             },
             "& .ErrorMessage" : {
                 color:'#f44336',

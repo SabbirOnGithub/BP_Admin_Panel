@@ -39,7 +39,7 @@ export default function Header(props) {
   //eslint-disable-next-line
   const { userInfo  } = userSignIn;
 
-  console.log(userInfo)
+  // console.log(userInfo)
 
   var classes = useStyles();
 

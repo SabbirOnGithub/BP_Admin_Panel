@@ -448,8 +448,13 @@ export default function CtaFunctionScreen(props) {
                                                 createOperation={false}
                                                 handleSearch = {handleSearch}
                                                 searchLabel = 'Search by email'
+                                               
                                             >
-                                                <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                                <Paper style={{ 
+                                                    overflow: "auto", 
+                                                    backgroundColor: "transparent",
+                                                   
+                                                }}>
                                                 <TblContainer>
                                                     <TblHead />
                                                     <TableBody>

@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         border:0,
         borderRadius:0,
         // textTransform: 'capitalize',
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down("md")]: {
             padding: '5px 30px',
             fontSize: '1rem',
         },

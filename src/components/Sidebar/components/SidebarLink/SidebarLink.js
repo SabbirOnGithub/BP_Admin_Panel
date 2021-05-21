@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Inbox as InboxIcon } from "@material-ui/icons";
+import { useTheme } from "@material-ui/styles";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -17,6 +18,13 @@ import useStyles from "./styles";
 
 // components
 import Dot from "../Dot";
+
+// context
+import {
+  useLayoutState,
+  useLayoutDispatch,
+  toggleSidebar,
+} from "../../../../context/LayoutContext";
 
 // redux action 
 import { useSelector } from 'react-redux';
@@ -27,7 +35,6 @@ export default function SidebarLink({
   label,
   children,
   location,
-  isSidebarOpened,
   nested,
   type,
 }) {
@@ -35,16 +42,26 @@ export default function SidebarLink({
   const roleResourceDetails = useSelector(state => state.roleResourceDetails);
   const { roleResource } = roleResourceDetails;
 
-  var classes = useStyles();
+  const classes = useStyles();
+  const theme = useTheme();
+
+  // global
+  const { isSidebarOpened } = useLayoutState();
+  const layoutDispatch = useLayoutDispatch();
+
+  const windowWidth = window.innerWidth;
+  const breakpointWidth = theme.breakpoints.values.md;
+  const isSmallScreen = windowWidth < breakpointWidth;
+
 
   // local
-  var [isOpen, setIsOpen] = useState(false);
-  var isLinkActive =
+  const [isOpen, setIsOpen] = useState(false);
+  const isLinkActive =
     link &&
     (location.pathname === link);
     // (location.pathname === link || location.pathname.indexOf(link) !== -1);
 
-  if (type === "title")
+  if (type === "title"){
     return (
       <Typography
         className={classnames(classes.linkText, classes.sectionTitle, {
@@ -54,8 +71,9 @@ export default function SidebarLink({
         {label}
       </Typography>
     );
+  }
 
-  if (type === "divider") return <Divider className={classes.divider} />;
+  if (type === "divider") {return <Divider className={classes.divider} />;}
 
   if (!children){
       return (
@@ -72,6 +90,7 @@ export default function SidebarLink({
           }),
         }}
         disableRipple
+        onClick={() => (isSidebarOpened && isSmallScreen) && toggleSidebar(layoutDispatch)}
       >
         <ListItemIcon
           className={classnames(classes.linkIcon, {
