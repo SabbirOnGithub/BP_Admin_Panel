@@ -259,16 +259,13 @@ export default function BlogPostScreen() {
                                                                     <TableCell>{item.id}</TableCell>
                                                                     {/* <TableCell>{item.blogSubCategoryId}</TableCell> */}
                                                                     <TableCell>{blogSubCategorys ? searchNameByIdFromArray(blogSubCategorys, item.blogSubCategoryId) : ""}</TableCell>
-
                                                                     <TableCell>{item.title}</TableCell>
-                                                                    {/* <TableCell>{item.content}</TableCell> */}
-                                                                    <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.content}` }} /></TableCell>
-
+                                                                    <TableCell style={{width: '50%'}} ><div dangerouslySetInnerHTML={{ __html: `${item.content}` }} /></TableCell>
                                                                     <TableCell>{item.tags}</TableCell>
                                                                     <TableCell>{item.published ? "published" : "Not published"}</TableCell>
                                                                     <TableCell>
                                                                         {
-                                                                            item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                            item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" /> : "No image uploaded"
                                                                         }
                                                                     </TableCell>
                                                                     {/* <TableCell>{item.authorId}</TableCell> */}

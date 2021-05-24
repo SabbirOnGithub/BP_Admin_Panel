@@ -91,7 +91,9 @@ export default function Header(props) {
             />
           )}
         </IconButton>
-          <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" height='50px' width='50px' className={classes.logotypeImage} />
+        <div className={classes.navLogoWrapper}>
+          <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" className={classes.logotypeImage} />
+        </div>
           <Typography 
             variant="h2" 
             weight="medium" 
@@ -109,6 +111,7 @@ export default function Header(props) {
             className={classNames(
               classes.profileMenuLink,
               classes.logotype,
+              classes.consultationTypeInNav
             )}
             variant="h2" 
             weight="medium"
@@ -143,6 +146,14 @@ export default function Header(props) {
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
               {userInfo && userInfo.userName}
+            </Typography>
+            <Typography 
+                  variant="h4" 
+                  weight="medium" 
+                  className={classes.consultationTypeInMenuBar}
+            >
+                {/* Consultation Type :  */}
+                {userInfo?.consultationTypeName}
             </Typography>
             <Typography
               className={classes.profileMenuLink}

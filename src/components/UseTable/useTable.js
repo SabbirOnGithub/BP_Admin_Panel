@@ -16,6 +16,10 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: '#F3F5FF',
             cursor: 'pointer',
         },
+        '& img':{
+            width: 'auto', 
+            maxHeight: 200
+        }
     },
     
     [theme.breakpoints.down("sm")]: {

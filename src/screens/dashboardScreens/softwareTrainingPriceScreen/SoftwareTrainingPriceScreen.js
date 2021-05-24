@@ -31,8 +31,8 @@ const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'softwareId', label: 'Software' },
     { id: 'trainingTypeId', label: 'Training Type' },
-    { id: 'price', label: 'price' },
-    { id: 'discountPrice', label: 'discountPrice' },
+    { id: 'price', label: 'Price' },
+    { id: 'discountPrice', label: 'Discount Price' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 

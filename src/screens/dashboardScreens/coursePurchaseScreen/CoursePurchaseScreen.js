@@ -128,6 +128,7 @@ export default function CoursePurchaseScreen() {
                                     // noBodyPadding
                                     disableWidgetMenu
                                     closePopup = {()=>{setOpenPopup(false); setRecordForEdit(null);}}
+                                    closePopUpButtonText = 'Go back to list'
                                 >
                                     <CoursePurchaseDetailScreen
                                             recordForEdit={recordForEdit}

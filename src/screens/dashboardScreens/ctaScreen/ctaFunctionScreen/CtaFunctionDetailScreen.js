@@ -21,18 +21,10 @@ const useStyles = makeStyles(theme => ({
         }
     },
     customPharagraph: {
-        fontSize: '1.5rem',
-        "& b": {
-            color: '#0096ff',
-            marginRight:5
-        },
-        marginRight:5,
-        padding:10,
+        ...theme?.customPharagraph
     },
     subHeadlineText :{
-        background:'skyblue', 
-        padding:5, 
-        marginRight:5
+        ...theme?.subHeadlineText
     }
 
 

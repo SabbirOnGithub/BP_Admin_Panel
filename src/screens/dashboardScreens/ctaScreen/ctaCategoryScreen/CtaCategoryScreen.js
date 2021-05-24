@@ -101,7 +101,7 @@ export default function CtaFunctionScreen() {
                                             // noBodyPadding
                                             disableWidgetMenu
                                             closePopup = {()=>setShowDetail(false)}
-
+                                            closePopUpButtonText = 'Go back to list'
                                         >
                                             <CtaCategoryDetailScreen
                                                 recordForEdit={recordForEdit}

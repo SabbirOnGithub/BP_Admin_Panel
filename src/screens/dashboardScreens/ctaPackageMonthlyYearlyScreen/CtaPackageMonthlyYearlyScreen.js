@@ -31,8 +31,8 @@ const headCells = [
     { id: 'name', label: 'Name' },
     { id: 'companyTypeId', label: 'Company Type' },
     { id: 'submenuId', label: 'Submenu' },
-    { id: 'monthlyRate', label: 'MonthlyRate' },
-    { id: 'yearlyRate', label: 'YearlyRate' },
+    { id: 'monthlyRate', label: 'Monthly rate' },
+    { id: 'yearlyRate', label: 'Yearly rate' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 

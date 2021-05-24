@@ -85,9 +85,9 @@ body{
 .draft-editor-wrapper {	  border: 1px solid #ccc;	}
 
 /* scrollbar css for firefox */
-.MuiPaper-root{
+/* .MuiPaper-root{
   scrollbar-width: thin;
-}
+} */
 
 /* -------------------------------- */
 /* scrollbar design for chrome */

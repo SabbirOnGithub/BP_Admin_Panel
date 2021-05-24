@@ -3,21 +3,49 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 
 export default makeStyles(theme => ({
   logotype: {
-    color: "white",
-    marginLeft: theme.spacing(.5),
-    marginRight: theme.spacing(.5),
+    color: "#ffffff",
+    marginLeft: theme.spacing(.8),
+    marginRight: theme.spacing(.8),
     fontWeight: 500,
     fontSize: 18,
     whiteSpace: "nowrap",
-    // [theme.breakpoints.down("xs")]: {
-    //   display: "none",
-    // },
+    textTransform:'uppercase',
+    [theme.breakpoints.down("xs")]: {
+      // display: "none",
+    },
+  },
+  navLogoWrapper:{
+    height:50,
+    width:50,
+    borderRadius:'10px',
+    background:'#1a335b',
+    textAlign:'center',
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
   },
   logotypeImage: {
     whiteSpace: "nowrap",
-    // [theme.breakpoints.down("xs")]: {
-    //   display: "none",
-    // },
+    height:50,
+    width:50,
+  },
+  consultationTypeInNav:{
+    padding:'10px 15px',
+    '&:hover': {
+      // background: "#f00",
+      backgroundColor:'#ffffff',
+      color: theme.palette.primary.main
+   },
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
+  },
+  consultationTypeInMenuBar:{
+    display:'none',
+    marginTop:15,
+    [theme.breakpoints.down("xs")]: {
+      display: "block",
+    },
   },
   appBar: {
     width: "100vw",

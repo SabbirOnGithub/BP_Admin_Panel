@@ -19,11 +19,13 @@ export default makeStyles(theme => ({
   },
   widgetRoot: {
     boxShadow: theme.customShadows.widget,
+    
   },
   widgetBody: {
     paddingBottom: theme.spacing(3),
     paddingRight: theme.spacing(3),
     paddingLeft: theme.spacing(3),
+   
   },
   noPadding: {
     padding: 0,

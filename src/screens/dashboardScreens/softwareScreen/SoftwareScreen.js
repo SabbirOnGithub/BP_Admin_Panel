@@ -29,7 +29,7 @@ import { listSubMenus } from '../../../redux/actions/subMenuActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'submenuId', label: 'Sub Menu' },
+    { id: 'submenuId', label: 'Submenu' },
     { id: 'name', label: 'Name' },
     { id: 'displayOrder', label: 'Display Order' },
     { id: 'isActive', label: 'Active' },

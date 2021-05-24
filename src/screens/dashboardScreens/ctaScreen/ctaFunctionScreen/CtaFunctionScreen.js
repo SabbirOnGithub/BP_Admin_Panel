@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
 import CtaFunctionForm from "./CtaFunctionForm";
+import ConsultancyReceiveHistoryForm from "./ConsultancyReceiveHistoryForm";
+
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../../components/UseTable/useTable";
 import Controls from "../../../../components/controls/Controls";
@@ -13,6 +15,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
 import { ResponseMessage } from "../../../../themes/responseMessage";
 import { getFilterDataByUser } from '../../../../helpers/search';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import Popup from "../../../../components/Popup/Popup";
 
 
 // redux actions
@@ -93,11 +97,13 @@ export default function CtaFunctionScreen(props) {
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [recordForDetails, setRecordForDetails] = useState(null)
+    const [recordForEditRecievedHistory, setrecordForEditRecievedHistory] = useState(null)
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
-    // openPopUp passed from cta screen
+    // openPopUp passed from cta screen to show add form
     // const [openPopup, setOpenPopup] = useState(false)
+    const [openPopupForRecievedHistory , setOpenPopupForRecievedHistory] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -292,9 +298,13 @@ export default function CtaFunctionScreen(props) {
         }
 
     }
-    const openInPopup = item => {
+    const openInDetails = item => {
         setRecordForDetails(item)
         setShowDetail(true)
+    }
+    const openInPopUpForRecievedHistry = item => {
+        setrecordForEditRecievedHistory(item)
+        setOpenPopupForRecievedHistory(true)
     }
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
@@ -390,6 +400,7 @@ export default function CtaFunctionScreen(props) {
                                             // noBodyPadding
                                             disableWidgetMenu
                                             closePopup = {()=>setShowDetail(false)}
+                                            closePopUpButtonText = 'Go back to list'
                                         >
                                             <CtaFunctionDetailScreen
                                                 recordForDetails={recordForDetails}
@@ -470,9 +481,15 @@ export default function CtaFunctionScreen(props) {
                                                                 <TableCell>
                                                                     <Controls.ActionButton
                                                                         color="primary"
-                                                                        onClick={() => { openInPopup(item) }}>
+                                                                        onClick={() => { openInDetails(item) }}>
                                                                         <DetailsIcon fontSize="small" />
                                                                     </Controls.ActionButton>
+                                                                    { <Controls.ActionButton
+                                                                        color="primary"
+                                                                        onClick={() => { openInPopUpForRecievedHistry(item) }}>
+                                                                        <EditOutlinedIcon fontSize="small" />
+                                                                    </Controls.ActionButton>
+                                                                    }
                                                                 </TableCell>
                                                             </TableRow>)
                                                             )
@@ -481,6 +498,18 @@ export default function CtaFunctionScreen(props) {
                                                 </TblContainer>
                                                 <TblPagination />
                                             </Paper>
+                                            <Popup
+                                            title="Consulatancy Providing History Form"
+                                            openPopup={openPopupForRecievedHistory}
+                                            setOpenPopup={setOpenPopupForRecievedHistory}
+                                        >
+                                            <ConsultancyReceiveHistoryForm
+                                                recordForEdit={recordForEditRecievedHistory}
+                                                addOrEdit={addOrEdit}
+                                                // loadingSave={loadingSave}
+                                            />
+
+                                        </Popup>
                                             <Notification
                                                 notify={notify}
                                                 setNotify={setNotify}

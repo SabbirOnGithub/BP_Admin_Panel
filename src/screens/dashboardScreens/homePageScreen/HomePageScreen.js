@@ -64,10 +64,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: red[500],
     },
     customPharagraph: {
-        fontSize: '1.5rem',
-        "& b": {
-            color: '#536DFE'
-        }
+        ...theme?.customPharagraph
     },
 
 
@@ -218,7 +215,7 @@ export default function HomePageScreen() {
                                     title="Basic Info List"
                                     disableWidgetMenu
                                     addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                    createOperation = {createOperation}
+                                    createOperation = {createOperation && homePageDatas?.length<1}
                                 >
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                         {
@@ -274,7 +271,8 @@ export default function HomePageScreen() {
                                                     </IconButton>
                                                 </CardActions>
                                                 <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                                    <CardContent>
+                                                <Grid container>
+                                                    <Grid item md={6} sm={12}>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Hero Description:</b> {item.heroSectionDescription} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Video Url:</b> {item.videoUrl} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Hero Section Background Image:</b> {item.heroSectionBackgroundImage} </Typography>
@@ -286,6 +284,8 @@ export default function HomePageScreen() {
                                                         <Typography paragraph className={classes.customPharagraph}><b>Consulting Subtitle:</b> {item.consultingSubTitle} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Core Value Title:</b> {item.coreValueTitle} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Core Value Subtitle:</b> {item.coreValueSubtitle} </Typography>
+                                                    </Grid>
+                                                    <Grid item md={6} sm={12}>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Training Title:</b> {item.trainingTitle} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Training Subtitle:</b> {item.trainingSubtitile} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Testimonial Title:</b> {item.testimonialTitle} </Typography>
@@ -299,7 +299,8 @@ export default function HomePageScreen() {
                                                         {/* <Typography>
                                                                   Set aside off of the heat to let rest for 10 minutes, and then serve.
                                                                 </Typography> */}
-                                                    </CardContent>
+                                                    </Grid>
+                                                </Grid>
                                                 </Collapse>
                                             </Card>)
                                             )

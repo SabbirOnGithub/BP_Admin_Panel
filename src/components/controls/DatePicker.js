@@ -3,10 +3,10 @@ import {
     MuiPickersUtilsProvider, 
     // KeyboardDatePicker,
     DatePicker,
-    DateTimePicker
+    DateTimePicker,
+    TimePicker
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-
 // 
 
 function DatePickerCustom(props) {
@@ -28,7 +28,7 @@ function DatePickerCustom(props) {
                     format="MM/dd/yyyy"
                     name={name}
                     // value={new Date()}
-                    value={value}
+                    value={value ? value : new Date()}
                     // onChange={date =>onChange(name,date.toISOString())}
                     onChange={date =>onChange(name,date)}
                     {...other}
@@ -63,5 +63,30 @@ function DateTimePickerCustom(props) {
     )
 }
 
+function TimePickerCustom(props) {
 
-export {DatePickerCustom, DateTimePickerCustom}
+    const { name, label, value, error=null, onChange, message, readOnly, ...other } = props
+
+    return (
+        <div>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                <TimePicker
+                    clearable
+                    ampm={false}
+                    label={label}
+                    value={value ? value: new Date()}
+                    onChange={(time)=>onChange(name, time)}
+                    inputVariant="outlined"
+                    {...other}
+                    {...(error && {error:true,helperText:error})}
+                    InputProps={{ readOnly: readOnly }}
+
+                />
+            </MuiPickersUtilsProvider>
+        
+        </div>
+    )
+}
+
+
+export {DatePickerCustom, DateTimePickerCustom , TimePickerCustom}

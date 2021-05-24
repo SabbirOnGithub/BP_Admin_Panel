@@ -104,17 +104,22 @@ export default function Widget({
               }
               {
                 props.closePopup &&
-                // <Controls.Button
-                //   text=""
-                //   variant="outlined"
-                //   startIcon={<CloseIcon />}
-                //   onClick={props.closePopup}
-                // />
-                <Controls.ActionButton
+                ( props.closePopUpButtonText ? 
+                  <Controls.Button
+                        color="primary"
+                        onClick={props.closePopup}
+                        text={props.closePopUpButtonText}
+                  />
+                  
+                  :
+
+                  <Controls.ActionButton
                         color="secondary"
                         onClick={props.closePopup}>
                         <CloseIcon />
                     </Controls.ActionButton>
+                )
+                
               }
             </React.Fragment>
           )}

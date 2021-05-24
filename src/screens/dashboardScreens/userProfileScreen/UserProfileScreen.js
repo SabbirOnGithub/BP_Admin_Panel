@@ -159,6 +159,7 @@ function UserProfileScreen() {
         }
 
     }
+    // console.log(user)
 
   useEffect(() => {
     try{

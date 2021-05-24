@@ -18,7 +18,7 @@ import { listContactUsMessages } from '../../../redux/actions/contactUsMessageAc
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'fullName', label: 'FullName' },
+    { id: 'fullName', label: 'Full Name' },
     { id: 'companyName', label: 'Company Name' },
     { id: 'email', label: 'Email' },
     { id: 'phoneNumber', label: 'Phone Number' },
@@ -80,10 +80,12 @@ export default function ContactUsMessageScreen() {
                                     upperTitle
                                     // noBodyPadding
                                     disableWidgetMenu
+                                    closePopup = {()=>{setOpenPopup(false); setRecordForEdit(null);}}
+                                    closePopUpButtonText = 'Go back to list'
+
                                 >
                                     <ContactUsMessageDetailScreen
                                             recordForEdit={recordForEdit}
-                                            setOpenPopup={setOpenPopup}
                                         />
                                 </Widget> : 
                                 

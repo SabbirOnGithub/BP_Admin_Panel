@@ -28,7 +28,7 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'homepageId', label: 'Homepage Id' },
+    // { id: 'homepageId', label: 'Homepage Id' },
     { id: 'title', label: 'Title' },
     { id: 'description', label: 'Description' },
     { id: 'pictureUrl', label: 'Picture' },
@@ -222,14 +222,14 @@ export default function PersonalizedServiceDetailScreen() {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.homepageId}</TableCell>
+                                                            {/* <TableCell>{item.homepageId}</TableCell> */}
                                                             <TableCell>{item.title}</TableCell>
                                                             {/* <TableCell>{item.description}</TableCell> */}
                                                             <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
 
                                                             <TableCell>
                                                                 {
-                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" /> : "No image uploaded"
                                                                 }
                                                             </TableCell>
                                                             <TableCell>

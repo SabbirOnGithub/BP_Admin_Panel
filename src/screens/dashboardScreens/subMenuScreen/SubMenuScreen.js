@@ -291,12 +291,12 @@ export default function SubMenuScreen() {
                                                             </TableCell>
                                                             <TableCell>
                                                                 {
-                                                                    item.overViewBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.overViewBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                    item.overViewBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.overViewBackgroundPicture.split("\\").join('/')} alt="logo" /> : "No image uploaded"
                                                                 }
                                                             </TableCell>
                                                             <TableCell>
                                                                 {
-                                                                    item.bestPracticeBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.bestPracticeBackgroundPicture.split("\\").join('/')} alt="logo" style={{ width: 100, height: 100 }} /> : "No image uploaded"
+                                                                    item.bestPracticeBackgroundPicture ? <img src={BASE_ROOT_URL + "/" + item.bestPracticeBackgroundPicture.split("\\").join('/')} alt="logo"  /> : "No image uploaded"
                                                                 }
                                                             </TableCell>
                                                             <TableCell>

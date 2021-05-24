@@ -23,14 +23,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     customPharagraph: {
-        fontSize: '1.5rem',
-        "& b": {
-            // color: '#0096ff',
-            color: '#1a335b',
-            marginRight:5
-        },
-        marginRight:5,
-        padding:10,
+        ...theme?.customPharagraph
     },
     margin: {
         margin: theme.spacing(1),
@@ -39,13 +32,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(1),
     },
     subHeadlineText :{
-        // background:'skyblue', 
-        // color:'#1a335b',
-        color:'#252423',
-        // background:'#c7d4e7', 
-        background:'#f3f2f1', 
-        padding:15, 
-        marginRight:5
+        ...theme?.subHeadlineText
     }
     
 }))

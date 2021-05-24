@@ -29,7 +29,7 @@ import { listUsers } from '../../../redux/actions/userActions';
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'homepageId', label: 'Homepage Id' },
+    // { id: 'homepageId', label: 'Homepage Id' },
     { id: 'userId', label: 'User' },
     { id: 'userName', label: 'User Name' },
     { id: 'isActive', label: 'Is Active' },
@@ -213,7 +213,7 @@ export default function TestimonialDetailScreen() {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{item.homepageId}</TableCell>
+                                                            {/* <TableCell>{item.homepageId}</TableCell> */}
                                                             {/* <TableCell>{item.userId}</TableCell> */}
                                                             <TableCell>{users ? searchNameByIdFromArray(users, item.userId) : item.userId}</TableCell>
                                                             <TableCell>{item.userName}</TableCell>
