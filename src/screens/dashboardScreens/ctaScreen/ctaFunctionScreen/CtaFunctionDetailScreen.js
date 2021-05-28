@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import { searchNameByIdFromArray } from '../../../../helpers/search';
 import Loading from '../../../../components/Loading/Loading';
 
+import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
+
 import { detailsCtaFunction } from '../../../../redux/actions/ctaFunctionActions';
 
 const useStyles = makeStyles(theme => ({
@@ -57,6 +59,13 @@ export default function CtaFunctionDetailScreen(props) {
     //eslint-disable-next-line
     const { ctaFunction, loading, error } = ctaFunctionDetails;
 
+    const consultancyReceiveHistorySave = useSelector(state => state.consultancyReceiveHistorySave);
+    //eslint-disable-next-line
+    const { loading: loadingSaveConsultancyReceiveHistory } = consultancyReceiveHistorySave;
+    const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
+    //eslint-disable-next-line
+    const { loading: loadingDeleteConsultancyReceiveHistory } = consultancyReceiveHistoryDelete;
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -71,7 +80,7 @@ export default function CtaFunctionDetailScreen(props) {
         }
 
         // eslint-disable-next-line
-    }, [dispatch, recordForDetails.id])
+    }, [dispatch, recordForDetails.id, loadingDeleteConsultancyReceiveHistory, loadingSaveConsultancyReceiveHistory])
 
 // console.log(ctaFunctionModels?.techStacks)
 // console.log(ctaFunction)
@@ -156,6 +165,13 @@ export default function CtaFunctionDetailScreen(props) {
                                     
                                 {/* </Grid> */}
                 </Paper>
+
+                <ConsultancyReceiveHistoryScreen 
+                    consultancyReceiveHistorys = {ctaFunction?.consultancyReceiveHistories ? ctaFunction?.consultancyReceiveHistories : []}
+                    loading = {false}
+                    ctaFunctionId = {ctaFunction?.id}
+                    createOperation = {ctaFunction?.ctaPurchaseHistories?.length >0 ? true :false}
+                />
                
                     {/* <div>
                         <>

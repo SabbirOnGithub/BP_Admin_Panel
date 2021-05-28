@@ -4,7 +4,7 @@ import { TextField } from '@material-ui/core';
 
 export default function Input(props) {
 
-    const { name, label, value, error=null, onChange, readOnly, size, ...other } = props;
+    const { name, label, value, error=null, onChange, readOnly, max, size, ...other } = props;
     return (
         <TextField
             // size= {size ? size :"medium"} // "medium" "large" "small"
@@ -19,6 +19,7 @@ export default function Input(props) {
             // classes={readOnly ? { root: 'Mui-disabled' } : {}}
             inputProps={{
                 readOnly,
+                max : max
             }}
             InputProps={{
                 className: (readOnly) ? 'Mui-disabled' : undefined,

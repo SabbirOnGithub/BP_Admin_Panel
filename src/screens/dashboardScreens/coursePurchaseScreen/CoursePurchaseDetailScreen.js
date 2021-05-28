@@ -84,7 +84,7 @@ export default function CoursePurchaseDetailScreen(props) {
         if ('selectedDateFrom' in fieldValues)
             temp.selectedDateFrom = fieldValues.selectedDateFrom ? "" : "This field is required."
         if ('selectedDateTo' in fieldValues)
-            temp.selectedDateTo = fieldValues.selectedDateTo ? "" : "This field is required."
+            temp.selectedDateTo = (fieldValues.selectedDateTo > fieldValues.selectedDateFrom ? fieldValues.selectedDateTo : "") ? "" : "This field is required. And date time must be greater than the selected from date"
         setErrors({
             ...temp
         })
@@ -329,6 +329,8 @@ export default function CoursePurchaseDetailScreen(props) {
                                                        className={clsx(classes.padding, classes.textField)}
                                                        minDate={values.selectedDateFrom ? values.selectedDateFrom : new Date()}
                                                        disabled = {values.selectedDateFrom ? false : true}
+                                                        helperText="Date and time should be greater than selected from date and time"
+
                                                     />
     
                                                 </Grid>

@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Divider } from '@material-ui/core';
 import Widget from "../../../components/Widget/Widget";
 import Loading from '../../../components/Loading/Loading';
+// import { useHistory } from 'react-router';
 
 // redux actions
 import { detailsUser, saveUser } from '../../../redux/actions/userActions';
@@ -61,6 +62,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 function UserProfileScreen() {
+  // const history = useHistory();
+
   const userSignIn = useSelector(state => state.userSignin);
   //eslint-disable-next-line
   const { userInfo } = userSignIn;
@@ -140,6 +143,7 @@ function UserProfileScreen() {
                 // setRecordForEdit(null)
                 // setOpenPopup(false)
                 if (successSave) {
+                    // history.go(0);
                     setNotify({
                         isOpen: true,
                         message: "Successfull",
@@ -163,13 +167,13 @@ function UserProfileScreen() {
 
   useEffect(() => {
     try{
-      dispatch(listCompanySizes())
-      dispatch(listCompanyTypes())
-      dispatch(listConsultingTypes())
-
-      if(userInfo?.userId){
-        dispatch(detailsUser(userInfo?.userId));
-      }
+      dispatch(listCompanySizes());
+      dispatch(listCompanyTypes());
+      dispatch(listConsultingTypes());
+      userInfo?.userId && dispatch(detailsUser(userInfo?.userId));
+      // if(userInfo?.userId){
+      //   dispatch(detailsUser(userInfo?.userId));
+      // }
     }catch(e){
       console.log(e)
     }

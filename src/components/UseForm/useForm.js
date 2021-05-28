@@ -25,21 +25,40 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         // e.target.name === "file" && console.log(e.target.files[0]) 
         const { name, value } = e.target
 
-        if (e.target.value) {
+        if (value?.match('.')) {
             setValues({
                 ...values,
                 [name]: parseInt(value)
             })
-        } else {
+        } 
+        else  {
             setValues({
                 ...values,
-                [name]: ''
+                [name]: value
             })
-        }
+        } 
 
         if (validateOnChange)
             validate({ [name]: value })
     }
+    const handleInputFloatNumberChange = e => {
+        // e.target.name === "file" && console.log(e.target.files[0]) 
+        const { name, value } = e.target
+
+        if(value){
+            setValues({
+                ...values,
+                [name]: value
+            })
+        }
+
+        
+
+        if (validateOnChange)
+            validate({ [name]: value })
+    }
+
+    
 
     const handleFileChange = e => {
         // for single file in one form
@@ -115,7 +134,8 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         resetForm,
         handleEditorInput,
         handleDateInput,
-        handleMultipleSelectInputChange
+        handleMultipleSelectInputChange,
+        handleInputFloatNumberChange
     }
 }
 
