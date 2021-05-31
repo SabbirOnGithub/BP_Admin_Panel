@@ -24,6 +24,8 @@ export default function CtaScreen() {
 
     const [openPopup, setOpenPopup] = useState(false)
 
+    const [showCtaFunctionDetail, setShowCtaFunctionDetail] = useState(false)
+
 
     useEffect(() => {
         try {
@@ -54,9 +56,11 @@ export default function CtaScreen() {
                                 createOperation = {createOperation}
                                 openPopup = {openPopup}
                                 setOpenPopup ={setOpenPopup}
+                                showCtaFunctionDetail= {showCtaFunctionDetail}
+                                setShowCtaFunctionDetail = {setShowCtaFunctionDetail}
                             />
                             {
-                                openPopup === false && <CtaCategoryScreen />
+                                (openPopup === false && showCtaFunctionDetail === false) && <CtaCategoryScreen />
                             }
                             
                         </>

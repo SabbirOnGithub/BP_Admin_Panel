@@ -57,7 +57,7 @@ export default function Widget({
                 {title}
               </Typography>
               { props.handleSearch && props.searchLabel &&
-                        <Controls.Input
+                      <Controls.Input
                         label={props.searchLabel}
                         InputProps={{
                             startAdornment: (<InputAdornment position="start">
@@ -65,7 +65,8 @@ export default function Widget({
                             </InputAdornment>)
                         }}
                         onChange={props.handleSearch}
-                        style={{margin:4}}
+                        style={{margin:4, minWidth:'20%'}}
+                        value = {props.searchValue}
                     />
 
               }

@@ -36,7 +36,7 @@ const headCells = [
 
 export default function CtaFunctionScreen(props) {
 
-    const { createOperation, openPopup, setOpenPopup } = props;
+    const { createOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
 
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
@@ -92,12 +92,13 @@ export default function CtaFunctionScreen(props) {
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [recordForDetails, setRecordForDetails] = useState(null)
+    const [searchValue, setSearchValue] = useState("")
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     // openPopUp passed from cta screen to show add form
     // const [openPopup, setOpenPopup] = useState(false)
-    const [showDetail, setShowDetail] = useState(false)
+    // const [showDetail, setShowDetail] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
@@ -111,16 +112,28 @@ export default function CtaFunctionScreen(props) {
     const dispatch = useDispatch();
     // search from table
     const handleSearch = e => {
-        let target = e.target;
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
         setFilterFn({
             fn: items => {
-                if (target.value === "")
+                if (recievedSearchValue){
+                    return items.filter(x => {
+                        const makeStringInRow = (
+                            (x?.firstName && x?.firstName) + 
+                            (x?.lastName && (' ' + x?.lastName)) + 
+                            (x?.companyName && (' ' + x?.companyName)) + 
+                            (x?.email && (' ' + x?.email)) + 
+                            (x?.phone && (' ' + x?.phone))
+                            )?.toString()?.toLowerCase();
+                        return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+                    });
+                }
+                else{
                     return items;
-                else
-                    return items.filter(x => x?.email?.toLowerCase()?.includes(target?.value?.toLowerCase()))
-                    // return items.filter(x => x?.firstName?.toUpperCase().indexOf(target?.value?.toUpperCase()) >-1)
+                }
             }
-        })
+        });
     }
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
@@ -293,7 +306,7 @@ export default function CtaFunctionScreen(props) {
     }
     const openInDetails = item => {
         setRecordForDetails(item)
-        setShowDetail(true)
+        setShowCtaFunctionDetail(true)
     }
 
     // delete promise
@@ -370,7 +383,7 @@ export default function CtaFunctionScreen(props) {
                                         text='Schedule a consult'
                                         // variant="outlined"
                                         // startIcon={<AddIcon />}
-                                        onClick={() => { setShowDetail(false); setOpenPopup(true); setRecordForEdit(null);  }}
+                                        onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null);  }}
                                     />
                                 </div>
                             }
@@ -383,19 +396,20 @@ export default function CtaFunctionScreen(props) {
 
 
                                 {
-                                    showDetail ?
+                                    showCtaFunctionDetail ?
                                         <Widget
                                             title="Cta Function Detail"
                                             upperTitle
                                             // noBodyPadding
                                             disableWidgetMenu
-                                            closePopup = {()=>setShowDetail(false)}
+                                            closePopup = {()=>setShowCtaFunctionDetail(false)}
                                             closePopUpButtonText = 'Go back to list'
                                         >
                                             <CtaFunctionDetailScreen
                                                 recordForDetails={recordForDetails}
                                                 ctaFunctionModels = {ctaFunctionModels}
-                                                // setOpenPopup={setShowDetail}
+                                                // setOpenPopup={setShowCtaFunctionDetail}
+                                                createOperation = {createOperation} // ctaScreen create permission for user
                                             />
                                         </Widget> :
                                             (openPopup ? 
@@ -448,7 +462,8 @@ export default function CtaFunctionScreen(props) {
                                                 buttonText='Schedule a consult'
                                                 createOperation={false}
                                                 handleSearch = {handleSearch}
-                                                searchLabel = 'Search by email'
+                                                searchLabel = 'Search here..'
+                                                searchValue = {searchValue}
                                                
                                             >
                                                 <Paper style={{ 
@@ -463,11 +478,11 @@ export default function CtaFunctionScreen(props) {
                                                             recordsAfterPagingAndSorting().map(item =>
                                                             (<TableRow key={item.id}>
                                                                 <TableCell>{item.id}</TableCell>
-                                                                <TableCell>{item.firstName + ' ' + item.lastName}</TableCell>
+                                                                <TableCell>{item?.firstName + ' ' + item?.lastName}</TableCell>
                                                                 {/* <TableCell>{item.name}</TableCell> */}
-                                                                <TableCell>{item.companyName}</TableCell>
-                                                                <TableCell>{item.email}</TableCell>
-                                                                <TableCell>{item.phone}</TableCell>
+                                                                <TableCell>{item?.companyName}</TableCell>
+                                                                <TableCell>{item?.email}</TableCell>
+                                                                <TableCell>{item?.phone}</TableCell>
                                                                 <TableCell>
                                                                     <Controls.ActionButton
                                                                         color="primary"

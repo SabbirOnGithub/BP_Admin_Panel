@@ -38,6 +38,7 @@ export default function CtaFunctionScreen() {
     const ctaCategorysFilterByUser = getFilterDataByUser(ctaCategorys, userInfo);
     
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [searchValue, setSearchValue] = useState("")
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
@@ -54,18 +55,30 @@ export default function CtaFunctionScreen() {
 
     const dispatch = useDispatch();
 
-    // search from table
-    const handleSearch = e => {
-        let target = e.target;
+      // search from table
+      const handleSearch = e => {
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
         setFilterFn({
             fn: items => {
-                if (target.value === "")
+                if (recievedSearchValue){
+                    return items.filter(x => {
+                        const makeStringInRow = (
+                            (x?.firstName && x?.firstName) + 
+                            (x?.lastName && (' ' + x?.lastName)) + 
+                            (x?.companyName && (' ' + x?.companyName)) + 
+                            (x?.email && (' ' + x?.email)) + 
+                            (x?.phone && (' ' + x?.phone))
+                            )?.toString()?.toLowerCase();
+                        return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+                    });
+                }
+                else{
                     return items;
-                else
-                    return items.filter(x => x?.email?.toLowerCase()?.includes(target?.value?.toLowerCase()))
-                    // return items.filter(x => x?.firstName?.toUpperCase().indexOf(target?.value?.toUpperCase()) >-1)
+                }
             }
-        })
+        });
     }
 
     const openInPopup = item => {
@@ -120,7 +133,8 @@ export default function CtaFunctionScreen() {
                                             // buttonText='Schedule a consult'
                                             createOperation={false}
                                             handleSearch = {handleSearch}
-                                            searchLabel = 'Search by email'
+                                            searchLabel = 'Search here..'
+                                            searchValue = {searchValue}
                                         >
 
                                             <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>

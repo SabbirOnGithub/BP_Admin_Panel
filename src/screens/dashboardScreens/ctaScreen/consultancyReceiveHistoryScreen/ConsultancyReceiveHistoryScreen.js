@@ -41,12 +41,14 @@ export default function ConsultancyReceiveHistoryScreen(props) {
     const consultancyReceiveHistorySave = useSelector(state => state.consultancyReceiveHistorySave);
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave } = consultancyReceiveHistorySave;
-    const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
-    //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = consultancyReceiveHistoryDelete;
+    // const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
+    // //eslint-disable-next-line
+    // const { loading: loadingDelete, success: successDelete, error: errorDelete } = consultancyReceiveHistoryDelete;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
+    const [searchValue, setSearchValue] = useState("")
+
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
@@ -61,7 +63,28 @@ export default function ConsultancyReceiveHistoryScreen(props) {
     } = useTable(consultancyReceiveHistorys, headCells, filterFn);
 
     const dispatch = useDispatch();
-
+    // search from table
+    const handleSearch = e => {
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
+        setFilterFn({
+            fn: items => {
+                if (recievedSearchValue){
+                    return items.filter(x => {
+                        const makeStringInRow = (
+                            (x?.consultancyReceiveDate && new Date(`${x?.consultancyReceiveDate} UTC`).toLocaleDateString()) + 
+                            (x?.consultancyReceiveTime && (' ' + (x?.consultancyReceiveTime/60).toFixed(2) + ' Hours')) 
+                            )?.toString()?.toLowerCase();
+                        return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+                    });
+                }
+                else{
+                    return items;
+                }
+            }
+        });
+    }
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
         dispatch(saveConsultancyReceiveHistory(item));
@@ -153,6 +176,9 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
+                                        handleSearch = {handleSearch}
+                                        searchLabel = 'Search here..'
+                                        searchValue = {searchValue}
                                     >
 
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -163,7 +189,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{new Date(`${item.consultancyReceiveDate} UTC`).toLocaleDateString()} </TableCell>
+                                                            <TableCell>{new Date(`${item.consultancyReceiveDate} UTC`).toLocaleDateString()}</TableCell>
                                                             <TableCell>{(item.consultancyReceiveTime/60).toFixed(2) + ' Hours'}</TableCell>
                                                             {/* <TableCell>
                                                                 { <Controls.ActionButton

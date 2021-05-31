@@ -40,6 +40,7 @@ export default function CtaFunctionDetailScreen(props) {
     const { recordForDetails,
         //  setOpenPopup 
         ctaFunctionModels,
+        createOperation
         } = props
     const classes = useStyles();
 
@@ -170,7 +171,8 @@ export default function CtaFunctionDetailScreen(props) {
                     consultancyReceiveHistorys = {ctaFunction?.consultancyReceiveHistories ? ctaFunction?.consultancyReceiveHistories : []}
                     loading = {false}
                     ctaFunctionId = {ctaFunction?.id}
-                    createOperation = {ctaFunction?.ctaPurchaseHistories?.length >0 ? true :false}
+                    // createOperation = {ctaFunction?.ctaPurchaseHistories?.length >0 ? true :false}
+                    createOperation = {createOperation}
                 />
                
                     {/* <div>
