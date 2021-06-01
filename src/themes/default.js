@@ -1,5 +1,6 @@
 import tinycolor from "tinycolor2";
 
+
 // const primary = "#536DFE"; // previous
 // const secondary = "#FF5C93"; // previous
 
@@ -75,6 +76,7 @@ export default {
       default: "#F6F7FF",
       light: "#F3F5FF",
     },
+
   },
   customShadows: {
     widget:
@@ -84,42 +86,42 @@ export default {
     widgetWide:
       "0px 12px 33px 0px #E8EAFC, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
   },
-  subHeadlineText :{
+  subHeadlineText: {
     // background:'skyblue', 
     // color:'#1a335b',
-    color:'#252423',
+    color: '#252423',
     // background:'#c7d4e7', 
-    background:'#f3f2f1', 
-    padding:15, 
-    marginRight:5
-},
-customPharagraph: {
-  fontSize: '1.5rem',
-  "& b": {
+    background: '#f3f2f1',
+    padding: 15,
+    marginRight: 5
+  },
+  customPharagraph: {
+    fontSize: '1.5rem',
+    "& b": {
       // color: '#0096ff',
       color: '#1a335b',
-      marginRight:5
+      marginRight: 5
+    },
+    marginRight: 5,
+    padding: 10,
   },
-  marginRight:5,
-  padding:10,
-},
-thinScrollBar :{
-  '@global': {
-    '*': {
-      'scrollbar-width': 'thin',
-    },
-    '*::-webkit-scrollbar': {
-      width: '0.4em',
-      height: '4px',
-      backgroundColor: '#F5F5F5',
-    },
-    '*::-webkit-scrollbar-thumb': {
-      backgroundColor: '#767676',
-      borderRadius: '10px'
+  thinScrollBar: {
+    '@global': {
+      '*': {
+        'scrollbar-width': 'thin',
+      },
+      '*::-webkit-scrollbar': {
+        width: '0.4em',
+        height: '4px',
+        backgroundColor: '#F5F5F5',
+      },
+      '*::-webkit-scrollbar-thumb': {
+        backgroundColor: '#767676',
+        borderRadius: '10px'
+      },
     },
   },
-},
- 
+
   overrides: {
     MuiBackdrop: {
       root: {
@@ -198,13 +200,13 @@ thinScrollBar :{
           },
           '*::-webkit-scrollbar-thumb': {
             backgroundColor: '#767676',
-            borderRadius: '10px', 
+            borderRadius: '10px',
           },
         },
       },
     },
     // 
-  
+
 
   },
 

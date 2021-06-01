@@ -62,6 +62,8 @@ export default function HomePageSliderScreen() {
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [searchValue, setSearchValue] = useState("")
+
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
@@ -76,6 +78,31 @@ export default function HomePageSliderScreen() {
     } = useTable(homePageSliders, headCells, filterFn);
 
     const dispatch = useDispatch();
+
+    // search from table
+    const handleSearch = e => {
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
+        setFilterFn({
+            fn: items => {
+                if (recievedSearchValue){
+                    return items.filter(x => {
+                        const makeStringInRow = (
+                            (x?.title && x?.title) + 
+                            (x?.subTitle && (' ' + x?.subTitle)) + 
+                            (x?.displayOrder && (' ' + x?.displayOrder)) + 
+                            (x?.isActive ? 'Yes' : 'No') 
+                            )?.toString()?.toLowerCase();
+                        return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+                    });
+                }
+                else{
+                    return items;
+                }
+            }
+        });
+    }
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
@@ -208,6 +235,9 @@ export default function HomePageSliderScreen() {
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
+                                        handleSearch = {handleSearch}
+                                        searchLabel = 'Search here..'
+                                        searchValue = {searchValue}
                                     >
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
                                             <TblContainer>

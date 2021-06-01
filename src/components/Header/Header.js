@@ -31,6 +31,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions/userActions';
 import { useHistory } from "react-router-dom";
 
+import { isAdminUser } from '../../helpers/search';
+
+
 import { config } from "../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
 
@@ -107,8 +110,9 @@ export default function Header(props) {
             Best Practicify
           </Typography>
         <div className={classes.grow} />
-
-        <Typography
+        {
+          isAdminUser(userInfo) ? null : 
+          <Typography
             className={classNames(
               classes.profileMenuLink,
               classes.logotype,
@@ -118,8 +122,11 @@ export default function Header(props) {
             weight="medium"
             component={Link} to={'/admin/userProfile'}
           >
-            {userInfo?.consultationTypeName}
+              {userInfo?.consultationTypeName}
           </Typography>
+        }
+
+        
         
         
         <IconButton

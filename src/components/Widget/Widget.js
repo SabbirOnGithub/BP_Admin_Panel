@@ -29,6 +29,7 @@ export default function Widget({
   headerClass,
   style,
   noWidgetShadow,
+  additionlComponent, 
   ...props
 }) {
   var classes = useStyles();
@@ -121,6 +122,9 @@ export default function Widget({
                     </Controls.ActionButton>
                 )
                 
+              }
+              {
+                additionlComponent && additionlComponent 
               }
             </React.Fragment>
           )}
