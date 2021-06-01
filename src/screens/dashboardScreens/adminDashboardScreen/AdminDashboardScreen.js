@@ -44,118 +44,118 @@ import { detailsAdminDashboard } from '../../../redux/actions/dashboardActions';
 //         "count": '156'
 //     },
 //     {
-//         "year": 2022,
+//         "year": 2021,
 //         "month": 6,
 //         "count": 500,
 //     },
 //     {
-//         "year": '2023',
-//         "month": '5',
+//         "year": '2021',
+//         "month": '7',
 //         "count": '156'
 //     },
 //     {
-//         "year": 2023,
-//         "month": 6,
+//         "year": 2021,
+//         "month": 8,
 //         "count": 100,
 //     },
 //     {
-//         "year": 2024,
-//         "month": 6,
+//         "year": 2021,
+//         "month": 9,
 //         "count": 300,
 //     },
 //     {
-//         "year": 2025,
-//         "month": 6,
+//         "year": 2021,
+//         "month": 10,
 //         "count": 190,
 //     },
 //     {
-//         "year": 2026,
-//         "month": 6,
+//         "year": 2021,
+//         "month": 11,
 //         "count": 504,
 //     },
 //     {
-//         "year": 2027,
-//         "month": 6,
+//         "year": 2021,
+//         "month": 12,
 //         "count": 689,
 //     },
 //     {
-//         "year": 2028,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 1,
 //         "count": 309,
 //     },
 //     {
-//         "year": 2029,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 2,
 //         "count": 809,
 //     },
 //     {
-//         "year": 2024,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 3,
 //         "count": 300,
 //     },
 //     {
-//         "year": 2025,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 4,
 //         "count": 190,
 //     },
 //     {
-//         "year": 2026,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 5,
 //         "count": 504,
 //     },
 //     {
-//         "year": 2027,
+//         "year": 2022,
 //         "month": 6,
 //         "count": 689,
 //     },
 //     {
-//         "year": 2028,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 7,
 //         "count": 309,
 //     },
 //     {
-//         "year": 2029,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 8,
 //         "count": 809,
 //     },
 //     {
-//         "year": 2025,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 9,
 //         "count": 190,
 //     },
 //     {
-//         "year": 2026,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 10,
 //         "count": 504,
 //     },
 //     {
-//         "year": 2027,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 11,
 //         "count": 689,
 //     },
 //     {
-//         "year": 2028,
-//         "month": 6,
+//         "year": 2022,
+//         "month": 12,
 //         "count": 309,
 //     },
 //     {
-//         "year": 2029,
-//         "month": 6,
+//         "year": 2023,
+//         "month": 1,
 //         "count": 809,
 //     },
 //     {
-//         "year": 2026,
-//         "month": 6,
+//         "year": 2023,
+//         "month": 2,
 //         "count": 504,
 //     },
 //     {
-//         "year": 2027,
-//         "month": 6,
+//         "year": 2023,
+//         "month": 3,
 //         "count": 689,
 //     },
 //     {
-//         "year": 2028,
-//         "month": 6,
+//         "year": 2023,
+//         "month": 4,
 //         "count": 309,
 //     },
 // ]
@@ -370,61 +370,64 @@ export default function AdminDashboardScreen() {
                                     </Widget>
                                 </Grid>
                                 <Grid item xs={12}>
-                                <Widget
+                                    {
+                                        adminDashboard.userGraph &&
+                                            
+                                        <Widget
                                         bodyClass={classes.mainChartBody}
                                         header={
-                                          <div className={classes.mainChartHeader}>
+                                        <div className={classes.mainChartHeader}>
                                             <Typography
-                                              variant="h5"
-                                              color="text"
-                                              colorBrightness="secondary"
+                                            variant="h5"
+                                            color="text"
+                                            colorBrightness="secondary"
                                             >
-                                               {(mainChartState + 'ly Chart')?.toUpperCase()}
+                                            {(mainChartState + 'ly Chart')?.toUpperCase()}
                                             </Typography>
                                             <div className={classes.mainChartHeaderLabels}>
-                                              {/* <div className={classes.mainChartHeaderLabel}>
+                                            {/* <div className={classes.mainChartHeaderLabel}>
                                                 <Dot color="warning" />
                                                 <Typography className={classes.mainChartLegentElement}>
-                                                  Tablet
+                                                Tablet
                                                 </Typography>
-                                              </div>
-                                              <div className={classes.mainChartHeaderLabel}>
+                                            </div>
+                                            <div className={classes.mainChartHeaderLabel}>
                                                 <Dot color="primary" />
                                                 <Typography className={classes.mainChartLegentElement}>
-                                                  Mobile
+                                                Mobile
                                                 </Typography>
-                                              </div> */}
-                                              <div className={classes.mainChartHeaderLabel}>
+                                            </div> */}
+                                            <div className={classes.mainChartHeaderLabel}>
                                                 <Dot color="secondary" />
                                                 <Typography className={classes.mainChartLegentElement}>
-                                                  Count
+                                                Count
                                                 </Typography>
-                                              </div>
+                                            </div>
                                             </div>
                                             <Select
-                                              value={mainChartState}
-                                              onChange={e => setMainChartState(e.target.value)}
-                                              input={
+                                            value={mainChartState}
+                                            onChange={e => setMainChartState(e.target.value)}
+                                            input={
                                                 <OutlinedInput
-                                                  labelWidth={0}
-                                                  classes={{
+                                                labelWidth={0}
+                                                classes={{
                                                     notchedOutline: classes.mainChartSelectRoot,
                                                     input: classes.mainChartSelect,
-                                                  }}
+                                                }}
                                                 />
-                                              }
-                                              autoWidth
+                                            }
+                                            autoWidth
                                             >
-                                              <MenuItem value="year">Year</MenuItem>
-                                              <MenuItem value="month">Month</MenuItem>
+                                            <MenuItem value="year">Year</MenuItem>
+                                            <MenuItem value="month">Month</MenuItem>
                                             </Select>
-                                          </div>
+                                        </div>
                                         }
                                     >
                                         <ResponsiveContainer width="100%" minWidth={500} height={350}>
                                         <ComposedChart
                                             margin={{ top: 0, right: -15, left: -15, bottom: 0 }}
-                                            data={adminDashboard.userGraph?.map(item=> item.month ? {...item, month:months[item.month -1]} : item)}
+                                            data={adminDashboard.userGraph?.map(item=> item.month ? {...item, month:months[item.month -1]} : item) }
                                             // data={mainChartData.map(item=> item.month ? {...item, month:months[item.month -1]} : item)}
 
                                         >
@@ -474,7 +477,9 @@ export default function AdminDashboardScreen() {
                                         </ResponsiveContainer>
                                     
                                     </Widget>
-        
+
+                                    }
+                                    
                                 </Grid>
         
                             
