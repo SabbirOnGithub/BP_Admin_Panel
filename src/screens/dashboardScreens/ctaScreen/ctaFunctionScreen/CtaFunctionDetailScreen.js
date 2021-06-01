@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 // import useTable from "../../../components/UseTable/useTable";
 // import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../../helpers/search';
 import { searchNameByIdFromArray } from '../../../../helpers/search';
+import { timeConverter } from '../../../../helpers/converter';
 import Loading from '../../../../components/Loading/Loading';
 
 import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
@@ -118,6 +119,8 @@ export default function CtaFunctionDetailScreen(props) {
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Service: </b> {ctaFunction?.goalsToAchieveService} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Technology: </b> {ctaFunction?.goalsToAchieveTechnology} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Estimation: </b> {ctaFunction?.estimation} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Total Hours: </b> {ctaFunction?.totalHour && timeConverter(ctaFunction?.totalHour)} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Status: </b> {ctaFunction?.isCompleted ? "Completed" : 'Ongoing'} </Typography>
                                     </Grid>
                                     <Grid item md={6}>
                                         <Typography paragraph className={classes.customPharagraph}><b>Last Name: </b> {ctaFunction?.lastName} </Typography>
@@ -126,6 +129,8 @@ export default function CtaFunctionDetailScreen(props) {
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution: </b> {ctaFunction?.goalsToAchieveSolution} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Tell Us More: </b> {ctaFunction?.tellUsMore} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {ctaFunction?.description} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> {ctaFunction?.hourRemaining && timeConverter(ctaFunction?.hourRemaining)} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Used Hours: </b> {ctaFunction?.hourUsed && timeConverter(ctaFunction?.hourUsed)} </Typography>
                                     </Grid>
                                 </Grid>
                                 <h1 className={classes.subHeadlineText}>Payment History</h1>
@@ -147,13 +152,25 @@ export default function CtaFunctionDetailScreen(props) {
                                                             { item?.ctaPackageDailyId && 'Daily'}
                                                             { item?.ctaPackageHourlyId && 'Hourly'}
                                                         </Typography>
-                                                        {/* <Typography paragraph className={classes.customPharagraph}><b>Subscription:</b>  </Typography> */}
+                                                        {
+                                                            item?.ctaPackageHourly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> {item?.ctaPackageHourly?.ctaHourName} </Typography>
+                                                        }
+
+                                                        {
+                                                            item?.ctaPackageDaily && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> Solution Discovery  </Typography>
+                                                        }
+
+                                                        {
+                                                            item?.ctaPackageMonthlyYearly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> Access Retainer  </Typography>
+                                                        }
+
                                                     </Grid>
                                                     <Grid item md={6}>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Amount: </b> ${item?.amount} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Payment Gateway: </b> {item?.paymentGateway} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Purchase Date: </b> {item?.purchaseDate} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Completion Date: </b> {item?.completionDate} </Typography>
+                                                       
 
                                                         
                                                     </Grid>
@@ -172,7 +189,7 @@ export default function CtaFunctionDetailScreen(props) {
                     loading = {false}
                     ctaFunctionId = {ctaFunction?.id}
                     // createOperation = {ctaFunction?.ctaPurchaseHistories?.length >0 ? true :false}
-                    createOperation = {createOperation}
+                    createOperation = {createOperation && !ctaFunction?.isCompleted}
                 />
                
                     {/* <div>

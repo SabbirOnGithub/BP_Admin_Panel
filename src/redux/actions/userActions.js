@@ -71,16 +71,19 @@ const saveUser = (item, id) => async (dispatch) => {
         } else {
             console.log('update')
             // Display the values
-            // for (var value of item.values()) {
-            //     console.log(value);
-            // }
+            for (var value of item.values()) {
+                console.log(value);
+            }
             const { data } = await axiosWithTokenAndMultipartData.put("/User/UpdateUser", item);
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
                 const getCurrentUser = JSON.parse(Cookie.get('userInfo'));
-                const userInfoUpdate = {...getCurrentUser,consultationTypeName:'Tajul'}
+                // const userInfoUpdate = {...getCurrentUser,consultationTypeName:'Tajul'}
+                const userInfoUpdate = {...getCurrentUser,companyTypeName:data.data?.companyTypeName}
                 Cookie.set('userInfo', JSON.stringify(userInfoUpdate));
-                console.log(Cookie.get('userInfo'))
+                // console.log(Cookie.get('userInfo'))
+                console.log(data)
+                return data
 
             } else {
                 dispatch({ type: USER_SAVE_FAIL, payload: data.message });
@@ -114,9 +117,9 @@ const signin = (email,password) => async(dispatch) => {
         const {data} = await axiosWithoutToken.post(`${BASE_API_URL}/Auth/Login`, { username, password });
         if(data && data.data !== null){
             dispatch({type:USER_SIGNIN_SUCCESS,payload:data.data});
-            console.log(data.data);
             Cookie.set('userInfo', JSON.stringify(data.data));
             Cookie.set('userToken', data.data.token);
+            console.log(data.data);
         }else{
             dispatch({type:USER_SIGNIN_FAIL,payload:data.message})
         }

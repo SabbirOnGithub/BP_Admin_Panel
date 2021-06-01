@@ -26,8 +26,8 @@ export default function UserProfileForm(props) {
             loadingSave, 
             setOpenPopup, 
             openPopup, 
-            // companySizes, 
-            // companyTypes, 
+            companySizes, 
+            companyTypes, 
             consultingTypes 
         } = props
 
@@ -48,10 +48,10 @@ export default function UserProfileForm(props) {
             temp.address = fieldValues.address ? "" : "This field is required."
         if ('mobile' in fieldValues)
             temp.mobile = fieldValues.mobile ? "" : "This field is required."
-        // if ('companySizeId' in fieldValues)
-        //     temp.companySizeId = fieldValues.companySizeId ? "" : "This field is required."
-        // if ('companyTypeId' in fieldValues)
-        //     temp.companyTypeId = fieldValues.companyTypeId ? "" : "This field is required."
+        if ('companySizeId' in fieldValues)
+            temp.companySizeId = fieldValues.companySizeId ? "" : "This field is required."
+        if ('companyTypeId' in fieldValues)
+            temp.companyTypeId = fieldValues.companyTypeId ? "" : "This field is required."
         if ('currentConsultingTypeId' in fieldValues)
             temp.currentConsultingTypeId = fieldValues.currentConsultingTypeId ? "" : "This field is required."
         
@@ -77,6 +77,7 @@ export default function UserProfileForm(props) {
         e.preventDefault()
         if (validate()) {
             try {
+                console.log(values)
                 addOrEdit(values, resetForm);
             }
             catch (e) {
@@ -168,7 +169,7 @@ export default function UserProfileForm(props) {
 
                     {!openPopup &&
                     <>
-                        {/* <Controls.Select
+                        <Controls.Select
                             name="companySizeId"
                             label="Company Size"
                             value={values?.companySizeId ? values?.companySizeId : ""}
@@ -185,7 +186,7 @@ export default function UserProfileForm(props) {
                             error={errors.companyTypeId}
                             options={companyTypes ? companyTypes : []}
 
-                        /> */}
+                        />
 
                         <Controls.Select
                             name="currentConsultingTypeId"

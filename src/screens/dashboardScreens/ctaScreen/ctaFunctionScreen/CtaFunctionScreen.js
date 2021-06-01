@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
 import CtaFunctionForm from "./CtaFunctionForm";
-import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Grid, Paper, TableBody, TableRow, TableCell, Chip } from '@material-ui/core';
 import useTable from "../../../../components/UseTable/useTable";
 import Controls from "../../../../components/controls/Controls";
 import Notification from "../../../../components/Notification/Notification";
@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
 import { ResponseMessage } from "../../../../themes/responseMessage";
 import { getFilterDataByUser } from '../../../../helpers/search';
+import { timeConverter } from '../../../../helpers/converter';
 
 // redux actions
 import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
@@ -25,16 +26,30 @@ import { saveCtaPayment } from '../../../../redux/actions/ctaPaymentActions';
 import { saveCtaPurchaseHistory } from '../../../../redux/actions/ctaPurchaseHistoryActions';
 import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 
+import useStyles from "./styles";
+
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'name', label: 'Name' },
+    { id: 'name', label: 'User details' },
     { id: 'companyName', label: 'Company Name' },
-    { id: 'email', label: 'Email' },
-    { id: 'phone', label: 'Phone' },
+    // { id: 'email', label: 'Email' },
+    // { id: 'phone', label: 'Phone' },
+    { id: 'totalHour', label: 'Hour calc.' },
+    // { id: 'hourUsed', label: 'hourUsed' },
+    // { id: 'hourRemaining', label: 'hourRemaining' },
+    { id: 'isCompleted', label: 'Status' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
+const status = {
+    ongoing:"warning",
+    completed: "success"
+
+  };
+
 export default function CtaFunctionScreen(props) {
+    const classes = useStyles();
+
 
     const { createOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
 
@@ -106,7 +121,8 @@ export default function CtaFunctionScreen(props) {
         TblContainer,
         TblHead,
         TblPagination,
-        recordsAfterPagingAndSorting
+        recordsAfterPagingAndSorting,
+        pageDataConfig
     } = useTable(ctaFunctionsFilterByUser, headCells, filterFn);
 
     const dispatch = useDispatch();
@@ -345,7 +361,7 @@ export default function CtaFunctionScreen(props) {
         try {
             dispatch(detailsUser(userInfo.userId));
             dispatch(listCtaCategorys());
-            dispatch(listCtaFunctions());
+            dispatch(listCtaFunctions(pageDataConfig));
             dispatch(listCtaPackageHourlys());
             dispatch(listCtaPackageDailys());
             dispatch(listCtaPackageMonthlyYearlys());
@@ -366,6 +382,7 @@ export default function CtaFunctionScreen(props) {
         loadingDeleteCtaFunctionDocument, 
         loadingCtaPurchaseHistorySave,
         recordForEdit,
+        pageDataConfig
     ])
 
     return (
@@ -478,11 +495,26 @@ export default function CtaFunctionScreen(props) {
                                                             recordsAfterPagingAndSorting().map(item =>
                                                             (<TableRow key={item.id}>
                                                                 <TableCell>{item.id}</TableCell>
-                                                                <TableCell>{item?.firstName + ' ' + item?.lastName}</TableCell>
+                                                                <TableCell>
+                                                                    <span><b>Name:</b> {item?.firstName + ' ' + item?.lastName} </span> <br />
+                                                                    <span><b>Email:</b> {item?.email} </span> <br />
+                                                                    <span><b>Phone: </b>{item?.phone} </span> <br />
+                                                                </TableCell>
                                                                 {/* <TableCell>{item.name}</TableCell> */}
-                                                                <TableCell>{item?.companyName}</TableCell>
-                                                                <TableCell>{item?.email}</TableCell>
-                                                                <TableCell>{item?.phone}</TableCell>
+                                                                <TableCell>
+                                                                    <span><b>Company name:</b> {item?.companyName} </span> <br />
+                                                                    <span><b>Bussiness Industry:</b> {item?.businessIndustry} </span> <br />
+                                                                    <span><b>Company type: </b>{item?.companyTypeName} </span> <br />
+                                                                    <span><b>Company size: </b>{item?.companySizeName} </span> <br />
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    <span><b>Total Hours:</b> {item?.totalHour && timeConverter(item?.totalHour)} </span> <br />
+                                                                    <span><b>Used Hours:</b> {item?.hourUsed  && timeConverter(item?.hourUsed)} </span> <br />
+                                                                    <span><b>Remaining Hours: </b>{item?.hourRemaining && timeConverter(item?.hourRemaining)} </span> <br />
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    <Chip label={item?.isCompleted ? "completed" : "ongoing"} classes={{root: classes[status[item?.isCompleted ? "completed".toLowerCase() : "ongoing".toLowerCase()]]}}/>
+                                                                </TableCell>
                                                                 <TableCell>
                                                                     <Controls.ActionButton
                                                                         color="primary"

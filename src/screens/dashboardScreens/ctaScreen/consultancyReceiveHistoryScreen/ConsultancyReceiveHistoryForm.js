@@ -80,14 +80,14 @@ export default function ConsultancyReceiveHistoryForm(props) {
                 <Grid item xs={12}>
                     <Controls.DatePickerCustom
                         name="consultancyReceiveDate"
-                        label="Consultancy Received Date"
+                        label="Consultancy requested date"
                         value={values.consultancyReceiveDate ? values.consultancyReceiveDate : 'No date found'}
                         onChange={handleDateInput}
                         error={errors.consultancyReceiveDate}
                         placeholder='Set the date of received consultancy'
                         disableFuture
                         format="MM/dd/yyyy"
-                        helperText="Add the consultancy received date"
+                        helperText="Add the requested consultancy date"
                     // className={clsx(classes.padding, classes.textField)}
                     />
                     {/* <Controls.TimePickerCustom
@@ -123,13 +123,13 @@ export default function ConsultancyReceiveHistoryForm(props) {
 
                     /> */}
                     <Controls.Input
-                        label="Consultancy received Times (in Minutes)"
+                        label="Consultancy requested times (in Minutes)"
                         name="consultancyReceiveTime"
                         type="number"
                         value={values.consultancyReceiveTime}
                         onChange={handleInputNumberChange}
                         error={errors.consultancyReceiveTime}
-                        helperText="Add the consultancy time in Munutes for the given date. Example: 5 hours 40 minutes = 5x60+40 = 340"
+                        helperText="Add the requested consultancy time in Munutes for the given date. Example: 5 hours 40 minutes = 5x60+40 = 340"
                         max ={1440}
                     />
 

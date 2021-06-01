@@ -159,7 +159,7 @@ import { detailsAdminDashboard } from '../../../redux/actions/dashboardActions';
 //         "count": 309,
 //     },
 // ]
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December']
+const months = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept','Oct', 'Nov', 'Dec']
 
 export default function AdminDashboardScreen() {
     var classes = useStyles();
@@ -371,7 +371,7 @@ export default function AdminDashboardScreen() {
                                 </Grid>
                                 <Grid item xs={12}>
                                     {
-                                        adminDashboard.userGraph &&
+                                        adminDashboard?.userGraph &&
                                             
                                         <Widget
                                         bodyClass={classes.mainChartBody}
@@ -427,12 +427,13 @@ export default function AdminDashboardScreen() {
                                         <ResponsiveContainer width="100%" minWidth={500} height={350}>
                                         <ComposedChart
                                             margin={{ top: 0, right: -15, left: -15, bottom: 0 }}
-                                            data={adminDashboard.userGraph?.map(item=> item.month ? {...item, month:months[item.month -1]} : item) }
+                                            data={adminDashboard.userGraph?.map(item=> item.month ? {...item, month:months[item.month-1]} : item) }
                                             // data={mainChartData.map(item=> item.month ? {...item, month:months[item.month -1]} : item)}
 
                                         >
                                             <YAxis
-                                            ticks={[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600]}
+                                            // ticks={[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600]}
+                                            ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
                                             tick={{ fill: theme.palette.text.hint + "80", fontSize: 14 }}
                                             stroke={theme.palette.text.hint + "80"}
                                             tickLine={false}

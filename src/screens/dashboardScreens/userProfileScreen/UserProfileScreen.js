@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Divider } from '@material-ui/core';
 import Widget from "../../../components/Widget/Widget";
 import Loading from '../../../components/Loading/Loading';
-// import { useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 
 // redux actions
 import { detailsUser, saveUser } from '../../../redux/actions/userActions';
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function UserProfileScreen() {
-  // const history = useHistory();
+  const history = useHistory();
 
   const userSignIn = useSelector(state => state.userSignin);
   //eslint-disable-next-line
@@ -101,10 +101,10 @@ function UserProfileScreen() {
 
   const dispatch = useDispatch();
       // add/update promise
-      const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveUser(item, id));
-        resolve();
-    })
+    //   const saveItem = (item, id) => new Promise((resolve, reject) => {
+    //     dispatch(saveUser(item, id));
+    //     resolve();
+    // })
 
    
     //eslint-disable-next-line
@@ -117,7 +117,9 @@ function UserProfileScreen() {
         // formData.append('Password', 'Pass@123')
         formData.append('RoleId', item?.roleId)
         formData.append('Name', item?.name)
-        formData.append('IsActive', item?.isActive)
+        formData.append('IsActive', item?.isActive) // true mor false
+        formData.append('CompanySizeId', item?.companySizeId) 
+        formData.append('CompanyTypeId', item?.companyTypeId) 
         formData.append('Mobile', item?.mobile)
         formData.append('Username', item?.username)
         formData.append('Address', item?.address)
@@ -137,27 +139,24 @@ function UserProfileScreen() {
             resetForm()
             // setRecordForEdit(null)
             setOpenPopup(true)
-            saveItem(formData, item.id)
-            .then(()=>{
-                // resetForm()
-                // setRecordForEdit(null)
-                // setOpenPopup(false)
-                if (successSave) {
-                    // history.go(0);
+            // saveItem(formData, item.id)
+            dispatch(saveUser(formData, item.id))
+            .then((res)=>{
+              if(res.status){
+                history.go(0);
                     setNotify({
                         isOpen: true,
                         message: "Successfull",
                         type: 'success'
                     })
-                }
-                
-                if (errorSave) {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submition Failed',
-                        type: 'warning'
-                    })
-                }
+              }
+              else {
+                  setNotify({
+                      isOpen: true,
+                      message: 'Submition Failed',
+                      type: 'warning'
+                  })
+              }
             })
           
         }

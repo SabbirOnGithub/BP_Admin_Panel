@@ -5,6 +5,7 @@ import { usePermission } from '../../components/UsePermission/usePermission';
 import Loading from '../../components/Loading/Loading';
 import { isAdminUser } from '../../helpers/search';
 import AdminDashboardScreen from './adminDashboardScreen/AdminDashboardScreen'
+import UserDashboardScreen from './userDashboardScreen/UserDashboardScreen'
 
 function HomeScreen() {
   const {
@@ -48,7 +49,7 @@ function HomeScreen() {
         <>
           <h1 style={{textAlign:'center',display:'flex', justifyContent:'center'}}> {'Welcome to Best Practicify Dashboard' } </h1> 
             {
-              isAdminUser(userInfo) ? <AdminDashboardScreen /> : 'Client login'
+              isAdminUser(userInfo) ? <AdminDashboardScreen /> : <UserDashboardScreen />
             }
           </> 
 

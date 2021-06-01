@@ -11,6 +11,7 @@ import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
 import Widget from "../../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../../themes/responseMessage";
 import Loading from '../../../../components/Loading/Loading';
+import { timeConverter } from '../../../../helpers/converter';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,6 +27,8 @@ const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'consultancyReceiveDate', label: 'Consultancy Received Date' },
     { id: 'consultancyReceiveTime', label: 'Consultancy Received Time' },
+    { id: 'statusName', label: 'Status' },
+    { id: 'note', label: 'Note' },
     // { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
@@ -167,7 +170,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Consultancy Receive History List Table"
+                                        title="Consultancy Receive Historys"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
@@ -175,6 +178,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                         threeDotDisplay={true}
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                        buttonText = {"Request for consultancy"}
                                         createOperation={createOperation}
                                         handleSearch = {handleSearch}
                                         searchLabel = 'Search here..'
@@ -190,9 +194,12 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{new Date(`${item.consultancyReceiveDate} UTC`).toLocaleDateString()}</TableCell>
-                                                            <TableCell>{(item.consultancyReceiveTime/60).toFixed(2) + ' Hours'}</TableCell>
-                                                            {/* <TableCell>
-                                                                { <Controls.ActionButton
+                                                            <TableCell>{item.consultancyReceiveTime && timeConverter(item.consultancyReceiveTime)}</TableCell>
+                                                            {/* <TableCell>{item.isCompleted}</TableCell> */}
+                                                            <TableCell>{item?.statusName}</TableCell>
+                                                            <TableCell>{item?.note}</TableCell>
+                                                            <TableCell>
+                                                                {/* { <Controls.ActionButton
                                                                     color="primary"
                                                                     onClick={() => { openInPopup(item) }}>
                                                                     <EditOutlinedIcon fontSize="small" />
@@ -210,8 +217,8 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                                     }}>
                                                                     <CloseIcon fontSize="small" />
                                                                 </Controls.ActionButton>
-                                                                }
-                                                            </TableCell> */}
+                                                                } */}
+                                                            </TableCell>
                                                         </TableRow>)
                                                         )
                                                     }
@@ -220,7 +227,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Consultancy Receive History Form"
+                                            title="Consultancy Request Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >

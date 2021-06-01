@@ -131,10 +131,19 @@ export default function useTable(records, headCells, filterFn) {
             .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     }
 
+    const pageDataConfig = {
+        "currentPage": page,
+        "perPageCount": rowsPerPage,
+        "orderBy": "string",
+        "isAscending": true,
+        "keyword": "string",
+    }
+
     return {
         TblContainer,
         TblHead,
         TblPagination,
-        recordsAfterPagingAndSorting
+        recordsAfterPagingAndSorting,
+        pageDataConfig
     }
 }

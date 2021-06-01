@@ -25,7 +25,7 @@ function userDashboardDetailsReducer(state={userDashboard:{}},action){
         case USER_DASHBOARD_DETAILS_REQUEST:
             return { loading:true };
         case USER_DASHBOARD_DETAILS_SUCCESS:
-            return { loading:false, userDashboards:action.payload };
+            return { loading:false, userDashboard:action.payload };
         case USER_DASHBOARD_DETAILS_FAIL:
             return { loading:false, error: action.payload };
         default:

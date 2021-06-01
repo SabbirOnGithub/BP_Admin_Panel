@@ -254,11 +254,11 @@ export default function CtaFunctionForm(props) {
                 formatData['name'] = user?.name
                 formatData['firstName'] = user?.firstName
                 formatData['lastName'] = user?.lastName
-                formatData['businessName'] = user?.companyName
+                formatData['companyName'] = user?.businessName
                 formatData['email'] = user?.email
                 formatData['phone'] = user?.mobile
                 formatData['businessIndustry'] = user?.businessIndustry
-                formatData['companyName'] = user?.companyName
+                // formatData['companyName'] = user?.companyName
                 formatData['companyTypeId'] = user?.companyTypeId
                 formatData['companySizeId'] = user?.companySizeId
 

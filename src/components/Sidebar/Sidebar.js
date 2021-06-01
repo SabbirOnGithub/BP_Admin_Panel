@@ -11,6 +11,11 @@ import AppsIcon from '@material-ui/icons/Apps';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import PaymentIcon from '@material-ui/icons/Payment';
 import PermDataSettingIcon from '@material-ui/icons/PermDataSetting';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
+import CallToActionIcon from '@material-ui/icons/CallToAction';
+
 import {
   Home as HomeIcon,
   FormatSize as TypographyIcon,
@@ -100,7 +105,7 @@ const structure = [
     id: 6, label: "Testimonial Detail", link: "/admin/testimonialDetail", icon: <DescriptionIcon />,
   },
   {
-    id: 7, label: "Footer Section", link: "/admin/footerSection", icon: <TypographyIcon />,
+    id: 7, label: "Footer Section", link: "/admin/footerSection", icon: <CallToActionIcon />,
   },
   {
     id: 8,
@@ -159,7 +164,7 @@ const structure = [
     ],
   },
   {
-    id: 14, label: "Business Principal Descriptor", link: "/admin/businessPrincipalDescriptor", icon: <TypographyIcon />,
+    id: 14, label: "Business Principal Descriptor", link: "/admin/businessPrincipalDescriptor", icon: <BusinessCenterIcon />,
   },
   {
     id: 15, label: "Consultation Overview", link: "/admin/consultationOverview", icon: <TypographyIcon />,
@@ -189,16 +194,16 @@ const structure = [
     id: 23, label: "Software Training Summary", link: "/admin/softwareTrainingSummary", icon: <TypographyIcon />,
   },
   {
-    id: 24, label: "Software Training Price", link: "/admin/softwareTrainingPrice", icon: <TypographyIcon />,
+    id: 24, label: "Software Training Price", link: "/admin/softwareTrainingPrice", icon: <AttachMoneyIcon />,
   },
   {
     id: 25, label: "Software Training Type And Length", link: "/admin/softwareTrainingTypeAndLength", icon: <TypographyIcon />,
   },
   {
-    id: 26, label: "Course Purchase", link: "/admin/coursePurchase", icon: <TypographyIcon />,
+    id: 26, label: "Course Purchase", link: "/admin/coursePurchase", icon: <PaymentIcon />,
   },
   {
-    id: 27, label: "Subscription", link: "/admin/subscription", icon: <TypographyIcon />,
+    id: 27, label: "Subscription", link: "/admin/subscription", icon: <SubscriptionsIcon />,
   },
 ];
 
