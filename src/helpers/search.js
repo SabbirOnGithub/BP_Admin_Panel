@@ -3,7 +3,7 @@ import store from '../redux/store'
 const searchNameByIdFromArray = (arr, id) =>{
     // console.log(arr)
     // console.log(id)
-    const name = Array.isArray(arr) && typeof(id)!=='undefined' ?  arr.find( item => item.id === Number(id))?.name : "no data found";
+    const name = Array.isArray(arr) && typeof(id)!=='undefined' ?  arr.find( item => item.id === Number(id))?.name : id ? id : "no data found";
     return name
 }
 const searchTitleByIdFromArray = (arr, id) =>{
@@ -19,9 +19,15 @@ const getPermissions = (currentPathName) =>{
 }
 // static condition applied 1-superadmin, 2-admin, 3- member, 4- client 
 const getFilterDataByUser = (dataOfArray, userInfo) =>{
-    // 1-superadmin, 2-admin, 3- member, 4- client 
-    const tableDataFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? dataOfArray : (userInfo?.userRole === 3 ? [] : dataOfArray?.filter(item=>item?.email === userInfo?.email))
-    return tableDataFilterByUser
+    // console.log(dataOfArray)
+    if(dataOfArray && userInfo){
+         // 1-superadmin, 2-admin, 3- member, 4- client 
+        const tableDataFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? dataOfArray : (userInfo?.userRole === 3 ? [] : dataOfArray?.filter(item=>item?.email === userInfo?.email));
+        return tableDataFilterByUser
+    }else{
+        return []
+    }
+   
 }
 // static condition applied 1-superadmin, 2-admin, 3- member, 4- client 
 const isAdminUser = (userInfo) =>{

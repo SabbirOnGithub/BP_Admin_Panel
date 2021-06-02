@@ -3,15 +3,16 @@ import ConsultancyReceiveHistoryForm from "./ConsultancyReceiveHistoryForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../../components/UseTable/useTable";
 import Popup from "../../../../components/Popup/Popup";
-// import Controls from "../../../../components/controls/Controls";
-// import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-// import CloseIcon from '@material-ui/icons/Close';
+import Controls from "../../../../components/controls/Controls";
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../../../../components/Notification/Notification";
 import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
 import Widget from "../../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../../themes/responseMessage";
 import Loading from '../../../../components/Loading/Loading';
 import { timeConverter } from '../../../../helpers/converter';
+import { searchNameByIdFromArray } from '../../../../helpers/search';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,17 +20,18 @@ import { useSelector, useDispatch } from 'react-redux';
 // redux actions
 import { 
     saveConsultancyReceiveHistory, 
-    // deleteConsultancyReceiveHistory 
+    deleteConsultancyReceiveHistory,
+    listConsultancyReceiveHistoryStatuses
 } from '../../../../redux/actions/consultancyReceiveHistoryActions';
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'consultancyReceiveDate', label: 'Consultancy Received Date' },
-    { id: 'consultancyReceiveTime', label: 'Consultancy Received Time' },
+    { id: 'consultancyReceiveDate', label: 'Received Date' },
+    { id: 'consultancyReceiveTime', label: 'Received Time' },
     { id: 'statusName', label: 'Status' },
     { id: 'note', label: 'Note' },
-    // { id: 'actions', label: 'Actions', disableSorting: true }
+    { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
 export default function ConsultancyReceiveHistoryScreen(props) {
@@ -39,14 +41,20 @@ export default function ConsultancyReceiveHistoryScreen(props) {
         consultancyReceiveHistorys, 
         // loading, 
         // error 
-        createOperation
+        createOperation,
+        updateOperation,
+        deleteOperation
         } = props;
+    const consultancyReceiveHistoryStatusList = useSelector(state => state.consultancyReceiveHistoryStatusList);
+    //eslint-disable-next-line
+    const { consultancyReceiveHistoryStatuses, loading: loadingConsultancyReceiveHistoryStatuses, error: errorConsultancyReceiveHistoryStatuses } = consultancyReceiveHistoryStatusList;
+    // console.log(consultancyReceiveHistoryStatuses)
     const consultancyReceiveHistorySave = useSelector(state => state.consultancyReceiveHistorySave);
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave } = consultancyReceiveHistorySave;
-    // const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
-    // //eslint-disable-next-line
-    // const { loading: loadingDelete, success: successDelete, error: errorDelete } = consultancyReceiveHistoryDelete;
+    const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
+    //eslint-disable-next-line
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = consultancyReceiveHistoryDelete;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
@@ -95,10 +103,10 @@ export default function ConsultancyReceiveHistoryScreen(props) {
     })
 
     // delete promise
-    // const deleteItem = (id) => new Promise((resolve, reject) => {
-    //     dispatch(deleteConsultancyReceiveHistory(id));
-    //     resolve();
-    // })
+    const deleteItem = (id) => new Promise((resolve, reject) => {
+        dispatch(deleteConsultancyReceiveHistory(id));
+        resolve();
+    })
 
     const addOrEdit = async (item, resetForm) => {
         resetForm()
@@ -125,45 +133,46 @@ export default function ConsultancyReceiveHistoryScreen(props) {
 
     }
 
-    // const openInPopup = item => {
-    //     setRecordForEdit(item)
-    //     setOpenPopup(true)
-    // }
+    const openInPopup = item => {
+        setRecordForEdit(item)
+        setOpenPopup(true)
+    }
 
-    // const onDelete = id => {
-    //     setConfirmDialog({
-    //         ...confirmDialog,
-    //         isOpen: false
-    //     })
-    //     deleteItem(id)
-    //         .then(() => {
-    //             if (successDelete) {
-    //                 setNotify({
-    //                     isOpen: true,
-    //                     message: 'Deleted Successfully',
-    //                     type: 'success'
-    //                 })
-    //             }
-    //             if (errorDelete) {
-    //                 setNotify({
-    //                     isOpen: true,
-    //                     message: ResponseMessage.errorDeleteMessage,
-    //                     type: 'warning'
-    //                 })
-    //             }
-    //         })
-    // }
+    const onDelete = id => {
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        })
+        deleteItem(id)
+            .then(() => {
+                if (successDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Deleted Successfully',
+                        type: 'success'
+                    })
+                }
+                if (errorDelete) {
+                    setNotify({
+                        isOpen: true,
+                        message: ResponseMessage.errorDeleteMessage,
+                        type: 'warning'
+                    })
+                }
+            })
+    }
 
     useEffect(() => {
+        dispatch(listConsultancyReceiveHistoryStatuses());
         return () => {
             // 
         }
-    }, [dispatch, loadingSave])
+    }, [dispatch])
     return (
 
         <>
             {
-                (loadingSave) ? <Loading /> :
+                (loadingSave || loadingConsultancyReceiveHistoryStatuses) ? <Loading /> :
                     (
                         consultancyReceiveHistorys.length >= 0 &&
                         <>
@@ -196,28 +205,33 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                             <TableCell>{new Date(`${item.consultancyReceiveDate} UTC`).toLocaleDateString()}</TableCell>
                                                             <TableCell>{item.consultancyReceiveTime && timeConverter(item.consultancyReceiveTime)}</TableCell>
                                                             {/* <TableCell>{item.isCompleted}</TableCell> */}
-                                                            <TableCell>{item?.statusName}</TableCell>
+                                                            <TableCell>{item?.statusName ? item?.statusName : searchNameByIdFromArray(consultancyReceiveHistoryStatuses, item?.status)}</TableCell>
                                                             <TableCell>{item?.note}</TableCell>
                                                             <TableCell>
-                                                                {/* { <Controls.ActionButton
-                                                                    color="primary"
-                                                                    onClick={() => { openInPopup(item) }}>
-                                                                    <EditOutlinedIcon fontSize="small" />
-                                                                </Controls.ActionButton>
+                                                                
+                                                                {
+                                                                (updateOperation && item?.status<3) && 
+                                                                    <Controls.ActionButton
+                                                                        color="primary"
+                                                                        onClick={() => { openInPopup(item) }}>
+                                                                        <EditOutlinedIcon fontSize="small" />
+                                                                    </Controls.ActionButton>
                                                                 }
-                                                                {<Controls.ActionButton
-                                                                    color="secondary"
-                                                                    onClick={() => {
-                                                                        setConfirmDialog({
-                                                                            isOpen: true,
-                                                                            title: 'Are you sure to delete this record?',
-                                                                            subTitle: "You can't undo this operation",
-                                                                            onConfirm: () => { onDelete(item.id) }
-                                                                        })
-                                                                    }}>
-                                                                    <CloseIcon fontSize="small" />
-                                                                </Controls.ActionButton>
-                                                                } */}
+                                                                {
+                                                                    deleteOperation && 
+                                                                    <Controls.ActionButton
+                                                                        color="secondary"
+                                                                        onClick={() => {
+                                                                            setConfirmDialog({
+                                                                                isOpen: true,
+                                                                                title: 'Are you sure to delete this record?',
+                                                                                subTitle: "You can't undo this operation",
+                                                                                onConfirm: () => { onDelete(item.id) }
+                                                                            })
+                                                                        }}>
+                                                                        <CloseIcon fontSize="small" />
+                                                                    </Controls.ActionButton>
+                                                                }
                                                             </TableCell>
                                                         </TableRow>)
                                                         )
@@ -237,6 +251,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                 // loadingSave={loadingSave}
                                                 loadingSave={false}
                                                 ctaFunctionId = {ctaFunctionId}
+                                                consultancyReceiveHistoryStatuses = {consultancyReceiveHistoryStatuses}
                                             />
 
                                         </Popup>

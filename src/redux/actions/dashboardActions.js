@@ -23,7 +23,7 @@ const detailsAdminDashboard = (id) => async (dispatch)=>{
         }else{
             dispatch({ type: ADMIN_DASHBOARD_DETAILS_FAIL, payload: data.message });
         }
-        console.log(data)
+        // console.log(data)
     }
     catch(error){
         dispatch({ type: ADMIN_DASHBOARD_DETAILS_FAIL, payload: error.message });

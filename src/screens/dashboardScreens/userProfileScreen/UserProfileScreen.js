@@ -67,9 +67,9 @@ function UserProfileScreen() {
   const userSignIn = useSelector(state => state.userSignin);
   //eslint-disable-next-line
   const { userInfo } = userSignIn;
-  const userDetails = useSelector(state => state.userDetails);
-  //eslint-disable-next-line
-  const { user, loading, error } = userDetails;
+  // const userDetails = useSelector(state => state.userDetails);
+  // //eslint-disable-next-line
+  // const { user, loading, error } = userDetails;
 
   const userSave = useSelector(state => state.userSave);
     //eslint-disable-next-line
@@ -169,12 +169,10 @@ function UserProfileScreen() {
       dispatch(listCompanySizes());
       dispatch(listCompanyTypes());
       dispatch(listConsultingTypes());
-      userInfo?.userId && dispatch(detailsUser(userInfo?.userId));
-      // if(userInfo?.userId){
-      //   dispatch(detailsUser(userInfo?.userId));
-      // }
+      // userInfo?.userId && dispatch(detailsUser(userInfo.userId));
+      dispatch(detailsUser(userInfo.userId));
     }catch(e){
-      console.log(e)
+      // console.log(e)
     }
     return () => {
       // 
@@ -183,7 +181,7 @@ function UserProfileScreen() {
   return (
     <div>
       {
-        loading || loadingSave || loadingCompanySize || loadingCompanyType || loadingConsultingType ? <Loading /> :
+         loadingSave || loadingCompanySize || loadingCompanyType || loadingConsultingType ? <Loading /> :
           <>
             <div>
               <div
@@ -197,20 +195,24 @@ function UserProfileScreen() {
               ></div>
               <div className={classes.headerContainer}>
                 <div className={classes.header}>
-                  <Avatar
+                  {/* <Avatar
                     alt={'test'}
-                    src={BASE_ROOT_URL + "/" + user?.photo?.split("\\").join('/')}
+                    src={userInfo?.photo ? BASE_ROOT_URL + "/" + userInfo?.photo?.split("\\").join('/') : ''}
                     classes={{ root: classes.avatar, circle: classes.circle }}
-                  />
-                  <Typography className={classes.nameStyle} variant={"h5"}>{user?.name}</Typography>
-                  <Chip variant={"outlined"} avatar={<Avatar>{ }</Avatar>} label={user?.roleName} size='medium' />
+                  /> */}
+                  <Avatar 
+                      alt="Profile" src={BASE_ROOT_URL + "/" + userInfo.userImage.split("\\").join('/')}
+                      classes={{ root: classes.avatar, circle: classes.circle }}
+                  /> 
+                  <Typography className={classes.nameStyle} variant={"h5"}>{userInfo?.name}</Typography>
+                  <Chip variant={"outlined"} avatar={<Avatar>{ }</Avatar>} label={userInfo?.roleName} size='medium' />
                 </div>
               </div>
             </div>
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 {
-                  user &&  <Widget
+                  userInfo &&  <Widget
                       title="Profile"
                       upperTitle
                       // noBodyPadding
@@ -220,7 +222,7 @@ function UserProfileScreen() {
                     >
                       <Divider style={{marginBottom:16}}/>
                       <UserProfileForm
-                        recordForEdit = {user}
+                        recordForEdit = {userInfo}
                         // recordForEdit = {recordForEdit}
                         addOrEdit = {addOrEdit}
                         loadingSave={loadingSave}

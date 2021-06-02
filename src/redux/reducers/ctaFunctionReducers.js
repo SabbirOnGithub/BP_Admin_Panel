@@ -22,11 +22,10 @@ import {
     CTA_FUNCTION_DOCUMENT_DELETE_FAIL,
  } from '../constants/ctaFunctionConstants';
 
-
-function ctaFunctionListReducer(state={ctaFunctions:[]},action){
+ function ctaFunctionListReducer(state={ctaFunctions:{}},action){
     switch(action.type){
         case CTA_FUNCTION_LIST_REQUEST:
-            return { loading:true, ctaFunctions:[] };
+            return { loading:true, ctaFunctions:{} };
         case CTA_FUNCTION_LIST_SUCCESS:
             return { loading:false, ctaFunctions:action.payload };
         case CTA_FUNCTION_LIST_FAIL:
@@ -35,6 +34,21 @@ function ctaFunctionListReducer(state={ctaFunctions:[]},action){
             return state;
     }
 };
+
+
+
+ // function ctaFunctionListReducer(state={ctaFunctions:[]},action){
+//     switch(action.type){
+//         case CTA_FUNCTION_LIST_REQUEST:
+//             return { loading:true, ctaFunctions:[] };
+//         case CTA_FUNCTION_LIST_SUCCESS:
+//             return { loading:false, ctaFunctions:action.payload };
+//         case CTA_FUNCTION_LIST_FAIL:
+//             return { loading:false, error: action.payload };
+//         default:
+//             return state;
+//     }
+// };
 
 
 function ctaFunctionDetailsReducer(state={ctaFunction:{}},action){

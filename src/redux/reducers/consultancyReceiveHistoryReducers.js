@@ -11,6 +11,9 @@ import {
     CONSULTANCY_RECEIVE_HISTORY_DELETE_REQUEST,
     CONSULTANCY_RECEIVE_HISTORY_DELETE_SUCCESS,
     CONSULTANCY_RECEIVE_HISTORY_DELETE_FAIL,
+    CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_REQUEST, 
+    CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_FAIL, 
+    CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_SUCCESS, 
 
  } from '../constants/consultancyReceiveHistoryConstants';
 
@@ -66,10 +69,24 @@ function consultancyReceiveHistoryDeleteReducer(state={consultancyReceiveHistory
     }
 };
 
+function consultancyReceiveHistoryStatusListReducer(state={consultancyReceiveHistoryStatuses:[]},action){
+    switch(action.type){
+        case CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_REQUEST:
+            return { loading:true, consultancyReceiveHistoryStatuses:[] };
+        case CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_SUCCESS:
+            return { loading:false, consultancyReceiveHistoryStatuses:action.payload };
+        case CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_FAIL:
+            return { loading:false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
 export { 
     // consultancyReceiveHistoryListReducer, 
     // consultancyReceiveHistoryDetailsReducer,
     consultancyReceiveHistorySaveReducer,
-    consultancyReceiveHistoryDeleteReducer
+    consultancyReceiveHistoryDeleteReducer,
+    consultancyReceiveHistoryStatusListReducer
 
  }; 

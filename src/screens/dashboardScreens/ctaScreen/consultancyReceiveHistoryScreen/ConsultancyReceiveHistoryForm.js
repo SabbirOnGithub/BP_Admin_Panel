@@ -13,6 +13,7 @@ const initialFValues = {
     // consultancyReceivedHour: '',
     // consultancyReceivedMinutes: '',
     note: "",
+    status:1,
 }
 
 export default function ConsultancyReceiveHistoryForm(props) {
@@ -20,7 +21,8 @@ export default function ConsultancyReceiveHistoryForm(props) {
         addOrEdit, 
         recordForEdit, 
         loadingSave,
-        ctaFunctionId 
+        ctaFunctionId,
+        consultancyReceiveHistoryStatuses 
     } = props
 
     const validate = (fieldValues = values) => {
@@ -29,6 +31,8 @@ export default function ConsultancyReceiveHistoryForm(props) {
             temp.consultancyReceiveDate = fieldValues.consultancyReceiveDate ? "" : "This field is required."
         if ('consultancyReceiveTime' in fieldValues)
             temp.consultancyReceiveTime = fieldValues.consultancyReceiveTime ? "" : "This field is required."
+         if ('status' in fieldValues)
+            temp.status = fieldValues.status ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -52,7 +56,7 @@ export default function ConsultancyReceiveHistoryForm(props) {
         e.preventDefault()
         // console.log(values)
         if (validate()) {
-            console.log(values)
+            // console.log(values)
             addOrEdit(values, resetForm);
         }
     }
@@ -61,6 +65,7 @@ export default function ConsultancyReceiveHistoryForm(props) {
         if (recordForEdit != null){
             setValues({
                 ...recordForEdit,
+                consultancyReceiveDate:  new Date(new Date(`${recordForEdit.consultancyReceiveDate} GMT`).toString())
             })
         }
         else {
@@ -78,6 +83,16 @@ export default function ConsultancyReceiveHistoryForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                <Controls.Select
+                    name="status"
+                    label="Status"
+                    value={values?.status ? values?.status : ''}
+                    onChange={handleInputChange}
+                    error={errors.status}
+                    options={consultancyReceiveHistoryStatuses ? consultancyReceiveHistoryStatuses : []}
+                    disabled
+
+                />
                     <Controls.DatePickerCustom
                         name="consultancyReceiveDate"
                         label="Consultancy requested date"
@@ -85,7 +100,7 @@ export default function ConsultancyReceiveHistoryForm(props) {
                         onChange={handleDateInput}
                         error={errors.consultancyReceiveDate}
                         placeholder='Set the date of received consultancy'
-                        disableFuture
+                        disablePast
                         format="MM/dd/yyyy"
                         helperText="Add the requested consultancy date"
                     // className={clsx(classes.padding, classes.textField)}

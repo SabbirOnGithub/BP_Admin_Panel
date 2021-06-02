@@ -12,6 +12,7 @@ import Loading from '../../../../components/Loading/Loading';
 import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
 
 import { detailsCtaFunction } from '../../../../redux/actions/ctaFunctionActions';
+import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 
 const useStyles = makeStyles(theme => ({
     detailsContent:{
@@ -40,15 +41,20 @@ const useStyles = makeStyles(theme => ({
 export default function CtaFunctionDetailScreen(props) {
     const { recordForDetails,
         //  setOpenPopup 
-        ctaFunctionModels,
-        createOperation
+        // ctaFunctionModels,
+        createOperation,
+        updateOperation,
+        deleteOperation
         } = props
     const classes = useStyles();
 
-    
+    const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
+    //eslint-disable-next-line
+    const { ctaFunctionModels } = ctaFunctionModelList;
 
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
+    const [fetched, setFetched] = useState(false);
     //eslint-disable-next-line
     // const {
     //     TblContainer,
@@ -71,18 +77,24 @@ export default function CtaFunctionDetailScreen(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const ac = new AbortController();
 
         try{
-            dispatch(detailsCtaFunction(recordForDetails.id));
+            Promise.all([
+                dispatch(listCtaFunctionModels()),
+                dispatch(detailsCtaFunction(recordForDetails.id))
+              ]).then(() => setFetched(true))
+                .catch(ex => console.error(ex));
+              return () => ac.abort(); // Abort both fetches on unmount
         }catch(err){
             console.log(err)
         }
         return () => {
-            // 
+            return fetched;
         }
 
         // eslint-disable-next-line
-    }, [dispatch, recordForDetails.id, loadingDeleteConsultancyReceiveHistory, loadingSaveConsultancyReceiveHistory])
+    }, [dispatch, recordForDetails.id, loadingSaveConsultancyReceiveHistory, loadingDeleteConsultancyReceiveHistory])
 
 // console.log(ctaFunctionModels?.techStacks)
 // console.log(ctaFunction)
@@ -119,8 +131,11 @@ export default function CtaFunctionDetailScreen(props) {
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Service: </b> {ctaFunction?.goalsToAchieveService} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Technology: </b> {ctaFunction?.goalsToAchieveTechnology} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Estimation: </b> {ctaFunction?.estimation} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Total Hours: </b> {ctaFunction?.totalHour && timeConverter(ctaFunction?.totalHour)} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Status: </b> {ctaFunction?.isCompleted ? "Completed" : 'Ongoing'} </Typography>
+                                        {
+                                            ctaFunction?.totalHour  && <Typography paragraph className={classes.customPharagraph}><b>Total Hours: </b> {timeConverter(ctaFunction?.totalHour)} </Typography>
+                                        }
+                                        
+                                        
                                     </Grid>
                                     <Grid item md={6}>
                                         <Typography paragraph className={classes.customPharagraph}><b>Last Name: </b> {ctaFunction?.lastName} </Typography>
@@ -129,8 +144,14 @@ export default function CtaFunctionDetailScreen(props) {
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution: </b> {ctaFunction?.goalsToAchieveSolution} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Tell Us More: </b> {ctaFunction?.tellUsMore} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {ctaFunction?.description} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> {ctaFunction?.hourRemaining && timeConverter(ctaFunction?.hourRemaining)} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Used Hours: </b> {ctaFunction?.hourUsed && timeConverter(ctaFunction?.hourUsed)} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Status: </b> {ctaFunction?.isCompleted ? "Completed" : 'Ongoing'} </Typography>
+                                        {
+                                            ctaFunction?.hourRemaining && <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> { timeConverter(ctaFunction?.hourRemaining)} </Typography>
+                                        }
+                                        {
+                                            ctaFunction?.hourUsed &&  <Typography paragraph className={classes.customPharagraph}><b>Used Hours: </b> { timeConverter(ctaFunction?.hourUsed)} </Typography>
+                                        }
+                                        
                                     </Grid>
                                 </Grid>
                                 <h1 className={classes.subHeadlineText}>Payment History</h1>
@@ -146,12 +167,7 @@ export default function CtaFunctionDetailScreen(props) {
                                                         <Typography paragraph className={classes.customPharagraph}><b>ctaPackageMonthlyYearlyId:</b> {item?.ctaPackageMonthlyYearlyId} </Typography> */}
                                                        
                                                         <Typography paragraph className={classes.customPharagraph}><b>Consultation Type Name: </b> {item?.consultationTypeName} </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Subscription: </b> 
-                                                            {item?.isYearlySubscription && 'Yearly'} 
-                                                            {item?.isMonthlySubscription && 'Monthly'} 
-                                                            { item?.ctaPackageDailyId && 'Daily'}
-                                                            { item?.ctaPackageHourlyId && 'Hourly'}
-                                                        </Typography>
+                                                        
                                                         {
                                                             item?.ctaPackageHourly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> {item?.ctaPackageHourly?.ctaHourName} </Typography>
                                                         }
@@ -164,12 +180,24 @@ export default function CtaFunctionDetailScreen(props) {
                                                             item?.ctaPackageMonthlyYearly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> Access Retainer  </Typography>
                                                         }
 
+{
+                                                            item?.completionDate && <Typography paragraph className={classes.customPharagraph}><b>Completion Date: </b> {new Date(`${item?.completionDate} UTC`).toLocaleDateString()} </Typography>
+                                                        }
+
                                                     </Grid>
                                                     <Grid item md={6}>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Amount: </b> ${item?.amount} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>Payment Gateway: </b> {item?.paymentGateway} </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Purchase Date: </b> {item?.purchaseDate} </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Completion Date: </b> {item?.completionDate} </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Purchase Date: </b> 
+                                                            {new Date(`${item?.purchaseDate} UTC`).toLocaleDateString()} 
+                                                        </Typography>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Subscription: </b> 
+                                                            {item?.isYearlySubscription && 'Yearly'} 
+                                                            {item?.isMonthlySubscription && 'Monthly'} 
+                                                            { item?.ctaPackageDailyId && 'Daily'}
+                                                            { item?.ctaPackageHourlyId && 'Hourly'}
+                                                        </Typography>
+                                                            
                                                        
 
                                                         
@@ -190,6 +218,8 @@ export default function CtaFunctionDetailScreen(props) {
                     ctaFunctionId = {ctaFunction?.id}
                     // createOperation = {ctaFunction?.ctaPurchaseHistories?.length >0 ? true :false}
                     createOperation = {createOperation && !ctaFunction?.isCompleted}
+                    updateOperation = {updateOperation}
+                    deleteOperation = {deleteOperation}
                 />
                
                     {/* <div>

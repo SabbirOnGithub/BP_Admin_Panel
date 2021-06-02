@@ -135,7 +135,7 @@ export default function Header(props) {
           onClick={e => setProfileMenu(e.currentTarget)}
         >
           {/* <AccountIcon classes={{ root: classes.headerIcon }} /> */}
-          { userInfo?.userImage ? <Avatar alt="Remy Sharp" src={BASE_ROOT_URL + "/" + userInfo.userImage.split("\\").join('/')} /> :
+          { userInfo?.userImage ? <Avatar alt="Profile" src={BASE_ROOT_URL + "/" + userInfo.userImage.split("\\").join('/')} /> :
             <AccountIcon classes={{ root: classes.headerIcon }} />
           }
         </IconButton>

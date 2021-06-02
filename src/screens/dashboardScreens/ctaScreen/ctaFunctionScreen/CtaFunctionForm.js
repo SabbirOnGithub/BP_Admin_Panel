@@ -11,6 +11,9 @@ import CtaFormStepFive from './CtaFormStepFive';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { listCtaFunctionModels, detailsCtaFunction, listCtaFunctionDocuments } from '../../../../redux/actions/ctaFunctionActions';
+import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
+import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
+import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
 
 const initialFValues = {
     id: '',
@@ -47,30 +50,57 @@ export default function CtaFunctionForm(props) {
 
     const { addOrEdit, recordForEdit, 
             addOrEditCtaFunctionDocument,
-            // setRecordForEdit, 
-            user,  setOpenPopup,  
+            setOpenPopup,  
             ctaFunctionSaveData, 
             loadingCtaFunctionDocumentSave, 
             setConfirmDialog, 
             onDeleteCtaFunctionDocument, 
             loadingDeleteCtaFunctionDocument, 
             loadingCtaFunctionSave,
-            ctaPackageHourlys,
-            loadingCtaPackageHourlys,
-            ctaPackageDailys,
-            loadingCtaPackageDailys,
-            ctaPackageMonthlyYearlys,
-            loadingCtaPackageMonthlyYearlys,
             handleCtaPayment,
             loadingCtaPaymentSave,
             successCtaPaymentSave,
             loadingCtaPurchaseHistorySave,
             successCtaPurchaseHistorySave,
          } = props;
+    const userSignIn = useSelector(state => state.userSignin);
+    //eslint-disable-next-line
+    const { userInfo } = userSignIn;
 
-    // const { email, mobile: phone, name: firstName } = user
+    const ctaPackageHourlyList = useSelector(state => state.ctaPackageHourlyList);
+    //eslint-disable-next-line
+    const { ctaPackageHourlys, loading: loadingCtaPackageHourlys, error: errorCtaPackageHourlys } = ctaPackageHourlyList;
+
+    const filteredCtaPackageHourlys = ctaPackageHourlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)
+
+    const ctaPackageDailyList = useSelector(state => state.ctaPackageDailyList);
+    //eslint-disable-next-line
+    const { ctaPackageDailys, loading: loadingCtaPackageDailys, error: errorCtaPackageDailys } = ctaPackageDailyList;
+
+    const filteredCtaPackageDailys = ctaPackageDailys?.filter(item => item.companyTypeId === userInfo?.companyTypeId);
+
+    const ctaPackageMonthlyYearlyList = useSelector(state => state.ctaPackageMonthlyYearlyList);
+    //eslint-disable-next-line
+    const { ctaPackageMonthlyYearlys, loading: loadingCtaPackageMonthlyYearlys, error: errorCtaPackageMonthlyYearlys } = ctaPackageMonthlyYearlyList;
+
+    const filteredCtaPackageMonthlyYearlys = ctaPackageMonthlyYearlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId);
     
+    const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
+    //eslint-disable-next-line
+    const { ctaFunctionModels } = ctaFunctionModelList;
     
+   const userData = {
+        name: userInfo?.name,
+        firstName: userInfo?.firstName,
+        lastName: userInfo?.lastName,
+        companyName: userInfo?.businessName,
+        email: userInfo?.email,
+        phone: userInfo?.mobile,
+        businessIndustry: userInfo?.businessIndustry,
+        companyTypeId: userInfo?.companyTypeId,
+        companySizeId: userInfo?.companySizeId,
+   }
+
     const ctaFunctionDocumentList = useSelector(state => state.ctaFunctionDocumentList);
     //eslint-disable-next-line
     const { ctaFunctionDocuments, loading: loadingCtaFunctionDocuments, error: errorCtaFunctionDocuments } = ctaFunctionDocumentList;
@@ -81,14 +111,29 @@ export default function CtaFunctionForm(props) {
 
     const ctaFunctionId = ctaFunctionSaveData?.data?.id;
 
-    const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
-    //eslint-disable-next-line
-    const { ctaFunctionModels } = ctaFunctionModelList;
-
-
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
+
         if (activeStep === 0) {
+            // if ('name' in fieldValues)
+            //     temp.name = fieldValues.name ? "" : "This field is required."
+            // if ('firstName' in fieldValues)
+            //     temp.firstName = fieldValues.firstName ? "" : "This field is required."
+            // if ('lastName' in fieldValues)
+            //     temp.lastName = fieldValues.lastName ? "" : "This field is required."
+            // if ('companyName' in fieldValues)
+            //     temp.companyName = fieldValues.companyName ? "" : "This field is required."
+            // if ('email' in fieldValues)
+            //     temp.email = fieldValues.email ? "" : "This field is required."
+            // if ('phone' in fieldValues)
+            //     temp.phone = fieldValues.phone ? "" : "This field is required."
+            // if ('businessIndustry' in fieldValues)
+            //     temp.businessIndustry = fieldValues.businessIndustry ? "" : "This field is required."
+            // if ('companyTypeId' in fieldValues)
+            //     temp.companyTypeId = fieldValues.companyTypeId ? "" : "This field is required."
+            // if ('companySizeId' in fieldValues)
+            //     temp.companySizeId = fieldValues.companySizeId ? "" : "This field is required."
+            // ----
             if ('solutionSpecificity' in fieldValues)
                 temp.solutionSpecificity = fieldValues.solutionSpecificity ? "" : "This field is required."
             if ('goalsToAchieveSolution' in fieldValues)
@@ -130,7 +175,7 @@ export default function CtaFunctionForm(props) {
         resetFileInput,
         handleDateInput,
 
-    } = useForm(initialFValues, true, validate);
+    } = useForm({...initialFValues,...userData}, true, validate);
 
     const dispatch = useDispatch();
 
@@ -151,7 +196,7 @@ export default function CtaFunctionForm(props) {
                             values={values}
                             handleInputChange={handleInputChange}
                             errors={errors}
-                            user={user}
+                            user={userInfo}
                             recordForEdit={initialFValues}
                             setValues={setValues}
                             ctaFunctionModels={ctaFunctionModels}
@@ -164,7 +209,7 @@ export default function CtaFunctionForm(props) {
                             values={values}
                             handleInputChange={handleInputChange}
                             errors={errors}
-                            user={user}
+                            user={userInfo}
                             recordForEdit={ctaFunction}
                             setValues={setValues}
                             ctaFunctionModels={ctaFunctionModels}
@@ -204,11 +249,11 @@ export default function CtaFunctionForm(props) {
                             errors={errors}
                             recordForEdit={ctaFunction}
                             setValues={setValues}
-                            ctaPackageHourlys = {ctaPackageHourlys}
+                            ctaPackageHourlys = {filteredCtaPackageHourlys}
                             loadingCtaPackageHourlys = {loadingCtaPackageHourlys}
-                            ctaPackageDailys ={ctaPackageDailys}
+                            ctaPackageDailys ={filteredCtaPackageDailys}
                             loadingCtaPackageDailys ={loadingCtaPackageDailys}
-                            ctaPackageMonthlyYearlys ={ctaPackageMonthlyYearlys}
+                            ctaPackageMonthlyYearlys ={filteredCtaPackageMonthlyYearlys}
                             loadingCtaPackageMonthlyYearlys ={loadingCtaPackageMonthlyYearlys}
                             handleNextToPaymentScreen = {handleNextToPaymentScreen}
                             setHideNext ={setHideNext}
@@ -237,6 +282,11 @@ export default function CtaFunctionForm(props) {
     }
     const handleNext = (e) => {
         e.preventDefault();
+        // console.log(values)
+        const formatData = {
+            ...values,
+        }
+       
         // before increment
         if(activeStep ===2 || activeStep ===3){
             setHideNext(true)
@@ -246,21 +296,18 @@ export default function CtaFunctionForm(props) {
         }
 
         if (validate()) {
-            const formatData = {
-                ...values
-            }
+            
             if(activeStep ===0){
                 (formatData?.technologyPreference && typeof (formatData?.technologyPreference) === 'object') && (formatData['technologyPreference'] = formatData?.technologyPreference?.map((item) => item.id).toString());
-                formatData['name'] = user?.name
-                formatData['firstName'] = user?.firstName
-                formatData['lastName'] = user?.lastName
-                formatData['companyName'] = user?.businessName
-                formatData['email'] = user?.email
-                formatData['phone'] = user?.mobile
-                formatData['businessIndustry'] = user?.businessIndustry
-                // formatData['companyName'] = user?.companyName
-                formatData['companyTypeId'] = user?.companyTypeId
-                formatData['companySizeId'] = user?.companySizeId
+                // formatData['name'] = user?.name
+                // formatData['firstName'] = user?.firstName
+                // formatData['lastName'] = user?.lastName
+                // formatData['companyName'] = user?.businessName
+                // formatData['email'] = user?.email
+                // formatData['phone'] = user?.mobile
+                // formatData['businessIndustry'] = user?.businessIndustry
+                // formatData['companyTypeId'] = user?.companyTypeId
+                // formatData['companySizeId'] = user?.companySizeId
 
                 // if(values.technologyPreference){
                 //     let technologyPreference = values?.technologyPreference?.map((item) => item.id);
@@ -318,11 +365,12 @@ export default function CtaFunctionForm(props) {
 
     useEffect(() => {
         try {
-            // if (recordForEdit != null){
-            //     setValues({
-            //         ...recordForEdit
-            //     })
-            // }
+                
+            if (recordForEdit != null){
+                setValues({
+                    ...recordForEdit
+                })
+            }
             
             if (ctaFunctionId) {
                 dispatch(detailsCtaFunction(ctaFunctionId))
@@ -330,6 +378,9 @@ export default function CtaFunctionForm(props) {
             }
            if(!ctaFunctionModels?.id){
                 dispatch(listCtaFunctionModels());
+                dispatch(listCtaPackageHourlys());
+                dispatch(listCtaPackageDailys());
+                dispatch(listCtaPackageMonthlyYearlys());
            }
            if(values?.id){
                 dispatch(listCtaFunctionDocuments(values?.id))
@@ -337,6 +388,7 @@ export default function CtaFunctionForm(props) {
         } catch (e) {
             console.log(e)
         }
+    //eslint-disable-next-line
     }, [
         recordForEdit, 
         setValues, 
@@ -347,6 +399,7 @@ export default function CtaFunctionForm(props) {
         loadingDeleteCtaFunctionDocument, 
         ctaFunctionModels?.id,
         // successCtaPurchaseHistorySave
+        
     ])
 
     return (

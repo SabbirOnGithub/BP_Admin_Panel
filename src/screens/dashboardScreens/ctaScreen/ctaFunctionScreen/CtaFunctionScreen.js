@@ -16,15 +16,16 @@ import { getFilterDataByUser } from '../../../../helpers/search';
 import { timeConverter } from '../../../../helpers/converter';
 
 // redux actions
-import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
+// import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
 import { listCtaFunctions, saveCtaFunction, saveCtaFunctionDocument, deleteCtaFunctionDocument } from '../../../../redux/actions/ctaFunctionActions';
-import { detailsUser } from '../../../../redux/actions/userActions';
-import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
-import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
-import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
+// import { detailsUser } from '../../../../redux/actions/userActions';
+// import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
+// import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
+// import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
+// import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
+
 import { saveCtaPayment } from '../../../../redux/actions/ctaPaymentActions';
 import { saveCtaPurchaseHistory } from '../../../../redux/actions/ctaPurchaseHistoryActions';
-import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 
 import useStyles from "./styles";
 
@@ -42,24 +43,25 @@ const headCells = [
 ]
 
 const status = {
-    ongoing:"warning",
+    ongoing: "warning",
     completed: "success"
 
-  };
+};
 
 export default function CtaFunctionScreen(props) {
     const classes = useStyles();
 
 
-    const { createOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
+    const { createOperation, updateOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
 
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
     const { userInfo } = userSignIn;
 
-    const userDetails = useSelector(state => state.userDetails);
-    //eslint-disable-next-line
-    const { user, loading: loadingUserdetail, error: errorUserDetail } = userDetails;
+    // const userDetails = useSelector(state => state.userDetails);
+    // //eslint-disable-next-line
+    // const { user, loading: loadingUserdetail, error: errorUserDetail } = userDetails;
+
 
     const ctaPaymentSave = useSelector(state => state.ctaPaymentSave);
     //eslint-disable-next-line
@@ -69,24 +71,24 @@ export default function CtaFunctionScreen(props) {
     //eslint-disable-next-line
     const { loading: loadingCtaPurchaseHistorySave, success: successCtaPurchaseHistorySave, error: errorCtaPurchaseHistorySave } = ctaPurchaseHistorySave;
 
-    const ctaPackageHourlyList = useSelector(state => state.ctaPackageHourlyList);
+    // const ctaPackageHourlyList = useSelector(state => state.ctaPackageHourlyList);
     //eslint-disable-next-line
-    const { ctaPackageHourlys, loading:loadingCtaPackageHourlys, error:errorCtaPackageHourlys } = ctaPackageHourlyList;
+    // const { ctaPackageHourlys, loading: loadingCtaPackageHourlys, error: errorCtaPackageHourlys } = ctaPackageHourlyList;
 
     const ctaPackageDailyList = useSelector(state => state.ctaPackageDailyList);
     //eslint-disable-next-line
-    const { ctaPackageDailys, loading:loadingCtaPackageDailys, error:errorCtaPackageDailys } = ctaPackageDailyList;
+    const { ctaPackageDailys, loading: loadingCtaPackageDailys, error: errorCtaPackageDailys } = ctaPackageDailyList;
 
     const ctaPackageMonthlyYearlyList = useSelector(state => state.ctaPackageMonthlyYearlyList);
     //eslint-disable-next-line
-    const { ctaPackageMonthlyYearlys, loading:loadingCtaPackageMonthlyYearlys, error:errorCtaPackageMonthlyYearlys } = ctaPackageMonthlyYearlyList;
-    
+    const { ctaPackageMonthlyYearlys, loading: loadingCtaPackageMonthlyYearlys, error: errorCtaPackageMonthlyYearlys } = ctaPackageMonthlyYearlyList;
+
     const ctaFunctionList = useSelector(state => state.ctaFunctionList);
     //eslint-disable-next-line
     const { ctaFunctions, loading: loadingCtaFunctions, error: errorCtaFunctions } = ctaFunctionList;
     // 1-superadmin, 2-admin, 3- member, 4- client 
     // const ctaFunctionsFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaFunctions : (userInfo?.userRole === 3 ? [] : ctaFunctions.filter(item=>item.email === userInfo.email))
-    const ctaFunctionsFilterByUser = getFilterDataByUser(ctaFunctions, userInfo);
+    const ctaFunctionsFilterByUser = getFilterDataByUser(ctaFunctions?.item1, userInfo);
 
     const ctaFunctionSave = useSelector(state => state.ctaFunctionSave);
     //eslint-disable-next-line
@@ -101,9 +103,9 @@ export default function CtaFunctionScreen(props) {
     //eslint-disable-next-line
     const { loading: loadingDeleteCtaFunctionDocument, success: successDeleteCtaFunctionDocument, error: errorDeleteCtaFunctionDocument } = ctaFunctionDocumentDelete;
 
-    const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
-    //eslint-disable-next-line
-    const { ctaFunctionModels } = ctaFunctionModelList;
+    // const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
+    // //eslint-disable-next-line
+    // const { ctaFunctionModels } = ctaFunctionModelList;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [recordForDetails, setRecordForDetails] = useState(null)
@@ -122,8 +124,9 @@ export default function CtaFunctionScreen(props) {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-        pageDataConfig
-    } = useTable(ctaFunctionsFilterByUser, headCells, filterFn);
+        pageDataConfig,
+        // setPageDataConfig
+    } = useTable(ctaFunctionsFilterByUser, headCells, filterFn, ctaFunctions?.item2);
 
     const dispatch = useDispatch();
     // search from table
@@ -131,21 +134,26 @@ export default function CtaFunctionScreen(props) {
         e.persist();
         const recievedSearchValue = e.target.value;
         setSearchValue(recievedSearchValue);
+        // server side search
+        // setPageDataConfig(prevState =>{
+        //     return { ...prevState,keyword:recievedSearchValue}
+        // })
+        // client side search
         setFilterFn({
             fn: items => {
-                if (recievedSearchValue){
+                if (recievedSearchValue) {
                     return items.filter(x => {
                         const makeStringInRow = (
-                            (x?.firstName && x?.firstName) + 
-                            (x?.lastName && (' ' + x?.lastName)) + 
-                            (x?.companyName && (' ' + x?.companyName)) + 
-                            (x?.email && (' ' + x?.email)) + 
+                            (x?.firstName && x?.firstName) +
+                            (x?.lastName && (' ' + x?.lastName)) +
+                            (x?.companyName && (' ' + x?.companyName)) +
+                            (x?.email && (' ' + x?.email)) +
                             (x?.phone && (' ' + x?.phone))
-                            )?.toString()?.toLowerCase();
+                        )?.toString()?.toLowerCase();
                         return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
                     });
                 }
-                else{
+                else {
                     return items;
                 }
             }
@@ -153,102 +161,102 @@ export default function CtaFunctionScreen(props) {
     }
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveCtaFunction(item))
-            .then(res=>{
+            dispatch(saveCtaFunction(item))
+            .then(res => {
                 resolve(res)
             })
-            .catch(err=>{
-                console.log('err occured'+ err)
+            .catch(err => {
+                console.log('err occured' + err)
                 reject(err)
             })
     })
 
-    const addOrEditCtaFunctionDocument = (item, resetForm)=>{
+    const addOrEditCtaFunctionDocument = (item, resetForm) => {
         // console.log(item)
-        if(item?.id && item?.file){
-                const formData = new FormData();
-                formData.append("CtaFunctionId", item.id);
-                formData.append("file", item.file);
-    
-                //  no update applied id send for applying condition toabove method
-                dispatch(saveCtaFunctionDocument(formData))
-                    .then((res) => {
-                        if(res?.status===true){
-                            resetForm()
-                            delete item['file']
-                            
-                            setRecordForEdit(item)
-                            // setOpenPopup(false)
-                            if (successCtaFunctionDocumentSave) {
-                                setNotify({
-                                    isOpen: true,
-                                    message: 'Submitted Successfully',
-                                    type: 'success'
-                                })
-                            }
-        
-                            if (errorCtaFunctionDocumentSave) {
-                                setNotify({
-                                    isOpen: true,
-                                    message: 'Submition Failed',
-                                    type: 'warning'
-                                })
-                            }
+        if (item?.id && item?.file) {
+            const formData = new FormData();
+            formData.append("CtaFunctionId", item.id);
+            formData.append("file", item.file);
+
+            //  no update applied id send for applying condition toabove method
+            dispatch(saveCtaFunctionDocument(formData))
+                .then((res) => {
+                    if (res?.status === true) {
+                        resetForm()
+                        delete item['file']
+
+                        setRecordForEdit(item)
+                        // setOpenPopup(false)
+                        if (successCtaFunctionDocumentSave) {
+                            setNotify({
+                                isOpen: true,
+                                message: 'Submitted Successfully',
+                                type: 'success'
+                            })
                         }
-                        
-                    })
+
+                        if (errorCtaFunctionDocumentSave) {
+                            setNotify({
+                                isOpen: true,
+                                message: 'Submition Failed',
+                                type: 'warning'
+                            })
+                        }
+                    }
+
+                })
         }
 
     }
 
-    const addOrEdit = async (item,  values, resetForm, activeStep, setActiveStep) => {
-            // resetForm()
-            // console.log(item)
-            saveItem(item)
-                .then((res) => {
-                    // console.log(res)
-                    if(res?.status===true){
-                        resetForm()
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submitted Successfully',
-                            type: 'success'
-                        })
-                        setActiveStep(activeStep + 1)
-                        delete item.id
-                        setRecordForEdit({
-                            ...values,
-                            id: res.data.id
-                        })
-                        // console.log(values)
-                    }else{
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submition Failed',
-                            type: 'warning'
-                        })
-                    }
-                   
-                })
-                .catch(err=>{
-                    console.log('err occured'+ err)
-                })
-        
+    const addOrEdit = async (item, values, resetForm, activeStep, setActiveStep) => {
+        // resetForm()
+        // console.log(item)
+        saveItem(item)
+            .then((res) => {
+                // console.log(res)
+                if (res?.status === true) {
+                    resetForm()
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                    setActiveStep(activeStep + 1)
+                    delete item.id
+                    setRecordForEdit({
+                        ...values,
+                        id: res.data.id
+                    })
+                    // console.log(values)
+                } else {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+
+            })
+            .catch(err => {
+                console.log('err occured' + err)
+            })
+
     }
     const handleCtaPayment = (token, item, resetActiveStep) => {
         // const tokenId = token?.id;
-        console.log(item)
-        if(token && (item?.getCtaHourlyId || item?.getCtaDailyId || item?.getCtaMonthlyYearlyId)){
-            
-            try{
-                if(item.paypal){
+        // console.log(item)
+        if (token && (item?.getCtaHourlyId || item?.getCtaDailyId || item?.getCtaMonthlyYearlyId)) {
+
+            try {
+                if (item.paypal) {
                     const paypalFormatPurchaseHistoryData = {
                         transectionId: token?.paymentID,
-                        isPaid:token?.paid,
+                        isPaid: token?.paid,
                         amount: parseInt(item.rate),
                         ctaFunctionId: item?.ctaFunctionId,
                         paymentGateway: 'paypal',
-                        userEmail : user?.email,
+                        userEmail: userInfo?.email,
                     }
 
                     item.getCtaHourlyId && (paypalFormatPurchaseHistoryData['ctaPackageHourlyId'] = item.id);
@@ -259,14 +267,14 @@ export default function CtaFunctionScreen(props) {
                     item.isYearlySubscription && (paypalFormatPurchaseHistoryData['isYearlySubscription'] = item.isYearlySubscription);
 
                     dispatch(saveCtaPurchaseHistory(paypalFormatPurchaseHistoryData))
-                    .then(res=>{
-                        if(res.status===true){
-                            // stepper step auto increment
-                            resetActiveStep((prevActiveStep) => prevActiveStep + 1);
-                        }
-                    })
+                        .then(res => {
+                            if (res.status === true) {
+                                // stepper step auto increment
+                                resetActiveStep((prevActiveStep) => prevActiveStep + 1);
+                            }
+                        })
                 }
-                else{
+                else {
                     const formatData = {
                         token: token?.id,
                         amount: parseInt(item.rate),
@@ -274,48 +282,48 @@ export default function CtaFunctionScreen(props) {
                     }
 
                     dispatch(saveCtaPayment(formatData))
-                    .then(res=>{
-                        // console.log(res.data.id)
-                        if(res.status===true){
-                            const formatePurchaseHistoryData = {
-                                transectionId: res.data.id,
-                                isPaid:res.data.paid,
-                                amount: parseInt(item.rate),
-                                ctaFunctionId: item?.ctaFunctionId,
-                                paymentGateway: 'stripe',
-                                userEmail : user.email
+                        .then(res => {
+                            // console.log(res.data.id)
+                            if (res.status === true) {
+                                const formatePurchaseHistoryData = {
+                                    transectionId: res.data.id,
+                                    isPaid: res.data.paid,
+                                    amount: parseInt(item.rate),
+                                    ctaFunctionId: item?.ctaFunctionId,
+                                    paymentGateway: 'stripe',
+                                    userEmail: userInfo.email
 
-                            }
-                            // item.getCtaHourlyId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
-                            // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
-                            // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
-                            
-                            item.getCtaHourlyId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.id);
-                            item.getCtaDailyId && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.id);
-                            item.getCtaMonthlyYearlyId && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.id);
-                            item.isMonthlySubscription && (formatePurchaseHistoryData['isMonthlySubscription'] = item.isMonthlySubscription);
-                            item.isYearlySubscription && (formatePurchaseHistoryData['isYearlySubscription'] = item.isYearlySubscription);
-
-                            dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData))
-                            .then(res=>{
-                                if(res.status===true){
-                                    // stepper step auto increment
-                                    resetActiveStep((prevActiveStep) => prevActiveStep + 1);
                                 }
-                            })
-                        }
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    })
-                }
-                
+                                // item.getCtaHourlyId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
+                                // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
+                                // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
 
-              }catch(err){
-                  console.log(err)
-              }
-            
-            
+                                item.getCtaHourlyId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.id);
+                                item.getCtaDailyId && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.id);
+                                item.getCtaMonthlyYearlyId && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.id);
+                                item.isMonthlySubscription && (formatePurchaseHistoryData['isMonthlySubscription'] = item.isMonthlySubscription);
+                                item.isYearlySubscription && (formatePurchaseHistoryData['isYearlySubscription'] = item.isYearlySubscription);
+
+                                dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData))
+                                    .then(res => {
+                                        if (res.status === true) {
+                                            // stepper step auto increment
+                                            resetActiveStep((prevActiveStep) => prevActiveStep + 1);
+                                        }
+                                    })
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                }
+
+
+            } catch (err) {
+                console.log(err)
+            }
+
+
 
         }
 
@@ -356,16 +364,30 @@ export default function CtaFunctionScreen(props) {
             })
 
     }
-
     useEffect(() => {
         try {
-            dispatch(detailsUser(userInfo.userId));
-            dispatch(listCtaCategorys());
-            dispatch(listCtaFunctions(pageDataConfig));
-            dispatch(listCtaPackageHourlys());
-            dispatch(listCtaPackageDailys());
-            dispatch(listCtaPackageMonthlyYearlys());
-            dispatch(listCtaFunctionModels());
+            // dispatch(listCtaPackageHourlys());
+            // if (user === 'undefined' || (typeof user === 'object' && Object.keys(user).length === 0)) {
+            //     dispatch(detailsUser(userInfo.userId));
+            // }
+            
+            // if (!ctaPackageHourlys) {
+            //     dispatch(listCtaPackageHourlys());
+            // }
+            // if (!ctaPackageDailys) {
+            //     dispatch(listCtaPackageDailys());
+            // }
+            // if (!ctaPackageMonthlyYearlys) {
+            //     dispatch(listCtaPackageMonthlyYearlys());
+            // }
+            // if (!ctaFunctionModels) {
+            //     dispatch(listCtaFunctionModels());
+            // }
+            dispatch(listCtaFunctions(pageDataConfig))
+            // dispatch(listCtaPackageHourlys())
+            // dispatch(listCtaPackageDailys());
+            // dispatch(listCtaPackageMonthlyYearlys());
+            // dispatch(listCtaFunctionModels());
 
         } catch (e) {
             console.log(e)
@@ -375,37 +397,42 @@ export default function CtaFunctionScreen(props) {
             // 
         }
     }, [
-        dispatch, 
-        userInfo.userId, 
+        dispatch,
+        // userInfo.userId,
         // loadingCtaFunctionSave, 
-        loadingCtaFunctionDocumentSave, 
-        loadingDeleteCtaFunctionDocument, 
-        loadingCtaPurchaseHistorySave,
-        recordForEdit,
-        pageDataConfig
+        // loadingCtaFunctionDocumentSave,
+        // loadingDeleteCtaFunctionDocument,
+        // loadingCtaPurchaseHistorySave,
+        // recordForEdit,
+        // ctaPackageHourlys,
+        // ctaPackageDailys,
+        // ctaPackageMonthlyYearlys,
+        // ctaFunctionModels,
+        pageDataConfig,
+        openPopup
     ])
 
     return (
 
         <>
             {
-                (openPopup === false && (loadingCtaFunctions || loadingUserdetail)) ? <Loading /> :
+                // (openPopup === false) ? <Loading /> :
                     <>
-                        <PageTitle 
-                            title="Consultancy" 
-                            button = {
+                        <PageTitle
+                            title="Consultancy"
+                            button={
                                 createOperation &&
                                 <div>
                                     <Controls.Button
                                         text='Schedule a consult'
                                         // variant="outlined"
                                         // startIcon={<AddIcon />}
-                                        onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null);  }}
+                                        onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
                                     />
                                 </div>
                             }
-                            showButton = {!openPopup}
-                            
+                            showButton={!openPopup}
+
                         />
 
                         <Grid container spacing={4}>
@@ -419,50 +446,50 @@ export default function CtaFunctionScreen(props) {
                                             upperTitle
                                             // noBodyPadding
                                             disableWidgetMenu
-                                            closePopup = {()=>setShowCtaFunctionDetail(false)}
-                                            closePopUpButtonText = 'Go back to list'
+                                            closePopup={() => setShowCtaFunctionDetail(false)}
+                                            closePopUpButtonText='Go back to list'
                                         >
                                             <CtaFunctionDetailScreen
                                                 recordForDetails={recordForDetails}
-                                                ctaFunctionModels = {ctaFunctionModels}
+                                                // ctaFunctionModels={ctaFunctionModels}
                                                 // setOpenPopup={setShowCtaFunctionDetail}
-                                                createOperation = {createOperation} // ctaScreen create permission for user
+                                                createOperation={createOperation} // ctaScreen create permission for user
+                                                updateOperation = {updateOperation}
                                             />
                                         </Widget> :
-                                            (openPopup ? 
+                                        (openPopup ?
                                             (<Widget
                                                 title="Schedule a consult"
                                                 upperTitle
                                                 // noBodyPadding
                                                 disableWidgetMenu
-                                                closePopup = {()=>{setOpenPopup(false); setRecordForEdit(null)}}
+                                                closePopup={() => { setOpenPopup(false); setRecordForEdit(null) }}
                                             >
-                                             <CtaFunctionForm
-                                                recordForEdit={recordForEdit}
-                                                // setRecordForEdit = {setRecordForEdit}
-                                                addOrEdit={addOrEdit}
-                                                addOrEditCtaFunctionDocument = {addOrEditCtaFunctionDocument}
-                                                user={user}
-                                                setOpenPopup={setOpenPopup}
-                                                ctaFunctionSaveData={ctaFunctionSaveData}
-                                                setConfirmDialog={setConfirmDialog}
-                                                onDeleteCtaFunctionDocument={onDeleteCtaFunctionDocument}
-                                                loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
-                                                loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
-                                                loadingCtaFunctionSave={loadingCtaFunctionSave}
-                                                ctaPackageHourlys={ctaPackageHourlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
-                                                loadingCtaPackageHourlys={loadingCtaPackageHourlys}
-                                                ctaPackageDailys={ctaPackageDailys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId )}
-                                                loadingCtaPackageDailys={loadingCtaPackageDailys}
-                                                ctaPackageMonthlyYearlys={ctaPackageMonthlyYearlys?.filter(item=>item.companyTypeId===userInfo?.companyTypeId)}
-                                                loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
-                                                handleCtaPayment = {handleCtaPayment}
-                                                loadingCtaPaymentSave = {loadingCtaPaymentSave}
-                                                successCtaPaymentSave={successCtaPaymentSave}
-                                                loadingCtaPurchaseHistorySave = {loadingCtaPurchaseHistorySave}
-                                                successCtaPurchaseHistorySave ={successCtaPurchaseHistorySave}
+                                                <CtaFunctionForm
+                                                    recordForEdit={recordForEdit}
+                                                    // setRecordForEdit = {setRecordForEdit}
+                                                    addOrEdit={addOrEdit}
+                                                    addOrEditCtaFunctionDocument={addOrEditCtaFunctionDocument}
+                                                    setOpenPopup={setOpenPopup}
+                                                    ctaFunctionSaveData={ctaFunctionSaveData}
+                                                    setConfirmDialog={setConfirmDialog}
+                                                    onDeleteCtaFunctionDocument={onDeleteCtaFunctionDocument}
+                                                    loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
+                                                    loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
+                                                    loadingCtaFunctionSave={loadingCtaFunctionSave}
+                                                    // ctaPackageHourlys={ctaPackageHourlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
+                                                    // loadingCtaPackageHourlys={loadingCtaPackageHourlys}
+                                                    // ctaPackageDailys={ctaPackageDailys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
+                                                    // loadingCtaPackageDailys={loadingCtaPackageDailys}
+                                                    // ctaPackageMonthlyYearlys={ctaPackageMonthlyYearlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
+                                                    // loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
+                                                    handleCtaPayment={handleCtaPayment}
+                                                    loadingCtaPaymentSave={loadingCtaPaymentSave}
+                                                    successCtaPaymentSave={successCtaPaymentSave}
+                                                    loadingCtaPurchaseHistorySave={loadingCtaPurchaseHistorySave}
+                                                    successCtaPurchaseHistorySave={successCtaPurchaseHistorySave}
 
-                                            />
+                                                />
                                             </Widget>
                                             )
                                             :
@@ -478,68 +505,90 @@ export default function CtaFunctionScreen(props) {
                                                 addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                                 buttonText='Schedule a consult'
                                                 createOperation={false}
-                                                handleSearch = {handleSearch}
-                                                searchLabel = 'Search here..'
-                                                searchValue = {searchValue}
-                                               
+                                                handleSearch={handleSearch}
+                                                searchLabel='Search here..'
+                                                searchValue={searchValue}
+
                                             >
-                                                <Paper style={{ 
-                                                    overflow: "auto", 
+                                                <Paper style={{
+                                                    overflow: "auto",
                                                     backgroundColor: "transparent",
-                                                   
+
                                                 }}>
-                                                <TblContainer>
-                                                    <TblHead />
-                                                    <TableBody>
+                                                    <TblContainer>
+                                                        <TblHead />
                                                         {
-                                                            recordsAfterPagingAndSorting().map(item =>
-                                                            (<TableRow key={item.id}>
-                                                                <TableCell>{item.id}</TableCell>
-                                                                <TableCell>
-                                                                    <span><b>Name:</b> {item?.firstName + ' ' + item?.lastName} </span> <br />
-                                                                    <span><b>Email:</b> {item?.email} </span> <br />
-                                                                    <span><b>Phone: </b>{item?.phone} </span> <br />
-                                                                </TableCell>
-                                                                {/* <TableCell>{item.name}</TableCell> */}
-                                                                <TableCell>
-                                                                    <span><b>Company name:</b> {item?.companyName} </span> <br />
-                                                                    <span><b>Bussiness Industry:</b> {item?.businessIndustry} </span> <br />
-                                                                    <span><b>Company type: </b>{item?.companyTypeName} </span> <br />
-                                                                    <span><b>Company size: </b>{item?.companySizeName} </span> <br />
-                                                                </TableCell>
-                                                                <TableCell>
-                                                                    <span><b>Total Hours:</b> {item?.totalHour && timeConverter(item?.totalHour)} </span> <br />
-                                                                    <span><b>Used Hours:</b> {item?.hourUsed  && timeConverter(item?.hourUsed)} </span> <br />
-                                                                    <span><b>Remaining Hours: </b>{item?.hourRemaining && timeConverter(item?.hourRemaining)} </span> <br />
-                                                                </TableCell>
-                                                                <TableCell>
-                                                                    <Chip label={item?.isCompleted ? "completed" : "ongoing"} classes={{root: classes[status[item?.isCompleted ? "completed".toLowerCase() : "ongoing".toLowerCase()]]}}/>
-                                                                </TableCell>
-                                                                <TableCell>
-                                                                    <Controls.ActionButton
-                                                                        color="primary"
-                                                                        onClick={() => { openInDetails(item) }}>
-                                                                        <DetailsIcon fontSize="small" />
-                                                                    </Controls.ActionButton>
-                                                                </TableCell>
-                                                            </TableRow>)
-                                                            )
+
+                                                            <TableBody>
+
+                                                                {loadingCtaFunctions ?
+                                                                    <TableRow key={0}>
+                                                                        <TableCell style={{ borderBottom: 'none' }}>
+                                                                            <Loading />
+                                                                        </TableCell>
+
+                                                                    </TableRow>
+
+
+                                                                    :
+                                                                    recordsAfterPagingAndSorting().map(item =>
+                                                                    (<TableRow key={item.id}>
+                                                                        <TableCell>{item.id}</TableCell>
+                                                                        <TableCell>
+                                                                            <span><b>Name:</b> {(item?.firstName && item?.firstName + ' ')  + (item?.lastName && item?.lastName)} </span> <br />
+                                                                            <span><b>Email:</b> {item?.email} </span> <br />
+                                                                            <span><b>Phone: </b>{item?.phone} </span> <br />
+                                                                        </TableCell>
+                                                                        {/* <TableCell>{item.name}</TableCell> */}
+                                                                        <TableCell>
+                                                                            <span><b>Company name:</b> {item?.companyName} </span> <br />
+                                                                            <span><b>Bussiness Industry:</b> {item?.businessIndustry} </span> <br />
+                                                                            <span><b>Company type: </b>{item?.companyTypeName} </span> <br />
+                                                                            <span><b>Company size: </b>{item?.companySizeName} </span> <br />
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {
+                                                                                item?.totalHour ? <span><b>Total Hours:</b> {timeConverter(item?.totalHour)}  <br /> </span> : <span>Not applicable</span>
+                                                                            }
+                                                                            {
+                                                                                item?.hourUsed ? <span><b>Used Hours:</b> {timeConverter(item?.hourUsed)} <br /> </span> : null
+                                                                            }
+                                                                           {
+                                                                               item?.hourRemaining && <span><b>Remaining Hours: </b>{ timeConverter(item?.hourRemaining)} <br /></span> 
+                                                                           }
+                                                                             
+                                                                            
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            <Chip label={item?.isCompleted ? "completed" : "ongoing"} classes={{ root: classes[status[item?.isCompleted ? "completed".toLowerCase() : "ongoing".toLowerCase()]] }} />
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            <Controls.ActionButton
+                                                                                color="primary"
+                                                                                onClick={() => { openInDetails(item) }}>
+                                                                                <DetailsIcon fontSize="small" />
+                                                                            </Controls.ActionButton>
+                                                                        </TableCell>
+                                                                    </TableRow>)
+                                                                    )
+                                                                }
+                                                            </TableBody>
                                                         }
-                                                    </TableBody>
-                                                </TblContainer>
-                                                <TblPagination />
-                                            </Paper>
-                                            <Notification
-                                                notify={notify}
-                                                setNotify={setNotify}
-                                            />
-                                            <ConfirmDialog
-                                                confirmDialog={confirmDialog}
-                                                setConfirmDialog={setConfirmDialog}
-                                            />
-                                        </Widget>
-                                
-                                            )}
+                                                    </TblContainer>
+
+                                                    <TblPagination />
+                                                </Paper>
+                                                <Notification
+                                                    notify={notify}
+                                                    setNotify={setNotify}
+                                                />
+                                                <ConfirmDialog
+                                                    confirmDialog={confirmDialog}
+                                                    setConfirmDialog={setConfirmDialog}
+                                                />
+                                            </Widget>
+
+                                        )}
 
                             </Grid>
                         </Grid>

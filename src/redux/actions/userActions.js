@@ -39,17 +39,22 @@ const listUsers = () => async (dispatch) => {
     }
 };
 const detailsUser = (id)=> async (dispatch) =>{
-    try{
-        dispatch({type:USER_DETAILS_REQUEST});
-        if(id){
-            const { data } = await axiosWithToken.get("/User/detail/" + id); 
-            dispatch({type:USER_DETAILS_SUCCESS, payload: data.data });
+    if(id){
+        try{
+            dispatch({type:USER_DETAILS_REQUEST, payload: id});
+            if(id){
+                const { data } = await axiosWithToken.get("/User/detail/" + id); 
+                dispatch({type:USER_DETAILS_SUCCESS, payload: data.data });
+                // console.log(data)
+            }
         }
-        // console.log(data.data)
+        catch(error){
+            dispatch({ type: USER_DETAILS_FAIL, payload: error.message });
+        }
+    }else{
+        console.log('id not found')
     }
-    catch(error){
-        dispatch({ type: USER_DETAILS_FAIL, payload: error.message });
-    }
+   
 };
 
 // register and update user
@@ -71,9 +76,9 @@ const saveUser = (item, id) => async (dispatch) => {
         } else {
             console.log('update')
             // Display the values
-            for (var value of item.values()) {
-                console.log(value);
-            }
+            // for (var value of item.values()) {
+            //     console.log(value);
+            // }
             const { data } = await axiosWithTokenAndMultipartData.put("/User/UpdateUser", item);
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
@@ -82,7 +87,7 @@ const saveUser = (item, id) => async (dispatch) => {
                 const userInfoUpdate = {...getCurrentUser,companyTypeName:data.data?.companyTypeName}
                 Cookie.set('userInfo', JSON.stringify(userInfoUpdate));
                 // console.log(Cookie.get('userInfo'))
-                console.log(data)
+                // console.log(data)
                 return data
 
             } else {
@@ -119,10 +124,11 @@ const signin = (email,password) => async(dispatch) => {
             dispatch({type:USER_SIGNIN_SUCCESS,payload:data.data});
             Cookie.set('userInfo', JSON.stringify(data.data));
             Cookie.set('userToken', data.data.token);
-            console.log(data.data);
+            // console.log(data.data);
         }else{
             dispatch({type:USER_SIGNIN_FAIL,payload:data.message})
         }
+        // console.log(data)
        
     }
     catch(error){

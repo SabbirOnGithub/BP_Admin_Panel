@@ -11,13 +11,16 @@ import {
     CONSULTANCY_RECEIVE_HISTORY_DELETE_REQUEST,
     CONSULTANCY_RECEIVE_HISTORY_DELETE_SUCCESS,
     CONSULTANCY_RECEIVE_HISTORY_DELETE_FAIL,
+    CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_REQUEST, 
+    CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_FAIL, 
+    CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_SUCCESS, 
 
  } from '../constants/consultancyReceiveHistoryConstants';
-import { axiosWithToken } from '../../helpers/axios';
+import { axiosWithToken,axiosWithoutToken } from '../../helpers/axios';
 
-// import {config} from "../../config";
+import {config} from "../../config";
 
-// const BASE_API_URL = config.BASE_API_URL
+const BASE_API_URL = config.BASE_API_URL
 
 // const listConsultancyReceiveHistorys = () => async (dispatch)=>{
 //     try{
@@ -61,7 +64,7 @@ const saveConsultancyReceiveHistory = (item) => async (dispatch) =>{
                 dispatch({ type: CONSULTANCY_RECEIVE_HISTORY_SAVE_FAIL, payload: data.message });
             }
         }else{
-            const { data } = await axiosWithToken.put("/ConsultancyReceiveHistory/", item);
+            const { data } = await axiosWithToken.put("/ConsultancyReceiveHistory", item);
             if (data.status === true) {
                 dispatch({type: CONSULTANCY_RECEIVE_HISTORY_SAVE_SUCCESS, payload: data });            
             }else{
@@ -89,9 +92,22 @@ const deleteConsultancyReceiveHistory = (id)=> async (dispatch, getState) =>{
     }
 };
 
+const listConsultancyReceiveHistoryStatuses = () => async (dispatch)=>{
+    try{
+        dispatch({type: CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_REQUEST});
+        const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/ConsultancyReceiveHistory/StatusList`);
+        dispatch({ type: CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_SUCCESS, payload: data ? data : [] });
+        // console.log(data)
+    }
+    catch(error){
+        dispatch({ type: CONSULTANCY_RECEIVE_HISTORY_STATUS_LIST_FAIL, payload: error.message });
+
+    }
+};
 export { 
     // listConsultancyReceiveHistorys, 
     // detailsConsultancyReceiveHistory, 
     saveConsultancyReceiveHistory, 
-    deleteConsultancyReceiveHistory 
+    deleteConsultancyReceiveHistory,
+    listConsultancyReceiveHistoryStatuses 
 }

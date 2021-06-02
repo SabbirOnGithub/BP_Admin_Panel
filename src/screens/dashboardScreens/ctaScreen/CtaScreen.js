@@ -54,6 +54,8 @@ export default function CtaScreen() {
                         <>
                             <CtaFunctionScreen
                                 createOperation = {createOperation}
+                                updateOperation = {updateOperation}
+                                deleteOperation={deleteOperation}
                                 openPopup = {openPopup}
                                 setOpenPopup ={setOpenPopup}
                                 showCtaFunctionDetail= {showCtaFunctionDetail}

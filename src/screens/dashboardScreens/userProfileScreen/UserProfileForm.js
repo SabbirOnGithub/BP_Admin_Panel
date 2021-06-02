@@ -85,12 +85,13 @@ export default function UserProfileForm(props) {
             }
         }
     }
-
     useEffect(() => {
         if (recordForEdit != null) {
             try {
                 setValues({
-                    ...recordForEdit
+                    ...recordForEdit,
+                    photo: recordForEdit.userImage,
+                    username : recordForEdit.userName
                 })
                 
             } catch (e) {

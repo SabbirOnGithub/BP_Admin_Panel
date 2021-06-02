@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default function useTable(records, headCells, filterFn) {
+export default function useTable(records, headCells, filterFn, totalRecords) {
 
     const classes = useStyles();
 
@@ -44,6 +44,14 @@ export default function useTable(records, headCells, filterFn) {
     const [rowsPerPage, setRowsPerPage] = useState(pages[page])
     const [order, setOrder] = useState()
     const [orderBy, setOrderBy] = useState()
+
+    const [pageDataConfig, setPageDataConfig] = useState({
+        "currentPage": 1,
+        "perPageCount": 5,
+        "orderBy": "Id",
+        "isAscending": false,
+        "keyword": ""
+      })
 
     const TblContainer = props => (
         <Table className={classes.table}>
@@ -82,19 +90,25 @@ export default function useTable(records, headCells, filterFn) {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        setPageDataConfig(prevState =>{
+            return { ...prevState,currentPage:newPage+1}
+        })
     }
 
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10))
         setPage(0);
+        setPageDataConfig(prevState =>{
+            return { ...prevState,perPageCount:parseInt(event.target.value, 10)}
+        })
     }
-
     const TblPagination = () => (<TablePagination
         component="div"
-        page={page}
+        page={(page > 0 && records.length < rowsPerPage) ? 0 : page}
+        // page={pageDataConfig.currentPage-1}
         rowsPerPageOptions={pages}
         rowsPerPage={rowsPerPage}
-        count={ Array.isArray(records) ? records.length : 0}
+        count={ totalRecords ? totalRecords : (Array.isArray(records) ? records.length : 0)}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
     />)
@@ -128,15 +142,7 @@ export default function useTable(records, headCells, filterFn) {
 
     const recordsAfterPagingAndSorting = () => {
         return stableSort(filterFn.fn(records), getComparator(order, orderBy))
-            .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-    }
-
-    const pageDataConfig = {
-        "currentPage": page,
-        "perPageCount": rowsPerPage,
-        "orderBy": "string",
-        "isAscending": true,
-        "keyword": "string",
+            // .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     }
 
     return {
@@ -144,6 +150,7 @@ export default function useTable(records, headCells, filterFn) {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-        pageDataConfig
+        pageDataConfig,
+        setPageDataConfig
     }
 }

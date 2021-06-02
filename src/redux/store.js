@@ -59,7 +59,7 @@ import { ctaPurchaseHistorySaveReducer } from './reducers/ctaPurchaseHistoryRedu
 import { courseAvailabilityDateSaveReducer } from './reducers/courseAvailabilityDateReducers';
 import { subscriptionDeleteReducer, subscriptionDetailsReducer, subscriptionListReducer, subscriptionSaveReducer } from './reducers/subscriptionReducers';
 import { companySizeDeleteReducer, companySizeDetailsReducer, companySizeListReducer, companySizeSaveReducer } from './reducers/companySizeReducers';
-import { consultancyReceiveHistoryDeleteReducer, consultancyReceiveHistorySaveReducer } from './reducers/consultancyReceiveHistoryReducers';
+import { consultancyReceiveHistoryDeleteReducer, consultancyReceiveHistorySaveReducer, consultancyReceiveHistoryStatusListReducer } from './reducers/consultancyReceiveHistoryReducers';
 import { adminDashboardDetailsReducer, userDashboardDetailsReducer } from './reducers/dashboardReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
@@ -298,6 +298,7 @@ const reducer = combineReducers({
     companySizeDelete: companySizeDeleteReducer,
     consultancyReceiveHistorySave: consultancyReceiveHistorySaveReducer,
     consultancyReceiveHistoryDelete: consultancyReceiveHistoryDeleteReducer,
+    consultancyReceiveHistoryStatusList:consultancyReceiveHistoryStatusListReducer,
     adminDashboardDetails: adminDashboardDetailsReducer,
     userDashboardDetails: userDashboardDetailsReducer,
 

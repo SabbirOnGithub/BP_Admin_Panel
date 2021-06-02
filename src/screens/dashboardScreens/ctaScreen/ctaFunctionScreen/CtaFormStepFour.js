@@ -126,7 +126,7 @@ export default function CtaFormStepFour(props) {
                                         <Grid container spacing={1}>
                                             <Grid container item md={12} spacing={3}>
                                                 {
-                                                    ctaPackageHourlys?.map(item => (
+                                                    ctaPackageHourlys?.map(item => ( item.id &&
                                                         <Grid item md={4} xs={12} key={item.id}>
                                                             <Paper className={classes.paper}>
                                                                         

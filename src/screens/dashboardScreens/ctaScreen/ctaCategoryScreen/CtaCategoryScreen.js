@@ -25,7 +25,7 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function CtaFunctionScreen() {
+export default function CtaCategoryScreen() {
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
     const { userInfo } = userSignIn;
