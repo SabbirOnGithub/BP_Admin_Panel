@@ -13,11 +13,12 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 // single selection from dropdown
 function Select(props) {
-  const { name, label, value, error = null, onChange, options } = props;
+  const { name, label, value, error = null, onChange, options, ...other } = props;
   // console.log(value)
   // console.log(options)
   return (
     <FormControl variant="outlined"
+      {...other}
       {...(error && { error: true })}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
@@ -38,6 +39,7 @@ function Select(props) {
             }
           )
         }
+       
       </MuiSelect>
       {error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>

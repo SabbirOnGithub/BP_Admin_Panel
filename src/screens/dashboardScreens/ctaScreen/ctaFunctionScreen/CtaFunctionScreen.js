@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
 import CtaFunctionForm from "./CtaFunctionForm";
 import { Grid, Paper, TableBody, TableRow, TableCell, Chip } from '@material-ui/core';
-import useTable from "../../../../components/UseTable/useTable";
+import useTableServerSide from "../../../../components/UseTable/useTableServerSide";
 import Controls from "../../../../components/controls/Controls";
 import Notification from "../../../../components/Notification/Notification";
 import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
@@ -52,7 +52,7 @@ export default function CtaFunctionScreen(props) {
     const classes = useStyles();
 
 
-    const { createOperation, updateOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
+    const { createOperation, updateOperation, deleteOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
 
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
@@ -125,8 +125,8 @@ export default function CtaFunctionScreen(props) {
         TblPagination,
         recordsAfterPagingAndSorting,
         pageDataConfig,
-        // setPageDataConfig
-    } = useTable(ctaFunctionsFilterByUser, headCells, filterFn, ctaFunctions?.item2);
+        setPageDataConfig
+    } = useTableServerSide(ctaFunctionsFilterByUser, headCells, filterFn, ctaFunctions?.item2);
 
     const dispatch = useDispatch();
     // search from table
@@ -134,30 +134,37 @@ export default function CtaFunctionScreen(props) {
         e.persist();
         const recievedSearchValue = e.target.value;
         setSearchValue(recievedSearchValue);
+        // --------------------
         // server side search
-        // setPageDataConfig(prevState =>{
-        //     return { ...prevState,keyword:recievedSearchValue}
-        // })
+        // --------------------
+            setPageDataConfig(prevState =>{
+                return { ...prevState,keyword:recievedSearchValue}
+            })
+        // --------------------
         // client side search
-        setFilterFn({
-            fn: items => {
-                if (recievedSearchValue) {
-                    return items.filter(x => {
-                        const makeStringInRow = (
-                            (x?.firstName && x?.firstName) +
-                            (x?.lastName && (' ' + x?.lastName)) +
-                            (x?.companyName && (' ' + x?.companyName)) +
-                            (x?.email && (' ' + x?.email)) +
-                            (x?.phone && (' ' + x?.phone))
-                        )?.toString()?.toLowerCase();
-                        return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
-                    });
-                }
-                else {
-                    return items;
-                }
-            }
-        });
+        // --------------------
+            // setFilterFn({
+            //     fn: items => {
+            //         if (recievedSearchValue) {
+            //             return items.filter(x => {
+            //                 const makeStringInRow = (
+            //                     (x?.firstName && x?.firstName) +
+            //                     (x?.lastName && (' ' + x?.lastName)) +
+            //                     (x?.companyName && (' ' + x?.companyName)) +
+            //                     (x?.email && (' ' + x?.email)) +
+            //                     (x?.phone && (' ' + x?.phone))
+            //                 )?.toString()?.toLowerCase();
+            //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+            //             });
+            //         }
+            //         else {
+            //             return items;
+            //         }
+            //     }
+            // });
+        // --------------------
+        // client side search end
+        // --------------------
     }
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
@@ -366,29 +373,7 @@ export default function CtaFunctionScreen(props) {
     }
     useEffect(() => {
         try {
-            // dispatch(listCtaPackageHourlys());
-            // if (user === 'undefined' || (typeof user === 'object' && Object.keys(user).length === 0)) {
-            //     dispatch(detailsUser(userInfo.userId));
-            // }
-            
-            // if (!ctaPackageHourlys) {
-            //     dispatch(listCtaPackageHourlys());
-            // }
-            // if (!ctaPackageDailys) {
-            //     dispatch(listCtaPackageDailys());
-            // }
-            // if (!ctaPackageMonthlyYearlys) {
-            //     dispatch(listCtaPackageMonthlyYearlys());
-            // }
-            // if (!ctaFunctionModels) {
-            //     dispatch(listCtaFunctionModels());
-            // }
             dispatch(listCtaFunctions(pageDataConfig))
-            // dispatch(listCtaPackageHourlys())
-            // dispatch(listCtaPackageDailys());
-            // dispatch(listCtaPackageMonthlyYearlys());
-            // dispatch(listCtaFunctionModels());
-
         } catch (e) {
             console.log(e)
         }
@@ -398,16 +383,6 @@ export default function CtaFunctionScreen(props) {
         }
     }, [
         dispatch,
-        // userInfo.userId,
-        // loadingCtaFunctionSave, 
-        // loadingCtaFunctionDocumentSave,
-        // loadingDeleteCtaFunctionDocument,
-        // loadingCtaPurchaseHistorySave,
-        // recordForEdit,
-        // ctaPackageHourlys,
-        // ctaPackageDailys,
-        // ctaPackageMonthlyYearlys,
-        // ctaFunctionModels,
         pageDataConfig,
         openPopup
     ])
@@ -455,6 +430,7 @@ export default function CtaFunctionScreen(props) {
                                                 // setOpenPopup={setShowCtaFunctionDetail}
                                                 createOperation={createOperation} // ctaScreen create permission for user
                                                 updateOperation = {updateOperation}
+                                                deleteOperation ={deleteOperation}
                                             />
                                         </Widget> :
                                         (openPopup ?
@@ -528,8 +504,6 @@ export default function CtaFunctionScreen(props) {
                                                                         </TableCell>
 
                                                                     </TableRow>
-
-
                                                                     :
                                                                     recordsAfterPagingAndSorting().map(item =>
                                                                     (<TableRow key={item.id}>

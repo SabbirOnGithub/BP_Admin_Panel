@@ -11,14 +11,16 @@ import AppsIcon from '@material-ui/icons/Apps';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import PaymentIcon from '@material-ui/icons/Payment';
 import PermDataSettingIcon from '@material-ui/icons/PermDataSetting';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+// import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
 import CallToActionIcon from '@material-ui/icons/CallToAction';
+import GolfCourseIcon from '@material-ui/icons/GolfCourse';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 import {
   Home as HomeIcon,
-  FormatSize as TypographyIcon,
+  // FormatSize as TypographyIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
 import { useTheme } from "@material-ui/styles";
@@ -99,7 +101,7 @@ const structure = [
     ],
   },
   {
-    id: 5, label: "Training Detail", link: "/admin/trainingDetail", icon: <TrendingUpIcon />,
+    // id: 5, label: "Training Detail", link: "/admin/trainingDetail", icon: <TrendingUpIcon />,
   },
   {
     id: 6, label: "Testimonial Detail", link: "/admin/testimonialDetail", icon: <DescriptionIcon />,
@@ -130,12 +132,12 @@ const structure = [
       { label: "Role Resource", link: "/admin/roleResource" },
     ],
   },
-  {
-    id: 10,
-    label: "Consultancy",
-    link: "/admin/cta",
-    icon: <BookIcon />,
-  },
+  // {
+  //   id: 10,
+  //   label: "Consultancy",
+  //   link: "/admin/cta",
+  //   icon: <BookIcon />,
+  // },
   {
     id: 11,
     label: "Contact Us",
@@ -164,43 +166,81 @@ const structure = [
     ],
   },
   {
+    id: 28,
+    label: "Training",
+    // link: "/admin/resource",
+    icon: <TrendingUpIcon />,
+    children: [
+      { label: "Training Overview", link: "/admin/trainingOverview" },
+      { label: "Training Type", link: "/admin/trainingType" },
+      { label: "Training Detail", link: "/admin/trainingDetail" },
+      { label: "Software", link: "/admin/software" },
+      { label: "Software Training Summary", link: "/admin/softwareTrainingSummary" },
+      { label: "Software Training Price", link: "/admin/softwareTrainingPrice" },
+      { label: "Software Training Type And Length", link: "/admin/softwareTrainingTypeAndLength" },
+      { label: "Training Candidate Descriptor", link: "/admin/trainingCandidateDescriptor" },
+    ],
+  },
+  {
+    id: 29,
+    label: "Course",
+    // link: "/admin/resource",
+    icon: <GolfCourseIcon />,
+    children: [
+      { label: "Course Benefit", link: "/admin/courseBenefit" },
+      { label: "Course Content", link: "/admin/courseContent" },
+      { label: "Course Requirement", link: "/admin/courseRequirement" },
+      { label: "Course Purchase", link: "/admin/coursePurchase" },
+    ],
+  },
+  {
+    id: 30,
+    label: "Consultation",
+    // link: "/admin/resource",
+    icon: <AssignmentTurnedInIcon />,
+    children: [
+      { label: "Consultancy", link: "/admin/cta" },
+      { label: "Consultation Overview", link: "/admin/consultationOverview" },
+    ],
+  },
+  {
     id: 14, label: "Business Principal Descriptor", link: "/admin/businessPrincipalDescriptor", icon: <BusinessCenterIcon />,
   },
   {
-    id: 15, label: "Consultation Overview", link: "/admin/consultationOverview", icon: <TypographyIcon />,
+    // id: 15, label: "Consultation Overview", link: "/admin/consultationOverview", icon: <TypographyIcon />,
   },
   {
-    id: 16, label: "Training Candidate Descriptor", link: "/admin/trainingCandidateDescriptor", icon: <TypographyIcon />,
+    // id: 16, label: "Training Candidate Descriptor", link: "/admin/trainingCandidateDescriptor", icon: <TypographyIcon />,
   },
   {
-    id: 17, label: "Training Overview", link: "/admin/trainingOverview", icon: <TypographyIcon />,
+    // id: 17, label: "Training Overview", link: "/admin/trainingOverview", icon: <TypographyIcon />,
   },
   {
-    id: 18, label: "Training Type", link: "/admin/trainingType", icon: <TypographyIcon />,
+    // id: 18, label: "Training Type", link: "/admin/trainingType", icon: <TypographyIcon />,
   },
   {
-    id: 19, label: "Software", link: "/admin/software", icon: <TypographyIcon />,
+    // id: 19, label: "Software", link: "/admin/software", icon: <TypographyIcon />,
   },
   {
-    id: 20, label: "Course Benefit", link: "/admin/courseBenefit", icon: <TypographyIcon />,
+    // id: 20, label: "Course Benefit", link: "/admin/courseBenefit", icon: <TypographyIcon />,
   },
   {
-    id: 21, label: "Course Content", link: "/admin/courseContent", icon: <TypographyIcon />,
+    // id: 21, label: "Course Content", link: "/admin/courseContent", icon: <TypographyIcon />,
   },
   {
-    id: 22, label: "Course Requirement", link: "/admin/courseRequirement", icon: <TypographyIcon />,
+    // id: 22, label: "Course Requirement", link: "/admin/courseRequirement", icon: <TypographyIcon />,
   },
   {
-    id: 23, label: "Software Training Summary", link: "/admin/softwareTrainingSummary", icon: <TypographyIcon />,
+    // id: 23, label: "Software Training Summary", link: "/admin/softwareTrainingSummary", icon: <TypographyIcon />,
   },
   {
-    id: 24, label: "Software Training Price", link: "/admin/softwareTrainingPrice", icon: <AttachMoneyIcon />,
+    // id: 24, label: "Software Training Price", link: "/admin/softwareTrainingPrice", icon: <AttachMoneyIcon />,
   },
   {
-    id: 25, label: "Software Training Type And Length", link: "/admin/softwareTrainingTypeAndLength", icon: <TypographyIcon />,
+    // id: 25, label: "Software Training Type And Length", link: "/admin/softwareTrainingTypeAndLength", icon: <TypographyIcon />,
   },
   {
-    id: 26, label: "Course Purchase", link: "/admin/coursePurchase", icon: <PaymentIcon />,
+    // id: 26, label: "Course Purchase", link: "/admin/coursePurchase", icon: <PaymentIcon />,
   },
   {
     id: 27, label: "Subscription", link: "/admin/subscription", icon: <SubscriptionsIcon />,

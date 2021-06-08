@@ -66,7 +66,6 @@ const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
 // const loadingRoleResource = true;
 
-
 const initialState={ 
     userSignin:{ userInfo },
     roleResourceDetails : { roleResource }

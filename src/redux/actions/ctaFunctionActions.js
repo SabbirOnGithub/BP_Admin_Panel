@@ -29,40 +29,40 @@ const BASE_API_URL = config.BASE_API_URL
 
 
 const listCtaFunctions = (item) => async (dispatch)=>{
-    // console.log(item)
-    try{
-        dispatch({type: CTA_FUNCTION_LIST_REQUEST});
-        const {data} = await axiosWithToken.post('/CtaFunction/search', item);
-        // console.log(data)
-
-        if (data.status === true) {
-            dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data.item1 ? data.data : [] });
-        }else{
-            dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: data.message });
+    if(item){
+        // with serverside paginations
+        try{
+            dispatch({type: CTA_FUNCTION_LIST_REQUEST});
+            const {data} = await axiosWithToken.post('/CtaFunction/search', item);
+            // console.log(data)
+    
+            if (data.status === true) {
+                dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data.item1 ? data.data : {} });
+            }else{
+                dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: data?.message });
+            }
         }
+        catch(error){
+            dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: error.message });
+        }
+    }else{
+            // withOut serverside paginations
+            try{
+                dispatch({type: CTA_FUNCTION_LIST_REQUEST});
+                const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CtaFunction`);
+                if (data.status === true) {
+                    dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
+                }else{
+                    dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: data.message });
+                }
+                // console.log(data.data)
+            }
+            catch(error){
+                dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: error.message });
+            }
     }
-    catch(error){
-        dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: error.message });
-
-    }
+    
 };
-
-// const listCtaFunctions = () => async (dispatch)=>{
-//     try{
-//         dispatch({type: CTA_FUNCTION_LIST_REQUEST});
-//         const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CtaFunction`);
-//         if (data.status === true) {
-//             dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data?.reverse() ? data.data : [] });
-//         }else{
-//             dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: data.message });
-//         }
-//         // console.log(data.data)
-//     }
-//     catch(error){
-//         dispatch({ type: CTA_FUNCTION_LIST_FAIL, payload: error.message });
-
-//     }
-// };
 
 const detailsCtaFunction = (id)=> async (dispatch) =>{
     try{

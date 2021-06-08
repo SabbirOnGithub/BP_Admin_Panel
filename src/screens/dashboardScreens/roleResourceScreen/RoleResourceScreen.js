@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import RoleResourceForm from "./RoleResourceForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTable from "../../../components/UseTable/useTable";
+import useTableServerSide from "../../../components/UseTable/useTableServerSide";
 import Controls from "../../../components/controls/Controls";
 import Popup from "../../../components/Popup/Popup";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -13,6 +13,9 @@ import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
 import Loading from '../../../components/Loading/Loading';
+import { getFilterDataByUser } from '../../../helpers/search';
+
+
 
 import { useSelector, useDispatch } from 'react-redux';
 // permissions
@@ -43,10 +46,15 @@ export default function RoleResourceScreen() {
         recievedPermission,
         loadingRoleResource,
         history,
-        initialPermission
+        initialPermission,
+       
     } = usePermission();
     const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
     // permission get end
+    const userSignIn = useSelector(state => state.userSignin);
+    //eslint-disable-next-line
+    const { userInfo } = userSignIn;
+
 
     const resourceList = useSelector(state => state.resourceList);
     //eslint-disable-next-line
@@ -59,6 +67,10 @@ export default function RoleResourceScreen() {
     const roleResourceList = useSelector(state => state.roleResourceList);
     //eslint-disable-next-line
     const { roleResources, loading, error } = roleResourceList;
+    
+    const roleResourcesFilterByUser = getFilterDataByUser(roleResources?.item1, userInfo);
+
+
     const roleResourceSave = useSelector(state => state.roleResourceSave);
     //eslint-disable-next-line
     const { loading: loadingSave, success: successSave, error: errorSave } = roleResourceSave;
@@ -68,6 +80,7 @@ export default function RoleResourceScreen() {
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [searchValue, setSearchValue] = useState("")
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
@@ -79,10 +92,51 @@ export default function RoleResourceScreen() {
         TblContainer,
         TblHead,
         TblPagination,
-        recordsAfterPagingAndSorting
-    } = useTable(roleResources, headCells, filterFn);
+        recordsAfterPagingAndSorting,
+        pageDataConfig,
+        setPageDataConfig
+    } = useTableServerSide(roleResourcesFilterByUser, headCells, filterFn,  roleResources?.item2);
 
     const dispatch = useDispatch();
+
+    // search from table
+    const handleSearch = e => {
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
+        // --------------------
+        // server side search
+        // --------------------
+            setPageDataConfig(prevState =>{
+                return { ...prevState,keyword:recievedSearchValue}
+            })
+        // --------------------
+        // client side search
+        // --------------------
+            // setFilterFn({
+            //     fn: items => {
+            //         if (recievedSearchValue) {
+            //             return items.filter(x => {
+            //                 const makeStringInRow = (
+            //                     (x?.roleId && x?.roleId) +
+            //                     (x?.resourceId && (' ' + x?.resourceId)) +
+            //                     (x?.createOperation ? ' yes' : 'no') +
+            //                     (x?.updateOperation ? ' yes' : 'no') +
+            //                     (x?.deleteOperation ? ' yes' : 'no')
+            //                 )?.toString()?.toLowerCase();
+            //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+            //             });
+            //         }
+            //         else {
+            //             return items;
+            //         }
+            //     }
+            // });
+
+        // --------------------
+        // client side search end
+        // --------------------
+    }
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
@@ -161,7 +215,7 @@ export default function RoleResourceScreen() {
             if (recievedPermission?.readOperation) {
                 dispatch(listResources());
                 dispatch(listRoles());
-                dispatch(listRoleResources());
+                dispatch(listRoleResources(pageDataConfig));
             }
             if (readOperation === false) {
                 history.push(accessDeniedRoute);
@@ -175,15 +229,26 @@ export default function RoleResourceScreen() {
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
+    }, [
+        dispatch, 
+        successSave, 
+        successDelete, 
+        setPermission, 
+        recievedPermission, 
+        readOperation, 
+        history, 
+        initialPermission, 
+        loadingRoleResource,
+        pageDataConfig
+    ])
     return (
 
         <>
             {
 
-                (loadingRoleResource || loading || loadingSave || loadingDelete || loadingRoles || loadingResources) ? <Loading /> :
+                // (loadingRoleResource || loading || loadingSave || loadingDelete || loadingRoles || loadingResources) ? <Loading /> :
                     (
-                        roleResources.length > 0 &&
+                        // roleResources && 
                         <>
                             <PageTitle title="Role Resources" />
 
@@ -199,6 +264,9 @@ export default function RoleResourceScreen() {
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
+                                        handleSearch={handleSearch}
+                                        searchLabel='Search here..'
+                                        searchValue={searchValue}
                                     >
 
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -206,6 +274,14 @@ export default function RoleResourceScreen() {
                                                 <TblHead />
                                                 <TableBody>
                                                     {
+                                                         (loadingRoleResource || loading || loadingSave || loadingDelete || loadingRoles || loadingResources) ?
+                                                        <TableRow key={0}>
+                                                            <TableCell style={{ borderBottom: 'none' }}>
+                                                                <Loading />
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        :
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>

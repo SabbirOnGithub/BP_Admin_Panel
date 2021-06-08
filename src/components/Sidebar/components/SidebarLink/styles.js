@@ -17,7 +17,7 @@ export default makeStyles(theme => ({
     },
   },
   linkIcon: {
-    marginRight: theme.spacing(1),
+    // marginRight: theme.spacing(1),
     color: theme.palette.text.secondary + "99",
     transition: theme.transitions.create("color"),
     width: 24,
@@ -40,7 +40,12 @@ export default makeStyles(theme => ({
     opacity: 0,
   },
   nestedList: {
-    paddingLeft: theme.spacing(2) + 30,
+    // paddingLeft: theme.spacing(2) + 30,
+    paddingLeft: theme.spacing(2) + 5,
+    // backgroundColor: '#F5F5F5',
+    '& :hover':{
+      color: theme.palette.primary.main,
+    }
   },
   sectionTitle: {
     marginLeft: theme.spacing(4.5),

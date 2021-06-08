@@ -31,7 +31,11 @@ const getFilterDataByUser = (dataOfArray, userInfo) =>{
 }
 // static condition applied 1-superadmin, 2-admin, 3- member, 4- client 
 const isAdminUser = (userInfo) =>{
+    // const {userSignin:{ userInfo }} = store.getState();
+    // console.log(userInfo)
+
     // 1-superadmin, 2-admin, 3- member, 4- client 
     return (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? true : false
+    // return true
 }
 export { searchNameByIdFromArray, searchTitleByIdFromArray, getPermissions, getFilterDataByUser, isAdminUser };

@@ -130,7 +130,7 @@ export default function CtaFunctionDetailScreen(props) {
                                         </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Service: </b> {ctaFunction?.goalsToAchieveService} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Technology: </b> {ctaFunction?.goalsToAchieveTechnology} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Estimation: </b> {ctaFunction?.estimation} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Estimation: </b> {ctaFunction?.estimation && new Date(`${ctaFunction?.estimation} UTC`).toLocaleDateString()} </Typography>
                                         {
                                             ctaFunction?.totalHour  && <Typography paragraph className={classes.customPharagraph}><b>Total Hours: </b> {timeConverter(ctaFunction?.totalHour)} </Typography>
                                         }
@@ -220,6 +220,7 @@ export default function CtaFunctionDetailScreen(props) {
                     createOperation = {createOperation && !ctaFunction?.isCompleted}
                     updateOperation = {updateOperation}
                     deleteOperation = {deleteOperation}
+                    hourRemaining = {ctaFunction?.hourRemaining}
                 />
                
                     {/* <div>

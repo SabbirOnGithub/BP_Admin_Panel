@@ -147,12 +147,19 @@ export default {
             backgroundColor: "#F3F5FF",
           },
         },
+        // paddingLeft: '8px !important'
       },
       button: {
         "&:hover, &:focus": {
           backgroundColor: "#F3F5FF",
         },
       },
+      
+    },
+    MuiListItemIcon:{
+      root:{
+        minWidth:'30px !important'
+      }
     },
     MuiTouchRipple: {
       child: {

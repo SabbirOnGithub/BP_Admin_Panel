@@ -2,9 +2,9 @@ import React, { useEffect , useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../components/Loading/Loading';
 import { Grid,
-    Select,
-    OutlinedInput,
-    MenuItem,
+    // Select,
+    // OutlinedInput,
+    // MenuItem,
      } from "@material-ui/core";
 import Widget from "../../../components/Widget";
 import { Typography } from "../../../components/Wrappers";
@@ -22,9 +22,11 @@ import {
     ResponsiveContainer,
     ComposedChart,
     Line,
-    Area,
+    // Area,
     YAxis,
     XAxis,
+    Tooltip,
+    // LineChart
   } from "recharts";
 import { useTheme } from "@material-ui/styles";
 import Dot from "../../../components/Sidebar/components/Dot";
@@ -166,7 +168,8 @@ export default function AdminDashboardScreen() {
     var theme = useTheme();
 
     // local
-    var [mainChartState, setMainChartState] = useState("year");
+    //eslint-disable-next-line
+    var [mainChartState, setMainChartState] = useState("month");
 
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
@@ -177,7 +180,7 @@ export default function AdminDashboardScreen() {
     const { adminDashboard, loading, error } = adminDashboardDetails;
     const dispatch = useDispatch();
     // console.log(Math.max(...mainChartData.map(item=>item.count)))
-    // console.log(adminDashboard?.userGraph)
+    console.log(adminDashboard?.userGraph)
     useEffect(() => {
         try {
             userInfo?.userId && dispatch(detailsAdminDashboard(userInfo?.userId))
@@ -382,7 +385,7 @@ export default function AdminDashboardScreen() {
                                             color="text"
                                             colorBrightness="secondary"
                                             >
-                                            {(mainChartState + 'ly Chart')?.toUpperCase()}
+                                            {/* {(mainChartState + 'ly Chart')?.toUpperCase()} */}
                                             </Typography>
                                             <div className={classes.mainChartHeaderLabels}>
                                             {/* <div className={classes.mainChartHeaderLabel}>
@@ -400,11 +403,11 @@ export default function AdminDashboardScreen() {
                                             <div className={classes.mainChartHeaderLabel}>
                                                 <Dot color="secondary" />
                                                 <Typography className={classes.mainChartLegentElement}>
-                                                Count
+                                                    User Count
                                                 </Typography>
                                             </div>
                                             </div>
-                                            <Select
+                                            {/* <Select
                                             value={mainChartState}
                                             onChange={e => setMainChartState(e.target.value)}
                                             input={
@@ -418,9 +421,17 @@ export default function AdminDashboardScreen() {
                                             }
                                             autoWidth
                                             >
-                                            <MenuItem value="year">Year</MenuItem>
                                             <MenuItem value="month">Month</MenuItem>
-                                            </Select>
+                                            <MenuItem value="year">Year</MenuItem>
+                                            </Select> */}
+                                            <Typography
+                                            variant="h5"
+                                            color="text"
+                                            colorBrightness="secondary"
+                                            >
+                                                {adminDashboard.userGraph?.[0].year}
+                                            </Typography>
+
                                         </div>
                                         }
                                     >
@@ -445,25 +456,23 @@ export default function AdminDashboardScreen() {
                                                 // tickLine={false}
                                                 dataKey={mainChartState}
                                             />
-                                            <Area
+                                            {/* <Area
                                             type="natural"
                                             // dataKey="desktop"
                                             fill={theme.palette.background.light}
                                             strokeWidth={0}
                                             activeDot={false}
                                             dataKey="count"
-
-                                            />
-                                            <Line
+                                            /> */}
+                                            {/* <Line
                                             type="natural"
-                                            // dataKey="mobile"
                                             stroke={theme.palette.secondary.main}
                                             strokeWidth={2}
                                             dot={false}
                                             activeDot={false}
                                             dataKey="count"
-                                            />
-                                            {/* <Line
+                                            /> */}
+                                            <Line
                                             type="linear"
                                             dataKey="count"
                                             stroke={theme.palette.warning.main}
@@ -473,7 +482,10 @@ export default function AdminDashboardScreen() {
                                                 strokeWidth: 2,
                                                 fill: theme.palette.warning.main,
                                             }}
-                                            /> */}
+                                            />
+
+                                            <Tooltip />
+
                                         </ComposedChart>
                                         </ResponsiveContainer>
                                     

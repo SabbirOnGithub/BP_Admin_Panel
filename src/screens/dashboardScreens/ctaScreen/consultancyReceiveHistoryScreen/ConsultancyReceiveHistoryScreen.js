@@ -43,7 +43,8 @@ export default function ConsultancyReceiveHistoryScreen(props) {
         // error 
         createOperation,
         updateOperation,
-        deleteOperation
+        deleteOperation,
+        hourRemaining
         } = props;
     const consultancyReceiveHistoryStatusList = useSelector(state => state.consultancyReceiveHistoryStatusList);
     //eslint-disable-next-line
@@ -232,6 +233,9 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                                         <CloseIcon fontSize="small" />
                                                                     </Controls.ActionButton>
                                                                 }
+                                                                {
+                                                                    // (updateOperation && deleteOperation && item?.status>2) ? null : "Access denied"
+                                                                }
                                                             </TableCell>
                                                         </TableRow>)
                                                         )
@@ -252,6 +256,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                 loadingSave={false}
                                                 ctaFunctionId = {ctaFunctionId}
                                                 consultancyReceiveHistoryStatuses = {consultancyReceiveHistoryStatuses}
+                                                hourRemaining = {hourRemaining}
                                             />
 
                                         </Popup>

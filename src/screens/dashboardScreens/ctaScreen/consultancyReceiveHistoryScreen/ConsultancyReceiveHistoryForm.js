@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Grid, CircularProgress } from '@material-ui/core';
 import Controls from "../../../../components/controls/Controls";
 import { useForm, Form } from '../../../../components/UseForm/useForm';
-
+import {isAdminUser} from '../../../../helpers/search'
 
 const initialFValues = {
     id: '',
@@ -22,15 +23,20 @@ export default function ConsultancyReceiveHistoryForm(props) {
         recordForEdit, 
         loadingSave,
         ctaFunctionId,
-        consultancyReceiveHistoryStatuses 
+        consultancyReceiveHistoryStatuses,
+        hourRemaining 
     } = props
+
+    const userSignIn = useSelector(state => state.userSignin);
+    //eslint-disable-next-line
+    const { userInfo } = userSignIn;
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if ('consultancyReceiveDate' in fieldValues)
             temp.consultancyReceiveDate = fieldValues.consultancyReceiveDate ? "" : "This field is required."
         if ('consultancyReceiveTime' in fieldValues)
-            temp.consultancyReceiveTime = fieldValues.consultancyReceiveTime ? "" : "This field is required."
+            temp.consultancyReceiveTime = consultancyReceiveTimeIsValid(fieldValues.consultancyReceiveTime) ? "" : "This field is required."
          if ('status' in fieldValues)
             temp.status = fieldValues.status ? "" : "This field is required."
         setErrors({
@@ -60,7 +66,13 @@ export default function ConsultancyReceiveHistoryForm(props) {
             addOrEdit(values, resetForm);
         }
     }
-
+    const consultancyReceiveTimeIsValid = (value) =>{
+        if(hourRemaining){
+            return value <= hourRemaining ? value : ""
+        }else{
+            return value <= 1440 ? value : ""
+        }
+    } 
     useEffect(() => {
         if (recordForEdit != null){
             setValues({
@@ -90,7 +102,7 @@ export default function ConsultancyReceiveHistoryForm(props) {
                     onChange={handleInputChange}
                     error={errors.status}
                     options={consultancyReceiveHistoryStatuses ? consultancyReceiveHistoryStatuses : []}
-                    disabled
+                    disabled = {!isAdminUser(userInfo) ? true : false}
 
                 />
                     <Controls.DatePickerCustom
@@ -145,7 +157,7 @@ export default function ConsultancyReceiveHistoryForm(props) {
                         onChange={handleInputNumberChange}
                         error={errors.consultancyReceiveTime}
                         helperText="Add the requested consultancy time in Munutes for the given date. Example: 5 hours 40 minutes = 5x60+40 = 340"
-                        max ={1440}
+                        max ={hourRemaining ? hourRemaining : 1440}
                     />
 
                     <Controls.Input

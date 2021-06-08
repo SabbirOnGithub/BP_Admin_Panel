@@ -20,21 +20,39 @@ import {config} from "../../config";
 const BASE_API_URL = config.BASE_API_URL
 
 // all user role resources
-const listRoleResources = () => async (dispatch)=>{
-    try{
-        dispatch({type: ROLE_RESOURCE_LIST_REQUEST});
-        const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/RoleResource`);
-        if (data.status === true) {
-            dispatch({ type: ROLE_RESOURCE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
-        }else{
-            dispatch({ type: ROLE_RESOURCE_LIST_FAIL, payload: data.message });
+const listRoleResources = (item) => async (dispatch)=>{
+    // console.log(item)
+    if(item){
+        try{
+            dispatch({type: ROLE_RESOURCE_LIST_REQUEST});
+            const {data} = await axiosWithToken.post('/RoleResource/search', item);
+            if (data.status === true) {
+                dispatch({ type: ROLE_RESOURCE_LIST_SUCCESS, payload: data.data.item1 ? data.data : {} });
+            }else{
+                dispatch({ type: ROLE_RESOURCE_LIST_FAIL, payload: data?.message });
+            }
+            // console.log(data.data)
         }
-        // console.log(data.data)
-    }
-    catch(error){
-        dispatch({ type: ROLE_RESOURCE_LIST_FAIL, payload: error.message });
+        catch(error){
+            dispatch({ type: ROLE_RESOURCE_LIST_FAIL, payload: error.message });
+        }
 
+    }else{
+        try{
+            dispatch({type: ROLE_RESOURCE_LIST_REQUEST});
+            const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/RoleResource`);
+            if (data.status === true) {
+                dispatch({ type: ROLE_RESOURCE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
+            }else{
+                dispatch({ type: ROLE_RESOURCE_LIST_FAIL, payload: data.message });
+            }
+            // console.log(data.data)
+        }
+        catch(error){
+            dispatch({ type: ROLE_RESOURCE_LIST_FAIL, payload: error.message });
+        }
     }
+    
 };
 
 // single user role resources

@@ -3,38 +3,55 @@ import { Table, TableHead, TableRow, TableCell, makeStyles, TablePagination, Tab
 
 const useStyles = makeStyles(theme => ({
     table: {
-        // marginTop: theme.spacing(3),
         paddingTop: theme.spacing(3),
         '& thead th': {
             fontWeight: '600',
-            // color: '#ffffff',
             color: '#4A4A4A',
-            // backgroundColor: '#F3F5FF',
-            fontSize:'1.5rem',
             borderTop:'none',
         },
         '& tbody td': {
             fontWeight: '300',
-            fontSize:'1.5rem',
-
         },
         '& tbody tr:hover': {
-            // backgroundColor: '#fffbf2',
             backgroundColor: '#F3F5FF',
             cursor: 'pointer',
         },
+        '& img':{
+            width: 'auto', 
+            maxHeight: 200
+        }
+    },
+    
+    [theme.breakpoints.down("sm")]: {
+        MuiTableCell: {
+            head: {
+              fontSize: "1.3rem",
+            },
+            body: {
+              fontSize: "1.3rem",
+            },
+            
+          },
     },
 }))
 
-export default function useTable(records, headCells, filterFn) {
+export default function useTableServerSide(records, headCells, filterFn, totalRecords) {
 
     const classes = useStyles();
 
-    const pages = [5, 10, 25]
+    const pages = [5, 10, 20]
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(pages[page])
     const [order, setOrder] = useState()
     const [orderBy, setOrderBy] = useState()
+
+    const [pageDataConfig, setPageDataConfig] = useState({
+        "currentPage": 1,
+        "perPageCount": 5,
+        "orderBy": "Id",
+        "isAscending": false,
+        "keyword": ""
+      })
 
     const TblContainer = props => (
         <Table className={classes.table}>
@@ -73,19 +90,26 @@ export default function useTable(records, headCells, filterFn) {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        setPageDataConfig(prevState =>{
+            return { ...prevState,currentPage:newPage+1}
+        })
     }
 
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10))
         setPage(0);
+        setPageDataConfig(prevState =>{
+            return { ...prevState,perPageCount:parseInt(event.target.value, 10)}
+        })
     }
-
     const TblPagination = () => (<TablePagination
         component="div"
-        page={page}
+        page={(page > 0 && (totalRecords ? totalRecords < rowsPerPage : records.length < rowsPerPage )) ? 0 : page}
+        // page={pageDataConfig.currentPage-1}
         rowsPerPageOptions={pages}
         rowsPerPage={rowsPerPage}
-        count={ Array.isArray(records) ? records.length : 0}
+        count={ totalRecords ? totalRecords : (Array.isArray(records) ? records.length : 0)}
+        // count={8}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
     />)
@@ -119,13 +143,15 @@ export default function useTable(records, headCells, filterFn) {
 
     const recordsAfterPagingAndSorting = () => {
         return stableSort(filterFn.fn(records), getComparator(order, orderBy))
-            .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+            // .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     }
 
     return {
         TblContainer,
         TblHead,
         TblPagination,
-        recordsAfterPagingAndSorting
+        recordsAfterPagingAndSorting,
+        pageDataConfig,
+        setPageDataConfig
     }
 }
