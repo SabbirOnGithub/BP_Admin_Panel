@@ -61,6 +61,7 @@ import { subscriptionDeleteReducer, subscriptionDetailsReducer, subscriptionList
 import { companySizeDeleteReducer, companySizeDetailsReducer, companySizeListReducer, companySizeSaveReducer } from './reducers/companySizeReducers';
 import { consultancyReceiveHistoryDeleteReducer, consultancyReceiveHistorySaveReducer, consultancyReceiveHistoryStatusListReducer } from './reducers/consultancyReceiveHistoryReducers';
 import { adminDashboardDetailsReducer, userDashboardDetailsReducer } from './reducers/dashboardReducers';
+import { techCategoryDeleteReducer, techCategoryDetailsReducer, techCategoryListReducer, techCategorySaveReducer } from './reducers/techCategoryReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -300,7 +301,10 @@ const reducer = combineReducers({
     consultancyReceiveHistoryStatusList:consultancyReceiveHistoryStatusListReducer,
     adminDashboardDetails: adminDashboardDetailsReducer,
     userDashboardDetails: userDashboardDetailsReducer,
-
+    techCategoryList:techCategoryListReducer,
+    techCategoryDetails: techCategoryDetailsReducer,
+    techCategorySave: techCategorySaveReducer,
+    techCategoryDelete: techCategoryDeleteReducer,
 
     
 });

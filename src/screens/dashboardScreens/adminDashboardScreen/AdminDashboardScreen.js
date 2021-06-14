@@ -180,7 +180,7 @@ export default function AdminDashboardScreen() {
     const { adminDashboard, loading, error } = adminDashboardDetails;
     const dispatch = useDispatch();
     // console.log(Math.max(...mainChartData.map(item=>item.count)))
-    console.log(adminDashboard?.userGraph)
+    // console.log(adminDashboard?.userGraph)
     useEffect(() => {
         try {
             userInfo?.userId && dispatch(detailsAdminDashboard(userInfo?.userId))

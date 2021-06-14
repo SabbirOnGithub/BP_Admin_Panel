@@ -30,8 +30,9 @@ const getFilterDataByUser = (dataOfArray, userInfo) =>{
    
 }
 // static condition applied 1-superadmin, 2-admin, 3- member, 4- client 
-const isAdminUser = (userInfo) =>{
-    // const {userSignin:{ userInfo }} = store.getState();
+const isAdminUser = () =>{
+    const {userSignin} = store.getState();
+    const { userInfo } = userSignin;
     // console.log(userInfo)
 
     // 1-superadmin, 2-admin, 3- member, 4- client 

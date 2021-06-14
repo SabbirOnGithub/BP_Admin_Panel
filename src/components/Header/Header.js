@@ -59,7 +59,7 @@ export default function Header(props) {
 
 // logout
   const handleLogout = () => {
-    console.log('logout');
+    // console.log('logout');
     dispatch(logout());
     history.push("/signin");
   }

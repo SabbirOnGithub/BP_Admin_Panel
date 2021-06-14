@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Grid, CircularProgress } from '@material-ui/core';
 import Controls from "../../../../components/controls/Controls";
 import { useForm, Form } from '../../../../components/UseForm/useForm';
@@ -24,12 +23,8 @@ export default function ConsultancyReceiveHistoryForm(props) {
         loadingSave,
         ctaFunctionId,
         consultancyReceiveHistoryStatuses,
-        hourRemaining 
+        hourRemaining,
     } = props
-
-    const userSignIn = useSelector(state => state.userSignin);
-    //eslint-disable-next-line
-    const { userInfo } = userSignIn;
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -73,11 +68,14 @@ export default function ConsultancyReceiveHistoryForm(props) {
             return value <= 1440 ? value : ""
         }
     } 
+    // console.log(values)
+
     useEffect(() => {
         if (recordForEdit != null){
             setValues({
                 ...recordForEdit,
-                consultancyReceiveDate:  new Date(new Date(`${recordForEdit.consultancyReceiveDate} GMT`).toString())
+                // consultancyReceiveDate: ''
+                consultancyReceiveDate: new Date(new Date(`${recordForEdit.consultancyReceiveDate} GMT`).toString()),
             })
         }
         else {
@@ -102,19 +100,20 @@ export default function ConsultancyReceiveHistoryForm(props) {
                     onChange={handleInputChange}
                     error={errors.status}
                     options={consultancyReceiveHistoryStatuses ? consultancyReceiveHistoryStatuses : []}
-                    disabled = {!isAdminUser(userInfo) ? true : false}
+                    disabled = {!isAdminUser() ? true : false}
 
                 />
                     <Controls.DatePickerCustom
                         name="consultancyReceiveDate"
                         label="Consultancy requested date"
-                        value={values.consultancyReceiveDate ? values.consultancyReceiveDate : 'No date found'}
+                        value={values.consultancyReceiveDate ? values.consultancyReceiveDate : ''}
                         onChange={handleDateInput}
                         error={errors.consultancyReceiveDate}
                         placeholder='Set the date of received consultancy'
                         disablePast
                         format="MM/dd/yyyy"
                         helperText="Add the requested consultancy date"
+                        readOnly = {isAdminUser() && true}
                     // className={clsx(classes.padding, classes.textField)}
                     />
                     {/* <Controls.TimePickerCustom
@@ -158,6 +157,8 @@ export default function ConsultancyReceiveHistoryForm(props) {
                         error={errors.consultancyReceiveTime}
                         helperText="Add the requested consultancy time in Munutes for the given date. Example: 5 hours 40 minutes = 5x60+40 = 340"
                         max ={hourRemaining ? hourRemaining : 1440}
+                        readOnly = {isAdminUser() && true}
+
                     />
 
                     <Controls.Input
@@ -167,6 +168,7 @@ export default function ConsultancyReceiveHistoryForm(props) {
                         onChange={handleInputChange}
                         error={errors.note}
                         helperText="Add some note/description for this record (if any)"
+                        readOnly = {isAdminUser() && true}
 
                     />
 

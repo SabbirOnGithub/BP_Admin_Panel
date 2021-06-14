@@ -69,10 +69,10 @@ export default function CtaFunctionDetailScreen(props) {
 
     const consultancyReceiveHistorySave = useSelector(state => state.consultancyReceiveHistorySave);
     //eslint-disable-next-line
-    const { loading: loadingSaveConsultancyReceiveHistory } = consultancyReceiveHistorySave;
+    const { loading: loadingSaveConsultancyReceiveHistory, success: successSaveConsultancyReceiveHistory, error: errorSaveConsultancyReceiveHistory } = consultancyReceiveHistorySave;
     const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
     //eslint-disable-next-line
-    const { loading: loadingDeleteConsultancyReceiveHistory } = consultancyReceiveHistoryDelete;
+    const { loading: loadingDeleteConsultancyReceiveHistory,success: successDeleteConsultancyReceiveHistory, error: errorDeleteConsultancyReceiveHistory } = consultancyReceiveHistoryDelete;
 
     const dispatch = useDispatch();
 
@@ -94,7 +94,7 @@ export default function CtaFunctionDetailScreen(props) {
         }
 
         // eslint-disable-next-line
-    }, [dispatch, recordForDetails.id, loadingSaveConsultancyReceiveHistory, loadingDeleteConsultancyReceiveHistory])
+    }, [dispatch, recordForDetails.id, successSaveConsultancyReceiveHistory, successDeleteConsultancyReceiveHistory])
 
 // console.log(ctaFunctionModels?.techStacks)
 // console.log(ctaFunction)

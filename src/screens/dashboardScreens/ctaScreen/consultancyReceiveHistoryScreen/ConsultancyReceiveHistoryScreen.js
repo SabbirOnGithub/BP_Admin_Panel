@@ -12,7 +12,7 @@ import Widget from "../../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../../themes/responseMessage";
 import Loading from '../../../../components/Loading/Loading';
 import { timeConverter } from '../../../../helpers/converter';
-import { searchNameByIdFromArray } from '../../../../helpers/search';
+import { searchNameByIdFromArray, isAdminUser } from '../../../../helpers/search';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -44,7 +44,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
         createOperation,
         updateOperation,
         deleteOperation,
-        hourRemaining
+        hourRemaining,
         } = props;
     const consultancyReceiveHistoryStatusList = useSelector(state => state.consultancyReceiveHistoryStatusList);
     //eslint-disable-next-line
@@ -59,7 +59,8 @@ export default function ConsultancyReceiveHistoryScreen(props) {
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     // const [records, setRecords] = useState([])
-    const [searchValue, setSearchValue] = useState("")
+    //eslint-disable-next-line
+    // const [searchValue, setSearchValue] = useState("")
 
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
@@ -76,27 +77,32 @@ export default function ConsultancyReceiveHistoryScreen(props) {
 
     const dispatch = useDispatch();
     // search from table
-    const handleSearch = e => {
-        e.persist();
-        const recievedSearchValue = e.target.value;
-        setSearchValue(recievedSearchValue);
-        setFilterFn({
-            fn: items => {
-                if (recievedSearchValue){
-                    return items.filter(x => {
-                        const makeStringInRow = (
-                            (x?.consultancyReceiveDate && new Date(`${x?.consultancyReceiveDate} UTC`).toLocaleDateString()) + 
-                            (x?.consultancyReceiveTime && (' ' + (x?.consultancyReceiveTime/60).toFixed(2) + ' Hours')) 
-                            )?.toString()?.toLowerCase();
-                        return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
-                    });
-                }
-                else{
-                    return items;
-                }
-            }
-        });
-    }
+    // const handleSearch = e => {
+    //     e.persist();
+    //     const recievedSearchValue = e.target.value;
+    //     setSearchValue(recievedSearchValue);
+    //     setFilterFn({
+    //         fn: items => {
+    //             if (recievedSearchValue){
+    //                 return items.filter(x => {
+    //                     const makeStringInRow = (
+    //                         (x?.consultancyReceiveDate && new Date(`${x?.consultancyReceiveDate} UTC`).toLocaleDateString()) + ' ' +
+    //                         (x?.consultancyReceiveTime && (' ' + (x?.consultancyReceiveTime/60).toFixed(2) + ' Hours')) + ' ' +
+    //                         (x?.note && x?.note) + ' ' +
+    //                         (x?.statusName && x?.statusName) 
+    //                         )?.toString()?.toLowerCase();
+                            
+    //                         console.log(makeStringInRow)
+
+    //                     return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+    //                 });
+    //             }
+    //             else{
+    //                 return items;
+    //             }
+    //         }
+    //     });
+    // }
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
         dispatch(saveConsultancyReceiveHistory(item));
@@ -190,9 +196,6 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         buttonText = {"Request for consultancy"}
                                         createOperation={createOperation}
-                                        handleSearch = {handleSearch}
-                                        searchLabel = 'Search here..'
-                                        searchValue = {searchValue}
                                     >
 
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -211,7 +214,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                             <TableCell>
                                                                 
                                                                 {
-                                                                (updateOperation && item?.status<3) && 
+                                                                    (updateOperation && item?.status <3) && 
                                                                     <Controls.ActionButton
                                                                         color="primary"
                                                                         onClick={() => { openInPopup(item) }}>
@@ -255,7 +258,7 @@ export default function ConsultancyReceiveHistoryScreen(props) {
                                                 // loadingSave={loadingSave}
                                                 loadingSave={false}
                                                 ctaFunctionId = {ctaFunctionId}
-                                                consultancyReceiveHistoryStatuses = {consultancyReceiveHistoryStatuses}
+                                                consultancyReceiveHistoryStatuses = {isAdminUser() ? consultancyReceiveHistoryStatuses : consultancyReceiveHistoryStatuses?.slice(0,1)}
                                                 hourRemaining = {hourRemaining}
                                             />
 

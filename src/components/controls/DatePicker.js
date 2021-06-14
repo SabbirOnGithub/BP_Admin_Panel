@@ -33,7 +33,8 @@ function DatePickerCustom(props) {
                     onChange={date =>onChange(name,date)}
                     {...other}
                     {...(error && {error:true,helperText:error})}
-                    InputProps={{ readOnly: readOnly }}
+                    InputProps={{ readOnly: true }}
+                    readOnly={readOnly ? readOnly : false} 
                 />
             </MuiPickersUtilsProvider>
         </div>
