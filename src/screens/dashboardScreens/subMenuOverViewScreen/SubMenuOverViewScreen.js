@@ -233,7 +233,8 @@ export default function SubMenuOverViewScreen() {
                                                             <TableCell>
                                                                 {
                                                                     item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" /> : "No image uploaded"
-                                                                }</TableCell>
+                                                                }
+                                                            </TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
                                                                     color="primary"

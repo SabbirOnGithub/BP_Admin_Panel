@@ -46,7 +46,6 @@ const detailsTechCategory = (id) => async (dispatch) => {
 };
 
 const saveTechCategory = (item, id) => async (dispatch) => {
-    console.log(item)
     try {
         dispatch({ type: TECH_CATEGORY_SAVE_REQUEST, payload: item })
         if (!id) {

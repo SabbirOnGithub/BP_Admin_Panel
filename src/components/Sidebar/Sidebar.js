@@ -246,7 +246,10 @@ const structure = [
     id: 27, label: "Subscription", link: "/admin/subscription", icon: <SubscriptionsIcon />,
   },
   {
-    id: 31, label: "TechCategory", link: "/admin/techCategory", icon: <SubscriptionsIcon />,
+    id: 31, label: "Tech Category", link: "/admin/techCategory", icon: <SubscriptionsIcon />,
+  },
+  {
+    id: 32, label: "Technology Partner", link: "/admin/technologyPartner", icon: <SubscriptionsIcon />,
   },
 ];
 

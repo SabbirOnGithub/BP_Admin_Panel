@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import MenuSubMenuMapForm from "./MenuSubMenuMapForm";
+import TechnologyPartnerForm from "./TechnologyPartnerForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -14,17 +14,17 @@ import { ResponseMessage } from "../../../themes/responseMessage";
 import { searchNameByIdFromArray } from '../../../helpers/search';
 import Loading from '../../../components/Loading/Loading';
 
-// 
+
 import { useSelector, useDispatch } from 'react-redux';
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
-import { deleteMenuSubMenuMap, listMenuSubMenuMaps, saveMenuSubMenuMap } from '../../../redux/actions/menuSubMenuMapActions';
+import { deleteTechnologyPartner, listTechnologyPartners, saveTechnologyPartner } from '../../../redux/actions/technologyPartnerActions';
+// import { listMenuSubMenuMaps } from '../../../redux/actions/menuSubMenuMapActions';
 import { listMenus } from '../../../redux/actions/menuActions';
 import { listSubMenus } from '../../../redux/actions/subMenuActions';
-
 
 import { config } from "../../../config";
 const BASE_ROOT_URL = config.BASE_ROOT_URL
@@ -34,22 +34,15 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'menuName', label: 'Menu Name' },
-    { id: 'subMenuName', label: 'Sub Menu Name' },
-    // { id: 'subMenuId', label: 'SubMenu Id' },
-    { id: 'title', label: 'Title' },
-    { id: 'subTitle', label: 'SubTitle' },
-    { id: 'sectionTitle', label: 'Section Title' },
-    { id: 'sectionSubTitle', label: 'Section Sub Title' },
-    { id: 'sectionOrder', label: 'Section Order' },
-    { id: 'header', label: 'Header' },
-    { id: 'description', label: 'Description' },
+    { id: 'menuName/subMenuName', label: 'Menu/Sub Menu Name' },
+    // { id: 'menuSubMenuMapId', label: 'Menu Sub Menu Map Title' },
+    { id: 'name', label: 'Name' },
+    { id: 'isActive', label: 'Is Active' },
     { id: 'pictureUrl', label: 'Picture' },
-    { id: 'sectionPicture', label: 'Section Picture' },
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function MenuSubMenuMapScreen() {
+export default function TechnologyPartnerScreen() {
     // permission get
     const {
         permission,
@@ -70,17 +63,20 @@ export default function MenuSubMenuMapScreen() {
     //eslint-disable-next-line
     const { subMenus, loading: loadingSubMenus } = subMenuList;
 
+    // const menuSubMenuMapList = useSelector(state => state.menuSubMenuMapList)
+    // //eslint-disable-next-line
+    // const { menuSubMenuMaps, loading: loadingMenuSubMenuMaps } = menuSubMenuMapList;
 
-    const menuSubMenuMapList = useSelector(state => state.menuSubMenuMapList)
+    const technologyPartnerList = useSelector(state => state.technologyPartnerList)
     //eslint-disable-next-line
-    const { menuSubMenuMaps, loading, error } = menuSubMenuMapList;
+    const { technologyPartners, loading, error } = technologyPartnerList;
     //eslint-disable-next-line
-    const menuSubMenuMapSave = useSelector(state => state.menuSubMenuMapSave);
+    const technologyPartnerSave = useSelector(state => state.technologyPartnerSave);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = menuSubMenuMapSave;
-    const menuSubMenuMapDelete = useSelector(state => state.menuSubMenuMapDelete);
+    const { loading: loadingSave, success: successSave, error: errorSave } = technologyPartnerSave;
+    const technologyPartnerDelete = useSelector(state => state.technologyPartnerDelete);
     //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = menuSubMenuMapDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = technologyPartnerDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -95,35 +91,30 @@ export default function MenuSubMenuMapScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(menuSubMenuMaps, headCells, filterFn);
+    } = useTable(technologyPartners, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveMenuSubMenuMap(item, id));
+        dispatch(saveTechnologyPartner(item, id));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteMenuSubMenuMap(id));
+        dispatch(deleteTechnologyPartner(id));
         resolve();
     })
     const addOrEdit = (item, resetForm) => {
 
         const formData = new FormData();
-        // console.log(item.id)
+        // append form data
         item.id && formData.append('Id', item.id)
+        formData.append('Name', item.name)
+        formData.append('IsActive', item.isActive)
         formData.append('MenuId', item.menuId)
         formData.append('SubMenuId', item.subMenuId)
-        formData.append('Title', item.title)
-        formData.append('SubTitle', item.subTitle)
-        formData.append('sectionTitle', item.sectionTitle)
-        formData.append('sectionSubTitle', item.sectionSubTitle)
-        formData.append('sectionOrder', item.sectionOrder)
-        formData.append('Header', item.header)
-        formData.append('Description', item.description)
         // append for add/update image
         if (typeof (item.pictureUrl) === 'object') {
             formData.append('file', item.pictureUrl)
@@ -131,14 +122,6 @@ export default function MenuSubMenuMapScreen() {
         // eslint-disable-next-line 
         if (typeof (item.pictureUrl) === 'null' || typeof (item.pictureUrl) === 'string') {
             formData.append('pictureUrl', item.pictureUrl)
-        }
-        // append for add/update image
-        if (typeof (item.sectionPictureUrl) === 'object') {
-            formData.append('sectionPicture', item.sectionPictureUrl)
-        }
-        // eslint-disable-next-line 
-        if (typeof (item.sectionPictureUrl) === 'null' || typeof (item.sectionPictureUrl) === 'string') {
-            formData.append('sectionPictureUrl', item.sectionPictureUrl)
         }
 
         if (formData) {
@@ -171,7 +154,6 @@ export default function MenuSubMenuMapScreen() {
     }
 
     const openInPopup = item => {
-
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -198,6 +180,7 @@ export default function MenuSubMenuMapScreen() {
                     })
                 }
             })
+
     }
 
     useEffect(() => {
@@ -208,7 +191,8 @@ export default function MenuSubMenuMapScreen() {
             if (recievedPermission?.readOperation) {
                 dispatch(listMenus());
                 dispatch(listSubMenus());
-                dispatch(listMenuSubMenuMaps());
+                // dispatch(listMenuSubMenuMaps());
+                dispatch(listTechnologyPartners());
             }
             if (readOperation === false) {
                 history.push(accessDeniedRoute);
@@ -230,14 +214,13 @@ export default function MenuSubMenuMapScreen() {
             {
                 (loadingRoleResource || loading || loadingSave || loadingDelete || loadingMenus || loadingSubMenus) ? <Loading /> :
                     (
-                        menuSubMenuMaps.length > 0 &&
                         <>
-                            <PageTitle title="Menu Sub Menu Map" />
+                            <PageTitle title="Technology Partner" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Menu Sub Menu Map Table"
+                                        title="Technology Partner Table"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
@@ -255,29 +238,21 @@ export default function MenuSubMenuMapScreen() {
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
-                                                            <TableCell>{searchNameByIdFromArray(menus, item.menuId)}</TableCell>
-                                                            <TableCell>{searchNameByIdFromArray(subMenus, item.subMenuId)}</TableCell>
-                                                            <TableCell>{item?.title}</TableCell>
-                                                            <TableCell>{item?.subTitle}</TableCell>
-                                                            <TableCell>{item?.sectionTitle}</TableCell>
-                                                            <TableCell>{item?.sectionSubTitle}</TableCell>
-                                                            <TableCell>{item?.sectionOrder}</TableCell>
-
-                                                            <TableCell>{item.header}</TableCell>
-                                                            {/* <TableCell>{item.description}</TableCell> */}
-                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item?.description}` }} /></TableCell>
-
+                                                            <TableCell>
+                                                                {searchNameByIdFromArray(menus,item?.menuId)} /
+                                                                {searchNameByIdFromArray(subMenus, item?.subMenuId)}
+                                                            </TableCell>
+                                                            {/* <TableCell>{searchNameByIdFromArray(menus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).menuId)}</TableCell>
+                                                        <TableCell>{searchNameByIdFromArray(subMenus, menuSubMenuMaps.find(menuSubMenuMapItem=>menuSubMenuMapItem.id === item.menuSubMenuMapId).subMenuId)}</TableCell>
+                                                         */}
+                                                            {/* <TableCell>{searchTitleByIdFromArray(menuSubMenuMaps, item.menuSubMenuMapId)}</TableCell> */}
+                                                            <TableCell>{item.name}</TableCell>
+                                                            <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
                                                                 {
-                                                                    item?.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" /> : "No image uploaded"
+                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" /> : "No image uploaded"
                                                                 }
                                                             </TableCell>
-                                                            <TableCell>
-                                                                {
-                                                                    item?.sectionPictureUrl ? <img src={BASE_ROOT_URL + "/" + item?.sectionPictureUrl.split("\\").join('/')} alt="logo"  /> : "No image uploaded"
-                                                                }
-                                                            </TableCell>
-
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
                                                                     color="primary"
@@ -308,16 +283,16 @@ export default function MenuSubMenuMapScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Menu Sub Menu Map Form"
+                                            title="Technology Partner Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >
-                                            <MenuSubMenuMapForm
+                                            <TechnologyPartnerForm
                                                 recordForEdit={recordForEdit}
                                                 addOrEdit={addOrEdit}
+                                                // menuSubMenuMaps={menuSubMenuMaps}
                                                 menus={menus}
                                                 subMenus={subMenus}
-
                                             />
                                         </Popup>
                                         <Notification
