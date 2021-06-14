@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ResourceForm from "./ResourceForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTable from "../../../components/UseTable/useTable";
+import useTableServerSide from "../../../components/UseTable/useTableServerSide";
 import Controls from "../../../components/controls/Controls";
 import Popup from "../../../components/Popup/Popup";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -65,6 +65,7 @@ export default function ResourceScreen() {
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [searchValue, setSearchValue] = useState("")
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
@@ -76,10 +77,51 @@ export default function ResourceScreen() {
         TblContainer,
         TblHead,
         TblPagination,
-        recordsAfterPagingAndSorting
-    } = useTable(resources, headCells, filterFn);
+        recordsAfterPagingAndSorting,
+        pageDataConfig,
+        setPageDataConfig
+    } = useTableServerSide(resources?.item1, headCells, filterFn, resources?.item2);
 
     const dispatch = useDispatch();
+
+      // search from table
+      const handleSearch = e => {
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
+        // --------------------
+        // server side search
+        // --------------------
+            setPageDataConfig(prevState =>{
+                return { ...prevState,keyword:recievedSearchValue}
+            })
+        // --------------------
+        // client side search
+        // --------------------
+            // setFilterFn({
+            //     fn: items => {
+            //         if (recievedSearchValue) {
+            //             return items.filter(x => {
+            //                 const makeStringInRow = (
+            //                     (x?.roleId && x?.roleId) +
+            //                     (x?.resourceId && (' ' + x?.resourceId)) +
+            //                     (x?.createOperation ? ' yes' : 'no') +
+            //                     (x?.updateOperation ? ' yes' : 'no') +
+            //                     (x?.deleteOperation ? ' yes' : 'no')
+            //                 )?.toString()?.toLowerCase();
+            //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+            //             });
+            //         }
+            //         else {
+            //             return items;
+            //         }
+            //     }
+            // });
+
+        // --------------------
+        // client side search end
+        // --------------------
+    }
 
     // add/update promise
     const saveItem = (item) => new Promise((resolve, reject) => {
@@ -163,7 +205,7 @@ export default function ResourceScreen() {
                 setPermission({ ...recievedPermission })
             }
             if (recievedPermission?.readOperation) {
-                dispatch(listResources());
+                dispatch(listResources(pageDataConfig));
             }
             if (readOperation === false) {
                 history.push(accessDeniedRoute);
@@ -177,14 +219,23 @@ export default function ResourceScreen() {
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
+    }, [dispatch, 
+        successSave, 
+        successDelete, 
+        setPermission, 
+        recievedPermission, 
+        readOperation, 
+        history, 
+        initialPermission, 
+        loadingRoleResource,
+        pageDataConfig
+    ])
     return (
 
         <>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
+                // (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
                     (
-                        resources.length > 0 &&
                         <>
                             <PageTitle title="Resources" />
 
@@ -200,6 +251,9 @@ export default function ResourceScreen() {
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
+                                        handleSearch={handleSearch}
+                                        searchLabel='Search here..'
+                                        searchValue={searchValue}
                                     >
 
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -207,6 +261,14 @@ export default function ResourceScreen() {
                                                 <TblHead />
                                                 <TableBody>
                                                     {
+                                                    (loadingRoleResource || loading || loadingSave || loadingDelete) ? 
+
+                                                    <TableRow key={0}>
+                                                        <TableCell style={{ borderBottom: 'none' }}>
+                                                            <Loading />
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    :
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>

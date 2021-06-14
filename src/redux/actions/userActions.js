@@ -22,21 +22,43 @@ import { axiosWithoutToken, axiosWithToken, axiosWithTokenAndMultipartData } fro
 
 const BASE_API_URL = config.BASE_API_URL
 
-const listUsers = () => async (dispatch) => {
-    try {
-        dispatch({ type: USER_LIST_REQUEST });
-        const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User/searchAll`);
-        if (data.status === true) {
-            dispatch({ type: USER_LIST_SUCCESS, payload: data?.data?.item1 ? data.data.item1?.reverse() : [] });
-            // console.log(data)
-        } else {
-            dispatch({ type: USER_LIST_FAIL, payload: data.message });
+const listUsers = (item) => async (dispatch) => {
+
+    if(item){
+        // console.log(item)
+        try {
+            dispatch({ type: USER_LIST_REQUEST });
+            const { data } = await axiosWithToken.post(`/User/search`, item);
+            if (data.status === true) {
+                dispatch({ type: USER_LIST_SUCCESS, payload: data?.data?.item1 ? data.data : [] });
+                // console.log(data.data)
+            } else {
+                dispatch({ type: USER_LIST_FAIL, payload: data.message });
+            }
+            // console.log(data.data)
         }
-        // console.log(data.data)
+        catch (error) {
+            dispatch({ type: USER_LIST_FAIL, payload: error.message });
+        }
+
+    }else{
+        try {
+            dispatch({ type: USER_LIST_REQUEST });
+            const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User/searchAll`);
+            if (data.status === true) {
+                dispatch({ type: USER_LIST_SUCCESS, payload: data?.data?.item1 ? data.data.item1?.reverse() : [] });
+                // console.log(data)
+            } else {
+                dispatch({ type: USER_LIST_FAIL, payload: data.message });
+            }
+            // console.log(data.data)
+        }
+        catch (error) {
+            dispatch({ type: USER_LIST_FAIL, payload: error.message });
+        }
+
     }
-    catch (error) {
-        dispatch({ type: USER_LIST_FAIL, payload: error.message });
-    }
+    
 };
 const detailsUser = (id)=> async (dispatch) =>{
     if(id){

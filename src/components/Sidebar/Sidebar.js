@@ -17,6 +17,7 @@ import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
 import CallToActionIcon from '@material-ui/icons/CallToAction';
 import GolfCourseIcon from '@material-ui/icons/GolfCourse';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
 
 import {
   Home as HomeIcon,
@@ -246,10 +247,28 @@ const structure = [
     id: 27, label: "Subscription", link: "/admin/subscription", icon: <SubscriptionsIcon />,
   },
   {
-    id: 31, label: "Tech Category", link: "/admin/techCategory", icon: <SubscriptionsIcon />,
+    // id: 31, label: "Tech Category", link: "/admin/techCategory", icon: <SubscriptionsIcon />,
   },
   {
-    id: 32, label: "Technology Partner", link: "/admin/technologyPartner", icon: <SubscriptionsIcon />,
+    // id: 32, label: "Technology Partner", link: "/admin/technologyPartner", icon: <SubscriptionsIcon />,
+  },
+  {
+    // id: 33, label: "Technology Service", link: "/admin/technologyService", icon: <SubscriptionsIcon />,
+  },
+  {
+    // id: 34, label: "Tech Stack", link: "/admin/techStack", icon: <SubscriptionsIcon />,
+  },
+  {
+    id: 35,
+    label: "Technology ",
+    // link: "/admin/resource",
+    icon: <GroupWorkIcon />,
+    children: [
+      { label: "Tech Category", link: "/admin/techCategory" },
+      { label: "Tech Stack", link: "/admin/techStack" },
+      { label: "Technology Partner", link: "/admin/technologyPartner" },
+      { label: "Technology Service", link: "/admin/technologyService" },
+    ],
   },
 ];
 

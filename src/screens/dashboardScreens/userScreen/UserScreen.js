@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import UserForm from "./UserForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTable from "../../../components/UseTable/useTable";
+// import useTable from "../../../components/UseTable/useTable";
+import useTableServerSide from "../../../components/UseTable/useTableServerSide";
 import Controls from "../../../components/controls/Controls";
 import Popup from "../../../components/Popup/Popup";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -72,6 +73,8 @@ export default function UserScreen() {
 
     //eslint-disable-next-line
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [searchValue, setSearchValue] = useState("")
+
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
@@ -82,10 +85,50 @@ export default function UserScreen() {
         TblContainer,
         TblHead,
         TblPagination,
-        recordsAfterPagingAndSorting
-    } = useTable(users, headCells, filterFn);
+        recordsAfterPagingAndSorting,
+        pageDataConfig,
+        setPageDataConfig
+    } = useTableServerSide(users?.item1, headCells, filterFn, users?.item2);
 
     const dispatch = useDispatch();
+    // search from table
+    const handleSearch = e => {
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
+        // --------------------
+        // server side search
+        // --------------------
+            setPageDataConfig(prevState =>{
+                return { ...prevState,keyword:recievedSearchValue}
+            })
+        // --------------------
+        // client side search
+        // --------------------
+            // setFilterFn({
+            //     fn: items => {
+            //         if (recievedSearchValue) {
+            //             return items.filter(x => {
+            //                 const makeStringInRow = (
+            //                     (x?.roleId && x?.roleId) +
+            //                     (x?.resourceId && (' ' + x?.resourceId)) +
+            //                     (x?.createOperation ? ' yes' : 'no') +
+            //                     (x?.updateOperation ? ' yes' : 'no') +
+            //                     (x?.deleteOperation ? ' yes' : 'no')
+            //                 )?.toString()?.toLowerCase();
+            //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+            //             });
+            //         }
+            //         else {
+            //             return items;
+            //         }
+            //     }
+            // });
+
+        // --------------------
+        // client side search end
+        // --------------------
+    }
 
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
@@ -195,7 +238,7 @@ export default function UserScreen() {
                 setPermission({ ...recievedPermission })
             }
             if (recievedPermission?.readOperation) {
-                dispatch(listUsers());
+                dispatch(listUsers(pageDataConfig));
                 dispatch(listRoles());
             }
             if (readOperation === false) {
@@ -210,14 +253,23 @@ export default function UserScreen() {
         return () => {
             // 
         }
-    }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
+    }, [dispatch, 
+        successSave, 
+        successDelete, 
+        setPermission, 
+        recievedPermission, 
+        readOperation, 
+        history, 
+        initialPermission, 
+        loadingRoleResource, 
+        pageDataConfig
+    ])
     return (
         <>
             {
 
-                (loadingRoleResource || loading || loadingSave || loadingDelete || roleListLoading) ? <Loading /> :
+                // (loadingRoleResource || loading || loadingSave || loadingDelete || roleListLoading) ? <Loading /> :
                     (
-                        users.length > 0 &&
                         <>
                             <PageTitle title="Users" />
 
@@ -233,6 +285,9 @@ export default function UserScreen() {
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
+                                        handleSearch={handleSearch}
+                                        searchLabel='Search here..'
+                                        searchValue={searchValue}
 
                                     >
 
@@ -241,6 +296,14 @@ export default function UserScreen() {
                                                 <TblHead />
                                                 <TableBody>
                                                     {
+                                                        (loadingRoleResource || loading || loadingSave || loadingDelete || roleListLoading) ? 
+
+                                                            <TableRow key={0}>
+                                                                <TableCell style={{ borderBottom: 'none' }}>
+                                                                    <Loading />
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        :
                                                         recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>

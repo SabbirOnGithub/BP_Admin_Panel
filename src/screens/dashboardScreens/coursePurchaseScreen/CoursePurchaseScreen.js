@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import CoursePurchaseDetailScreen from "./CoursePurchaseDetailScreen";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTable from "../../../components/UseTable/useTable";
+import useTableServerSide from "../../../components/UseTable/useTableServerSide";
 import Controls from "../../../components/controls/Controls";
 import Notification from "../../../components/Notification/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
@@ -12,6 +12,9 @@ import Loading from '../../../components/Loading/Loading';
 import { searchNameByIdFromArray, getFilterDataByUser } from '../../../helpers/search';
 
 
+// permissions
+import { usePermission } from '../../../components/UsePermission/usePermission';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux actions
@@ -33,6 +36,19 @@ const headCells = [
 ]
 
 export default function CoursePurchaseScreen() {
+        // permission get
+        const {
+            permission,
+            setPermission,
+            recievedPermission,
+            loadingRoleResource,
+            history,
+            initialPermission,
+           
+        } = usePermission();
+        //eslint-disable-next-line
+        const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
+
     const trainingTypeList = useSelector(state => state.trainingTypeList);
     //eslint-disable-next-line
     const { trainingTypes, loading:loadingTrainingTypes, error:errorTrainingTypes } = trainingTypeList;
@@ -49,13 +65,15 @@ export default function CoursePurchaseScreen() {
     //eslint-disable-next-line
     const { coursePurchases, loading, error } = coursePurchaseList;
 
-    const coursePurchasesFilterByUser = getFilterDataByUser(coursePurchases, userInfo);
+    const coursePurchasesFilterByUser = getFilterDataByUser(coursePurchases?.item1, userInfo);
 
     const courseAvailabilityDateSave = useSelector(state => state.courseAvailabilityDateSave);
     //eslint-disable-next-line
     const { loading: loadingCourseAvailabilityDateSave, success: successCourseAvailabilityDateSave, error: errorCourseAvailabilityDateSave } = courseAvailabilityDateSave;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [searchValue, setSearchValue] = useState("")
+
     // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
@@ -67,10 +85,50 @@ export default function CoursePurchaseScreen() {
         TblContainer,
         TblHead,
         TblPagination,
-        recordsAfterPagingAndSorting
-    } = useTable(coursePurchasesFilterByUser, headCells, filterFn);
+        recordsAfterPagingAndSorting,
+        pageDataConfig,
+        setPageDataConfig
+    } = useTableServerSide(coursePurchasesFilterByUser, headCells, filterFn, coursePurchases?.item2);
     
     const dispatch = useDispatch();
+    // search from table
+    const handleSearch = e => {
+        e.persist();
+        const recievedSearchValue = e.target.value;
+        setSearchValue(recievedSearchValue);
+        // --------------------
+        // server side search
+        // --------------------
+            setPageDataConfig(prevState =>{
+                return { ...prevState,keyword:recievedSearchValue}
+            })
+        // --------------------
+        // client side search
+        // --------------------
+            // setFilterFn({
+            //     fn: items => {
+            //         if (recievedSearchValue) {
+            //             return items.filter(x => {
+            //                 const makeStringInRow = (
+            //                     (x?.roleId && x?.roleId) +
+            //                     (x?.resourceId && (' ' + x?.resourceId)) +
+            //                     (x?.createOperation ? ' yes' : 'no') +
+            //                     (x?.updateOperation ? ' yes' : 'no') +
+            //                     (x?.deleteOperation ? ' yes' : 'no')
+            //                 )?.toString()?.toLowerCase();
+            //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+            //             });
+            //         }
+            //         else {
+            //             return items;
+            //         }
+            //     }
+            // });
+
+        // --------------------
+        // client side search end
+        // --------------------
+    }
 
     const openInPopup = item => {
         setRecordForEdit(null);
@@ -103,18 +161,50 @@ export default function CoursePurchaseScreen() {
     }
 
     useEffect(() => {
-        dispatch(listSoftwares());
-        dispatch(listTrainingTypes());
-        dispatch(listCoursePurchases());
+        // dispatch(listSoftwares());
+        // dispatch(listTrainingTypes());
+        // dispatch(listCoursePurchases(pageDataConfig));
+        // return () => {
+        //     // 
+        // }
+
+        try {
+            if (recievedPermission) {
+                setPermission({ ...recievedPermission })
+            }
+            if (recievedPermission?.readOperation) {
+                dispatch(listSoftwares());
+                dispatch(listTrainingTypes());
+                dispatch(listCoursePurchases(pageDataConfig));
+            }
+            if (readOperation === false) {
+                history.push(accessDeniedRoute);
+            }
+            if (loadingRoleResource === false && !recievedPermission) {
+                setPermission({ ...initialPermission })
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return () => {
             // 
         }
-    }, [dispatch, loadingCourseAvailabilityDateSave])
+    }, [
+        dispatch, 
+        loadingRoleResource,
+        loadingCourseAvailabilityDateSave,
+        setPermission, 
+        recievedPermission, 
+        readOperation, 
+        history, 
+        initialPermission, 
+        pageDataConfig
+    ])
     return (
 
         <>
             {
-                loading || loadingCourseAvailabilityDateSave ? <Loading /> :
+                // loading || loadingCourseAvailabilityDateSave ? <Loading /> :
                     <>
                         <PageTitle title="Course Purchase" />
 
@@ -150,6 +240,9 @@ export default function CoursePurchaseScreen() {
                                     setRecordForEdit={setRecordForEdit}
                                     threeDotDisplay={true}
                                     disableWidgetMenu
+                                    handleSearch={handleSearch}
+                                    searchLabel='Search here..'
+                                    searchValue={searchValue}
                                 >
                                     
                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
@@ -157,6 +250,14 @@ export default function CoursePurchaseScreen() {
                                             <TblHead />
                                             <TableBody>
                                                 {
+                                                loading || loadingCourseAvailabilityDateSave ? 
+                                                    <TableRow key={0}>
+                                                        <TableCell style={{ borderBottom: 'none' }}>
+                                                            <Loading />
+                                                        </TableCell>
+
+                                                    </TableRow>
+                                                    :
                                                     recordsAfterPagingAndSorting().map(item =>
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>

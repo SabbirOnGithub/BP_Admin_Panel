@@ -10,7 +10,7 @@ const initialFValues = {
     isActive: false,
 }
 
-export default function MenuForm(props) {
+export default function TechnologyServiceForm(props) {
     const { addOrEdit, recordForEdit, loadingSave } = props
 
     const validate = (fieldValues = values) => {

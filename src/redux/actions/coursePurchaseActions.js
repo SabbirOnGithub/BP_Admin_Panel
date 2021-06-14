@@ -20,25 +20,44 @@ import {config} from "../../config";
 const BASE_API_URL = config.BASE_API_URL
 
 
-const listCoursePurchases = () => async (dispatch)=>{
-    try{
-        dispatch({type: COURSE_PURCHASE_LIST_REQUEST});
-        const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CoursePurchase`);
-        if (data.status === true) {
-            dispatch({ type: COURSE_PURCHASE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
-        }else{
-            dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: data.message });
+const listCoursePurchases = (item) => async (dispatch)=>{
+    if(item){
+        // console.log(item)
+        try{
+            dispatch({type: COURSE_PURCHASE_LIST_REQUEST});
+            const {data} = await axiosWithToken.post(`/CoursePurchase/search`, item);
+            if (data.status === true) {
+                dispatch({ type: COURSE_PURCHASE_LIST_SUCCESS, payload: data.data.item1 ? data.data : [] });
+            }else{
+                dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: data.message });
+            }
+            // console.log(data.data)
         }
-        // console.log(data.data)
-    }
-    catch(error){
-        dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: error.message });
+        catch(error){
+            dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: error.message });
+        }
 
+    }else{
+        try{
+            dispatch({type: COURSE_PURCHASE_LIST_REQUEST});
+            const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/CoursePurchase`);
+            if (data.status === true) {
+                dispatch({ type: COURSE_PURCHASE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
+            }else{
+                dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: data.message });
+            }
+            // console.log(data.data)
+        }
+        catch(error){
+            dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: error.message });
+        }
     }
+  
 };
 
 
 const detailsCoursePurchase = (id)=> async (dispatch) =>{
+    // console.log(id)
     try{
         dispatch({type:COURSE_PURCHASE_DETAILS_REQUEST});
         const { data } = await axiosWithoutToken.get("/CoursePurchase/detail/" + id); 

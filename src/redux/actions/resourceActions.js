@@ -19,22 +19,42 @@ import {config} from "../../config";
 
 const BASE_API_URL = config.BASE_API_URL
 
+const listResources = (item) => async (dispatch)=>{
 
-const listResources = () => async (dispatch)=>{
-    try{
-        dispatch({type: RESOURCE_LIST_REQUEST});
-        const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/Resource`);
-        if (data.status === true) {
-            dispatch({ type: RESOURCE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
-        }else{
-            dispatch({ type: RESOURCE_LIST_FAIL, payload: data.message });
+    if(item){
+        // console.log(item)
+        try{
+            dispatch({type: RESOURCE_LIST_REQUEST});
+            const {data} = await axiosWithToken.post(`/Resource/search`, item);
+            if (data.status === true) {
+                dispatch({ type: RESOURCE_LIST_SUCCESS, payload: data?.data?.item1 ? data.data : [] });
+            }else{
+                dispatch({ type: RESOURCE_LIST_FAIL, payload: data.message });
+            }
+            // console.log(data.data)
         }
-        // console.log(data.data)
-    }
-    catch(error){
-        dispatch({ type: RESOURCE_LIST_FAIL, payload: error.message });
+        catch(error){
+            dispatch({ type: RESOURCE_LIST_FAIL, payload: error.message });
+    
+        }
 
+    }else{
+        try{
+            dispatch({type: RESOURCE_LIST_REQUEST});
+            const {data} = await axiosWithoutToken.get(`${BASE_API_URL}/Resource`);
+            if (data.status === true) {
+                dispatch({ type: RESOURCE_LIST_SUCCESS, payload: data.data ? data.data?.reverse() : [] });
+            }else{
+                dispatch({ type: RESOURCE_LIST_FAIL, payload: data.message });
+            }
+            // console.log(data.data)
+        }
+        catch(error){
+            dispatch({ type: RESOURCE_LIST_FAIL, payload: error.message });
+    
+        }
     }
+    
 };
 
 

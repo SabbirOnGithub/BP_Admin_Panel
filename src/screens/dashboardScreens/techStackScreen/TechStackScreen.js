@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import TechCategoryForm from "./TechCategoryForm";
+import TechStackForm from "./TechStackForm";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 import useTable from "../../../components/UseTable/useTable";
 import Controls from "../../../components/controls/Controls";
@@ -12,34 +12,32 @@ import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
 import { ResponseMessage } from "../../../themes/responseMessage";
 import Loading from '../../../components/Loading/Loading';
+import { searchNameByIdFromArray } from '../../../helpers/search';
+
 
 import { useSelector, useDispatch } from 'react-redux';
-
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
 
 // redux actions
-import { deleteTechCategory, listTechCategory, saveTechCategory } from '../../../redux/actions/techCategoryActions';
+import { listTechStacks, saveTechStack, deleteTechStack } from '../../../redux/actions/techStackActions';
+import {  listTechCategory } from '../../../redux/actions/techCategoryActions';
 
-
-import { config } from "../../../config";
-const BASE_ROOT_URL = config.BASE_ROOT_URL
 
 
 
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
-    { id: 'description', label: 'Description' },
-    { id: 'pictureUrl', label: 'Picture' },
+    { id: 'techCategoryId', label: 'Tech Category' },
+    { id: 'category', label: 'Category' },
     { id: 'displayOrder', label: 'Display Order' },
     { id: 'isActive', label: 'Active' },
-
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function TechCategoryScreen() {
+export default function TechStackScreen() {
     // permission get
     const {
         permission,
@@ -52,19 +50,24 @@ export default function TechCategoryScreen() {
     const { createOperation, readOperation, updateOperation, deleteOperation } = permission;
     // permission get end
 
+    const techStackList = useSelector(state => state.techStackList);
+    //eslint-disable-next-line
+    const { techStacks, loading, error } = techStackList;
+
     const techCategoryList = useSelector(state => state.techCategoryList)
     //eslint-disable-next-line
-    const { techCategorys, loading, error } = techCategoryList;
+    const { techCategorys, loading:loadingTechCategorys, error:errorTechCategorys } = techCategoryList;
+
+    const techStackSave = useSelector(state => state.techStackSave);
     //eslint-disable-next-line
-    const techCategorySave = useSelector(state => state.techCategorySave);
+    const { loading: loadingSave, success: successSave, error: errorSave } = techStackSave;
+    const techStackDelete = useSelector(state => state.techStackDelete);
     //eslint-disable-next-line
-    const { loading: loadingSave, success: successSave, error: errorSave } = techCategorySave;
-    const techCategoryDelete = useSelector(state => state.techCategoryDelete);
-    //eslint-disable-next-line
-    const { loading: loadingDelete, success: successDelete, error: errorDelete } = techCategoryDelete;
+    const { loading: loadingDelete, success: successDelete, error: errorDelete } = techStackDelete;
 
 
     const [recordForEdit, setRecordForEdit] = useState(null)
+    // const [records, setRecords] = useState([])
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
@@ -76,69 +79,51 @@ export default function TechCategoryScreen() {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(techCategorys, headCells, filterFn);
+    } = useTable(techStacks, headCells, filterFn);
 
     const dispatch = useDispatch();
 
     // add/update promise
-    const saveItem = (item, id) => new Promise((resolve, reject) => {
-        dispatch(saveTechCategory(item, id));
+    const saveItem = (item) => new Promise((resolve, reject) => {
+        dispatch(saveTechStack(item));
         resolve();
     })
 
     // delete promise
     const deleteItem = (id) => new Promise((resolve, reject) => {
-        dispatch(deleteTechCategory(id));
+        dispatch(deleteTechStack(id));
         resolve();
     })
-    const addOrEdit = (item, resetForm) => {
-        const formData = new FormData();
-        item.id && formData.append('Id', item.id)
-        formData.append('Name', item.name)
-        formData.append('Description', item.description)
-        formData.append('DisplayOrder', item.displayOrder)
-        formData.append('IsActive', item.isActive)
 
-        // append for add/update image
-        if (typeof (item.pictureUrl) === 'object') {
-            formData.append('file', item.pictureUrl)
-        }
-        // eslint-disable-next-line 
-        if (typeof (item.pictureUrl) === 'null' || typeof (item.pictureUrl) === 'string') {
-            formData.append('pictureUrl', item.pictureUrl)
-        }
+    const addOrEdit = async (item, resetForm) => {
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
+        saveItem(item)
+            .then(() => {
+                // resetForm()
+                // setRecordForEdit(null)
+                // setOpenPopup(false)
+                if (successSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                }
 
-        if (formData) {
-            resetForm()
-            setRecordForEdit(null)
-            setOpenPopup(false)
-            saveItem(formData, item.id)
-                .then(() => {
-                    // resetForm()
-                    // setRecordForEdit(null)
-                    // setOpenPopup(false)
-                    if (successSave) {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submitted Successfully',
-                            type: 'success'
-                        })
-                    }
+                if (errorSave) {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+            })
 
-                    if (errorSave) {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submition Failed',
-                            type: 'warning'
-                        })
-                    }
-                })
-
-        }
     }
 
     const openInPopup = item => {
-        // console.log(homePageCoreValueDetails)
         setRecordForEdit(item)
         setOpenPopup(true)
     }
@@ -164,7 +149,6 @@ export default function TechCategoryScreen() {
                         type: 'warning'
                     })
                 }
-
             })
     }
 
@@ -175,6 +159,8 @@ export default function TechCategoryScreen() {
             }
             if (recievedPermission?.readOperation) {
                 dispatch(listTechCategory());
+                dispatch(listTechStacks());
+
             }
             if (readOperation === false) {
                 history.push(accessDeniedRoute);
@@ -189,29 +175,27 @@ export default function TechCategoryScreen() {
             // 
         }
     }, [dispatch, successSave, successDelete, setPermission, recievedPermission, readOperation, history, initialPermission, loadingRoleResource])
-
     return (
 
-        <div>
+        <>
             {
-                (loadingRoleResource || loading || loadingSave || loadingDelete) ? <Loading /> :
-
-                    (techCategorys.length >= 0 &&
+                (loadingRoleResource || loading || loadingTechCategorys || loadingSave || loadingDelete) ? <Loading /> :
+                    (
                         <>
-                            <PageTitle title="Tech Category" />
+                            <PageTitle title="Tech Stacks" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Tech Category List Table"
+                                        title="Tech Stack List Table"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
                                         setRecordForEdit={setRecordForEdit}
-                                        disableWidgetMenu
+                                        threeDotDisplay={true}
+                                        disableWidgetTechStack
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
-
 
                                     >
 
@@ -224,14 +208,9 @@ export default function TechCategoryScreen() {
                                                         (<TableRow key={item.id}>
                                                             <TableCell>{item.id}</TableCell>
                                                             <TableCell>{item.name}</TableCell>
-                                                            {/* <TableCell>{item.description}</TableCell> */}
-                                                            <TableCell><div dangerouslySetInnerHTML={{ __html: `${item.description}` }} /></TableCell>
-                                                            <TableCell>
-                                                                {
-                                                                    item.pictureUrl ? <img src={BASE_ROOT_URL + "/" + item.pictureUrl.split("\\").join('/')} alt="logo" /> : "No image uploaded"
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell>{item?.displayOrder }</TableCell>
+                                                            <TableCell>{searchNameByIdFromArray(techCategorys,item?.techCategoryId)}</TableCell>
+                                                            <TableCell>{item.category}</TableCell>
+                                                            <TableCell>{item.displayOrder}</TableCell>
                                                             <TableCell>{item.isActive ? "yes" : "no"}</TableCell>
                                                             <TableCell>
                                                                 {updateOperation && <Controls.ActionButton
@@ -263,14 +242,17 @@ export default function TechCategoryScreen() {
                                             <TblPagination />
                                         </Paper>
                                         <Popup
-                                            title="Tech Category Form"
+                                            title="Tech Stack Form"
                                             openPopup={openPopup}
                                             setOpenPopup={setOpenPopup}
                                         >
-                                            <TechCategoryForm
+                                            <TechStackForm
                                                 recordForEdit={recordForEdit}
                                                 addOrEdit={addOrEdit}
+                                                loadingSave={loadingSave}
+                                                techCategorys ={techCategorys}
                                             />
+
                                         </Popup>
                                         <Notification
                                             notify={notify}
@@ -287,6 +269,6 @@ export default function TechCategoryScreen() {
                         </>
                     )
             }
-        </div>
+        </>
     )
 }

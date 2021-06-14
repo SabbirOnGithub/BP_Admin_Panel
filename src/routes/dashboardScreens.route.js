@@ -63,6 +63,8 @@ import CoursePurchaseScreen from "../screens/dashboardScreens/coursePurchaseScre
 import SubscriptionScreen from "../screens/dashboardScreens/subscriptionScreen/SubscriptionScreen";
 import TechCategoryScreen from '../screens/dashboardScreens/techCategoryScreen/TechCategoryScreen'
 import TechnologyPartnerScreen from '../screens/dashboardScreens/technologyPartnerScreen/TechnologyPartnerScreen';
+import TechnologyServiceScreen from '../screens/dashboardScreens/technologyServiceScreen/TechnologyServiceScreen';
+import TechStackScreen from '../screens/dashboardScreens/techStackScreen/TechStackScreen';
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -148,6 +150,8 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/subscription`} component={SubscriptionScreen} />
       <Route exact path={`${props.match.path}/techCategory`} component={TechCategoryScreen} />
       <Route exact path={`${props.match.path}/technologyPartner`} component={TechnologyPartnerScreen} />
+      <Route exact path={`${props.match.path}/technologyService`} component={TechnologyServiceScreen} />
+      <Route exact path={`${props.match.path}/techStack`} component={TechStackScreen} />
 
 
 

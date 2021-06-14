@@ -6,12 +6,15 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 const initialFValues = {
     id: '',
+    techCategoryId:'',
     name: "",
+    category :'',
+    displayOrder:'',
     isActive: false,
 }
 
-export default function MenuForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave } = props
+export default function TechStackForm(props) {
+    const { addOrEdit, recordForEdit, loadingSave, techCategorys } = props
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -30,6 +33,7 @@ export default function MenuForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         resetForm
     } = useForm(initialFValues, true, validate);
 
@@ -53,12 +57,36 @@ export default function MenuForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                <Controls.Select
+                        name="techCategoryId"
+                        label="Tech Category"
+                        value={values.techCategoryId}
+                        onChange={handleInputChange}
+                        error={errors.techCategoryId}
+                        options={techCategorys ? techCategorys : []}
+                    />
                     <Controls.Input
                         name="name"
                         label="Name"
                         value={values.name}
                         onChange={handleInputChange}
                         error={errors.name}
+                    />
+                     <Controls.Input
+                        name="category"
+                        label="Category"
+                        value={values.category}
+                        onChange={handleInputChange}
+                        error={errors.category}
+                    />
+                    <Controls.Input
+                        label="Display Order"
+                        name="displayOrder"
+                        type="number"
+                        value={values.displayOrder}
+                        onChange={handleInputNumberChange}
+                        error={errors.displayOrder}
+                       
                     />
                     
                     <Controls.Checkbox
