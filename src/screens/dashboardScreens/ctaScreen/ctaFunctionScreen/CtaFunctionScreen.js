@@ -221,7 +221,7 @@ export default function CtaFunctionScreen(props) {
         // console.log(item)
         saveItem(item)
             .then((res) => {
-                // console.log(res)
+                console.log(res)
                 if (res?.status === true) {
                     resetForm()
                     setNotify({
@@ -233,7 +233,7 @@ export default function CtaFunctionScreen(props) {
                     delete item.id
                     setRecordForEdit({
                         ...values,
-                        id: res.data.id
+                        id: res.data
                     })
                     // console.log(values)
                 } else {

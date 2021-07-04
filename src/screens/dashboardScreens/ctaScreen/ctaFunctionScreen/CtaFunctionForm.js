@@ -24,13 +24,6 @@ const initialFValues = {
     companyName: "",
     email: "",
     phone: "",
-    // businessIndustry: '',
-    // businessStage: null,
-    // category: null,
-    // specificity: null,
-    // technologies: null,
-    // technologySerivceType: null,
-    // goalsToAchieve: null,
     tellUsMore: null,
     estimation: null,
     description: null,
@@ -148,8 +141,8 @@ export default function CtaFunctionForm(props) {
                 temp.goalsToAchieveTechnology = fieldValues.goalsToAchieveTechnology ? "" : "This field is required."
         }
         if (activeStep === 1) {
-            if ('estimation' in fieldValues)
-                temp.estimation = fieldValues.estimation ? "" : "This field is required."
+            // if ('estimation' in fieldValues)
+            //     temp.estimation = fieldValues.estimation ? "" : "This field is required."
             if ('tellUsMore' in fieldValues)
                 temp.tellUsMore = fieldValues.tellUsMore ? "" : "This field is required."
             if ('description' in fieldValues)
@@ -282,7 +275,7 @@ export default function CtaFunctionForm(props) {
     }
     const handleNext = (e) => {
         e.preventDefault();
-        // console.log(values)
+        console.log(values)
         const formatData = {
             ...values,
         }
@@ -296,31 +289,35 @@ export default function CtaFunctionForm(props) {
         }
 
         if (validate()) {
+            (formatData?.technologyPreference && typeof (formatData?.technologyPreference) === 'object') && (formatData['technologyPreference'] = formatData?.technologyPreference?.map((item) => item.id).toString());
             
-            if(activeStep ===0){
-                (formatData?.technologyPreference && typeof (formatData?.technologyPreference) === 'object') && (formatData['technologyPreference'] = formatData?.technologyPreference?.map((item) => item.id).toString());
-                // formatData['name'] = user?.name
-                // formatData['firstName'] = user?.firstName
-                // formatData['lastName'] = user?.lastName
-                // formatData['companyName'] = user?.businessName
-                // formatData['email'] = user?.email
-                // formatData['phone'] = user?.mobile
-                // formatData['businessIndustry'] = user?.businessIndustry
-                // formatData['companyTypeId'] = user?.companyTypeId
-                // formatData['companySizeId'] = user?.companySizeId
+            // if(activeStep ===0){
+            //     (formatData?.technologyPreference && typeof (formatData?.technologyPreference) === 'object') && (formatData['technologyPreference'] = formatData?.technologyPreference?.map((item) => item.id).toString());
+                
+            //     formatData['name'] = user?.name
+            //     formatData['firstName'] = user?.firstName
+            //     formatData['lastName'] = user?.lastName
+            //     formatData['companyName'] = user?.businessName
+            //     formatData['email'] = user?.email
+            //     formatData['phone'] = user?.mobile
+            //     formatData['businessIndustry'] = user?.businessIndustry
+            //     formatData['companyTypeId'] = user?.companyTypeId
+            //     formatData['companySizeId'] = user?.companySizeId
 
-                // if(values.technologyPreference){
-                //     let technologyPreference = values?.technologyPreference?.map((item) => item.id);
-                //     values.technologyPreference = technologyPreference.toString();
-                // }
+            //     if(values.technologyPreference){
+            //         let technologyPreference = values?.technologyPreference?.map((item) => item.id);
+            //         values.technologyPreference = technologyPreference.toString();
+            //     }
 
-            }
-            if(activeStep ===1){
-                if(formatData.estimation){
-                    // formatData.estimation = values.estimation.toISOString();
-                    // formatData.estimation = values.estimation.toString();
-                }
-            }
+            // }
+
+            // if(activeStep ===1){
+            //     if(formatData.estimation){
+            //         formatData.estimation = values.estimation.toISOString();
+            //         formatData.estimation = values.estimation.toString();
+            //     }
+            // }
+            
             if(activeStep<2){
                 // for first 2 step use this
                 addOrEdit(formatData, values, resetForm, activeStep, setActiveStep, setValues);
@@ -399,6 +396,7 @@ export default function CtaFunctionForm(props) {
         loadingDeleteCtaFunctionDocument, 
         ctaFunctionModels?.id,
         // successCtaPurchaseHistorySave
+        // loadingCtaFunctionSave
         
     ])
 

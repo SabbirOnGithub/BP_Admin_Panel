@@ -30,6 +30,7 @@ const BASE_API_URL = config.BASE_API_URL
 
 const listCtaFunctions = (item) => async (dispatch)=>{
     if(item){
+        // console.log({item})
         // with serverside paginations
         try{
             dispatch({type: CTA_FUNCTION_LIST_REQUEST});
@@ -104,7 +105,7 @@ const saveCtaFunction = (item) => async (dispatch) =>{
             return data
         }else{
             console.log('update')
-            // console.log(item)
+            console.log(item)
             const { data } = await axiosWithToken.put("/CtaFunction", item);
             if (data.status === true) {
                 dispatch({type: CTA_FUNCTION_SAVE_SUCCESS, payload: data.id });  

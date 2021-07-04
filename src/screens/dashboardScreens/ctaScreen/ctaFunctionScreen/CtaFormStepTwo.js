@@ -19,6 +19,7 @@ export default function CtaFormStepTwo(props) {
         } = props;
  
     useEffect(() => {
+        console.log(values.id)
         if(!values.id || !ctaFunctionModels){
             setHideNext(true)
         }
@@ -26,6 +27,8 @@ export default function CtaFormStepTwo(props) {
             setHideNext(false)
         }
         if (recordForEdit != null) {
+            console.log(values.id)
+
             try {
                 setValues({
                     ...recordForEdit,
@@ -34,7 +37,13 @@ export default function CtaFormStepTwo(props) {
                 console.warn(e);
             }
         }
-    }, [values.id, ctaFunctionModels, setHideNext, recordForEdit, setValues])
+    }, [
+        ctaFunctionModels, 
+        setHideNext, 
+        recordForEdit, 
+        setValues,
+        values.id
+    ])
     return (
         <>
             {!values.id || !ctaFunctionModels || loadingCtaFunctionSave ? <Loading /> :
