@@ -19,7 +19,7 @@ export default function CtaFormStepTwo(props) {
         } = props;
  
     useEffect(() => {
-        console.log(values.id)
+        // console.log(values.id)
         if(!values.id || !ctaFunctionModels){
             setHideNext(true)
         }
@@ -27,7 +27,7 @@ export default function CtaFormStepTwo(props) {
             setHideNext(false)
         }
         if (recordForEdit != null) {
-            console.log(values.id)
+            // console.log(values.id)
 
             try {
                 setValues({
@@ -37,8 +37,9 @@ export default function CtaFormStepTwo(props) {
                 console.warn(e);
             }
         }
+        // eslint-disable-next-line
     }, [
-        ctaFunctionModels, 
+        // ctaFunctionModels, 
         setHideNext, 
         recordForEdit, 
         setValues,

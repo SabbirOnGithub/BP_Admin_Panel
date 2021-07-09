@@ -71,6 +71,7 @@ const detailsCtaFunction = (id)=> async (dispatch) =>{
             dispatch({type:CTA_FUNCTION_DETAILS_REQUEST});
             const { data } = await axiosWithoutToken.get("/CtaFunction/detail/" + id); 
             dispatch({type:CTA_FUNCTION_DETAILS_SUCCESS, payload: data.data });
+            // console.log({data})
         }else{
             console.log('id not found')
         }
@@ -83,12 +84,12 @@ const detailsCtaFunction = (id)=> async (dispatch) =>{
 };
 
 const saveCtaFunction = (item) => async (dispatch) =>{
-    // console.log(item)
+    console.log(item)
     try{
         dispatch({type: CTA_FUNCTION_SAVE_REQUEST, payload:item })
         if(!item.id){
-            console.log('create')
-            console.log(item)
+            // console.log('create')
+            // console.log(item)
             // for (var value of item.values()) {
             //     console.log(value);
             // }

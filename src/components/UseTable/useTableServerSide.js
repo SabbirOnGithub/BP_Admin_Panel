@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Table, TableHead, TableRow, TableCell, makeStyles, TablePagination, TableSortLabel } from '@material-ui/core'
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -36,6 +37,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function useTableServerSide(records, headCells, filterFn, totalRecords) {
+    const userSignIn = useSelector( state => state.userSignin );
+    const {  userInfo  } = userSignIn;
 
     const classes = useStyles();
 
@@ -50,7 +53,8 @@ export default function useTableServerSide(records, headCells, filterFn, totalRe
         "perPageCount": 5,
         "orderBy": "Id",
         "isAscending": false,
-        "keyword": ""
+        "keyword": "",
+        "email":userInfo?.email
       })
 
     const TblContainer = props => (

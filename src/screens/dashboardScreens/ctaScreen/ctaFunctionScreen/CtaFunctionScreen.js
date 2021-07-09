@@ -18,6 +18,8 @@ import { timeConverter } from '../../../../helpers/converter';
 // redux actions
 // import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
 import { listCtaFunctions, saveCtaFunction, saveCtaFunctionDocument, deleteCtaFunctionDocument } from '../../../../redux/actions/ctaFunctionActions';
+import { saveConsultancyAssignment } from '../../../../redux/actions/consultancyAssignmentActions';
+
 // import { detailsUser } from '../../../../redux/actions/userActions';
 // import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
 // import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
@@ -97,7 +99,10 @@ export default function CtaFunctionScreen(props) {
     const ctaFunctionDocumentSave = useSelector(state => state.ctaFunctionDocumentSave);
     //eslint-disable-next-line
     const { loading: loadingCtaFunctionDocumentSave, success: successCtaFunctionDocumentSave, error: errorCtaFunctionDocumentSave, ctaFunction: ctaFunctionDocumentSaveData } = ctaFunctionDocumentSave;
-
+    
+    const consultancyAssignmentSave = useSelector(state => state.consultancyAssignmentSave);
+    //eslint-disable-next-line
+    const { loading: loadingConsultancyAssignmentSave, success: successConsultancyAssignmentSave, error: errorConsultancyAssignmentSave } = consultancyAssignmentSave;
 
     const ctaFunctionDocumentDelete = useSelector(state => state.ctaFunctionDocumentDelete);
     //eslint-disable-next-line
@@ -178,6 +183,18 @@ export default function CtaFunctionScreen(props) {
             })
     })
 
+    // add/update promise
+    const saveAssignItem = (item, id) => new Promise((resolve, reject) => {
+        dispatch(saveConsultancyAssignment(item))
+        .then(res => {
+            resolve(res)
+        })
+        .catch(err => {
+            console.log('err occured' + err)
+            reject(err)
+        })
+})
+
     const addOrEditCtaFunctionDocument = (item, resetForm) => {
         // console.log(item)
         if (item?.id && item?.file) {
@@ -216,40 +233,66 @@ export default function CtaFunctionScreen(props) {
 
     }
 
-    const addOrEdit = async (item, values, resetForm, activeStep, setActiveStep) => {
+    const addOrEdit = async (item, resetForm, values, activeStep, setActiveStep) => {
         // resetForm()
         // console.log(item)
-        saveItem(item)
-            .then((res) => {
-                console.log(res)
-                if (res?.status === true) {
-                    resetForm()
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submitted Successfully',
-                        type: 'success'
-                    })
-                    setActiveStep(activeStep + 1)
-                    delete item.id
-                    setRecordForEdit({
-                        ...values,
-                        id: res.data
-                    })
-                    // console.log(values)
-                } else {
-                    setNotify({
-                        isOpen: true,
-                        message: 'Submition Failed',
-                        type: 'warning'
-                    })
-                }
+        return saveItem(item)
+                .then((res) => {
+                    // console.log(res)
+                    if (res?.status === true) {
+                        resetForm()
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submitted Successfully',
+                            type: 'success'
+                        })
+                        setActiveStep && setActiveStep(activeStep + 1)
+                        delete item.id
+                        setRecordForEdit({
+                            ...values,
+                            id: res.data
+                        })
+                    } else {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Submition Failed',
+                            type: 'warning'
+                        })
+                    }
+                    return res
 
-            })
-            .catch(err => {
-                console.log('err occured' + err)
-            })
+                })
+                .catch(err => {
+                    console.log('err occured' + err)
+                })
 
     }
+    const addOrEditConsultancyAssign = async (item, resetForm) => {
+            return saveAssignItem(item)
+                    .then((res) => {
+                        // resetForm()
+                        // setRecordForEdit(null)
+                        // setOpenPopup(false)
+                        if (successConsultancyAssignmentSave) {
+                            setNotify({
+                                isOpen: true,
+                                message: 'Submitted Successfully',
+                                type: 'success'
+                            })
+                        }
+
+                        if (errorConsultancyAssignmentSave) {
+                            setNotify({
+                                isOpen: true,
+                                message: 'Submition Failed',
+                                type: 'warning'
+                            })
+                        }
+                        return res
+                    })
+
+    }
+    
     const handleCtaPayment = (token, item, resetActiveStep) => {
         // const tokenId = token?.id;
         // console.log(item)
@@ -431,6 +474,10 @@ export default function CtaFunctionScreen(props) {
                                                 createOperation={createOperation} // ctaScreen create permission for user
                                                 updateOperation = {updateOperation}
                                                 deleteOperation ={deleteOperation}
+                                                addOrEdit={addOrEdit}
+                                                successCtaFunctionSave ={successCtaFunctionSave}
+                                                loadingCtaFunctionSave ={loadingCtaFunctionSave}
+                                                addOrEditConsultancyAssign={addOrEditConsultancyAssign}
                                             />
                                         </Widget> :
                                         (openPopup ?

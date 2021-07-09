@@ -65,6 +65,7 @@ import { techCategoryDeleteReducer, techCategoryDetailsReducer, techCategoryList
 import { technologyPartnerDeleteReducer, technologyPartnerDetailsReducer, technologyPartnerListReducer, technologyPartnerSaveReducer } from './reducers/technologyPartnerReducers';
 import { technologyServiceDeleteReducer, technologyServiceDetailsReducer, technologyServiceListReducer, technologyServiceSaveReducer } from './reducers/technologyServiceReducers';
 import { techStackDeleteReducer, techStackDetailsReducer, techStackListReducer, techStackSaveReducer } from './reducers/techStackReducers';
+import { consultancyAssignmentDeleteReducer, consultancyAssignmentDetailsReducer, consultancyAssignmentListReducer, consultancyAssignmentSaveReducer } from './reducers/consultancyAssignmentReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -320,8 +321,10 @@ const reducer = combineReducers({
     techStackDetails: techStackDetailsReducer,
     techStackSave: techStackSaveReducer,
     techStackDelete: techStackDeleteReducer,
-
-    
+    consultancyAssignmentList:consultancyAssignmentListReducer,
+    consultancyAssignmentDetails: consultancyAssignmentDetailsReducer,
+    consultancyAssignmentSave: consultancyAssignmentSaveReducer,
+    consultancyAssignmentDelete: consultancyAssignmentDeleteReducer,
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

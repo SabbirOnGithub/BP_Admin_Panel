@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react'
+import CtaFunctionStatusUpdateForm from "./CtaFunctionStatusUpdateForm";
+import ConsultancyAssignmentForm from "./ConsultancyAssignmentForm";
 import { useSelector, useDispatch } from 'react-redux';
-import { Grid, makeStyles, Paper } from '@material-ui/core';
-// import Controls from "../../../../components/controls/Controls";
+import { Grid, makeStyles, Paper, Chip } from '@material-ui/core';
+import Controls from "../../../../components/controls/Controls";
+import Popup from "../../../../components/Popup/Popup";
 import Typography from '@material-ui/core/Typography';
 // import useTable from "../../../components/UseTable/useTable";
-// import { searchTitleByIdFromArray, searchNameByIdFromArray } from '../../../../helpers/search';
+import { searchTitleByIdFromArray } from '../../../../helpers/search';
 import { searchNameByIdFromArray } from '../../../../helpers/search';
 import { timeConverter } from '../../../../helpers/converter';
 import Loading from '../../../../components/Loading/Loading';
-
 import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
-
 import { detailsCtaFunction } from '../../../../redux/actions/ctaFunctionActions';
 import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
+
+import DocumentsLink from '../../../../components/DocumentsLink/DocumentsLink';
 
 const useStyles = makeStyles(theme => ({
     detailsContent:{
@@ -38,13 +41,37 @@ const useStyles = makeStyles(theme => ({
 //     { id: 'id', label: 'Id' },
 //     { id: 'name', label: 'Name' },
 // ]
+// hard coded to both frontend and backend
+const ctaFunctionStatus = [
+    {
+        title: 'Requested',
+        value:1,
+        id:1,
+    },
+    {
+        title: 'Inprogress',
+        value:2,
+        id:2,
+
+    },
+    {
+        title: 'Done',
+        value:3,
+        id:3,
+    },
+]
+
 export default function CtaFunctionDetailScreen(props) {
     const { recordForDetails,
         //  setOpenPopup 
         // ctaFunctionModels,
         createOperation,
         updateOperation,
-        deleteOperation
+        deleteOperation,
+        addOrEdit,
+        successCtaFunctionSave,
+        loadingCtaFunctionSave,
+        addOrEditConsultancyAssign
         } = props
     const classes = useStyles();
 
@@ -52,8 +79,11 @@ export default function CtaFunctionDetailScreen(props) {
     //eslint-disable-next-line
     const { ctaFunctionModels } = ctaFunctionModelList;
 
+    const [recordForEdit, setRecordForEdit] = useState(null)
     //eslint-disable-next-line
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
+    const [openPopup, setOpenPopup] = useState(false)
+    const [openPopupForAssign, setOpenPopupForAssign] = useState(false)
     const [fetched, setFetched] = useState(false);
     //eslint-disable-next-line
     // const {
@@ -73,7 +103,17 @@ export default function CtaFunctionDetailScreen(props) {
     const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
     //eslint-disable-next-line
     const { loading: loadingDeleteConsultancyReceiveHistory,success: successDeleteConsultancyReceiveHistory, error: errorDeleteConsultancyReceiveHistory } = consultancyReceiveHistoryDelete;
-
+    
+    const openInPopup = item => {
+        setRecordForEdit(item)
+        setOpenPopup(true)
+    }
+    const openInPopupForAssign = item => {
+        setRecordForEdit(item)
+        setOpenPopupForAssign(true)
+    }
+   
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -94,17 +134,46 @@ export default function CtaFunctionDetailScreen(props) {
         }
 
         // eslint-disable-next-line
-    }, [dispatch, recordForDetails.id, successSaveConsultancyReceiveHistory, successDeleteConsultancyReceiveHistory])
+    }, [dispatch, recordForDetails.id, successSaveConsultancyReceiveHistory, successDeleteConsultancyReceiveHistory, successCtaFunctionSave])
 
 // console.log(ctaFunctionModels?.techStacks)
 // console.log(ctaFunction)
     return (
         <>
         {
-            loading ? <Loading /> :
+            loading || loadingCtaFunctionSave ? <Loading /> :
             <Grid container>
                 <Grid item xs={12}>
                 <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
+                                    {
+                                    <Grid container >
+                                        <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
+                                            <Chip 
+                                                label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
+                                                color="secondary"
+                                                style={{fontSize:"1.6rem"}}
+                                            />
+                                        </Grid>
+                                        <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
+                                                <Controls.Button
+                                                    color="primary"
+                                                    onClick={() => { openInPopup(ctaFunction) }}
+                                                    text={"Update Status"}
+                                                    variant="contained"
+                                                    size="large"
+                                                >
+                                                </Controls.Button>
+                                                <Controls.Button
+                                                    color="primary"
+                                                    onClick={() => { openInPopupForAssign(ctaFunction) }}
+                                                    text={"Assign to"}
+                                                    variant="contained"
+                                                    size="large"
+                                                >
+                                                </Controls.Button>
+                                        </Grid>
+                                    </Grid>
+                                    }
                                 <h1 className={classes.subHeadlineText}>Details</h1>
 
                                 <Grid container>
@@ -154,6 +223,11 @@ export default function CtaFunctionDetailScreen(props) {
                                         
                                     </Grid>
                                 </Grid>
+                                <h1 className={classes.subHeadlineText}> Attached Documents </h1>
+
+                                <DocumentsLink docList={ctaFunction?.ctaDocuments} />
+
+
                                 <h1 className={classes.subHeadlineText}>Payment History</h1>
                                 {
                                    ctaFunction?.ctaPurchaseHistories?.length > 0 ?  ctaFunction?.ctaPurchaseHistories?.map(item=>
@@ -222,6 +296,39 @@ export default function CtaFunctionDetailScreen(props) {
                     deleteOperation = {deleteOperation}
                     hourRemaining = {ctaFunction?.hourRemaining}
                 />
+
+                <Popup
+                    title="Update Cta Function Status"
+                    openPopup={openPopup}
+                    setOpenPopup={setOpenPopup}
+                >
+                    <CtaFunctionStatusUpdateForm
+                        recordForEdit={recordForEdit}
+                        addOrEdit={addOrEdit}
+                        // loadingSave={loadingSave}
+                        setRecordForEdit = {setRecordForEdit}
+                        setOpenPopup={setOpenPopup}
+                        ctaFunctionStatus ={ctaFunctionStatus}
+                    />
+
+                </Popup>
+
+                <Popup
+                    title="Assign consultancy"
+                    openPopup={openPopupForAssign}
+                    setOpenPopup={setOpenPopupForAssign}
+                >
+                    <ConsultancyAssignmentForm
+                        recordForEdit={recordForEdit}
+                        addOrEditConsultancyAssign={addOrEditConsultancyAssign}
+                        // loadingSave={loadingSave}
+                        setRecordForEdit = {setRecordForEdit}
+                        setOpenPopupForAssign={setOpenPopupForAssign}
+                        ctaFunctionStatus ={ctaFunctionStatus}
+                    />
+
+                </Popup>
+                
                
                     {/* <div>
                         <>

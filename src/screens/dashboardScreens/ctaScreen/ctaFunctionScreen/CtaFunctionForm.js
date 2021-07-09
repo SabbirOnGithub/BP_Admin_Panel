@@ -141,8 +141,8 @@ export default function CtaFunctionForm(props) {
                 temp.goalsToAchieveTechnology = fieldValues.goalsToAchieveTechnology ? "" : "This field is required."
         }
         if (activeStep === 1) {
-            // if ('estimation' in fieldValues)
-            //     temp.estimation = fieldValues.estimation ? "" : "This field is required."
+            if ('estimation' in fieldValues)
+                temp.estimation = fieldValues.estimation ? "" : "This field is required."
             if ('tellUsMore' in fieldValues)
                 temp.tellUsMore = fieldValues.tellUsMore ? "" : "This field is required."
             if ('description' in fieldValues)
@@ -275,7 +275,7 @@ export default function CtaFunctionForm(props) {
     }
     const handleNext = (e) => {
         e.preventDefault();
-        console.log(values)
+        // console.log(values)
         const formatData = {
             ...values,
         }
@@ -320,7 +320,7 @@ export default function CtaFunctionForm(props) {
             
             if(activeStep<2){
                 // for first 2 step use this
-                addOrEdit(formatData, values, resetForm, activeStep, setActiveStep, setValues);
+                addOrEdit(formatData, resetForm, values,  activeStep, setActiveStep, setValues);
             }else{
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             }
