@@ -232,7 +232,7 @@ export default function CtaFunctionScreen(props) {
         }
 
     }
-
+    // addOrEdit(formatData, resetForm, values,  activeStep, setActiveStep, setValues);
     const addOrEdit = async (item, resetForm, values, activeStep, setActiveStep) => {
         // resetForm()
         // console.log(item)

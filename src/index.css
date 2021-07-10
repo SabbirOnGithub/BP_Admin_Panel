@@ -120,7 +120,30 @@ body{
    background-color: #555;
  }  */
 
+iframe::-webkit-scrollbar
+ {
+   width: 4px;
+   background-color: #F5F5F5;
+   scrollbar-width: thin;
+ }
 
+ iframe::-webkit-scrollbar-track
+ {
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+   box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+   border-radius: 10px;
+   background-color: #F5F5F5;
+ }
+ 
+
+ 
+ iframe::-webkit-scrollbar-thumb
+ {
+   border-radius: 10px;
+   box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+   background-color: #555;
+ } 
  /* -------------------------------- */
 /* material ui stepper mobile progress bar component */
 /* -------------------------------- */

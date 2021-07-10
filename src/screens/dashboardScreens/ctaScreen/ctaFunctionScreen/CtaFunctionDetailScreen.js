@@ -104,6 +104,10 @@ export default function CtaFunctionDetailScreen(props) {
     //eslint-disable-next-line
     const { loading: loadingDeleteConsultancyReceiveHistory,success: successDeleteConsultancyReceiveHistory, error: errorDeleteConsultancyReceiveHistory } = consultancyReceiveHistoryDelete;
     
+    const consultancyAssignmentSave = useSelector(state => state.consultancyAssignmentSave);
+    //eslint-disable-next-line
+    const { loading: loadingConsultancyAssignmentSave, success: successConsultancyAssignmentSave, error: errorConsultancyAssignmentSave } = consultancyAssignmentSave;
+
     const openInPopup = item => {
         setRecordForEdit(item)
         setOpenPopup(true)
@@ -112,7 +116,6 @@ export default function CtaFunctionDetailScreen(props) {
         setRecordForEdit(item)
         setOpenPopupForAssign(true)
     }
-   
     
     const dispatch = useDispatch();
 
@@ -134,7 +137,14 @@ export default function CtaFunctionDetailScreen(props) {
         }
 
         // eslint-disable-next-line
-    }, [dispatch, recordForDetails.id, successSaveConsultancyReceiveHistory, successDeleteConsultancyReceiveHistory, successCtaFunctionSave])
+    }, [
+        dispatch, 
+        recordForDetails.id, 
+        successSaveConsultancyReceiveHistory, 
+        successDeleteConsultancyReceiveHistory, 
+        successCtaFunctionSave,
+        successConsultancyAssignmentSave
+    ])
 
 // console.log(ctaFunctionModels?.techStacks)
 // console.log(ctaFunction)
@@ -148,11 +158,13 @@ export default function CtaFunctionDetailScreen(props) {
                                     {
                                     <Grid container >
                                         <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
-                                            <Chip 
-                                                label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
-                                                color="secondary"
-                                                style={{fontSize:"1.6rem"}}
-                                            />
+                                            { ctaFunction?.status &&
+                                                <Chip 
+                                                    label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
+                                                    color="secondary"
+                                                    style={{fontSize:"1.6rem"}}
+                                                />
+                                            }
                                         </Grid>
                                         <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
                                                 <Controls.Button
@@ -223,9 +235,30 @@ export default function CtaFunctionDetailScreen(props) {
                                         
                                     </Grid>
                                 </Grid>
-                                <h1 className={classes.subHeadlineText}> Attached Documents </h1>
+                                
+                                {
+                                    ctaFunction?.consultancyAssignments?.length > 0 && 
+                                    (
+                                        <>
+                                        <h1 className={classes.subHeadlineText}> Assigned To </h1>
+                                            {    ctaFunction?.consultancyAssignments?.map(item=>{
+                                                    return <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {item.userEmail} </Typography>
+                                                })
+                                            }
+                                        </>
+                                    )
+                                    
+                                }
 
-                                <DocumentsLink docList={ctaFunction?.ctaDocuments} />
+                                {ctaFunction?.ctaDocuments?.length > 0 &&
+                                    <>
+                                        <h1 className={classes.subHeadlineText}> Attached Documents </h1>
+
+                                        <DocumentsLink docList={ctaFunction?.ctaDocuments} />
+                                    </>
+                                }
+
+                                
 
 
                                 <h1 className={classes.subHeadlineText}>Payment History</h1>

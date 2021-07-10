@@ -143,13 +143,14 @@ export default function UserScreen() {
     })
     //eslint-disable-next-line
     const addOrEdit = (item, resetForm) => {
-        console.log(item.id)
+        // console.log(item.id)
         const formData = new FormData();
         item.id && formData.append('Id', item.id)
-        formData.append('Username', item.username)
+        formData.append('Username', item.email)
         formData.append('Password', item.password)
         formData.append('RoleId', item.roleId)
-        formData.append('Name', item.name)
+        formData.append('firstName', item.firstName)
+        formData.append('lastName', item.lastName)
         formData.append('IsActive', item.isActive)
         formData.append('Mobile', item.mobile)
         formData.append('Email', item.email)
@@ -202,7 +203,7 @@ export default function UserScreen() {
         }
     }
     const openInPopup = item => {
-        console.log(item)
+        // console.log(item)
         setRecordForEdit({...item,password:''})
         setOpenPopup(true)
     }

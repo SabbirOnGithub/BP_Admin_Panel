@@ -109,22 +109,22 @@ function UserProfileScreen() {
    
     //eslint-disable-next-line
     const addOrEdit = (item, resetForm) => {
-        console.log(item)
+        // console.log(item)
         const formData = new FormData()
         item.id && formData.append('Id', item?.id)
-        formData.append('FirstName', item?.firstName)
-        formData.append('LastName', item?.lastName)
-        formData.append('RoleId', item?.roleId)
-        formData.append('Name', item?.name)
-        formData.append('IsActive', item?.isActive) // true or false
-        // formData.append('CompanySizeId', item?.companySizeId) 
-        // formData.append('CompanyTypeId', item?.companyTypeId) 
-        // formData.append('Mobile', item?.mobile)
-        // formData.append('Username', item?.username)
-        // formData.append('Address', item?.address)
-        // formData.append('BusinessIndustry', item?.businessIndustry)
-        // formData.append('BusinessName', item?.businessName)
-        // formData.append('CurrentConsultationTypeId', item?.currentConsultingTypeId)
+        item?.firstName && formData.append('FirstName', item?.firstName)
+        item?.lastName && formData.append('LastName', item?.lastName)
+        item?.roleId && formData.append('RoleId', item?.roleId)
+        // formData.append('Name', item?.name)
+        item?.isActive && formData.append('IsActive', item?.isActive) // true or false
+        item?.companySizeId && formData.append('CompanySizeId', item?.companySizeId) 
+        item?.companyTypeId && formData.append('CompanyTypeId', item?.companyTypeId) 
+        item?.mobile && formData.append('Mobile', item?.mobile)
+        item?.username && formData.append('Username', item?.username)
+        item?.address && formData.append('Address', item?.address)
+        item?.businessIndustry && formData.append('BusinessIndustry', item?.businessIndustry)
+        item?.businessName && formData.append('BusinessName', item?.businessName)
+        item?.currentConsultingTypeId && formData.append('CurrentConsultationTypeId', item?.currentConsultingTypeId)
         // append for add/update image
         if(typeof(item.photo) === 'object'){
             formData.append('file', item.photo)

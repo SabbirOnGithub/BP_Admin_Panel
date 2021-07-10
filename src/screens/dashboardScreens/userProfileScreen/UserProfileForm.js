@@ -77,7 +77,7 @@ export default function UserProfileForm(props) {
         e.preventDefault()
         if (validate()) {
             try {
-                console.log(values)
+                // console.log(values)
                 addOrEdit(values, resetForm);
             }
             catch (e) {
@@ -87,7 +87,7 @@ export default function UserProfileForm(props) {
     }
     useEffect(() => {
         if (recordForEdit != null) {
-            console.log(recordForEdit)
+            // console.log(recordForEdit)
             try {
                 setValues({
                     ...recordForEdit,
@@ -95,6 +95,7 @@ export default function UserProfileForm(props) {
                     username : recordForEdit.userName,
                     id: recordForEdit.userId,
                     roleId: recordForEdit.userRole,
+                    // isActive: true
                 })
                 
             } catch (e) {

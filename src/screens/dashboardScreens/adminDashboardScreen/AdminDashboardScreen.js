@@ -32,7 +32,6 @@ import { useTheme } from "@material-ui/styles";
 import Dot from "../../../components/Sidebar/components/Dot";
 // import Table from "./components/Table/Table";
 // import BigStat from "./components/BigStat/BigStat";
-
 // styles
 import useStyles from "./styles";
 
@@ -494,8 +493,7 @@ export default function AdminDashboardScreen() {
                                     }
                                     
                                 </Grid>
-        
-                            
+                                
                             </Grid>
                         </>
                     )

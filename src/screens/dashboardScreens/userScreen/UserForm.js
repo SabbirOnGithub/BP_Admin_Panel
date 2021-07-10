@@ -6,10 +6,11 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 const initialFValues = {
     id: '',
-    username: "",
+    // username: "",
     password: "",
     roleId: "",
-    name: "",
+    firstName: "",
+    lastName: "",
     // isActive: false,
     email: "",
     mobile: "",
@@ -23,14 +24,14 @@ export default function UserForm(props) {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        if ('username' in fieldValues)
-            temp.username = fieldValues.username ? "" : "This field is required."
+        // if ('username' in fieldValues)
+        //     temp.username = fieldValues.username ? "" : "This field is required."
         if ('password' in fieldValues)
             temp.password = fieldValues.password ? "" : "This field is required."
         if ('roleId' in fieldValues)
             temp.roleId = fieldValues.roleId ? "" : "This field is required."
-        if ('name' in fieldValues)
-            temp.name = fieldValues.name ? "" : "This field is required."
+        if ('firstName' in fieldValues)
+            temp.firstName = fieldValues.firstName ? "" : "This field is required."
         if ('email' in fieldValues)
             temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
             // temp.email = fieldValues.email ? "" : "This field is required."
@@ -79,13 +80,35 @@ export default function UserForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
+                <Controls.Input
+                        name="firstName"
+                        label="FirstName"
+                        value={values?.firstName}
+                        onChange={handleInputChange}
+                        error={errors.firstName}
+                    />
+                     <Controls.Input
+                        name="lastName"
+                        label="LastName"
+                        value={values?.lastName}
+                        onChange={handleInputChange}
+                        error={errors.lastName}
+                    />
                     <Controls.Input
+                        name="email"
+                        label="Email"
+                        type="email"
+                        value={values?.email}
+                        onChange={handleInputChange}
+                        error={errors.email}
+                    />
+                    {/* <Controls.Input
                         name="username"
                         label="User Name"
                         value={values?.username}
                         onChange={handleInputChange}
                         error={errors.username}
-                    />
+                    /> */}
                     <Controls.Input
                         name="password"
                         label="Password"
@@ -102,21 +125,8 @@ export default function UserForm(props) {
                         error={errors.roleId}
                         options={roles ? roles : []}
                     />
-                    <Controls.Input
-                        name="name"
-                        label="Name"
-                        value={values?.name}
-                        onChange={handleInputChange}
-                        error={errors.name}
-                    />
-                    <Controls.Input
-                        name="email"
-                        label="Email"
-                        type="email"
-                        value={values?.email}
-                        onChange={handleInputChange}
-                        error={errors.email}
-                    />
+                    
+                    
                     <Controls.Input
                         name="mobile"
                         label="Mobile"

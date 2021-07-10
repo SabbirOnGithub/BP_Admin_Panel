@@ -26,6 +26,7 @@ function SignInScreen(props) {
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const userSignIn = useSelector( state => state.userSignin );
+  // eslint-disable-next-line 
   const { loading , userInfo , error } = userSignIn;
   // const { loading , error } = userSignIn;
   // const redirect = props.location.search ? props.location.search.split("=")[1]:"/";
@@ -38,7 +39,7 @@ function SignInScreen(props) {
     dispatch(signin(email,password))
       // dispatch(detailsRoleResource())
     .then(res=>{
-      res && console.log(userInfo)
+      // res && console.log(userInfo)
     })
 }
 useEffect(()=>{

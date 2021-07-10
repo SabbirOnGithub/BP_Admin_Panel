@@ -270,6 +270,9 @@ const structure = [
       { label: "Technology Service", link: "/admin/technologyService" },
     ],
   },
+  {
+    id: 36, label: "Embadded dashboard", link: "/admin/embaddedDashboard", icon: <SubscriptionsIcon />,
+  },
 ];
 
 

@@ -35,7 +35,7 @@ const listCtaFunctions = (item) => async (dispatch)=>{
         try{
             dispatch({type: CTA_FUNCTION_LIST_REQUEST});
             const {data} = await axiosWithToken.post('/CtaFunction/search', item);
-            console.log(data)
+            // console.log(data)
     
             if (data.status === true) {
                 dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data.item1 ? data.data : {} });
@@ -76,7 +76,6 @@ const detailsCtaFunction = (id)=> async (dispatch) =>{
             console.log('id not found')
         }
         
-        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: CTA_FUNCTION_DETAILS_FAIL, payload: error.message });
@@ -84,7 +83,7 @@ const detailsCtaFunction = (id)=> async (dispatch) =>{
 };
 
 const saveCtaFunction = (item) => async (dispatch) =>{
-    console.log(item)
+    // console.log(item)
     try{
         dispatch({type: CTA_FUNCTION_SAVE_REQUEST, payload:item })
         if(!item.id){
@@ -106,8 +105,10 @@ const saveCtaFunction = (item) => async (dispatch) =>{
             return data
         }else{
             console.log('update')
-            console.log(item)
-            const { data } = await axiosWithToken.put("/CtaFunction", item);
+            // console.log(item)
+            item?.status && (axiosWithToken.defaults.headers.common['onlyStatus'] = true)
+            const { data } = await axiosWithToken.put("/CtaFunction", item)
+            
             if (data.status === true) {
                 dispatch({type: CTA_FUNCTION_SAVE_SUCCESS, payload: data.id });  
                 return data
@@ -192,7 +193,7 @@ const deleteCtaFunctionDocument = (id)=> async (dispatch, getState) =>{
         }else{
             dispatch({ type: CTA_FUNCTION_DOCUMENT_DELETE_FAIL, payload: data.message });
         }
-        console.log(data)
+        // console.log(data)
     }
     catch(error){
         dispatch({ type: CTA_FUNCTION_DOCUMENT_DELETE_FAIL, payload: error.message });

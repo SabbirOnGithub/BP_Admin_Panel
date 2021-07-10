@@ -53,7 +53,7 @@ export default function CtaFunctionStatusUpdateForm(props) {
         if (validate()) {
              addOrEdit(values, resetForm)
              .then(res=>{
-                 if(res.status){
+                 if(res?.status){
                     setRecordForEdit(null)
                     setOpenPopup(false)
                  }
