@@ -87,11 +87,14 @@ export default function UserProfileForm(props) {
     }
     useEffect(() => {
         if (recordForEdit != null) {
+            console.log(recordForEdit)
             try {
                 setValues({
                     ...recordForEdit,
                     photo: recordForEdit.userImage,
-                    username : recordForEdit.userName
+                    username : recordForEdit.userName,
+                    id: recordForEdit.userId,
+                    roleId: recordForEdit.userRole,
                 })
                 
             } catch (e) {

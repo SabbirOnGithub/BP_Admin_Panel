@@ -556,7 +556,8 @@ export default function CtaFunctionScreen(props) {
                                                                     (<TableRow key={item.id}>
                                                                         <TableCell>{item.id}</TableCell>
                                                                         <TableCell>
-                                                                            <span><b>Name:</b> {(item?.firstName && item?.firstName + ' ')  + (item?.lastName && item?.lastName)} </span> <br />
+                                                                            {/* <span><b>Name:</b> {(item?.firstName && item?.firstName + ' ')  + (item?.lastName && item?.lastName)} </span> <br /> */}
+                                                                            <span><b>Name:</b> {Boolean(item?.firstName) && item?.firstName} </span> <br />
                                                                             <span><b>Email:</b> {item?.email} </span> <br />
                                                                             <span><b>Phone: </b>{item?.phone} </span> <br />
                                                                         </TableCell>

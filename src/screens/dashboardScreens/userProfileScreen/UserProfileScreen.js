@@ -114,18 +114,17 @@ function UserProfileScreen() {
         item.id && formData.append('Id', item?.id)
         formData.append('FirstName', item?.firstName)
         formData.append('LastName', item?.lastName)
-        // formData.append('Password', 'Pass@123')
         formData.append('RoleId', item?.roleId)
         formData.append('Name', item?.name)
-        formData.append('IsActive', item?.isActive) // true mor false
-        formData.append('CompanySizeId', item?.companySizeId) 
-        formData.append('CompanyTypeId', item?.companyTypeId) 
-        formData.append('Mobile', item?.mobile)
-        formData.append('Username', item?.username)
-        formData.append('Address', item?.address)
-        formData.append('BusinessIndustry', item?.businessIndustry)
-        formData.append('BusinessName', item?.businessName)
-        formData.append('CurrentConsultationTypeId', item?.currentConsultingTypeId)
+        formData.append('IsActive', item?.isActive) // true or false
+        // formData.append('CompanySizeId', item?.companySizeId) 
+        // formData.append('CompanyTypeId', item?.companyTypeId) 
+        // formData.append('Mobile', item?.mobile)
+        // formData.append('Username', item?.username)
+        // formData.append('Address', item?.address)
+        // formData.append('BusinessIndustry', item?.businessIndustry)
+        // formData.append('BusinessName', item?.businessName)
+        // formData.append('CurrentConsultationTypeId', item?.currentConsultingTypeId)
         // append for add/update image
         if(typeof(item.photo) === 'object'){
             formData.append('file', item.photo)
@@ -142,7 +141,7 @@ function UserProfileScreen() {
             // saveItem(formData, item.id)
             dispatch(saveUser(formData, item.id))
             .then((res)=>{
-              if(res.status){
+              if(res?.status){
                 history.go(0);
                     setNotify({
                         isOpen: true,
@@ -201,7 +200,7 @@ function UserProfileScreen() {
                     classes={{ root: classes.avatar, circle: classes.circle }}
                   /> */}
                   <Avatar 
-                      alt="Profile" src={BASE_ROOT_URL + "/" + userInfo.userImage.split("\\").join('/')}
+                      alt="Profile" src={BASE_ROOT_URL + "/" + userInfo.userImage?.split("\\").join('/')}
                       classes={{ root: classes.avatar, circle: classes.circle }}
                   /> 
                   <Typography className={classes.nameStyle} variant={"h5"}>{userInfo?.name}</Typography>

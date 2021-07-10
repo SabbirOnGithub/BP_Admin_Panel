@@ -35,7 +35,7 @@ const listCtaFunctions = (item) => async (dispatch)=>{
         try{
             dispatch({type: CTA_FUNCTION_LIST_REQUEST});
             const {data} = await axiosWithToken.post('/CtaFunction/search', item);
-            // console.log(data)
+            console.log(data)
     
             if (data.status === true) {
                 dispatch({ type: CTA_FUNCTION_LIST_SUCCESS, payload: data.data.item1 ? data.data : {} });

@@ -122,10 +122,11 @@ export default function Header(props) {
             weight="medium"
             component={Link} to={'/admin/userProfile'}
           >
-              {/* {userInfo?.consultationTypeName} */}
-              {userInfo?.companyTypeName}
+              {userInfo?.consultationTypeName}
+              {/* {userInfo?.companyTypeName} */}
           </Typography>
         }
+        {/* <div>{userInfo.consultationTypeName}</div> */}
         
         <IconButton
           aria-haspopup="true"
@@ -158,10 +159,7 @@ export default function Header(props) {
                   weight="medium" 
                   className={classes.consultationTypeInMenuBar}
             >
-                {/* Consultation Type :  */}
-                {/* {userInfo?.consultationTypeName} */}
               {userInfo?.companyTypeName}
-
             </Typography>
             <Typography
               className={classes.profileMenuLink}
