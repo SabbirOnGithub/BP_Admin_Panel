@@ -23,14 +23,16 @@ const DocumentsLink = (props) => {
     return (
         <div>
            
-            {docList?.map(item=>{
+            {docList?.map((item,index)=>{
                 // return BASE_ROOT_URL + "/" + item.fileUrl.split("\\").join('/')
                 return (
-                <Typography className ={clsx(classes.root, classes.customPharagraph)}  key={item.id}>
-                    <Link href={BASE_ROOT_URL + "/" + item.fileUrl.split("\\").join('/')} target="_blank" rel="noopener">
-                        {item.fileUrl.split("\\").join('/').split('/').pop()}
-                    </Link>
-                </Typography>)
+                    <Typography className ={clsx(classes.root, classes.customPharagraph)}  key={item.id}>
+                        <b>{index+1}.</b>
+                        <Link href={BASE_ROOT_URL + "/" + item.fileUrl.split("\\").join('/')} target="_blank" rel="noopener">
+                            {item.fileUrl.split("\\").join('/').split('/').pop()}
+                        </Link>
+                    </Typography>
+                )
             })
             }
         </div>

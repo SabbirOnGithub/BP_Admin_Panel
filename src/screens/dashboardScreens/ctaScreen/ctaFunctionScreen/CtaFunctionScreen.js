@@ -12,7 +12,8 @@ import DetailsIcon from '@material-ui/icons/Details';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
 import { ResponseMessage } from "../../../../themes/responseMessage";
-import { getFilterDataByUser } from '../../../../helpers/search';
+import { getFilterDataByUser, searchTitleByIdFromArray } from '../../../../helpers/search';
+import { ctaFunctionStatus } from '../../../../helpers/staticData';
 import { timeConverter } from '../../../../helpers/converter';
 
 // redux actions
@@ -29,7 +30,6 @@ import { saveConsultancyAssignment } from '../../../../redux/actions/consultancy
 import { saveCtaPayment } from '../../../../redux/actions/ctaPaymentActions';
 import { saveCtaPurchaseHistory } from '../../../../redux/actions/ctaPurchaseHistoryActions';
 
-import useStyles from "./styles";
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -44,15 +44,7 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-const status = {
-    ongoing: "warning",
-    completed: "success"
-
-};
-
 export default function CtaFunctionScreen(props) {
-    const classes = useStyles();
-
 
     const { createOperation, updateOperation, deleteOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
 
@@ -582,7 +574,11 @@ export default function CtaFunctionScreen(props) {
                                                                             
                                                                         </TableCell>
                                                                         <TableCell>
-                                                                            <Chip label={item?.isCompleted ? "completed" : "ongoing"} classes={{ root: classes[status[item?.isCompleted ? "completed".toLowerCase() : "ongoing".toLowerCase()]] }} />
+                                                                            <Chip 
+                                                                                label= {item?.status ? searchTitleByIdFromArray(ctaFunctionStatus, item?.status) : "No status found"}
+                                                                                color="secondary"
+                                                                                style={{fontSize:"1.6rem"}}
+                                                                            />
                                                                         </TableCell>
                                                                         <TableCell>
                                                                             <Controls.ActionButton

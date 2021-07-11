@@ -14,6 +14,7 @@ import Loading from '../../../../components/Loading/Loading';
 import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
 import { detailsCtaFunction } from '../../../../redux/actions/ctaFunctionActions';
 import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
+import { ctaFunctionStatus } from '../../../../helpers/staticData';
 
 import DocumentsLink from '../../../../components/DocumentsLink/DocumentsLink';
 
@@ -42,24 +43,24 @@ const useStyles = makeStyles(theme => ({
 //     { id: 'name', label: 'Name' },
 // ]
 // hard coded to both frontend and backend
-const ctaFunctionStatus = [
-    {
-        title: 'Requested',
-        value:1,
-        id:1,
-    },
-    {
-        title: 'Inprogress',
-        value:2,
-        id:2,
+// const ctaFunctionStatus = [
+//     {
+//         title: 'Requested',
+//         value:1,
+//         id:1,
+//     },
+//     {
+//         title: 'Inprogress',
+//         value:2,
+//         id:2,
 
-    },
-    {
-        title: 'Done',
-        value:3,
-        id:3,
-    },
-]
+//     },
+//     {
+//         title: 'Done',
+//         value:3,
+//         id:3,
+//     },
+// ]
 
 export default function CtaFunctionDetailScreen(props) {
     const { recordForDetails,
@@ -158,17 +159,17 @@ export default function CtaFunctionDetailScreen(props) {
                                     {
                                     <Grid container >
                                         <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
-                                            { ctaFunction?.status &&
+                                            {/* { ctaFunction?.status &&
                                                 <Chip 
                                                     label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
                                                     color="secondary"
                                                     style={{fontSize:"1.6rem"}}
                                                 />
-                                            }
+                                            } */}
                                         </Grid>
                                         <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
                                                 <Controls.Button
-                                                    color="primary"
+                                                    color="secondary"
                                                     onClick={() => { openInPopup(ctaFunction) }}
                                                     text={"Update Status"}
                                                     variant="contained"
@@ -225,7 +226,16 @@ export default function CtaFunctionDetailScreen(props) {
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution: </b> {ctaFunction?.goalsToAchieveSolution} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Tell Us More: </b> {ctaFunction?.tellUsMore} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {ctaFunction?.description} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Status: </b> {ctaFunction?.isCompleted ? "Completed" : 'Ongoing'} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Status: </b> 
+                                        { ctaFunction?.status ?
+                                                <Chip 
+                                                    label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
+                                                    color="secondary"
+                                                    style={{fontSize:"1.6rem"}}
+                                                />
+                                                : 'No data found'
+                                        } </Typography>
+
                                         {
                                             ctaFunction?.hourRemaining && <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> { timeConverter(ctaFunction?.hourRemaining)} </Typography>
                                         }
@@ -235,27 +245,26 @@ export default function CtaFunctionDetailScreen(props) {
                                         
                                     </Grid>
                                 </Grid>
+                                <h1 className={classes.subHeadlineText}> Assigned To </h1>
                                 
                                 {
-                                    ctaFunction?.consultancyAssignments?.length > 0 && 
+                                    ctaFunction?.consultancyAssignments?.length > 0 ?
                                     (
                                         <>
-                                        <h1 className={classes.subHeadlineText}> Assigned To </h1>
+                                        
                                             {    ctaFunction?.consultancyAssignments?.map(item=>{
                                                     return <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {item.userEmail} </Typography>
                                                 })
                                             }
                                         </>
-                                    )
+                                    ) : <Typography paragraph className={classes.customPharagraph}> No Assignment found </Typography>
                                     
                                 }
-
-                                {ctaFunction?.ctaDocuments?.length > 0 &&
+                                <h1 className={classes.subHeadlineText}> Attached Documents </h1>
+                                {ctaFunction?.ctaDocuments?.length > 0 ?
                                     <>
-                                        <h1 className={classes.subHeadlineText}> Attached Documents </h1>
-
                                         <DocumentsLink docList={ctaFunction?.ctaDocuments} />
-                                    </>
+                                    </> : <Typography paragraph className={classes.customPharagraph}> No documents found </Typography>
                                 }
 
                                 
