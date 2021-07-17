@@ -108,7 +108,7 @@ export default function useTableServerSide(records, headCells, filterFn, totalRe
     }
     const TblPagination = () => (<TablePagination
         component="div"
-        page={(page > 0 && (totalRecords ? totalRecords < rowsPerPage : records.length < rowsPerPage )) ? 0 : page}
+        page={(page > 0 && (totalRecords ? totalRecords < rowsPerPage : records?.length < rowsPerPage )) ? 0 : page}
         // page={pageDataConfig.currentPage-1}
         rowsPerPageOptions={pages}
         rowsPerPage={rowsPerPage}

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Grid, CircularProgress } from '@material-ui/core';
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from '../../../components/UseForm/useForm';
-
+import {isClientUser} from '../../../helpers/search'
 const initialFValues = {
     id: '',
     username: '',
@@ -28,7 +28,8 @@ export default function UserProfileForm(props) {
             openPopup, 
             companySizes, 
             companyTypes, 
-            consultingTypes 
+            consultingTypes,
+            userInfo 
         } = props
 
     const validate = (fieldValues = values) => {
@@ -36,24 +37,27 @@ export default function UserProfileForm(props) {
 
         if ('username' in fieldValues)
             temp.username = fieldValues.username ? "" : "This field is required."
+        if ('email' in fieldValues)
+            (temp.email = fieldValues.email ? "" : "This field is required.") || (temp.email = (/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})?$/).test(fieldValues.email) ? "" : "Email is not valid.")
         if ('firstName' in fieldValues)
             temp.firstName = fieldValues.firstName ? "" : "This field is required."
         if ('businessIndustry' in fieldValues)
-            temp.businessIndustry = fieldValues.businessIndustry ? "" : "This field is required."
+            isClientUser(userInfo) && (temp.businessIndustry = fieldValues.businessIndustry ? "" : "This field is required.")
         if ('businessName' in fieldValues)
             temp.businessName = fieldValues.businessName ? "" : "This field is required."
-        if ('lastName' in fieldValues)
-            temp.lastName = fieldValues.lastName ? "" : "This field is required."
+        // if ('lastName' in fieldValues)
+        //     temp.lastName = fieldValues.lastName ? "" : "This field is required."
         if ('address' in fieldValues)
             temp.address = fieldValues.address ? "" : "This field is required."
         if ('mobile' in fieldValues)
             temp.mobile = fieldValues.mobile ? "" : "This field is required."
         if ('companySizeId' in fieldValues)
-            temp.companySizeId = fieldValues.companySizeId ? "" : "This field is required."
+            isClientUser(userInfo) && (temp.companySizeId = fieldValues.companySizeId ? "" : "This field is required.")
         if ('companyTypeId' in fieldValues)
-            temp.companyTypeId = fieldValues.companyTypeId ? "" : "This field is required."
+            isClientUser(userInfo) && (temp.companyTypeId = fieldValues.companyTypeId ? "" : "This field is required.")
         if ('currentConsultingTypeId' in fieldValues)
-            temp.currentConsultingTypeId = fieldValues.currentConsultingTypeId ? "" : "This field is required."
+            isClientUser(userInfo) && (temp.currentConsultingTypeId = fieldValues.currentConsultingTypeId ? "" : "This field is required.")
+
         
         setErrors({
             ...temp
@@ -116,7 +120,14 @@ export default function UserProfileForm(props) {
                         onChange={handleInputChange}
                         error={errors.username}
                         disabled={openPopup}
-
+                    />
+                    <Controls.Input
+                        name="email"
+                        label="Email"
+                        value={values?.email}
+                        onChange={handleInputChange}
+                        error={errors.email}
+                        disabled={openPopup}
                     />
                     <Controls.Input
                         name="firstName"
@@ -134,15 +145,7 @@ export default function UserProfileForm(props) {
                         error={errors.lastName}
                         disabled={openPopup}
                     />
-                     <Controls.Input
-                        name="businessIndustry"
-                        label="Business Industry"
-                        value={values?.businessIndustry}
-                        onChange={handleInputChange}
-                        error={errors.businessIndustry}
-                        disabled={openPopup}
-                    />
-                     <Controls.Input
+                    <Controls.Input
                         name="businessName"
                         label="Business Name"
                         value={values?.businessName}
@@ -150,6 +153,21 @@ export default function UserProfileForm(props) {
                         error={errors.businessName}
                         disabled={openPopup}
                     />
+                    {
+                        isClientUser(userInfo) &&
+                        <>
+                        <Controls.Input
+                        name="businessIndustry"
+                        label="Business Industry"
+                        value={values?.businessIndustry}
+                        onChange={handleInputChange}
+                        error={errors.businessIndustry}
+                        disabled={openPopup}
+                    />
+                     
+                        </>
+                    }
+                     
                     
                 </Grid>
                 <Grid item md={6}>
@@ -172,7 +190,7 @@ export default function UserProfileForm(props) {
 
                    
 
-                    {!openPopup &&
+                    {!openPopup && isClientUser(userInfo) &&
                     <>
                         <Controls.Select
                             name="companySizeId"

@@ -12,7 +12,7 @@ import DetailsIcon from '@material-ui/icons/Details';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../../components/Loading/Loading';
 import { ResponseMessage } from "../../../../themes/responseMessage";
-import { getFilterDataByUser, searchTitleByIdFromArray } from '../../../../helpers/search';
+import { searchTitleByIdFromArray } from '../../../../helpers/search';
 import { ctaFunctionStatus } from '../../../../helpers/staticData';
 import { timeConverter } from '../../../../helpers/converter';
 
@@ -82,8 +82,7 @@ export default function CtaFunctionScreen(props) {
     const { ctaFunctions, loading: loadingCtaFunctions, error: errorCtaFunctions } = ctaFunctionList;
     // 1-superadmin, 2-admin, 3- member, 4- client 
     // const ctaFunctionsFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaFunctions : (userInfo?.userRole === 3 ? [] : ctaFunctions.filter(item=>item.email === userInfo.email))
-    const ctaFunctionsFilterByUser = getFilterDataByUser(ctaFunctions?.item1, userInfo);
-
+    
     const ctaFunctionSave = useSelector(state => state.ctaFunctionSave);
     //eslint-disable-next-line
     const { loading: loadingCtaFunctionSave, success: successCtaFunctionSave, error: errorCtaFunctionSave, ctaFunction: ctaFunctionSaveData } = ctaFunctionSave;
@@ -123,7 +122,7 @@ export default function CtaFunctionScreen(props) {
         recordsAfterPagingAndSorting,
         pageDataConfig,
         setPageDataConfig
-    } = useTableServerSide(ctaFunctionsFilterByUser, headCells, filterFn, ctaFunctions?.item2);
+    } = useTableServerSide(ctaFunctions?.item1 || [], headCells, filterFn, ctaFunctions?.item2);
 
     const dispatch = useDispatch();
     // search from table

@@ -155,6 +155,7 @@ export default function UserScreen() {
         formData.append('Mobile', item.mobile)
         formData.append('Email', item.email)
         formData.append('Address', item.address)
+        formData.append('BusinessName', item.businessName)
         // append for add/update image
         if (typeof (item.photo) === 'object') {
             formData.append('file', item.photo)

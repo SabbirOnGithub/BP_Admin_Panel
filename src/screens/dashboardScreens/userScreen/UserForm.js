@@ -16,7 +16,9 @@ const initialFValues = {
     mobile: "",
     address: "",
     photo:"",
-    isActive: false,
+    isActive: true,
+    businessName:'',
+
 }
 
 export default function UserForm(props) {
@@ -24,6 +26,7 @@ export default function UserForm(props) {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
+       
         // if ('username' in fieldValues)
         //     temp.username = fieldValues.username ? "" : "This field is required."
         if ('password' in fieldValues)
@@ -33,8 +36,7 @@ export default function UserForm(props) {
         if ('firstName' in fieldValues)
             temp.firstName = fieldValues.firstName ? "" : "This field is required."
         if ('email' in fieldValues)
-            temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
-            // temp.email = fieldValues.email ? "" : "This field is required."
+            (temp.email = fieldValues.email ? "" : "This field is required.") || (temp.email = (/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})?$/).test(fieldValues.email) ? "" : "Email is not valid.")
         if ('mobile' in fieldValues)
             // temp.mobile = fieldValues.mobile ? "" : "This field is required."
             temp.mobile = fieldValues.mobile.length > 9 ? "" : "Minimum 10 numbers required."
@@ -124,6 +126,13 @@ export default function UserForm(props) {
                         onChange={handleInputChange}
                         error={errors.roleId}
                         options={roles ? roles : []}
+                    />
+                      <Controls.Input
+                        name="businessName"
+                        label="Business Name"
+                        value={values?.businessName}
+                        onChange={handleInputChange}
+                        error={errors.businessName}
                     />
                     
                     

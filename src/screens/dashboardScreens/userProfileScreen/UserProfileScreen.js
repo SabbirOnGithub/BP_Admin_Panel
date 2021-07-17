@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Divider } from '@material-ui/core';
 import Widget from "../../../components/Widget/Widget";
 import Loading from '../../../components/Loading/Loading';
-import { useHistory } from 'react-router';
+// import { useHistory } from 'react-router';
 
 // redux actions
 import { detailsUser, saveUser } from '../../../redux/actions/userActions';
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function UserProfileScreen() {
-  const history = useHistory();
+  // const history = useHistory();
 
   const userSignIn = useSelector(state => state.userSignin);
   //eslint-disable-next-line
@@ -141,8 +141,9 @@ function UserProfileScreen() {
             // saveItem(formData, item.id)
             dispatch(saveUser(formData, item.id))
             .then((res)=>{
+              // console.log(res)
               if(res?.status){
-                history.go(0);
+                // history.go(0);
                     setNotify({
                         isOpen: true,
                         message: "Successfull",
@@ -230,6 +231,7 @@ function UserProfileScreen() {
                         companySizes ={companySizes}
                         companyTypes ={companyTypes}
                         consultingTypes = {consultingTypes}
+                        userInfo={userInfo}
                       />
                     </Widget> 
 

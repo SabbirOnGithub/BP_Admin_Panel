@@ -15,6 +15,7 @@ const {
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
+    USER_UPDATE_SUCCESS
      
 } = require("../constants/userConstants");
 
@@ -78,6 +79,8 @@ const userSigninReducer = ( state={}, action ) =>{
             return{loading:true};
         case USER_SIGNIN_SUCCESS:
             return {loading: false, userInfo:action.payload};
+        case USER_UPDATE_SUCCESS:
+            return {loading: false, userInfo:{...state?.userInfo, ...action.payload}};
         case USER_SIGNIN_FAIL:
             return {loading: false, error:action.payload};
         case USER_LOGOUT:

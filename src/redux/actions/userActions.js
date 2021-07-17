@@ -14,7 +14,8 @@ import {
     USER_DETAILS_FAIL,
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESS,
-    USER_DELETE_FAIL 
+    USER_DELETE_FAIL,
+    USER_UPDATE_SUCCESS 
 } from "../constants/userConstants";
 import {config} from "../../config";
 import Cookie from 'js-cookie';
@@ -67,14 +68,14 @@ const detailsUser = (id)=> async (dispatch) =>{
             if(id){
                 const { data } = await axiosWithToken.get("/User/detail/" + id); 
                 dispatch({type:USER_DETAILS_SUCCESS, payload: data.data });
-                console.log(data)
+                // console.log(data)
             }
         }
         catch(error){
             dispatch({ type: USER_DETAILS_FAIL, payload: error.message });
         }
     }else{
-        console.log('id not found')
+        // console.log('id not found')
     }
    
 };
@@ -98,18 +99,19 @@ const saveUser = (item, id) => async (dispatch) => {
         } else {
             console.log('update')
             // Display the values
-            for (var value of item.values()) {
-                console.log(value);
-            }
+            // for (var value of item.values()) {
+            //     console.log(value);
+            // }
             const { data } = await axiosWithTokenAndMultipartData.put("/User/UpdateUser", item);
             if (data.status === true) {
                 dispatch({ type: USER_SAVE_SUCCESS, payload: data });
                 const getCurrentUser = JSON.parse(Cookie.get('userInfo'));
                 // const userInfoUpdate = {...getCurrentUser,consultationTypeName:'Tajul'}
-                const userInfoUpdate = {...getCurrentUser,companyTypeName:data.data?.companyTypeName}
-                Cookie.set('userInfo', JSON.stringify(userInfoUpdate));
+                // const userInfoUpdate = {...getCurrentUser, companyTypeName:data.data?.companyTypeName}
+                // Cookie.set('userInfo', JSON.stringify(userInfoUpdate));
                 // console.log(Cookie.get('userInfo'))
-                // console.log(data)
+                dispatch({type: USER_UPDATE_SUCCESS,payload:data.data});
+                Cookie.set('userInfo', JSON.stringify({...getCurrentUser, ...data.data}));
                 return data
 
             } else {
@@ -146,7 +148,7 @@ const signin = (email,password) => async(dispatch) => {
             dispatch({type:USER_SIGNIN_SUCCESS,payload:data.data});
             Cookie.set('userInfo', JSON.stringify(data.data));
             Cookie.set('userToken', data.data.token);
-            console.log(data.data);
+            // console.log(data.data);
         }else{
             dispatch({type:USER_SIGNIN_FAIL,payload:data.message})
         }

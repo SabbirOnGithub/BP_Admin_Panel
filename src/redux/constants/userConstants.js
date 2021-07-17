@@ -21,3 +21,7 @@ export const USER_DETAILS_FAIL = "USER_DETAILS_FAIL";
 
 export const USER_LOGOUT = "USER_LOGOUT";
 
+export const USER_UPDATE_SUCCESS = "USER_UPDATE_SUCCESS";
+
+
+
