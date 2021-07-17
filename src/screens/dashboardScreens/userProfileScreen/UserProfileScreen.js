@@ -67,6 +67,7 @@ function UserProfileScreen() {
   const userSignIn = useSelector(state => state.userSignin);
   //eslint-disable-next-line
   const { userInfo } = userSignIn;
+  // console.log(userInfo)
   // const userDetails = useSelector(state => state.userDetails);
   // //eslint-disable-next-line
   // const { user, loading, error } = userDetails;
@@ -137,10 +138,11 @@ function UserProfileScreen() {
         if (formData) {
             resetForm()
             // setRecordForEdit(null)
-            setOpenPopup(true)
+            // setOpenPopup(true)
             // saveItem(formData, item.id)
             dispatch(saveUser(formData, item.id))
             .then((res)=>{
+              setOpenPopup(true)
               // console.log(res)
               if(res?.status){
                 // history.go(0);

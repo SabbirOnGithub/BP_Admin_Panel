@@ -80,7 +80,7 @@ const userSigninReducer = ( state={}, action ) =>{
         case USER_SIGNIN_SUCCESS:
             return {loading: false, userInfo:action.payload};
         case USER_UPDATE_SUCCESS:
-            return {loading: false, userInfo:{...state?.userInfo, ...action.payload}};
+            return {loading: false, userInfo:{...state.userInfo,...action.payload, userImage:action?.payload?.photo}};
         case USER_SIGNIN_FAIL:
             return {loading: false, error:action.payload};
         case USER_LOGOUT:

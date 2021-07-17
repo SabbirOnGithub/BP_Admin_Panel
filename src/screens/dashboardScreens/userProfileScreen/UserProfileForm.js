@@ -119,7 +119,8 @@ export default function UserProfileForm(props) {
                         value={values?.username}
                         onChange={handleInputChange}
                         error={errors.username}
-                        disabled={openPopup}
+                        // disabled={openPopup}
+                        disabled
                     />
                     <Controls.Input
                         name="email"
@@ -127,7 +128,9 @@ export default function UserProfileForm(props) {
                         value={values?.email}
                         onChange={handleInputChange}
                         error={errors.email}
-                        disabled={openPopup}
+                        // disabled={openPopup}
+                        disabled
+
                     />
                     <Controls.Input
                         name="firstName"

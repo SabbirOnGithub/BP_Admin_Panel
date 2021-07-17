@@ -22,66 +22,66 @@ import { signin } from '../../redux/actions/userActions';
 
 function SignInScreen(props) {
   var classes = useStyles();
-  
-  const [ email, setEmail ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const userSignIn = useSelector( state => state.userSignin );
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const userSignIn = useSelector(state => state.userSignin);
   // eslint-disable-next-line 
-  const { loading , userInfo , error } = userSignIn;
+  const { loading, userInfo, error } = userSignIn;
   // const { loading , error } = userSignIn;
   // const redirect = props.location.search ? props.location.search.split("=")[1]:"/";
 
   const dispatch = useDispatch();
-  const submitHandler = (e)=>{
+  const submitHandler = (e) => {
     e.preventDefault();
     // console.log(email)
     // console.log(password)
-    dispatch(signin(email,password))
+    dispatch(signin(email, password))
       // dispatch(detailsRoleResource())
-    .then(res=>{
-      // res && console.log(userInfo)
-    })
-}
-useEffect(()=>{
-  if(Auth.validAdmin()){
+      .then(res => {
+        // res && console.log(userInfo)
+      })
+  }
+  useEffect(() => {
+    if (Auth.validAdmin()) {
       props.history.push('/admin');
-  }
-  return()=>{
+    }
+    return () => {
       // 
-  }
-})
+    }
+  })
 
 
   return (
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>
-        <div className ={classes.logoWrapper}>
-            <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" className={classes.logotypeImage} />
+        <div className={classes.logoWrapper}>
+          <img src={process.env.PUBLIC_URL + "/BP_logo_Big.png"} alt="logo" className={classes.logotypeImage} />
         </div>
-      
+
         <Typography className={classes.logotypeText}> Best Practicify </Typography>
       </div>
       <div className={classes.formContainer}>
         <div className={classes.form}>
-            <React.Fragment>
-              <Typography variant="h1" className={classes.logImageInMobile}>
-                <img src={process.env.PUBLIC_URL+"/BP_logo_Big.png"} alt="logo" height='50px' width='50px' />
+          <React.Fragment>
+            <Typography variant="h1" className={classes.logImageInMobile}>
+              <img src={process.env.PUBLIC_URL + "/BP_logo_Big.png"} alt="logo" height='50px' width='50px' />
+            </Typography>
+            <Typography variant="h1" className={classes.greeting}>
+              Sign In
+            </Typography>
+
+            <div className={classes.formDividerContainer}>
+              <div className={classes.formDivider} />
+              <Typography className={classes.formDividerWord}></Typography>
+              <div className={classes.formDivider} />
+            </div>
+            <Fade in={error ? true : false}>
+              <Typography color="secondary" className={classes.errorMessage}>
+                Something is wrong with your login or password :(
               </Typography>
-              <Typography variant="h1" className={classes.greeting}>
-                Sign In
-              </Typography>
-             
-              <div className={classes.formDividerContainer}>
-                <div className={classes.formDivider} />
-                <Typography className={classes.formDividerWord}></Typography>
-                <div className={classes.formDivider} />
-              </div>
-              <Fade in={error ? true : false}>
-                <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
-                </Typography>
-              </Fade>
-              <form onSubmit={submitHandler}>
+            </Fade>
+            <form onSubmit={submitHandler}>
               <TextField
                 id="email"
                 InputProps={{
@@ -120,7 +120,7 @@ useEffect(()=>{
                     disabled={
                       email.length === 0 || password.length === 0
                     }
-                    
+
                     variant="contained"
                     color="primary"
                     size="large"
@@ -129,18 +129,18 @@ useEffect(()=>{
                     Login
                   </Button>
                 )}
-                {/* <Button
-                  color="primary"
+                <Button
+                  color="secondary"
                   size="large"
                   className={classes.forgetButton}
                 >
                   Forget Password
-                </Button> */}
+                </Button>
               </div>
 
-</form>
+            </form>
 
-            </React.Fragment>
+          </React.Fragment>
         </div>
         <Typography color="primary" className={classes.copyright}>
           © 2020, All rights reserved.

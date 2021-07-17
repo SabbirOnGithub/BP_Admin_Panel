@@ -104,16 +104,12 @@ const saveUser = (item, id) => async (dispatch) => {
             // }
             const { data } = await axiosWithTokenAndMultipartData.put("/User/UpdateUser", item);
             if (data.status === true) {
-                dispatch({ type: USER_SAVE_SUCCESS, payload: data });
-                const getCurrentUser = JSON.parse(Cookie.get('userInfo'));
-                // const userInfoUpdate = {...getCurrentUser,consultationTypeName:'Tajul'}
-                // const userInfoUpdate = {...getCurrentUser, companyTypeName:data.data?.companyTypeName}
-                // Cookie.set('userInfo', JSON.stringify(userInfoUpdate));
-                // console.log(Cookie.get('userInfo'))
-                dispatch({type: USER_UPDATE_SUCCESS,payload:data.data});
-                Cookie.set('userInfo', JSON.stringify({...getCurrentUser, ...data.data}));
+                await Promise.all([
+                    dispatch({type: USER_UPDATE_SUCCESS, payload:data.data}), // <-- async dispatch chaining in action
+                    dispatch({ type: USER_SAVE_SUCCESS, payload: data })
+                  ]);
+                Cookie.set('userInfo', JSON.stringify({...JSON.parse(Cookie.get('userInfo')),...data.data, userImage:data?.data?.photo}))
                 return data
-
             } else {
                 dispatch({ type: USER_SAVE_FAIL, payload: data.message });
             }

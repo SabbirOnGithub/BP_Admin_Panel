@@ -15,6 +15,7 @@ import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/
 import { detailsCtaFunction } from '../../../../redux/actions/ctaFunctionActions';
 import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 import { ctaFunctionStatus } from '../../../../helpers/staticData';
+import {isClientUser} from '../../../../helpers/search'
 
 import DocumentsLink from '../../../../components/DocumentsLink/DocumentsLink';
 
@@ -75,6 +76,9 @@ export default function CtaFunctionDetailScreen(props) {
         addOrEditConsultancyAssign
         } = props
     const classes = useStyles();
+    const userSignIn = useSelector(state => state.userSignin);
+    //eslint-disable-next-line
+    const { userInfo } = userSignIn;
 
     const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
     //eslint-disable-next-line
@@ -167,24 +171,26 @@ export default function CtaFunctionDetailScreen(props) {
                                                 />
                                             } */}
                                         </Grid>
-                                        <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
-                                                <Controls.Button
-                                                    color="secondary"
-                                                    onClick={() => { openInPopup(ctaFunction) }}
-                                                    text={"Update Status"}
-                                                    variant="contained"
-                                                    size="large"
-                                                >
-                                                </Controls.Button>
-                                                <Controls.Button
-                                                    color="primary"
-                                                    onClick={() => { openInPopupForAssign(ctaFunction) }}
-                                                    text={"Assign to"}
-                                                    variant="contained"
-                                                    size="large"
-                                                >
-                                                </Controls.Button>
-                                        </Grid>
+                                        {isClientUser(userInfo) ? "" :
+                                            <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
+                                                    <Controls.Button
+                                                        color="secondary"
+                                                        onClick={() => { openInPopup(ctaFunction) }}
+                                                        text={"Update Status"}
+                                                        variant="contained"
+                                                        size="large"
+                                                    >
+                                                    </Controls.Button>
+                                                    <Controls.Button
+                                                        color="primary"
+                                                        onClick={() => { openInPopupForAssign(ctaFunction) }}
+                                                        text={"Assign to"}
+                                                        variant="contained"
+                                                        size="large"
+                                                    >
+                                                    </Controls.Button>
+                                            </Grid>
+                                        }
                                     </Grid>
                                     }
                                 <h1 className={classes.subHeadlineText}>Details</h1>
@@ -251,9 +257,13 @@ export default function CtaFunctionDetailScreen(props) {
                                     ctaFunction?.consultancyAssignments?.length > 0 ?
                                     (
                                         <>
+                                        {/* {console.log(ctaFunction?.consultancyAssignments)} */}
                                         
                                             {    ctaFunction?.consultancyAssignments?.map(item=>{
-                                                    return <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {item.userEmail} </Typography>
+                                                    
+                                                    return <div key={item?.id}>
+                                                                <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {item?.userEmail} <b>  Name: </b> {item?.userName}</Typography>
+                                                            </div>
                                                 })
                                             }
                                         </>

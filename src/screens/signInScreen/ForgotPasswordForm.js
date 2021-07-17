@@ -5,20 +5,11 @@ import { useForm, Form } from '../../../components/UseForm/useForm';
 
 
 const initialFValues = {
-    id: '',
-    // username: "",
-    password: "",
-    roleId: "",
-    firstName: "",
-    lastName: "",
-    // isActive: false,
-    email: "",
-    mobile: "",
-    address: "",
-    photo:"",
-    isActive: true,
-    businessName:'',
-
+        userId: '',
+        userEmail: '',
+        passwordRecoveryCode: null,
+        password: null,
+        confirmPassword: null
 }
 
 export default function UserForm(props) {
@@ -56,9 +47,7 @@ export default function UserForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        handleFileChange,
         resetForm,
-        resetFileInput
     } = useForm(initialFValues, true, validate);
 
     const handleSubmit = e => {
@@ -70,9 +59,6 @@ export default function UserForm(props) {
 
     useEffect(() => {
         if (recordForEdit != null)
-            !recordForEdit.password ? setValues({
-                ...recordForEdit, password:''
-            }) :
             setValues({
                 ...recordForEdit
             })
@@ -82,20 +68,7 @@ export default function UserForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                <Controls.Input
-                        name="firstName"
-                        label="FirstName"
-                        value={values?.firstName}
-                        onChange={handleInputChange}
-                        error={errors.firstName}
-                    />
-                     <Controls.Input
-                        name="lastName"
-                        label="LastName"
-                        value={values?.lastName}
-                        onChange={handleInputChange}
-                        error={errors.lastName}
-                    />
+                
                     <Controls.Input
                         name="email"
                         label="Email"
@@ -104,13 +77,14 @@ export default function UserForm(props) {
                         onChange={handleInputChange}
                         error={errors.email}
                     />
-                    {/* <Controls.Input
-                        name="username"
-                        label="User Name"
-                        value={values?.username}
+                     <Controls.Input
+                        name="passwordRecoveryCode"
+                        label="Password Recovery Code"
+                        type="passwordRecoveryCode"
+                        value={values?.passwordRecoveryCode}
                         onChange={handleInputChange}
-                        error={errors.username}
-                    /> */}
+                        error={errors.passwordRecoveryCode}
+                    />
                     <Controls.Input
                         name="password"
                         label="Password"
@@ -119,53 +93,13 @@ export default function UserForm(props) {
                         onChange={handleInputChange}
                         error={errors.password}
                     />
-                    <Controls.Select
-                        name="roleId"
-                        label="Role"
-                        value={values?.roleId}
-                        onChange={handleInputChange}
-                        error={errors.roleId}
-                        options={roles ? roles : []}
-                    />
-                      <Controls.Input
-                        name="businessName"
-                        label="Business Name"
-                        value={values?.businessName}
-                        onChange={handleInputChange}
-                        error={errors.businessName}
-                    />
-                    
-                    
                     <Controls.Input
-                        name="mobile"
-                        label="Mobile"
-                        type="tel"
-                        value={values?.mobile}
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        type="confirmPassword"
+                        value={values?.confirmPassword}
                         onChange={handleInputChange}
-                        error={errors.mobile}
-                    />
-                    <Controls.Input
-                        name="address"
-                        label="Address"
-                        value={values?.address}
-                        onChange={handleInputChange}
-                        error={errors.address}
-                    />
-                    <Controls.Checkbox
-                        name="isActive"
-                        label="Is Active"
-                        value={values?.isActive ? values?.isActive : true}
-                        onChange={handleInputChange}
-                        error={errors.isActive}
-                    />
-                   
-                    <Controls.FileInput
-                        name="photo"
-                        label="Photo"
-                        value={values.photo}
-                        onChange={handleFileChange}
-                        error={errors.photo}
-                        resetFileInput = {resetFileInput}
+                        error={errors.confirmPassword}
                     />
                     <div>
                         {loadingSave ? (
