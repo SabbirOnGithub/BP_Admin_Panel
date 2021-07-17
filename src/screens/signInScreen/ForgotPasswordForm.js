@@ -1,123 +1,199 @@
-import React, { useEffect } from 'react'
-import { Grid, CircularProgress } from '@material-ui/core';
-import Controls from "../../../components/controls/Controls";
-import { useForm, Form } from '../../../components/UseForm/useForm';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Grid, CircularProgress, Button, TextField } from '@material-ui/core';
+// import Controls from "../../components/controls/Controls";
+// import { useForm } from '../../components/UseForm/useForm';
+import useStyles from "./styles";
+import { saveRecoverPassword, saveResetPassword } from '../../redux/actions/userActions';
 
 
 const initialFValues = {
-        userId: '',
-        userEmail: '',
-        passwordRecoveryCode: null,
-        password: null,
-        confirmPassword: null
+    userId: '',
+    userEmail: '',
+    passwordRecoveryCode: '',
+    password: '',
+    confirmPassword: ''
 }
+// {
+//     "userId": 171,
+//     "userEmail": "sabbir@bestpracticify.co",
+//     "passwordRecoveryCode": "879413",
+//     "password": "12345678",
+//     "confirmPassword": "12345678"
+//   }
 
-export default function UserForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave, roles } = props
+export default function ForgotPasswordForm(props) {
 
-    const validate = (fieldValues = values) => {
-        let temp = { ...errors }
-       
-        // if ('username' in fieldValues)
-        //     temp.username = fieldValues.username ? "" : "This field is required."
-        if ('password' in fieldValues)
-            temp.password = fieldValues.password ? "" : "This field is required."
-        if ('roleId' in fieldValues)
-            temp.roleId = fieldValues.roleId ? "" : "This field is required."
-        if ('firstName' in fieldValues)
-            temp.firstName = fieldValues.firstName ? "" : "This field is required."
-        if ('email' in fieldValues)
-            (temp.email = fieldValues.email ? "" : "This field is required.") || (temp.email = (/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})?$/).test(fieldValues.email) ? "" : "Email is not valid.")
-        if ('mobile' in fieldValues)
-            // temp.mobile = fieldValues.mobile ? "" : "This field is required."
-            temp.mobile = fieldValues.mobile.length > 9 ? "" : "Minimum 10 numbers required."
-        if ('address' in fieldValues)
-            temp.address = fieldValues.address ? "" : "This field is required."
-        
-        setErrors({
-            ...temp
-        })
-        if (fieldValues === values)
-            return Object.values(temp).every(x => x === "")
-    }
+    const { addOrEdit, recordForEdit, loadingSave, showRecoveryForm, setSuccessMessage, setErrorMessage } = props
 
-    const {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm,
-    } = useForm(initialFValues, true, validate);
+    var classes = useStyles();
+    const [userId, setUserId] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordRecoveryCode, setPasswordRecoveryCode] = useState('');
+    const [storedPasswordRecoveryCode, setStoredPasswordRecoveryCode] = useState('');
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        if (validate()) {
-            addOrEdit(values, resetForm);
-        }
-    }
+    const [showPassword, setShowPassword] = useState(false);
 
-    useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
-                ...recordForEdit
+
+
+    const dispatch = useDispatch();
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        // setPasswordRecoveryCode(1)
+        if(userEmail && !passwordRecoveryCode){
+            dispatch(saveRecoverPassword({userEmail}))
+            .then(res=>{
+                if(res.status){
+                    res?.data?.userId && setUserId(res?.data?.userId);
+                    res?.data?.userEmail && setUserEmail(res?.data?.userEmail);
+                    res?.data?.passwordRecoveryCode && setStoredPasswordRecoveryCode(res?.data?.passwordRecoveryCode);
+                }else{
+                    console.log('err occured')
+                }
             })
-    }, [recordForEdit, setValues])
+            .catch(err=>{
+                setErrorMessage(err)
+            })
+        }else{
+            // console.log("email missing")
+
+        }
+        if(userEmail && passwordRecoveryCode){
+            passwordRecoveryCode === storedPasswordRecoveryCode ? setShowPassword(true) : console.log('Recovery code are not matched')
+        }
+        if(userEmail && passwordRecoveryCode && password && confirmPassword){
+            if(password === confirmPassword){
+                dispatch(saveResetPassword({userId,userEmail,passwordRecoveryCode,password,confirmPassword}))
+            .then(res=>{
+                if(res?.status){
+                    showRecoveryForm();
+                    setErrorMessage("")
+                    setSuccessMessage(res?.message);
+                }else{
+                    console.log('some error occur')
+                }
+            })
+            .catch(err=>{
+                setErrorMessage(err)
+            })
+            }
+            else{
+                setSuccessMessage('');
+                setErrorMessage("password not matched")
+            }
+        }
+        
+
+    }
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Grid container>
-                <Grid item xs={12}>
-                
-                    <Controls.Input
-                        name="email"
-                        label="Email"
-                        type="email"
-                        value={values?.email}
-                        onChange={handleInputChange}
-                        error={errors.email}
-                    />
-                     <Controls.Input
-                        name="passwordRecoveryCode"
-                        label="Password Recovery Code"
-                        type="passwordRecoveryCode"
-                        value={values?.passwordRecoveryCode}
-                        onChange={handleInputChange}
-                        error={errors.passwordRecoveryCode}
-                    />
-                    <Controls.Input
-                        name="password"
-                        label="Password"
+        <form onSubmit={submitHandler}>
+            {
+                !userId &&
+                <TextField
+                    id="userEmail"
+                    InputProps={{
+                        classes: {
+                            underline: classes.textFieldUnderline,
+                            input: classes.textField,
+                        },
+                    }}
+                    value={userEmail}
+                    onChange={e => setUserEmail(e.target.value)}
+                    margin="normal"
+                    placeholder="Email Adress"
+                    // type="email"
+                    fullWidth
+                />
+
+            }
+
+            {
+                userId && !showPassword &&
+                <TextField
+                    id="passwordRecoveryCode"
+                    InputProps={{
+                        classes: {
+                            underline: classes.textFieldUnderline,
+                            input: classes.textField,
+                        },
+                    }}
+                    value={passwordRecoveryCode}
+                    onChange={e => setPasswordRecoveryCode(e.target.value)}
+                    margin="normal"
+                    placeholder="Password Recovery Code"
+                    // type="email"
+                    fullWidth
+                />
+            }
+            {
+                showPassword &&
+
+                <>
+                    <TextField
+                        id="password"
+                        InputProps={{
+                            classes: {
+                                underline: classes.textFieldUnderline,
+                                input: classes.textField,
+                            },
+                        }}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        margin="normal"
+                        placeholder="Password"
                         type="password"
-                        value={values?.password}
-                        onChange={handleInputChange}
-                        error={errors.password}
+                        fullWidth
                     />
-                    <Controls.Input
-                        name="confirmPassword"
-                        label="Confirm Password"
-                        type="confirmPassword"
-                        value={values?.confirmPassword}
-                        onChange={handleInputChange}
-                        error={errors.confirmPassword}
+                    <TextField
+                        id="confirmPassword"
+                        InputProps={{
+                            classes: {
+                                underline: classes.textFieldUnderline,
+                                input: classes.textField,
+                            },
+                        }}
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        margin="normal"
+                        placeholder="Confirm Password"
+                        type="password"
+                        fullWidth
                     />
-                    <div>
-                        {loadingSave ? (
-                            <CircularProgress size={26} />
-                        ) : (<>
-                            <Controls.Button
-                                type="submit"
-                                text="Submit" />
-                            <Controls.Button
-                                text="Reset"
-                                color="default"
-                                onClick={resetForm} />
-                        </>
-                            )
-                        }
-                    </div>
-                </Grid>
-            </Grid>
-        </Form>
+                </>
+            }
+
+
+            <div className={classes.formButtons}>
+                {loadingSave ? (
+                    <CircularProgress size={26} className={classes.loginLoader} />
+                ) : (
+                    <Button
+                        // disabled={
+                        //     userEmail.length === 0 || password.length === 0
+                        // }
+
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        type="submit"
+                    >
+                        Recover Password
+                    </Button>
+                )}
+                <Button
+                    color="secondary"
+                    size="large"
+                    className={classes.forgetButton}
+                    onClick={showRecoveryForm}
+                >
+                    Sign In
+                </Button>
+            </div>
+
+        </form>
     )
 }

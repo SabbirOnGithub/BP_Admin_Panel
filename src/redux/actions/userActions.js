@@ -15,7 +15,13 @@ import {
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESS,
     USER_DELETE_FAIL,
-    USER_UPDATE_SUCCESS 
+    USER_UPDATE_SUCCESS,
+    USER_PASSWORD_RECOVERY_REQUEST,
+    USER_PASSWORD_RECOVERY_SUCCESS,
+    USER_PASSWORD_RECOVERY_FAIL,
+    USER_RESET_PASSWORD_REQUEST,
+    USER_RESET_PASSWORD_SUCCESS,
+    USER_RESET_PASSWORD_FAIL 
 } from "../constants/userConstants";
 import {config} from "../../config";
 import Cookie from 'js-cookie';
@@ -120,6 +126,59 @@ const saveUser = (item, id) => async (dispatch) => {
         dispatch({ type: USER_SAVE_FAIL, payload: error.message });
     }
 };
+
+// no store used for this action
+const saveRecoverPassword = (item, id) => async (dispatch) => {
+    // console.log(item)
+    try {
+        dispatch({ type: USER_PASSWORD_RECOVERY_REQUEST, payload: item })
+        if (!id) {
+            console.log('create')
+            //eslint-disable-next-line
+            const formatData = delete item.id;
+            const { data } = await axiosWithoutToken.post("/User/SendPasswordRecoveryCode", item)
+            // console.log(data)
+            if (data.status === true) {
+                dispatch({ type: USER_PASSWORD_RECOVERY_SUCCESS, payload: data });
+            } else {
+                dispatch({ type: USER_PASSWORD_RECOVERY_FAIL, payload: data.message });
+            }
+            console.log(data)
+            return data
+        } else {
+            console.log('update')
+        }
+
+    } catch (error) {
+        console.log(error)
+        dispatch({ type: USER_PASSWORD_RECOVERY_FAIL, payload: error.message });
+    }
+};
+
+// no store used for this action
+const saveResetPassword = (item, id) => async (dispatch) => {
+    console.log(item)
+    try {
+        dispatch({ type: USER_RESET_PASSWORD_REQUEST, payload: item })
+        if (!id) {
+            console.log('create')
+            //eslint-disable-next-line
+            const formatData = delete item.id;
+            const { data } = await axiosWithoutToken.post("/User/ResetPassword", item)
+            // console.log(data)
+            if (data.status === true) {
+                dispatch({ type: USER_RESET_PASSWORD_SUCCESS, payload: data });
+            } else {
+                dispatch({ type: USER_RESET_PASSWORD_FAIL, payload: data.message });
+            }
+            console.log(data)
+            return data
+        } 
+    } catch (error) {
+        console.log(error)
+        dispatch({ type: USER_RESET_PASSWORD_FAIL, payload: error.message });
+    }
+};
 const deleteUser = (id) => async (dispatch, getState) => {
     try {
         dispatch({ type: USER_DELETE_REQUEST });
@@ -166,4 +225,4 @@ const logout = () => (dispatch) => {
 
 
 
-export { signin, logout, listUsers, saveUser, detailsUser, deleteUser } ;
+export { signin, logout, listUsers, saveUser, detailsUser, deleteUser, saveRecoverPassword, saveResetPassword } ;
