@@ -1,30 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Grid, CircularProgress, Button, TextField } from '@material-ui/core';
-// import Controls from "../../components/controls/Controls";
-// import { useForm } from '../../components/UseForm/useForm';
+import { CircularProgress, Button, TextField } from '@material-ui/core';
 import useStyles from "./styles";
 import { saveRecoverPassword, saveResetPassword } from '../../redux/actions/userActions';
 
 
-const initialFValues = {
-    userId: '',
-    userEmail: '',
-    passwordRecoveryCode: '',
-    password: '',
-    confirmPassword: ''
-}
-// {
-//     "userId": 171,
-//     "userEmail": "sabbir@bestpracticify.co",
-//     "passwordRecoveryCode": "879413",
-//     "password": "12345678",
-//     "confirmPassword": "12345678"
-//   }
-
 export default function ForgotPasswordForm(props) {
 
-    const { addOrEdit, recordForEdit, loadingSave, showRecoveryForm, setSuccessMessage, setErrorMessage } = props
+    const { loadingSave, showRecoveryForm, setSuccessMessage, setErrorMessage } = props
 
     var classes = useStyles();
     const [userId, setUserId] = useState('');
@@ -43,49 +26,49 @@ export default function ForgotPasswordForm(props) {
     const submitHandler = (e) => {
         e.preventDefault();
         // setPasswordRecoveryCode(1)
-        if(userEmail && !passwordRecoveryCode){
-            dispatch(saveRecoverPassword({userEmail}))
-            .then(res=>{
-                if(res.status){
-                    res?.data?.userId && setUserId(res?.data?.userId);
-                    res?.data?.userEmail && setUserEmail(res?.data?.userEmail);
-                    res?.data?.passwordRecoveryCode && setStoredPasswordRecoveryCode(res?.data?.passwordRecoveryCode);
-                }else{
-                    console.log('err occured')
-                }
-            })
-            .catch(err=>{
-                setErrorMessage(err)
-            })
-        }else{
+        if (userEmail && !passwordRecoveryCode) {
+            dispatch(saveRecoverPassword({ userEmail }))
+                .then(res => {
+                    if (res.status) {
+                        res?.data?.userId && setUserId(res?.data?.userId);
+                        res?.data?.userEmail && setUserEmail(res?.data?.userEmail);
+                        res?.data?.passwordRecoveryCode && setStoredPasswordRecoveryCode(res?.data?.passwordRecoveryCode);
+                    } else {
+                        console.log('err occured')
+                    }
+                })
+                .catch(err => {
+                    setErrorMessage(err)
+                })
+        } else {
             // console.log("email missing")
 
         }
-        if(userEmail && passwordRecoveryCode){
+        if (userEmail && passwordRecoveryCode) {
             passwordRecoveryCode === storedPasswordRecoveryCode ? setShowPassword(true) : console.log('Recovery code are not matched')
         }
-        if(userEmail && passwordRecoveryCode && password && confirmPassword){
-            if(password === confirmPassword){
-                dispatch(saveResetPassword({userId,userEmail,passwordRecoveryCode,password,confirmPassword}))
-            .then(res=>{
-                if(res?.status){
-                    showRecoveryForm();
-                    setErrorMessage("")
-                    setSuccessMessage(res?.message);
-                }else{
-                    console.log('some error occur')
-                }
-            })
-            .catch(err=>{
-                setErrorMessage(err)
-            })
+        if (userEmail && passwordRecoveryCode && password && confirmPassword) {
+            if (password === confirmPassword) {
+                dispatch(saveResetPassword({ userId, userEmail, passwordRecoveryCode, password, confirmPassword }))
+                    .then(res => {
+                        if (res?.status) {
+                            showRecoveryForm();
+                            setErrorMessage("")
+                            setSuccessMessage(res?.message);
+                        } else {
+                            console.log('some error occur')
+                        }
+                    })
+                    .catch(err => {
+                        setErrorMessage(err)
+                    })
             }
-            else{
+            else {
                 setSuccessMessage('');
                 setErrorMessage("password not matched")
             }
         }
-        
+
 
     }
 
