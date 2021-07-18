@@ -15,7 +15,10 @@ const {
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
-    USER_UPDATE_SUCCESS
+    USER_UPDATE_SUCCESS,
+    USER_ACCEPT_CLIENT_LIST_REQUEST,
+    USER_ACCEPT_CLIENT_LIST_SUCCESS,
+    USER_ACCEPT_CLIENT_LIST_FAIL 
      
 } = require("../constants/userConstants");
 
@@ -27,6 +30,18 @@ function userListReducer(state={users:[]},action){
         case USER_LIST_SUCCESS:
             return { loading:false, users:action.payload };
         case USER_LIST_FAIL:
+            return { loading:false, error: action.payload };
+        default:
+            return state;
+    }
+};
+function userAcceptClientListReducer(state={userAcceptClients:[]},action){
+    switch(action.type){
+        case USER_ACCEPT_CLIENT_LIST_REQUEST:
+            return { loading:true, userAcceptClients:[] };
+        case USER_ACCEPT_CLIENT_LIST_SUCCESS:
+            return { loading:false, userAcceptClients:action.payload };
+        case USER_ACCEPT_CLIENT_LIST_FAIL:
             return { loading:false, error: action.payload };
         default:
             return state;
@@ -91,4 +106,4 @@ const userSigninReducer = ( state={}, action ) =>{
     }
 };
 
-export { userSigninReducer, userSaveReducer, userListReducer, userDeleteReducer,userDetailsReducer };
+export { userSigninReducer, userSaveReducer, userListReducer, userDeleteReducer,userDetailsReducer, userAcceptClientListReducer };

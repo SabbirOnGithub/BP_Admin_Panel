@@ -21,7 +21,10 @@ import {
     USER_PASSWORD_RECOVERY_FAIL,
     USER_RESET_PASSWORD_REQUEST,
     USER_RESET_PASSWORD_SUCCESS,
-    USER_RESET_PASSWORD_FAIL 
+    USER_RESET_PASSWORD_FAIL,
+    USER_ACCEPT_CLIENT_LIST_REQUEST,
+    USER_ACCEPT_CLIENT_LIST_SUCCESS,
+    USER_ACCEPT_CLIENT_LIST_FAIL 
 } from "../constants/userConstants";
 import {config} from "../../config";
 import Cookie from 'js-cookie';
@@ -64,6 +67,24 @@ const listUsers = (item) => async (dispatch) => {
             dispatch({ type: USER_LIST_FAIL, payload: error.message });
         }
 
+    }
+    
+};
+const listAcceptClientUsers = () => async (dispatch) => {
+    try {
+        dispatch({ type: USER_ACCEPT_CLIENT_LIST_REQUEST });
+        const { data } = await axiosWithoutToken.get(`${BASE_API_URL}/User/UserDropdownList`);
+        if (data.status === true) {
+            dispatch({ type: USER_ACCEPT_CLIENT_LIST_SUCCESS, payload: data?.data });
+            // console.log(data)
+        } else {
+            dispatch({ type: USER_ACCEPT_CLIENT_LIST_FAIL, payload: data.message });
+        }
+        // console.log(data.data)
+        return data
+    }
+    catch (error) {
+        dispatch({ type: USER_ACCEPT_CLIENT_LIST_FAIL, payload: error.message });
     }
     
 };
@@ -225,4 +246,4 @@ const logout = () => (dispatch) => {
 
 
 
-export { signin, logout, listUsers, saveUser, detailsUser, deleteUser, saveRecoverPassword, saveResetPassword } ;
+export { signin, logout, listUsers, saveUser, detailsUser, deleteUser, saveRecoverPassword, saveResetPassword, listAcceptClientUsers } ;

@@ -18,6 +18,7 @@ import { ctaFunctionStatus } from '../../../../helpers/staticData';
 import {isClientUser} from '../../../../helpers/search'
 
 import DocumentsLink from '../../../../components/DocumentsLink/DocumentsLink';
+import { listAcceptClientUsers } from '../../../../redux/actions/userActions';
 
 const useStyles = makeStyles(theme => ({
     detailsContent:{
@@ -98,6 +99,10 @@ export default function CtaFunctionDetailScreen(props) {
     //     recordsAfterPagingAndSorting
     // } = useTable(recordForDetails.ctaDocuments, headCells, filterFn);
 
+    const userAcceptClientList = useSelector(state => state.userAcceptClientList);
+    //eslint-disable-next-line
+    const { userAcceptClients, loading : loadingUserAcceptClient, error:errorUserAcceptClient } = userAcceptClientList;
+
     const ctaFunctionDetails = useSelector(state => state.ctaFunctionDetails);
     //eslint-disable-next-line
     const { ctaFunction, loading, error } = ctaFunctionDetails;
@@ -118,8 +123,14 @@ export default function CtaFunctionDetailScreen(props) {
         setOpenPopup(true)
     }
     const openInPopupForAssign = item => {
-        setRecordForEdit(item)
-        setOpenPopupForAssign(true)
+        dispatch(listAcceptClientUsers())
+        .then(res=>{
+            if(res?.status){
+                setRecordForEdit(item)
+                setOpenPopupForAssign(true)
+            }
+        })
+      
     }
     
     const dispatch = useDispatch();
@@ -156,7 +167,7 @@ export default function CtaFunctionDetailScreen(props) {
     return (
         <>
         {
-            loading || loadingCtaFunctionSave ? <Loading /> :
+            loading || loadingCtaFunctionSave || loadingConsultancyAssignmentSave ? <Loading /> :
             <Grid container>
                 <Grid item xs={12}>
                 <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
@@ -232,7 +243,9 @@ export default function CtaFunctionDetailScreen(props) {
                                         <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution: </b> {ctaFunction?.goalsToAchieveSolution} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Tell Us More: </b> {ctaFunction?.tellUsMore} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {ctaFunction?.description} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Status: </b> 
+                                        <Typography variant="h1" className={classes.customPharagraph}><b>Status: </b> 
+                                        {/* variant are used to ignore nested div error for Chip*/}
+                                            
                                         { ctaFunction?.status ?
                                                 <Chip 
                                                     label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
@@ -377,6 +390,7 @@ export default function CtaFunctionDetailScreen(props) {
                         setRecordForEdit = {setRecordForEdit}
                         setOpenPopupForAssign={setOpenPopupForAssign}
                         ctaFunctionStatus ={ctaFunctionStatus}
+                        userAcceptClients= {userAcceptClients}
                     />
 
                 </Popup>

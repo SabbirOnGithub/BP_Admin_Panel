@@ -11,15 +11,17 @@ const initialFValues = {
 }
 
 export default function ConsultancyAssignmentForm(props) {
-    const { addOrEditConsultancyAssign, recordForEdit, loadingSave, setRecordForEdit, setOpenPopupForAssign } = props
+    const { addOrEditConsultancyAssign, recordForEdit, loadingSave, setRecordForEdit, setOpenPopupForAssign, userAcceptClients } = props
 
     const [errorMessage, setErrorMessage] = useState(null)
 
-    // console.log(recordForEdit)
+    // console.log(userAcceptClients)
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
+        // if ('userEmail' in fieldValues)
+        //     temp.userEmail = (/$^|.+@.+..+/).test(fieldValues.userEmail) ? "" : "Email is not valid."
         if ('userEmail' in fieldValues)
-            temp.userEmail = (/$^|.+@.+..+/).test(fieldValues.userEmail) ? "" : "Email is not valid."
+            temp.userEmail = fieldValues.userEmail ? "" : "This field is required."
 
         setErrors({
             ...temp
@@ -41,17 +43,26 @@ export default function ConsultancyAssignmentForm(props) {
         e.preventDefault()
         // console.log(values)
         if (validate()) {
-             addOrEditConsultancyAssign(values, resetForm)
-             .then(res=>{
-                 if(res.status){
-                    resetForm();
-                    setRecordForEdit(null);
-                    setOpenPopupForAssign(false);
-                 }else{
-                    setErrorMessage(res?.message)
-                 }
-                //  console.log(res)
-             })
+            const userEmail = userAcceptClients?.find(item=> item.id===values.userEmail)?.email;
+            // console.log(userEmail)
+           
+            if(userEmail){
+                //  console.log(userEmail)
+                addOrEditConsultancyAssign({...values,userEmail}, resetForm, setRecordForEdit, setOpenPopupForAssign)
+                .then(res=>{
+                    if(res.status){
+                    //    resetForm();
+                    //    setRecordForEdit(null);
+                    //    setOpenPopupForAssign(false);
+                    }else{
+                       setErrorMessage(res?.message)
+                    }
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
+            }
+            
         }
     }
 
@@ -66,12 +77,23 @@ export default function ConsultancyAssignmentForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                    <Controls.Input
+                    {/* <Controls.Input
                         name="userEmail"
                         label="Assign by email"
                         value={values?.userEmail}
                         onChange={handleInputChange}
                         error={errors.userEmail}
+                    /> */}
+                    <Controls.Select
+                        name="userEmail"
+                        label="Assign To"
+                        value={values?.userEmail ? values?.userEmail : ''}
+                        onChange={handleInputChange}
+                        error={errors.userEmail}
+                        // options={consultancyReceiveHistoryStatuses ? consultancyReceiveHistoryStatuses : []}
+                        options={userAcceptClients}
+                        // disabled = {!isAdminUser() ? true : false}
+
                     />
                     {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
 

@@ -258,28 +258,45 @@ export default function CtaFunctionScreen(props) {
                 })
 
     }
-    const addOrEditConsultancyAssign = async (item, resetForm) => {
+    const addOrEditConsultancyAssign = async (item, resetForm,setRecordForEdit, setOpenPopupForAssign) => {
             return saveAssignItem(item)
                     .then((res) => {
-                        // resetForm()
-                        // setRecordForEdit(null)
-                        // setOpenPopup(false)
-                        if (successConsultancyAssignmentSave) {
+                        if(res?.status){
+                            resetForm();
+                            setRecordForEdit(null);
+                            setOpenPopupForAssign(false);
                             setNotify({
                                 isOpen: true,
                                 message: 'Submitted Successfully',
                                 type: 'success'
                             })
-                        }
-
-                        if (errorConsultancyAssignmentSave) {
+                        }else{
                             setNotify({
                                 isOpen: true,
                                 message: 'Submition Failed',
                                 type: 'warning'
                             })
                         }
+                        
+                        // if (successConsultancyAssignmentSave) {
+                        //     setNotify({
+                        //         isOpen: true,
+                        //         message: 'Submitted Successfully',
+                        //         type: 'success'
+                        //     })
+                        // }
+
+                        // if (errorConsultancyAssignmentSave) {
+                        //     setNotify({
+                        //         isOpen: true,
+                        //         message: 'Submition Failed',
+                        //         type: 'warning'
+                        //     })
+                        // }
                         return res
+                    })
+                    .catch(err=>{
+                        console.log(err)
                     })
 
     }
