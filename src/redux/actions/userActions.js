@@ -164,7 +164,7 @@ const saveRecoverPassword = (item, id) => async (dispatch) => {
             } else {
                 dispatch({ type: USER_PASSWORD_RECOVERY_FAIL, payload: data.message });
             }
-            console.log(data)
+            // console.log(data)
             return data
         } else {
             console.log('update')
@@ -178,7 +178,7 @@ const saveRecoverPassword = (item, id) => async (dispatch) => {
 
 // no store used for this action
 const saveResetPassword = (item, id) => async (dispatch) => {
-    console.log(item)
+    // console.log(item)
     try {
         dispatch({ type: USER_RESET_PASSWORD_REQUEST, payload: item })
         if (!id) {
@@ -192,7 +192,7 @@ const saveResetPassword = (item, id) => async (dispatch) => {
             } else {
                 dispatch({ type: USER_RESET_PASSWORD_FAIL, payload: data.message });
             }
-            console.log(data)
+            // console.log(data)
             return data
         } 
     } catch (error) {
