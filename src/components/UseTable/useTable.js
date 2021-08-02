@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Table, TableHead, TableRow, TableCell, makeStyles, TablePagination, TableSortLabel } from '@material-ui/core'
+import { makeStyles, Table, TableCell, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -23,6 +23,17 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: '#F3F5FF',
             cursor: 'pointer',
         },
+        '& tbody td img':{
+            width:'100px',
+            height: 'auto'
+        },
+        '& tbody td p':{
+            display: 'block',
+            width: '100px',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+        }
     },
 }))
 
