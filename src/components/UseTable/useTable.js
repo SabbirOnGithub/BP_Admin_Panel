@@ -29,7 +29,21 @@ const useStyles = makeStyles(theme => ({
         },
         '& tbody td p':{
             display: 'block',
-            width: '100px',
+            width: '150px',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+        },
+        '& tbody td div':{
+            display: 'block',
+            width: '150px',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+        },
+        '& tbody td ul':{
+            display: 'block',
+            width: '150px',
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis'
