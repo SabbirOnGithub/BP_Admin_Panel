@@ -51,9 +51,6 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
                 [name]: value
             })
         }
-
-        
-
         if (validateOnChange)
             validate({ [name]: value })
     }

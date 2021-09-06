@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core';
-import Controls from "../../../components/controls/Controls";
-import { useForm, Form } from '../../../components/UseForm/useForm';
-import { EditorState, ContentState, convertToRaw  } from 'draft-js';
-import htmlToDraft from 'html-to-draftjs';
+import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+import React, { useEffect } from 'react';
+import Controls from "../../../components/controls/Controls";
+import { Form, useForm } from '../../../components/UseForm/useForm';
 
 
 const initialFValues = {
@@ -16,6 +16,11 @@ const initialFValues = {
     pictureUrl: '',
     menuId: '',
     subMenuId: '',
+    displayOrder: '',
+    ctaBtn: '',
+    ctaBtnText: '',
+    link: '',
+    linkText: ''
 }
 
 export default function MenuSubMenuMapDetailForm(props) {
@@ -43,6 +48,7 @@ export default function MenuSubMenuMapDetailForm(props) {
         errors,
         setErrors,
         handleInputChange,
+        handleInputNumberChange,
         handleFileChange,
         resetForm,
         handleEditorInput,
@@ -146,6 +152,48 @@ export default function MenuSubMenuMapDetailForm(props) {
                         error={errors.pictureUrl}
                         resetFileInput = {resetFileInput}
                     />
+
+                    <Controls.Input
+                        label="Display Order"
+                        name="displayOrder"
+                        type="number"
+                        value={values.displayOrder}
+                        onChange={handleInputNumberChange}
+                        error={errors.displayOrder}
+                    />
+
+                    <Controls.Checkbox
+                        name="ctaBtn"
+                        label="CTA"
+                        value={values.ctaBtn}
+                        onChange={handleInputChange}
+                        error={errors.ctaBtn}
+                    />
+
+                    <Controls.Input
+                        label="CTA Button Text"
+                        name="ctaBtnText"
+                        value={values.ctaBtnText}
+                        onChange={handleInputChange}
+                        error={errors.ctaBtnText}
+                    />
+
+                    <Controls.Checkbox
+                        name="link"
+                        label="Link"
+                        value={values.link}
+                        onChange={handleInputChange}
+                        error={errors.link}
+                    />
+
+                    <Controls.Input
+                        label="Link Text"
+                        name="linkText"
+                        value={values.linkText}
+                        onChange={handleInputChange}
+                        error={errors.linkText}
+                    />
+
                     <div>
                         <Controls.Button
                             type="submit"
@@ -155,6 +203,7 @@ export default function MenuSubMenuMapDetailForm(props) {
                             color="default"
                             onClick={resetForm} />
                     </div>
+                    {/* <div><pre>{JSON.stringify(values, undefined, 2)}</pre></div> */}
                 </Grid>
             </Grid>
         </Form>
