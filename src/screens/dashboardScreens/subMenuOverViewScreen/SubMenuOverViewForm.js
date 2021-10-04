@@ -1,7 +1,4 @@
 import { Grid } from "@material-ui/core";
-import { ContentState, convertToRaw, EditorState } from "draft-js";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 import React, { useEffect } from "react";
 import Controls from "../../../components/controls/Controls";
 import { Form, useForm } from "../../../components/UseForm/useForm";
@@ -46,9 +43,10 @@ export default function SubMenuOverViewForm(props) {
     e.preventDefault();
     if (validate()) {
       try {
-        values["description"] = draftToHtml(
-          convertToRaw(values.description.getCurrentContent())
-        );
+        // values["description"] = draftToHtml(
+        //   convertToRaw(values.description.getCurrentContent())
+        // );
+        // values["description"] = values.description;
       } catch (e) {
         console.log(e);
       } finally {
@@ -66,18 +64,18 @@ export default function SubMenuOverViewForm(props) {
       } catch (e) {
         console.warn(e);
       } finally {
-        const html = recordForEdit.description;
-        const contentBlock = htmlToDraft(html);
-        if (contentBlock) {
-          const contentState = ContentState.createFromBlockArray(
-            contentBlock.contentBlocks
-          );
-          const description = EditorState.createWithContent(contentState);
-          setValues({
-            ...recordForEdit,
-            description,
-          });
-        }
+        // const html = recordForEdit.description;
+        // const contentBlock = htmlToDraft(html);
+        // if (contentBlock) {
+        //   const contentState = ContentState.createFromBlockArray(
+        //     contentBlock.contentBlocks
+        //   );
+        //   const description = EditorState.createWithContent(contentState);
+        //   setValues({
+        //     ...recordForEdit,
+        //     description,
+        //   });
+        // }
       }
     }
   }, [recordForEdit, setValues]);
@@ -101,7 +99,7 @@ export default function SubMenuOverViewForm(props) {
             onChange={handleInputChange}
             error={errors.title}
           />
-          <Controls.Input
+          <Controls.InputAutoSize
             label="Description"
             name="description"
             value={values.description}
