@@ -1,6 +1,7 @@
 import defaultTheme from "./default";
 
-import { createMuiTheme } from "@material-ui/core";
+// import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from '@material-ui/core/styles'
 
 const overrides = {
   typography: {
@@ -30,5 +31,5 @@ const overrides = {
 
 //eslint-disable-next-line
 export default {
-  default: createMuiTheme({ ...defaultTheme, ...overrides }),
+  default: createTheme({ ...defaultTheme, ...overrides }),
 };

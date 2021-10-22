@@ -23,7 +23,7 @@ const saveCtaPayment = (item) => async (dispatch) =>{
             }else{
                 dispatch({ type: CTA_PAYMENT_SAVE_FAIL, payload: data.message });
             }
-            console.log(data)
+            // console.log(data)
         }
         // else{
         //     const { data } = await axiosWithToken.put("/CtaPayment/", item);

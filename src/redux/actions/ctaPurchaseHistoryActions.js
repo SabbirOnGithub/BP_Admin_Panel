@@ -23,7 +23,7 @@ const saveCtaPurchaseHistory = (item) => async (dispatch) =>{
             }else{
                 dispatch({ type: CTA_PURCHASE_HISTORY_SAVE_FAIL, payload: data.message });
             }
-            console.log(data)
+            // console.log(data)
         }
         // else{
         //     const { data } = await axiosWithToken.put("/CtaPurchaseHistory/", item);

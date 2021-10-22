@@ -26,11 +26,17 @@ const DocumentsLink = (props) => {
             {docList?.map((item,index)=>{
                 // return BASE_ROOT_URL + "/" + item.fileUrl.split("\\").join('/')
                 return (
-                    <Typography className ={clsx(classes.root, classes.customPharagraph)}  key={item.id}>
+                    <Typography className ={clsx(classes.root, classes.customPharagraph)}  key={item?.id}>
+                        
                         <b>{index+1}.</b>
-                        <Link href={BASE_ROOT_URL + "/" + item.fileUrl.split("\\").join('/')} target="_blank" rel="noopener">
-                            {item.fileUrl.split("\\").join('/').split('/').pop()}
-                        </Link>
+                        {   item?.fileUrl &&
+                            <>
+                                <Link href={BASE_ROOT_URL + "/" + item?.fileUrl?.split("\\").join('/')} target="_blank" rel="noopener">
+                                {item?.fileUrl?.split("\\").join('/').split('/').pop()}
+                                </Link>
+                            </>
+                        }
+                        
                     </Typography>
                 )
             })

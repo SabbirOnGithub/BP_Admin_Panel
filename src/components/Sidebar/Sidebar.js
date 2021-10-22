@@ -326,7 +326,8 @@ function Sidebar({ location }) {
       { 
         <Drawer
         ModalProps={{
-          onBackdropClick : ()=>{ toggleSidebar(layoutDispatch)}
+          // onBackdropClick : ()=>{ toggleSidebar(layoutDispatch)}
+          onClose : ()=>{ toggleSidebar(layoutDispatch)}
         }}
         variant={isPermanent ? "permanent" : "temporary"}
         className={classNames(classes.drawer, {

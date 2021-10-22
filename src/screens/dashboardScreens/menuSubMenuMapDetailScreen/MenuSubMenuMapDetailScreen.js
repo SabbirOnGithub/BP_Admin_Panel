@@ -153,10 +153,7 @@ export default function MenuSubMenuMapDetailScreen() {
       formData.append("file", item.pictureUrl);
     }
     // eslint-disable-next-line
-    if (
-      typeof item.pictureUrl === "null" ||
-      typeof item.pictureUrl === "string"
-    ) {
+    if ( typeof item.pictureUrl === "null" || typeof item.pictureUrl === "string") {
       formData.append("pictureUrl", item.pictureUrl);
     }
 

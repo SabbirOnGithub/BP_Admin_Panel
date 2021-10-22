@@ -111,8 +111,10 @@ export default function useTable(records, headCells, filterFn) {
         rowsPerPageOptions={pages}
         rowsPerPage={rowsPerPage}
         count={ Array.isArray(records) ? records.length : 0}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        // onChangePage={handleChangePage}
+        onPageChange={handleChangePage}
+        // onChangeRowsPerPage={handleChangeRowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
     />)
 
     function stableSort(array, comparator) {

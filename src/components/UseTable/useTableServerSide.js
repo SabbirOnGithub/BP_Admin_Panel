@@ -114,8 +114,10 @@ export default function useTableServerSide(records, headCells, filterFn, totalRe
         rowsPerPage={rowsPerPage}
         count={ totalRecords ? totalRecords : (Array.isArray(records) ? records.length : 0)}
         // count={8}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        // onChangePage={handleChangePage}
+        onPageChange={handleChangePage}
+        // onChangeRowsPerPage={handleChangeRowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
     />)
 
     function stableSort(array, comparator) {
