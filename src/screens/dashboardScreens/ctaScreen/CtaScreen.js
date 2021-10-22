@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
 import { accessDeniedRoute } from '../../../routes/routeConstants';
-import CtaCategoryScreen from './ctaCategoryScreen/CtaCategoryScreen';
+// import CtaCategoryScreen from './ctaCategoryScreen/CtaCategoryScreen';
 import CtaFunctionScreen from './ctaFunctionScreen/CtaFunctionScreen';
 import Loading from '../../../components/Loading/Loading';
 
@@ -61,9 +61,9 @@ export default function CtaScreen() {
                                 showCtaFunctionDetail= {showCtaFunctionDetail}
                                 setShowCtaFunctionDetail = {setShowCtaFunctionDetail}
                             />
-                            {
+                            {/* {
                                 (openPopup === false && showCtaFunctionDetail === false) && <CtaCategoryScreen />
-                            }
+                            } */}
                             
                         </>
                     )

@@ -34,7 +34,8 @@ const listCtaFunctions = (item) => async (dispatch)=>{
         // with serverside paginations
         try{
             dispatch({type: CTA_FUNCTION_LIST_REQUEST});
-            const {data} = await axiosWithToken.post('/CtaFunction/search', item);
+            // const {data} = await axiosWithToken.post('/CtaFunction/search', item);
+            const {data} = await axiosWithToken.post('/Consultancy/search', item);
             // console.log(data)
     
             if (data.status === true) {
@@ -65,13 +66,14 @@ const listCtaFunctions = (item) => async (dispatch)=>{
     
 };
 
-const detailsCtaFunction = (id)=> async (dispatch) =>{
+const detailsCtaFunction = (id, recordForDetails)=> async (dispatch) =>{
     try{
-        if(id){
+        if(id && recordForDetails){
             dispatch({type:CTA_FUNCTION_DETAILS_REQUEST});
-            const { data } = await axiosWithoutToken.get("/CtaFunction/detail/" + id); 
+            // const { data } = await axiosWithoutToken.get("/CtaFunction/detail/" + id); 
+            const { data } = recordForDetails.isCategory ? await axiosWithoutToken.get("/CtaCategory/DetailByConsultancyId/" + id) : await axiosWithoutToken.get("/CtaFunction/DetailByConsultancyId/" + id)
             dispatch({type:CTA_FUNCTION_DETAILS_SUCCESS, payload: data.data });
-            // console.log({data})
+            console.log({data})
         }else{
             console.log('id not found')
         }

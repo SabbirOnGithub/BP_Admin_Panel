@@ -141,7 +141,7 @@ export default function CtaFunctionDetailScreen(props) {
         try{
             Promise.all([
                 dispatch(listCtaFunctionModels()),
-                dispatch(detailsCtaFunction(recordForDetails.id))
+                dispatch(detailsCtaFunction(recordForDetails?.id, recordForDetails))
               ]).then(() => setFetched(true))
                 .catch(ex => console.error(ex));
               return () => ac.abort(); // Abort both fetches on unmount

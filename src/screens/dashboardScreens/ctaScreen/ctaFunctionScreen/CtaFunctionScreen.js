@@ -468,7 +468,7 @@ export default function CtaFunctionScreen(props) {
                                 {
                                     showCtaFunctionDetail ?
                                         <Widget
-                                            title="Cta Function Detail"
+                                            title={recordForDetails?.isCategory ? "Cta Category Detail" : "Cta Function Detail"}
                                             upperTitle
                                             // noBodyPadding
                                             disableWidgetMenu
@@ -526,7 +526,7 @@ export default function CtaFunctionScreen(props) {
                                             :
 
                                             <Widget
-                                                title="Cta Function List Table"
+                                                title="Consultancy List Table"
                                                 upperTitle
                                                 noBodyPadding
                                                 setOpenPopup={setOpenPopup}
