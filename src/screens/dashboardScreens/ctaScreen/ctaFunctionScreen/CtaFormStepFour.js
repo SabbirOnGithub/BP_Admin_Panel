@@ -204,7 +204,6 @@ export default function CtaFormStepFour(props) {
                                                        
                                                         <Grid item md={4} xs={12} key={item.id}>
                                                             <Paper className={classes.paper}>
-                                                                        
                                                                 <div className="pricingTable">
                                                                     <div className="pricingTable-header">
                                                                     <Typography variant="subtitle1" className={classes.ctaHourName}>

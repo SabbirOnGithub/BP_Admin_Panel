@@ -14,26 +14,27 @@ import Loading from '../../../../components/Loading/Loading';
 import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
 import { detailsCtaFunction } from '../../../../redux/actions/ctaFunctionActions';
 import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
+import { listCtaCategoryModels } from '../../../../redux/actions/ctaCategoryActions';
 import { ctaFunctionStatus } from '../../../../helpers/staticData';
-import {isClientUser} from '../../../../helpers/search'
+import { isClientUser } from '../../../../helpers/search'
 
 import DocumentsLink from '../../../../components/DocumentsLink/DocumentsLink';
 import { listAcceptClientUsers } from '../../../../redux/actions/userActions';
 
 const useStyles = makeStyles(theme => ({
-    detailsContent:{
-        display:'flex',
-        justifyContent:'space-between',
+    detailsContent: {
+        display: 'flex',
+        justifyContent: 'space-between',
         flexWrap: 'wrap',
-        '& p':{
+        '& p': {
             flex: '0 0 50%',
-            textAlign:'justify'
+            textAlign: 'justify'
         }
     },
     customPharagraph: {
         ...theme?.customPharagraph
     },
-    subHeadlineText :{
+    subHeadlineText: {
         ...theme?.subHeadlineText
     }
 
@@ -75,7 +76,7 @@ export default function CtaFunctionDetailScreen(props) {
         successCtaFunctionSave,
         loadingCtaFunctionSave,
         addOrEditConsultancyAssign
-        } = props
+    } = props
     const classes = useStyles();
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
@@ -84,6 +85,10 @@ export default function CtaFunctionDetailScreen(props) {
     const ctaFunctionModelList = useSelector(state => state.ctaFunctionModelList);
     //eslint-disable-next-line
     const { ctaFunctionModels } = ctaFunctionModelList;
+
+    const ctaCategoryModelList = useSelector(state => state.ctaCategoryModelList);
+    //eslint-disable-next-line
+    const { ctaCategoryModels } = ctaCategoryModelList;
 
     const [recordForEdit, setRecordForEdit] = useState(null)
     //eslint-disable-next-line
@@ -101,7 +106,7 @@ export default function CtaFunctionDetailScreen(props) {
 
     const userAcceptClientList = useSelector(state => state.userAcceptClientList);
     //eslint-disable-next-line
-    const { userAcceptClients, loading : loadingUserAcceptClient, error:errorUserAcceptClient } = userAcceptClientList;
+    const { userAcceptClients, loading: loadingUserAcceptClient, error: errorUserAcceptClient } = userAcceptClientList;
 
     const ctaFunctionDetails = useSelector(state => state.ctaFunctionDetails);
     //eslint-disable-next-line
@@ -112,8 +117,8 @@ export default function CtaFunctionDetailScreen(props) {
     const { loading: loadingSaveConsultancyReceiveHistory, success: successSaveConsultancyReceiveHistory, error: errorSaveConsultancyReceiveHistory } = consultancyReceiveHistorySave;
     const consultancyReceiveHistoryDelete = useSelector(state => state.consultancyReceiveHistoryDelete);
     //eslint-disable-next-line
-    const { loading: loadingDeleteConsultancyReceiveHistory,success: successDeleteConsultancyReceiveHistory, error: errorDeleteConsultancyReceiveHistory } = consultancyReceiveHistoryDelete;
-    
+    const { loading: loadingDeleteConsultancyReceiveHistory, success: successDeleteConsultancyReceiveHistory, error: errorDeleteConsultancyReceiveHistory } = consultancyReceiveHistoryDelete;
+
     const consultancyAssignmentSave = useSelector(state => state.consultancyAssignmentSave);
     //eslint-disable-next-line
     const { loading: loadingConsultancyAssignmentSave, success: successConsultancyAssignmentSave, error: errorConsultancyAssignmentSave } = consultancyAssignmentSave;
@@ -124,28 +129,31 @@ export default function CtaFunctionDetailScreen(props) {
     }
     const openInPopupForAssign = item => {
         dispatch(listAcceptClientUsers())
-        .then(res=>{
-            if(res?.status){
-                setRecordForEdit(item)
-                setOpenPopupForAssign(true)
-            }
-        })
-      
+            .then(res => {
+                if (res?.status) {
+                    setRecordForEdit(item)
+                    setOpenPopupForAssign(true)
+                }
+            })
+
     }
-    
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         const ac = new AbortController();
 
-        try{
+        try {
             Promise.all([
                 dispatch(listCtaFunctionModels()),
                 dispatch(detailsCtaFunction(recordForDetails?.id, recordForDetails))
-              ]).then(() => setFetched(true))
+            ])
+                .then((res) => res[1]?.data?.menuId && dispatch(listCtaCategoryModels(res[1]?.data?.menuId)))
+                //   .then((res) => console.log(res))
+                .then(() => setFetched(true))
                 .catch(ex => console.error(ex));
-              return () => ac.abort(); // Abort both fetches on unmount
-        }catch(err){
+            return () => ac.abort(); // Abort both fetches on unmount
+        } catch (err) {
             console.log(err)
         }
         return () => {
@@ -154,26 +162,26 @@ export default function CtaFunctionDetailScreen(props) {
 
         // eslint-disable-next-line
     }, [
-        dispatch, 
-        recordForDetails.id, 
-        successSaveConsultancyReceiveHistory, 
-        successDeleteConsultancyReceiveHistory, 
+        dispatch,
+        recordForDetails.id,
+        successSaveConsultancyReceiveHistory,
+        successDeleteConsultancyReceiveHistory,
         successCtaFunctionSave,
         successConsultancyAssignmentSave
     ])
 
-// console.log(ctaFunctionModels?.techStacks)
-// console.log(ctaFunction)
+    // console.log(ctaFunctionModels?.techStacks)
+    // console.log(ctaFunction)
     return (
         <>
-        {
-            loading || loadingCtaFunctionSave || loadingConsultancyAssignmentSave ? <Loading /> :
-            <Grid container>
-                <Grid item xs={12}>
-                <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
-                                    {
+            {
+                loading || loadingCtaFunctionSave || loadingConsultancyAssignmentSave ? <Loading /> :
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Paper style={{ overflow: "auto", backgroundColor: "transparent", marginBottom: 20, padding: 20 }}>
+                                {
                                     <Grid container >
-                                        <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
+                                        <Grid item md={6} style={{ display: "flex", justifyContent: "center" }}>
                                             {/* { ctaFunction?.status &&
                                                 <Chip 
                                                     label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
@@ -183,105 +191,162 @@ export default function CtaFunctionDetailScreen(props) {
                                             } */}
                                         </Grid>
                                         {isClientUser(userInfo) ? "" :
-                                            <Grid item md={6} style={{display:"flex", justifyContent:"center"}}>
-                                                    <Controls.Button
-                                                        color="secondary"
-                                                        onClick={() => { openInPopup(ctaFunction) }}
-                                                        text={"Update Status"}
-                                                        variant="contained"
-                                                        size="large"
-                                                    >
-                                                    </Controls.Button>
-                                                    <Controls.Button
-                                                        color="primary"
-                                                        onClick={() => { openInPopupForAssign(ctaFunction) }}
-                                                        text={"Assign to"}
-                                                        variant="contained"
-                                                        size="large"
-                                                    >
-                                                    </Controls.Button>
+                                            <Grid item md={6} style={{ display: "flex", justifyContent: "center" }}>
+                                                <Controls.Button
+                                                    color="secondary"
+                                                    onClick={() => { openInPopup(ctaFunction) }}
+                                                    text={"Update Status"}
+                                                    variant="contained"
+                                                    size="large"
+                                                >
+                                                </Controls.Button>
+                                                <Controls.Button
+                                                    color="primary"
+                                                    onClick={() => { openInPopupForAssign(ctaFunction) }}
+                                                    text={"Assign to"}
+                                                    variant="contained"
+                                                    size="large"
+                                                >
+                                                </Controls.Button>
                                             </Grid>
                                         }
                                     </Grid>
-                                    }
+                                }
                                 <h1 className={classes.subHeadlineText}>Details</h1>
 
                                 <Grid container>
                                     <Grid item md={6}>
                                         <Typography paragraph className={classes.customPharagraph}><b>First Name: </b> {ctaFunction?.firstName} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Phone: </b> {ctaFunction?.phone} </Typography> 
+                                        <Typography paragraph className={classes.customPharagraph}><b>Phone: </b> {ctaFunction?.phone} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Company Name: </b> {ctaFunction?.companyName} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Service Specificity: </b> {searchNameByIdFromArray(ctaFunctionModels?.serviceSpecificities,ctaFunction?.serviceSpecificity)} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}>
-                                            <b>Technology Preference:</b> 
-                                                {/* {ctaFunction?.technologyPreference} */}
-                                                {
-                                                     ctaFunction?.technologyPreference && (ctaFunction?.technologyPreference).split(',').map((itemId, index)=>{
-                                                         if((ctaFunction?.technologyPreference).split(',')?.length === index+1){
-                                                            return <span key = {itemId}> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}</span>
-                                                         }else{
-                                                            return <span  key = {itemId}> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}, </span>
-                                                         }
+                                        {
+                                            !recordForDetails.isCategory &&
+                                            <Typography paragraph className={classes.customPharagraph}><b>Service Specificity: </b> {searchNameByIdFromArray(ctaFunctionModels?.serviceSpecificities, ctaFunction?.serviceSpecificity)} </Typography>
+                                        }
 
-                                                    })
-                                                }
-                                        
+                                        <Typography paragraph className={classes.customPharagraph}>
+
+                                            {
+                                                recordForDetails.isCategory ?
+                                                    <>
+                                                        <b>Technology:</b>
+                                                        {/* {ctaFunction?.technologyPreference} */}
+                                                        {
+                                                            ctaFunction?.technologies && (ctaFunction?.technologies).split(',').map((itemId, index) => {
+                                                                if ((ctaFunction?.technologies).split(',')?.length === index + 1) {
+                                                                    return <span key={itemId}> {searchNameByIdFromArray(ctaCategoryModels?.techStacks, itemId)}</span>
+                                                                } else {
+                                                                    return <span key={itemId}> {searchNameByIdFromArray(ctaCategoryModels?.techStacks, itemId)}, </span>
+                                                                }
+
+                                                            })
+                                                        }
+                                                    </> :
+                                                    <>
+                                                        <b>Technology Preference:</b>
+                                                        {/* {ctaFunction?.technologyPreference} */}
+                                                        {
+                                                            ctaFunction?.technologyPreference && (ctaFunction?.technologyPreference).split(',').map((itemId, index) => {
+                                                                if ((ctaFunction?.technologyPreference).split(',')?.length === index + 1) {
+                                                                    return <span key={itemId}> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}</span>
+                                                                } else {
+                                                                    return <span key={itemId}> {searchNameByIdFromArray(ctaFunctionModels?.techStacks, itemId)}, </span>
+                                                                }
+
+                                                            })
+                                                        }
+                                                    </>
+                                            }
+
+
                                         </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Service: </b> {ctaFunction?.goalsToAchieveService} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Technology: </b> {ctaFunction?.goalsToAchieveTechnology} </Typography>
+
+                                        {
+                                            recordForDetails.isCategory ?
+                                                <>
+                                                    <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve: </b> {ctaFunction?.goalsToAchieve} </Typography>
+                                                </> :
+                                                <>
+                                                    <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Service: </b> {ctaFunction?.goalsToAchieveService} </Typography>
+                                                    <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Technology: </b> {ctaFunction?.goalsToAchieveTechnology} </Typography>
+                                                </>
+
+                                        }
+
                                         <Typography paragraph className={classes.customPharagraph}><b>Estimation: </b> {ctaFunction?.estimation && new Date(`${ctaFunction?.estimation} UTC`).toLocaleDateString()} </Typography>
                                         {
-                                            ctaFunction?.totalHour  && <Typography paragraph className={classes.customPharagraph}><b>Total Hours: </b> {timeConverter(ctaFunction?.totalHour)} </Typography>
+                                            ctaFunction?.totalHour && <Typography paragraph className={classes.customPharagraph}><b>Total Hours: </b> {timeConverter(ctaFunction?.totalHour)} </Typography>
                                         }
-                                        
-                                        
                                     </Grid>
                                     <Grid item md={6}>
                                         <Typography paragraph className={classes.customPharagraph}><b>Last Name: </b> {ctaFunction?.lastName} </Typography>
                                         <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {ctaFunction?.email} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Solution Specificity: </b> {searchNameByIdFromArray(ctaFunctionModels?.solutionSpecificities, ctaFunction?.solutionSpecificity)} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution: </b> {ctaFunction?.goalsToAchieveSolution} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Tell Us More: </b> {ctaFunction?.tellUsMore} </Typography>
-                                        <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {ctaFunction?.description} </Typography>
-                                        <Typography variant="h1" className={classes.customPharagraph}><b>Status: </b> 
-                                        {/* variant are used to ignore nested div error for Chip*/}
-                                            
-                                        { ctaFunction?.status ?
-                                                <Chip 
-                                                    label= {searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
-                                                    color="secondary"
-                                                    style={{fontSize:"1.6rem"}}
-                                                />
-                                                : 'No data found'
-                                        } </Typography>
+                                        {
+                                            recordForDetails.isCategory && <Typography paragraph className={classes.customPharagraph}><b>Category Name: </b> {ctaFunction?.categoryName} </Typography>
+                                        }
+
+                                        <Typography paragraph className={classes.customPharagraph}>
+                                            {
+                                                recordForDetails.isCategory ?
+                                                    <><b>Specificity: </b> {searchNameByIdFromArray(ctaCategoryModels?.specificities, ctaFunction?.specificity)} </> :
+                                                    <><b>Solution Specificity: </b> {searchNameByIdFromArray(ctaFunctionModels?.solutionSpecificities, ctaFunction?.solutionSpecificity)} </>
+                                            }
+
+                                        </Typography>
 
                                         {
-                                            ctaFunction?.hourRemaining && <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> { timeConverter(ctaFunction?.hourRemaining)} </Typography>
+                                            !recordForDetails.isCategory && <Typography paragraph className={classes.customPharagraph}><b>Goals To Achieve Solution: </b> {ctaFunction?.goalsToAchieveSolution} </Typography>
+                                        }
+
+                                        <Typography paragraph className={classes.customPharagraph}><b>Tell Us More: </b> {ctaFunction?.tellUsMore} </Typography>
+                                        {
+                                            !recordForDetails.isCategory &&
+                                            <>
+                                                <Typography paragraph className={classes.customPharagraph}><b>Description:</b> {ctaFunction?.description} </Typography>
+                                                <Typography variant="h1" className={classes.customPharagraph}><b>Status: </b>
+                                                    {/* variant are used to ignore nested div error for Chip*/}
+
+                                                    {ctaFunction?.status ?
+                                                        <Chip
+                                                            label={searchTitleByIdFromArray(ctaFunctionStatus, ctaFunction?.status)}
+                                                            color="secondary"
+                                                            style={{ fontSize: "1.6rem" }}
+                                                        />
+                                                        : 'No data found'
+                                                    }
+                                                </Typography>
+                                            </>
+                                        }
+
+
+
+                                        {
+                                            ctaFunction?.hourRemaining && <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> {timeConverter(ctaFunction?.hourRemaining)} </Typography>
                                         }
                                         {
-                                            ctaFunction?.hourUsed &&  <Typography paragraph className={classes.customPharagraph}><b>Used Hours: </b> { timeConverter(ctaFunction?.hourUsed)} </Typography>
+                                            ctaFunction?.hourUsed && <Typography paragraph className={classes.customPharagraph}><b>Used Hours: </b> {timeConverter(ctaFunction?.hourUsed)} </Typography>
                                         }
-                                        
+
                                     </Grid>
                                 </Grid>
                                 <h1 className={classes.subHeadlineText}> Assigned To </h1>
-                                
+
                                 {
                                     ctaFunction?.consultancyAssignments?.length > 0 ?
-                                    (
-                                        <>
-                                        {/* {console.log(ctaFunction?.consultancyAssignments)} */}
-                                        
-                                            {    ctaFunction?.consultancyAssignments?.map(item=>{
-                                                    
+                                        (
+                                            <>
+                                                {/* {console.log(ctaFunction?.consultancyAssignments)} */}
+
+                                                {ctaFunction?.consultancyAssignments?.map(item => {
+
                                                     return <div key={item?.id}>
-                                                                <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {item?.userEmail} <b>  Name: </b> {item?.userName}</Typography>
-                                                            </div>
+                                                        <Typography paragraph className={classes.customPharagraph}><b>Email: </b> {item?.userEmail} <b>  Name: </b> {item?.userName}</Typography>
+                                                    </div>
                                                 })
-                                            }
-                                        </>
-                                    ) : <Typography paragraph className={classes.customPharagraph}> No Assignment found </Typography>
-                                    
+                                                }
+                                            </>
+                                        ) : <Typography paragraph className={classes.customPharagraph}> No Assignment found </Typography>
+
                                 }
                                 <h1 className={classes.subHeadlineText}> Attached Documents </h1>
                                 {ctaFunction?.ctaDocuments?.length > 0 ?
@@ -290,113 +355,118 @@ export default function CtaFunctionDetailScreen(props) {
                                     </> : <Typography paragraph className={classes.customPharagraph}> No documents found </Typography>
                                 }
 
-                                
-
-
-                                <h1 className={classes.subHeadlineText}>Payment History</h1>
                                 {
-                                   ctaFunction?.ctaPurchaseHistories?.length > 0 ?  ctaFunction?.ctaPurchaseHistories?.map(item=>
-                                            <div key={item.id}>
-                                                <Grid container>
-                                                    <Grid item md={6}>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Status: </b> {item?.isPaid ? 'Paid' : 'Un-paid'} </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Transection Id: </b> {item?.transectionId} </Typography>
-                                                        {/* <Typography paragraph className={classes.customPharagraph}><b>ctaPackageHourlyId:</b> {item?.ctaPackageHourlyId} </Typography>
+                                    !recordForDetails.isCategory &&
+
+                                    <>
+                                        <h1 className={classes.subHeadlineText}>Payment History</h1>
+                                        {
+                                            ctaFunction?.ctaPurchaseHistories?.length > 0 ? ctaFunction?.ctaPurchaseHistories?.map(item =>
+                                                <div key={item.id}>
+                                                    <Grid container>
+                                                        <Grid item md={6}>
+                                                            <Typography paragraph className={classes.customPharagraph}><b>Payment Status: </b> {item?.isPaid ? 'Paid' : 'Un-paid'} </Typography>
+                                                            <Typography paragraph className={classes.customPharagraph}><b>Transection Id: </b> {item?.transectionId} </Typography>
+                                                            {/* <Typography paragraph className={classes.customPharagraph}><b>ctaPackageHourlyId:</b> {item?.ctaPackageHourlyId} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>ctaPackageDailyId:</b> {item?.ctaPackageDailyId} </Typography>
                                                         <Typography paragraph className={classes.customPharagraph}><b>ctaPackageMonthlyYearlyId:</b> {item?.ctaPackageMonthlyYearlyId} </Typography> */}
-                                                       
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Consultation Type Name: </b> {item?.consultationTypeName} </Typography>
-                                                        
-                                                        {
-                                                            item?.ctaPackageHourly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> {item?.ctaPackageHourly?.ctaHourName} </Typography>
-                                                        }
 
-                                                        {
-                                                            item?.ctaPackageDaily && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> Solution Discovery  </Typography>
-                                                        }
+                                                            <Typography paragraph className={classes.customPharagraph}><b>Consultation Type Name: </b> {item?.consultationTypeName} </Typography>
 
-                                                        {
-                                                            item?.ctaPackageMonthlyYearly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> Access Retainer  </Typography>
-                                                        }
+                                                            {
+                                                                item?.ctaPackageHourly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> {item?.ctaPackageHourly?.ctaHourName} </Typography>
+                                                            }
 
-{
-                                                            item?.completionDate && <Typography paragraph className={classes.customPharagraph}><b>Completion Date: </b> {new Date(`${item?.completionDate} UTC`).toLocaleDateString()} </Typography>
-                                                        }
+                                                            {
+                                                                item?.ctaPackageDaily && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> Solution Discovery  </Typography>
+                                                            }
 
+                                                            {
+                                                                item?.ctaPackageMonthlyYearly && <Typography paragraph className={classes.customPharagraph}><b>Package Name:</b> Access Retainer  </Typography>
+                                                            }
+
+                                                            {
+                                                                item?.completionDate && <Typography paragraph className={classes.customPharagraph}><b>Completion Date: </b> {new Date(`${item?.completionDate} UTC`).toLocaleDateString()} </Typography>
+                                                            }
+
+                                                        </Grid>
+                                                        <Grid item md={6}>
+                                                            <Typography paragraph className={classes.customPharagraph}><b>Amount: </b> ${item?.amount} </Typography>
+                                                            <Typography paragraph className={classes.customPharagraph}><b>Payment Gateway: </b> {item?.paymentGateway} </Typography>
+                                                            <Typography paragraph className={classes.customPharagraph}><b>Purchase Date: </b>
+                                                                {new Date(`${item?.purchaseDate} UTC`).toLocaleDateString()}
+                                                            </Typography>
+                                                            <Typography paragraph className={classes.customPharagraph}><b>Subscription: </b>
+                                                                {item?.isYearlySubscription && 'Yearly'}
+                                                                {item?.isMonthlySubscription && 'Monthly'}
+                                                                {item?.ctaPackageDailyId && 'Daily'}
+                                                                {item?.ctaPackageHourlyId && 'Hourly'}
+                                                            </Typography>
+
+
+
+
+                                                        </Grid>
                                                     </Grid>
-                                                    <Grid item md={6}>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Amount: </b> ${item?.amount} </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Payment Gateway: </b> {item?.paymentGateway} </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Purchase Date: </b> 
-                                                            {new Date(`${item?.purchaseDate} UTC`).toLocaleDateString()} 
-                                                        </Typography>
-                                                        <Typography paragraph className={classes.customPharagraph}><b>Subscription: </b> 
-                                                            {item?.isYearlySubscription && 'Yearly'} 
-                                                            {item?.isMonthlySubscription && 'Monthly'} 
-                                                            { item?.ctaPackageDailyId && 'Daily'}
-                                                            { item?.ctaPackageHourlyId && 'Hourly'}
-                                                        </Typography>
-                                                            
-                                                       
+                                                </div>
+                                            )
+                                                :
+                                                <Typography paragraph className={classes.customPharagraph}> Payment history not found </Typography>
+                                        }
+                                    </>
+                                }
 
-                                                        
-                                                    </Grid>
-                                                </Grid>
-                                            </div>
-                                        )
-                                        : 
-                                        <Typography paragraph className={classes.customPharagraph}> Payment history not found </Typography>
-                                    }
-                                    
+
+
                                 {/* </Grid> */}
-                </Paper>
+                            </Paper>
 
-                <ConsultancyReceiveHistoryScreen 
-                    consultancyReceiveHistorys = {ctaFunction?.consultancyReceiveHistories ? ctaFunction?.consultancyReceiveHistories : []}
-                    loading = {false}
-                    ctaFunctionId = {ctaFunction?.id}
-                    // createOperation = {ctaFunction?.ctaPurchaseHistories?.length >0 ? true :false}
-                    createOperation = {createOperation && !ctaFunction?.isCompleted}
-                    updateOperation = {updateOperation}
-                    deleteOperation = {deleteOperation}
-                    hourRemaining = {ctaFunction?.hourRemaining}
-                />
+                            <ConsultancyReceiveHistoryScreen
+                                consultancyReceiveHistorys={ctaFunction?.consultancyReceiveHistories ? ctaFunction?.consultancyReceiveHistories : []}
+                                loading={false}
+                                ctaFunctionId={ctaFunction?.id}
+                                // createOperation = {ctaFunction?.ctaPurchaseHistories?.length >0 ? true :false}
+                                createOperation={createOperation && !ctaFunction?.isCompleted}
+                                updateOperation={updateOperation}
+                                deleteOperation={deleteOperation}
+                                hourRemaining={ctaFunction?.hourRemaining}
+                            />
 
-                <Popup
-                    title="Update Cta Function Status"
-                    openPopup={openPopup}
-                    setOpenPopup={setOpenPopup}
-                >
-                    <CtaFunctionStatusUpdateForm
-                        recordForEdit={recordForEdit}
-                        addOrEdit={addOrEdit}
-                        // loadingSave={loadingSave}
-                        setRecordForEdit = {setRecordForEdit}
-                        setOpenPopup={setOpenPopup}
-                        ctaFunctionStatus ={ctaFunctionStatus}
-                    />
+                            <Popup
+                                title="Update Cta Function Status"
+                                openPopup={openPopup}
+                                setOpenPopup={setOpenPopup}
+                            >
+                                <CtaFunctionStatusUpdateForm
+                                    recordForEdit={recordForEdit}
+                                    addOrEdit={addOrEdit}
+                                    // loadingSave={loadingSave}
+                                    setRecordForEdit={setRecordForEdit}
+                                    setOpenPopup={setOpenPopup}
+                                    ctaFunctionStatus={ctaFunctionStatus}
+                                />
 
-                </Popup>
+                            </Popup>
 
-                <Popup
-                    title="Assign consultancy"
-                    openPopup={openPopupForAssign}
-                    setOpenPopup={setOpenPopupForAssign}
-                >
-                    <ConsultancyAssignmentForm
-                        recordForEdit={recordForEdit}
-                        addOrEditConsultancyAssign={addOrEditConsultancyAssign}
-                        // loadingSave={loadingSave}
-                        setRecordForEdit = {setRecordForEdit}
-                        setOpenPopupForAssign={setOpenPopupForAssign}
-                        ctaFunctionStatus ={ctaFunctionStatus}
-                        userAcceptClients= {userAcceptClients}
-                    />
+                            <Popup
+                                title="Assign consultancy"
+                                openPopup={openPopupForAssign}
+                                setOpenPopup={setOpenPopupForAssign}
+                            >
+                                <ConsultancyAssignmentForm
+                                    recordForEdit={recordForEdit}
+                                    addOrEditConsultancyAssign={addOrEditConsultancyAssign}
+                                    // loadingSave={loadingSave}
+                                    setRecordForEdit={setRecordForEdit}
+                                    setOpenPopupForAssign={setOpenPopupForAssign}
+                                    ctaFunctionStatus={ctaFunctionStatus}
+                                    userAcceptClients={userAcceptClients}
+                                />
 
-                </Popup>
-                
-               
-                    {/* <div>
+                            </Popup>
+
+
+                            {/* <div>
                         <>
                             <Controls.Button
                                 text="Back"
@@ -405,9 +475,9 @@ export default function CtaFunctionDetailScreen(props) {
                             />
                         </>
                     </div> */}
-                </Grid>
-            </Grid>
-        }
+                        </Grid>
+                    </Grid>
+            }
         </>
     )
 }

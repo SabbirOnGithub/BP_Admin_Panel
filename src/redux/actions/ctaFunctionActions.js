@@ -73,7 +73,8 @@ const detailsCtaFunction = (id, recordForDetails)=> async (dispatch) =>{
             // const { data } = await axiosWithoutToken.get("/CtaFunction/detail/" + id); 
             const { data } = recordForDetails.isCategory ? await axiosWithoutToken.get("/CtaCategory/DetailByConsultancyId/" + id) : await axiosWithoutToken.get("/CtaFunction/DetailByConsultancyId/" + id)
             dispatch({type:CTA_FUNCTION_DETAILS_SUCCESS, payload: data.data });
-            console.log({data})
+            // console.log({data})
+            return data
         }else{
             console.log('id not found')
         }
@@ -133,6 +134,7 @@ const listCtaFunctionModels = () => async (dispatch)=>{
         
         dispatch({ type: CTA_FUNCTION_MODEL_LIST_SUCCESS, payload: data });
         // console.log(data)
+        return data
     }
     catch(error){
         dispatch({ type: CTA_FUNCTION_MODEL_LIST_FAIL, payload: error.message });
@@ -150,7 +152,7 @@ const listCtaFunctionDocuments = (id) => async (dispatch)=>{
         }else{
             dispatch({ type: CTA_FUNCTION_DOCUMENT_LIST_FAIL, payload: data.message });
         }
-        // console.log(data.data)
+        console.log(data.data)
     }
     catch(error){
         dispatch({ type: CTA_FUNCTION_DOCUMENT_LIST_FAIL, payload: error.message });

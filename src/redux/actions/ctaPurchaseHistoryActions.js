@@ -8,7 +8,7 @@ import {  axiosWithToken } from '../../helpers/axios';
 
 
 const saveCtaPurchaseHistory = (item) => async (dispatch) =>{
-    console.log(item)
+    // console.log(item)
 
     try{
         dispatch({type: CTA_PURCHASE_HISTORY_SAVE_REQUEST, payload:item })

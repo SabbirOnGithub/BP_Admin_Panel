@@ -111,6 +111,7 @@ const listCtaCategoryModels = (id) => async (dispatch)=>{
         
         dispatch({ type: CTA_CATEGORY_MODEL_LIST_SUCCESS, payload: data });
         // console.log(data)
+        return data
     }
     catch(error){
         dispatch({ type: CTA_CATEGORY_MODEL_LIST_FAIL, payload: error.message });
