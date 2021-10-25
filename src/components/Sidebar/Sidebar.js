@@ -1,49 +1,44 @@
-import React, { useState, useEffect } from "react";
 import { Drawer, IconButton, List } from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
-import SubjectIcon from '@material-ui/icons/Subject';
-import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import DescriptionIcon from '@material-ui/icons/Description';
-import SettingsIcon from '@material-ui/icons/Settings';
-import BookIcon from '@material-ui/icons/Book';
+import {
+  // FormatSize as TypographyIcon,
+  ArrowBack as ArrowBackIcon, Home as HomeIcon
+} from "@material-ui/icons";
 import AppsIcon from '@material-ui/icons/Apps';
-import ContactSupportIcon from '@material-ui/icons/ContactSupport';
-import PaymentIcon from '@material-ui/icons/Payment';
-import PermDataSettingIcon from '@material-ui/icons/PermDataSetting';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import BookIcon from '@material-ui/icons/Book';
 // import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
 import CallToActionIcon from '@material-ui/icons/CallToAction';
+import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import DescriptionIcon from '@material-ui/icons/Description';
+import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 import GolfCourseIcon from '@material-ui/icons/GolfCourse';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
-
-import {
-  Home as HomeIcon,
-  // FormatSize as TypographyIcon,
-  ArrowBack as ArrowBackIcon,
-} from "@material-ui/icons";
+import MenuIcon from '@material-ui/icons/Menu';
+import PaymentIcon from '@material-ui/icons/Payment';
+import PermDataSettingIcon from '@material-ui/icons/PermDataSetting';
+import SettingsIcon from '@material-ui/icons/Settings';
+import SubjectIcon from '@material-ui/icons/Subject';
+import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import { useTheme } from "@material-ui/styles";
-import { withRouter } from "react-router-dom";
 import classNames from "classnames";
-
+import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
+import { withRouter } from "react-router-dom";
+// context
+import {
+  setSidbarForDesktop, setSidbarForMobile, toggleSidebar, useLayoutDispatch, useLayoutState
+} from "../../context/LayoutContext";
+// components
+import SidebarLink from "./components/SidebarLink/SidebarLink";
 // styles
 import useStyles from "./styles";
 
-// components
-import SidebarLink from "./components/SidebarLink/SidebarLink";
 
-// context
-import {
-  useLayoutState,
-  useLayoutDispatch,
-  toggleSidebar,
-  setSidbarForMobile,
-  setSidbarForDesktop
-} from "../../context/LayoutContext";
 
-import { useSelector } from 'react-redux';
+
+
 
 
 const structure = [
@@ -153,17 +148,17 @@ const structure = [
   },
   {
     id: 13,
-    label: "Payment Configuration",
+    label: "CTA Payment Config",
     // link: "/admin/resource",
     icon: <PermDataSettingIcon />,
     children: [
-      { label: "Consulting Type", link: "/admin/consultingType" },
-      { label: "Cta Hour", link: "/admin/ctaHour" },
-      { label: "Cta Package Daily", link: "/admin/ctaPackageDaily" },
       { label: "Company Type", link: "/admin/companyType" },
       { label: "Company Size", link: "/admin/companySize" },
-      { label: "Cta Package Hourly", link: "/admin/ctaPackageHourly" },
-      { label: "Cta Package Monthly Yearly", link: "/admin/ctaPackageMonthlyYearly" },
+      { label: "Cta Hour", link: "/admin/ctaHour" },
+      { label: "Consulting Type", link: "/admin/consultingType" },
+      { label: "Hourly Support", link: "/admin/ctaPackageHourly" },
+      { label: "Solutions Discovery", link: "/admin/ctaPackageDaily" },
+      { label: "Concierge", link: "/admin/ctaPackageMonthlyYearly" },
     ],
   },
   {
