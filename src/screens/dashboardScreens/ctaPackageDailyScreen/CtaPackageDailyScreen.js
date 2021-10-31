@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import CtaPackageDailyForm from "./CtaPackageDailyForm";
-import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTable from "../../../components/UseTable/useTable";
-import Controls from "../../../components/controls/Controls";
-import Popup from "../../../components/Popup/Popup";
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { Grid, Paper, TableBody, TableCell, TableRow } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import Notification from "../../../components/Notification/Notification";
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
-import PageTitle from "../../../components/PageTitle/PageTitle";
-import Widget from "../../../components/Widget/Widget";
-import { ResponseMessage } from "../../../themes/responseMessage";
+import Controls from "../../../components/controls/Controls";
 import Loading from '../../../components/Loading/Loading';
-import { searchNameByIdFromArray } from '../../../helpers/search';
-
-
-import { useSelector, useDispatch } from 'react-redux';
+import Notification from "../../../components/Notification/Notification";
+import PageTitle from "../../../components/PageTitle/PageTitle";
+import Popup from "../../../components/Popup/Popup";
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
-import { accessDeniedRoute } from '../../../routes/routeConstants';
-
-// redux actions
-import { listCtaPackageDailys, saveCtaPackageDaily, deleteCtaPackageDaily } from '../../../redux/actions/ctaPackageDailyActions';
+import useTable from "../../../components/UseTable/useTable";
+import Widget from "../../../components/Widget/Widget";
+import { searchNameByIdFromArray } from '../../../helpers/search';
 import { listCompanyTypes } from '../../../redux/actions/companyTypeActions';
-import { listSubMenus} from '../../../redux/actions/subMenuActions';
+// redux actions
+import { deleteCtaPackageDaily, listCtaPackageDailys, saveCtaPackageDaily } from '../../../redux/actions/ctaPackageDailyActions';
+import { listSubMenus } from '../../../redux/actions/subMenuActions';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+import { ResponseMessage } from "../../../themes/responseMessage";
+import CtaPackageDailyForm from "./CtaPackageDailyForm";
+
+
+
 
 
 
@@ -185,12 +185,12 @@ export default function CtaPackageDailyScreen() {
                     (
                         ctaPackageDailys.length >= 0 &&
                         <>
-                            <PageTitle title="Cta Package Dailys" />
+                        <PageTitle title="Consultancy Packages (Solutions Discovery)" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Cta Package Daily List Table"
+                                        title="Package List"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}

@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import CtaPackageHourlyForm from "./CtaPackageHourlyForm";
-import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTable from "../../../components/UseTable/useTable";
-import Controls from "../../../components/controls/Controls";
-import Popup from "../../../components/Popup/Popup";
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { Grid, Paper, TableBody, TableCell, TableRow } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import Notification from "../../../components/Notification/Notification";
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
-import PageTitle from "../../../components/PageTitle/PageTitle";
-import Widget from "../../../components/Widget/Widget";
-import { ResponseMessage } from "../../../themes/responseMessage";
+import Controls from "../../../components/controls/Controls";
 import Loading from '../../../components/Loading/Loading';
-import { searchNameByIdFromArray } from '../../../helpers/search';
-
-
-import { useSelector, useDispatch } from 'react-redux';
+import Notification from "../../../components/Notification/Notification";
+import PageTitle from "../../../components/PageTitle/PageTitle";
+import Popup from "../../../components/Popup/Popup";
 // permissions
 import { usePermission } from '../../../components/UsePermission/usePermission';
-import { accessDeniedRoute } from '../../../routes/routeConstants';
-
-// redux actions
-import { listCtaPackageHourlys, saveCtaPackageHourly, deleteCtaPackageHourly } from '../../../redux/actions/ctaPackageHourlyActions';
-import { listCtaHours } from '../../../redux/actions/ctaHourActions';
+import useTable from "../../../components/UseTable/useTable";
+import Widget from "../../../components/Widget/Widget";
+import { searchNameByIdFromArray } from '../../../helpers/search';
 import { listCompanyTypes } from '../../../redux/actions/companyTypeActions';
+import { listCtaHours } from '../../../redux/actions/ctaHourActions';
+// redux actions
+import { deleteCtaPackageHourly, listCtaPackageHourlys, saveCtaPackageHourly } from '../../../redux/actions/ctaPackageHourlyActions';
+import { accessDeniedRoute } from '../../../routes/routeConstants';
+import { ResponseMessage } from "../../../themes/responseMessage";
+import CtaPackageHourlyForm from "./CtaPackageHourlyForm";
+
+
+
 
 
 
@@ -188,12 +188,12 @@ export default function CtaPackageHourlyScreen() {
                     (
                         ctaPackageHourlys.length >= 0 &&
                         <>
-                            <PageTitle title="Cta Packages Hourly" />
+                            <PageTitle title="Consultancy Packages (Hourly Support)" />
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Widget
-                                        title="Cta Packages Hourly List Table"
+                                        title="Packages List"
                                         upperTitle
                                         noBodyPadding
                                         setOpenPopup={setOpenPopup}
