@@ -48,4 +48,6 @@ const isClientUser = () =>{
     return (userInfo?.userRole === 4) ? true : false
     // return true
 }
+
+
 export { searchNameByIdFromArray, searchTitleByIdFromArray, getPermissions, getFilterDataByUser, isAdminUser, isClientUser };

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
 import CtaFunctionForm from "./CtaFunctionForm";
-import { Grid, Paper, TableBody, TableRow, TableCell, Chip } from '@material-ui/core';
+import { Grid, Paper, TableBody, TableRow, TableCell, Chip, makeStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import useTableServerSide from "../../../../components/UseTable/useTableServerSide";
 import Controls from "../../../../components/controls/Controls";
 import Notification from "../../../../components/Notification/Notification";
@@ -18,7 +19,7 @@ import { timeConverter } from '../../../../helpers/converter';
 
 // redux actions
 // import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
-import { listCtaFunctions, saveCtaFunction, saveCtaFunctionDocument, deleteCtaFunctionDocument } from '../../../../redux/actions/ctaFunctionActions';
+import { listCtaFunctions, saveCtaFunction, saveCtaFunctionDocument, deleteCtaFunctionDocument, detailsConsultationSummery } from '../../../../redux/actions/ctaFunctionActions';
 import { saveConsultancyAssignment } from '../../../../redux/actions/consultancyAssignmentActions';
 
 // import { detailsUser } from '../../../../redux/actions/userActions';
@@ -30,6 +31,16 @@ import { saveConsultancyAssignment } from '../../../../redux/actions/consultancy
 import { saveCtaPayment } from '../../../../redux/actions/ctaPaymentActions';
 import { saveCtaPurchaseHistory } from '../../../../redux/actions/ctaPurchaseHistoryActions';
 
+const useStyles = makeStyles(theme => ({
+    customPharagraph: {
+        ...theme?.customPharagraph
+    },
+    summeryArea:{
+        display:'flex',
+        justifyContent:'space-between'
+
+    }
+}))
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -45,17 +56,21 @@ const headCells = [
 ]
 
 export default function CtaFunctionScreen(props) {
-
+    const classes = useStyles();
     const { createOperation, updateOperation, deleteOperation, openPopup, setOpenPopup, showCtaFunctionDetail, setShowCtaFunctionDetail } = props;
 
     const userSignIn = useSelector(state => state.userSignin);
     //eslint-disable-next-line
     const { userInfo } = userSignIn;
 
+    //eslint-disable-next-line
+    const consultationSummeryDetails = useSelector(state => state.consultationSummeryDetails);
+    //eslint-disable-next-line
+    const { consultationSummery, loading: loadingConsultancySummeryDetails, error: errorConsultancySummeryDetails } = consultationSummeryDetails;
+
     // const userDetails = useSelector(state => state.userDetails);
     // //eslint-disable-next-line
     // const { user, loading: loadingUserdetail, error: errorUserDetail } = userDetails;
-
 
     const ctaPaymentSave = useSelector(state => state.ctaPaymentSave);
     //eslint-disable-next-line
@@ -425,6 +440,8 @@ export default function CtaFunctionScreen(props) {
     useEffect(() => {
         try {
             dispatch(listCtaFunctions(pageDataConfig))
+            dispatch(detailsConsultationSummery(userInfo))
+            
         } catch (e) {
             console.log(e)
         }
@@ -435,7 +452,8 @@ export default function CtaFunctionScreen(props) {
     }, [
         dispatch,
         pageDataConfig,
-        openPopup
+        openPopup,
+        userInfo
     ])
 
     return (
@@ -446,25 +464,52 @@ export default function CtaFunctionScreen(props) {
                     <>
                         <PageTitle
                             title="Consultancy"
-                            button={
-                                createOperation &&
-                                <div>
-                                    <Controls.Button
-                                        text='Schedule a consult'
-                                        // variant="outlined"
-                                        // startIcon={<AddIcon />}
-                                        onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
-                                    />
-                                </div>
-                            }
+                            // button={
+                            //     createOperation &&
+                            //     <div>
+                            //         <Controls.Button
+                            //             text='Schedule a consult'
+                            //             // variant="outlined"
+                            //             // startIcon={<AddIcon />}
+                            //             onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
+                            //         />
+                            //     </div>
+                            // }
                             showButton={!openPopup}
-
                         />
 
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
+                                {
+                                    !openPopup && 
+                                    <Widget
+                                        title={null}
+                                        upperTitle
+                                        disableWidgetMenu
+                                    >
+                                        <div className={classes.summeryArea}>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Consultation Type: </b> {consultationSummery?.consultationTypeName} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Total Purchased Hours: </b> {consultationSummery?.purchasedHours} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Total Used Hours: </b> {consultationSummery?.usedHours} </Typography>
+                                            <Typography paragraph className={classes.customPharagraph}><b>Total Remaining Houes: </b> {consultationSummery?.remainingHours} </Typography>
+                                            {
+                                                createOperation &&
+                                                <div>
+                                                    <Controls.Button
+                                                        text='Schedule a consult'
+                                                        // variant="outlined"
+                                                        // startIcon={<AddIcon />}
+                                                        onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
+                                                    />
+                                                </div>
+                                            }
+                                        </div>  
+                                    </Widget>
 
-
+                                }
+                                
+                            </Grid>
+                            <Grid item xs={12}>
                                 {
                                     showCtaFunctionDetail ?
                                         <Widget

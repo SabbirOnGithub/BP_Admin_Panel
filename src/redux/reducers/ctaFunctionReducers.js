@@ -20,6 +20,10 @@ import {
     CTA_FUNCTION_DOCUMENT_DELETE_REQUEST,
     CTA_FUNCTION_DOCUMENT_DELETE_SUCCESS,
     CTA_FUNCTION_DOCUMENT_DELETE_FAIL,
+    CONSULTANCY_SUMMERY_DETAILS_REQUEST,
+    CONSULTANCY_SUMMERY_DETAILS_SUCCESS,
+    CONSULTANCY_SUMMERY_DETAILS_FAIL
+
  } from '../constants/ctaFunctionConstants';
 
  function ctaFunctionListReducer(state={ctaFunctions:{}},action){
@@ -34,8 +38,6 @@ import {
             return state;
     }
 };
-
-
 
  // function ctaFunctionListReducer(state={ctaFunctions:[]},action){
 //     switch(action.type){
@@ -131,7 +133,18 @@ function ctaFunctionDocumentDeleteReducer(state={ctaFunctionDocument:{}},action)
     }
 };
 
-
+function consultationSummeryDetailsReducer(state={consultationSummery:{}},action){
+    switch(action.type){
+        case CONSULTANCY_SUMMERY_DETAILS_REQUEST:
+            return { loading:true };
+        case CONSULTANCY_SUMMERY_DETAILS_SUCCESS:
+            return { loading:false, consultationSummery:action.payload };
+        case CONSULTANCY_SUMMERY_DETAILS_FAIL:
+            return { loading:false, error: action.payload };
+        default:
+            return state;
+    }
+};
 export { 
     ctaFunctionListReducer, 
     ctaFunctionDetailsReducer,
@@ -139,7 +152,6 @@ export {
     ctaFunctionModelListReducer,
     ctaFunctionDocumentListReducer,
     ctaFunctionDocumentSaveReducer,
-    ctaFunctionDocumentDeleteReducer
-    
-    
+    ctaFunctionDocumentDeleteReducer,
+    consultationSummeryDetailsReducer
  }; 

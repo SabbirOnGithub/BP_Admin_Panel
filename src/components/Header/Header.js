@@ -31,7 +31,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions/userActions';
 import { useHistory } from "react-router-dom";
 
-import { isAdminUser } from '../../helpers/search';
+// import { isAdminUser } from '../../helpers/search';
 
 
 import { config } from "../../config";
@@ -110,7 +110,7 @@ export default function Header(props) {
             Best Practicify
           </Typography>
         <div className={classes.grow} />
-        {
+        {/* {
           isAdminUser(userInfo) ? null : 
           <Typography
             className={classNames(
@@ -123,9 +123,8 @@ export default function Header(props) {
             component={Link} to={'/admin/userProfile'}
           >
               {userInfo?.consultationTypeName}
-              {/* {userInfo?.companyTypeName} */}
           </Typography>
-        }
+        } */}
         {/* <div>{userInfo.consultationTypeName}</div> */}
         
         <IconButton

@@ -20,6 +20,10 @@ import {
     CTA_FUNCTION_DOCUMENT_DELETE_REQUEST,
     CTA_FUNCTION_DOCUMENT_DELETE_SUCCESS,
     CTA_FUNCTION_DOCUMENT_DELETE_FAIL,
+    CONSULTANCY_SUMMERY_DETAILS_REQUEST,
+    CONSULTANCY_SUMMERY_DETAILS_SUCCESS,
+    CONSULTANCY_SUMMERY_DETAILS_FAIL,
+
  } from '../constants/ctaFunctionConstants';
 import { axiosWithoutToken, axiosWithToken, axiosWithTokenAndMultipartData } from '../../helpers/axios';
 
@@ -152,7 +156,7 @@ const listCtaFunctionDocuments = (id) => async (dispatch)=>{
         }else{
             dispatch({ type: CTA_FUNCTION_DOCUMENT_LIST_FAIL, payload: data.message });
         }
-        console.log(data.data)
+        // console.log(data.data)
     }
     catch(error){
         dispatch({ type: CTA_FUNCTION_DOCUMENT_LIST_FAIL, payload: error.message });
@@ -204,6 +208,34 @@ const deleteCtaFunctionDocument = (id)=> async (dispatch, getState) =>{
     }
 };
 
+const detailsConsultationSummery = (item) => async (dispatch)=>{
+    const pageConfig = {     
+        "currentPage": -1,
+        "email": item?.email
+    }
+    if(item){
+        // console.log({item})
+        // with serverside paginations
+        try{
+            dispatch({type: CONSULTANCY_SUMMERY_DETAILS_REQUEST});
+            // const {data} = await axiosWithToken.post('/CtaFunction/search', item);
+            const {data} = await axiosWithToken.post('/Consultancy/ConsultationSummary', pageConfig);
+            // console.log(data)
+    
+            if (data.status === true) {
+                dispatch({ type: CONSULTANCY_SUMMERY_DETAILS_SUCCESS, payload: data.data ? data.data : {} });
+            }else{
+                dispatch({ type: CONSULTANCY_SUMMERY_DETAILS_FAIL, payload: data?.message });
+            }
+        }
+        catch(error){
+            dispatch({ type: CONSULTANCY_SUMMERY_DETAILS_FAIL, payload: error.message });
+        }
+    }
+    
+};
+
+
 export { 
     listCtaFunctions, 
     detailsCtaFunction, 
@@ -211,5 +243,6 @@ export {
     listCtaFunctionModels, 
     listCtaFunctionDocuments, 
     saveCtaFunctionDocument,
-    deleteCtaFunctionDocument 
+    deleteCtaFunctionDocument,
+    detailsConsultationSummery 
 }

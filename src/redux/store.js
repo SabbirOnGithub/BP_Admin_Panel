@@ -34,7 +34,7 @@ import { subMenuBusinessContextDeleteReducer, subMenuBusinessContextDetailsReduc
 import { ctaCategoryDetailsReducer, ctaCategoryDocumentSaveReducer, ctaCategoryListReducer, ctaCategoryModelListReducer, ctaCategorySaveReducer } from './reducers/ctaCategoryReducers';
 import { contactUsMessageListReducer } from './reducers/contactUsMessageReducers';
 import { paymentPackageDeleteReducer, paymentPackageDetailsReducer, paymentPackageListReducer, paymentPackageSaveReducer } from './reducers/paymentPackageReducers';
-import { ctaFunctionDetailsReducer, ctaFunctionDocumentDeleteReducer, ctaFunctionDocumentListReducer, ctaFunctionDocumentSaveReducer, ctaFunctionListReducer, ctaFunctionModelListReducer, ctaFunctionSaveReducer } from './reducers/ctaFunctionReducers';
+import { consultationSummeryDetailsReducer, ctaFunctionDetailsReducer, ctaFunctionDocumentDeleteReducer, ctaFunctionDocumentListReducer, ctaFunctionDocumentSaveReducer, ctaFunctionListReducer, ctaFunctionModelListReducer, ctaFunctionSaveReducer } from './reducers/ctaFunctionReducers';
 import { consultingTypeDeleteReducer, consultingTypeDetailsReducer, consultingTypeListReducer, consultingTypeSaveReducer } from './reducers/consultingTypeReducers';
 import { ctaHourDeleteReducer, ctaHourDetailsReducer, ctaHourListReducer, ctaHourSaveReducer } from './reducers/ctaHourReducers';
 import { ctaPackageDailyDeleteReducer, ctaPackageDailyDetailsReducer, ctaPackageDailyListReducer, ctaPackageDailySaveReducer } from './reducers/ctaPackageDailyReducers';
@@ -326,6 +326,8 @@ const reducer = combineReducers({
     consultancyAssignmentDetails: consultancyAssignmentDetailsReducer,
     consultancyAssignmentSave: consultancyAssignmentSaveReducer,
     consultancyAssignmentDelete: consultancyAssignmentDeleteReducer,
+    consultationSummeryDetails: consultationSummeryDetailsReducer,
+    
 });
 const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk))); 

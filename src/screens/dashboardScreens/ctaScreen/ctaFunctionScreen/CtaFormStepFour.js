@@ -270,7 +270,6 @@ export default function CtaFormStepFour(props) {
                                                 
                                                 {
                                                     ctaPackageMonthlyYearlys?.map(item => (
-                                                        <>
                                                         <Grid item md={4} xs={12} key={item.id}>
                                                             <Paper className={classes.paper}>
                                                                         
@@ -350,8 +349,6 @@ export default function CtaFormStepFour(props) {
                                                                 </div>
                                                             </Paper>
                                                         </Grid>
-                                                       
-                                                        </>
                                                     ))
                                                 }
                                             </Grid>
