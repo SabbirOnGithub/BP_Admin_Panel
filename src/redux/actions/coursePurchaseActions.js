@@ -16,12 +16,14 @@ import {
 import { axiosWithoutToken, axiosWithToken, axiosWithTokenAndMultipartData } from '../../helpers/axios';
 
 import {config} from "../../config";
+import {isAdminUser} from '../../helpers/search';
 
 const BASE_API_URL = config.BASE_API_URL
 
 
 const listCoursePurchases = (item) => async (dispatch)=>{
     if(item){
+        isAdminUser() && delete item?.email;
         // console.log(item)
         try{
             dispatch({type: COURSE_PURCHASE_LIST_REQUEST});
@@ -31,7 +33,7 @@ const listCoursePurchases = (item) => async (dispatch)=>{
             }else{
                 dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: data.message });
             }
-            // console.log(data.data)
+            // console.log(data)
         }
         catch(error){
             dispatch({ type: COURSE_PURCHASE_LIST_FAIL, payload: error.message });
