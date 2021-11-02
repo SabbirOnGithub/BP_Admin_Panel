@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
-import Loading from '../../../../components/Loading/Loading';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
-import { Form } from '../../../../components/UseForm/useForm';
-import StripeCheckout from "react-stripe-checkout";
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect } from 'react';
 import PaypalExpressBtn from "react-paypal-express-checkout";
+import StripeCheckout from "react-stripe-checkout";
+import Loading from '../../../../components/Loading/Loading';
+import { Form } from '../../../../components/UseForm/useForm';
+import { config } from "../../../../config";
 
-import {config} from "../../../../config";
 
 // const REACT_APP_STRIPE_KEY = config.REACT_APP_STRIPE_KEY
 const { REACT_APP_STRIPE_KEY, 
@@ -134,7 +134,10 @@ export default function CtaFormStepFive (props) {
                                 stripeKey={REACT_APP_STRIPE_KEY}
                                 token={(token)=>handleCtaPayment(token, createOrder, setActiveStep)}
                                 amount={createOrder?.rate * 100}
-                                name="Tesla Roadster"
+                                name="bestpracticify.co"
+                                billingAddress
+                                description="bestpracticify.co"
+                                locale="auto"
                             >
                                 <Button
                                     variant="contained"
