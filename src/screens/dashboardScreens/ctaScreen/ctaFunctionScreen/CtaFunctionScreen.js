@@ -138,7 +138,7 @@ export default function CtaFunctionScreen(props) {
         pageDataConfig,
         setPageDataConfig
     } = useTableServerSide(ctaFunctions?.item1 || [], headCells, filterFn, ctaFunctions?.item2);
-
+    
     const dispatch = useDispatch();
     // search from table
     const handleSearch = e => {
@@ -241,10 +241,10 @@ export default function CtaFunctionScreen(props) {
     // addOrEdit(formatData, resetForm, values,  activeStep, setActiveStep, setValues);
     const addOrEdit = async (item, resetForm, values, activeStep, setActiveStep) => {
         // resetForm()
-        // console.log(item)
+        console.log(item)
         return saveItem(item)
                 .then((res) => {
-                    // console.log(res)
+                    console.log(res)
                     if (res?.status === true) {
                         resetForm()
                         setNotify({

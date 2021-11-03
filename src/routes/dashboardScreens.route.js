@@ -66,6 +66,7 @@ import TechnologyPartnerScreen from '../screens/dashboardScreens/technologyPartn
 import TechnologyServiceScreen from '../screens/dashboardScreens/technologyServiceScreen/TechnologyServiceScreen';
 import TechStackScreen from '../screens/dashboardScreens/techStackScreen/TechStackScreen';
 import EmbaddedDashboardScreen from '../screens/dashboardScreens/embeddedDashboardScreen/EmbaddedDashboardScreen';
+import ConsultancyReportScreen from '../screens/dashboardScreens/consultancyReportScreen/ConsultancyReportScreen';
 
 
 import { detailsRoleResource } from '../redux/actions/roleResourceActions';
@@ -154,6 +155,7 @@ const DashboardScreensRoute = (props) => {
       <Route exact path={`${props.match.path}/technologyService`} component={TechnologyServiceScreen} />
       <Route exact path={`${props.match.path}/techStack`} component={TechStackScreen} />
       <Route exact path={`${props.match.path}/embaddedDashboard`} component={EmbaddedDashboardScreen} />
+      <Route exact path={`${props.match.path}/consultancyReport`} component={ConsultancyReportScreen} />
 
       {/* role routes */}
       <Route exact path={`${props.match.path}/role`} component={RoleScreen} />

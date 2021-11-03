@@ -268,6 +268,9 @@ const structure = [
   {
     id: 36, label: "Embadded dashboard", link: "/admin/embaddedDashboard", icon: <SubscriptionsIcon />,
   },
+  {
+    id: 37, label: "Consultancy dashboard", link: "/admin/consultancyReport", icon: <SubscriptionsIcon />,
+  },
 ];
 
 
