@@ -16,6 +16,7 @@ import { ResponseMessage } from "../../../../themes/responseMessage";
 import { searchTitleByIdFromArray } from '../../../../helpers/search';
 import { ctaFunctionStatus } from '../../../../helpers/staticData';
 import { timeConverter } from '../../../../helpers/converter';
+import { isAdminUser } from '../../../../helpers/search';
 
 // redux actions
 // import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
@@ -35,9 +36,9 @@ const useStyles = makeStyles(theme => ({
     customPharagraph: {
         ...theme?.customPharagraph
     },
-    summeryArea:{
-        display:'flex',
-        justifyContent:'space-between'
+    summeryArea: {
+        display: 'flex',
+        justifyContent: 'space-between'
 
     }
 }))
@@ -97,7 +98,7 @@ export default function CtaFunctionScreen(props) {
     const { ctaFunctions, loading: loadingCtaFunctions, error: errorCtaFunctions } = ctaFunctionList;
     // 1-superadmin, 2-admin, 3- member, 4- client 
     // const ctaFunctionsFilterByUser = (userInfo?.userRole === 1 || userInfo?.userRole === 2) ? ctaFunctions : (userInfo?.userRole === 3 ? [] : ctaFunctions.filter(item=>item.email === userInfo.email))
-    
+
     const ctaFunctionSave = useSelector(state => state.ctaFunctionSave);
     //eslint-disable-next-line
     const { loading: loadingCtaFunctionSave, success: successCtaFunctionSave, error: errorCtaFunctionSave, ctaFunction: ctaFunctionSaveData } = ctaFunctionSave;
@@ -105,7 +106,7 @@ export default function CtaFunctionScreen(props) {
     const ctaFunctionDocumentSave = useSelector(state => state.ctaFunctionDocumentSave);
     //eslint-disable-next-line
     const { loading: loadingCtaFunctionDocumentSave, success: successCtaFunctionDocumentSave, error: errorCtaFunctionDocumentSave, ctaFunction: ctaFunctionDocumentSaveData } = ctaFunctionDocumentSave;
-    
+
     const consultancyAssignmentSave = useSelector(state => state.consultancyAssignmentSave);
     //eslint-disable-next-line
     const { loading: loadingConsultancyAssignmentSave, success: successConsultancyAssignmentSave, error: errorConsultancyAssignmentSave } = consultancyAssignmentSave;
@@ -138,7 +139,7 @@ export default function CtaFunctionScreen(props) {
         pageDataConfig,
         setPageDataConfig
     } = useTableServerSide(ctaFunctions?.item1 || [], headCells, filterFn, ctaFunctions?.item2);
-    
+
     const dispatch = useDispatch();
     // search from table
     const handleSearch = e => {
@@ -148,38 +149,38 @@ export default function CtaFunctionScreen(props) {
         // --------------------
         // server side search
         // --------------------
-            setPageDataConfig(prevState =>{
-                return { ...prevState,keyword:recievedSearchValue}
-            })
+        setPageDataConfig(prevState => {
+            return { ...prevState, keyword: recievedSearchValue }
+        })
         // --------------------
         // client side search
         // --------------------
-            // setFilterFn({
-            //     fn: items => {
-            //         if (recievedSearchValue) {
-            //             return items.filter(x => {
-            //                 const makeStringInRow = (
-            //                     (x?.firstName && x?.firstName) +
-            //                     (x?.lastName && (' ' + x?.lastName)) +
-            //                     (x?.companyName && (' ' + x?.companyName)) +
-            //                     (x?.email && (' ' + x?.email)) +
-            //                     (x?.phone && (' ' + x?.phone))
-            //                 )?.toString()?.toLowerCase();
-            //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
-            //             });
-            //         }
-            //         else {
-            //             return items;
-            //         }
-            //     }
-            // });
+        // setFilterFn({
+        //     fn: items => {
+        //         if (recievedSearchValue) {
+        //             return items.filter(x => {
+        //                 const makeStringInRow = (
+        //                     (x?.firstName && x?.firstName) +
+        //                     (x?.lastName && (' ' + x?.lastName)) +
+        //                     (x?.companyName && (' ' + x?.companyName)) +
+        //                     (x?.email && (' ' + x?.email)) +
+        //                     (x?.phone && (' ' + x?.phone))
+        //                 )?.toString()?.toLowerCase();
+        //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
+        //             });
+        //         }
+        //         else {
+        //             return items;
+        //         }
+        //     }
+        // });
         // --------------------
         // client side search end
         // --------------------
     }
     // add/update promise
     const saveItem = (item, id) => new Promise((resolve, reject) => {
-            dispatch(saveCtaFunction(item))
+        dispatch(saveCtaFunction(item))
             .then(res => {
                 resolve(res)
             })
@@ -192,14 +193,14 @@ export default function CtaFunctionScreen(props) {
     // add/update promise
     const saveAssignItem = (item, id) => new Promise((resolve, reject) => {
         dispatch(saveConsultancyAssignment(item))
-        .then(res => {
-            resolve(res)
-        })
-        .catch(err => {
-            console.log('err occured' + err)
-            reject(err)
-        })
-})
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('err occured' + err)
+                reject(err)
+            })
+    })
 
     const addOrEditCtaFunctionDocument = (item, resetForm) => {
         // console.log(item)
@@ -243,79 +244,79 @@ export default function CtaFunctionScreen(props) {
         // resetForm()
         console.log(item)
         return saveItem(item)
-                .then((res) => {
-                    console.log(res)
-                    if (res?.status === true) {
-                        resetForm()
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submitted Successfully',
-                            type: 'success'
-                        })
-                        setActiveStep && setActiveStep(activeStep + 1)
-                        delete item.id
-                        setRecordForEdit({
-                            ...values,
-                            id: res.data
-                        })
-                    } else {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Submition Failed',
-                            type: 'warning'
-                        })
-                    }
-                    return res
+            .then((res) => {
+                console.log(res)
+                if (res?.status === true) {
+                    resetForm()
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                    setActiveStep && setActiveStep(activeStep + 1)
+                    delete item.id
+                    setRecordForEdit({
+                        ...values,
+                        id: res.data
+                    })
+                } else {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
+                return res
 
-                })
-                .catch(err => {
-                    console.log('err occured' + err)
-                })
+            })
+            .catch(err => {
+                console.log('err occured' + err)
+            })
 
     }
-    const addOrEditConsultancyAssign = async (item, resetForm,setRecordForEdit, setOpenPopupForAssign) => {
-            return saveAssignItem(item)
-                    .then((res) => {
-                        if(res?.status){
-                            resetForm();
-                            setRecordForEdit(null);
-                            setOpenPopupForAssign(false);
-                            setNotify({
-                                isOpen: true,
-                                message: 'Submitted Successfully',
-                                type: 'success'
-                            })
-                        }else{
-                            setNotify({
-                                isOpen: true,
-                                message: 'Submition Failed',
-                                type: 'warning'
-                            })
-                        }
-                        
-                        // if (successConsultancyAssignmentSave) {
-                        //     setNotify({
-                        //         isOpen: true,
-                        //         message: 'Submitted Successfully',
-                        //         type: 'success'
-                        //     })
-                        // }
+    const addOrEditConsultancyAssign = async (item, resetForm, setRecordForEdit, setOpenPopupForAssign) => {
+        return saveAssignItem(item)
+            .then((res) => {
+                if (res?.status) {
+                    resetForm();
+                    setRecordForEdit(null);
+                    setOpenPopupForAssign(false);
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submitted Successfully',
+                        type: 'success'
+                    })
+                } else {
+                    setNotify({
+                        isOpen: true,
+                        message: 'Submition Failed',
+                        type: 'warning'
+                    })
+                }
 
-                        // if (errorConsultancyAssignmentSave) {
-                        //     setNotify({
-                        //         isOpen: true,
-                        //         message: 'Submition Failed',
-                        //         type: 'warning'
-                        //     })
-                        // }
-                        return res
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    })
+                // if (successConsultancyAssignmentSave) {
+                //     setNotify({
+                //         isOpen: true,
+                //         message: 'Submitted Successfully',
+                //         type: 'success'
+                //     })
+                // }
+
+                // if (errorConsultancyAssignmentSave) {
+                //     setNotify({
+                //         isOpen: true,
+                //         message: 'Submition Failed',
+                //         type: 'warning'
+                //     })
+                // }
+                return res
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
     }
-    
+
     const handleCtaPayment = (token, item, resetActiveStep) => {
         // const tokenId = token?.id;
         // console.log(item)
@@ -441,7 +442,7 @@ export default function CtaFunctionScreen(props) {
         try {
             dispatch(listCtaFunctions(pageDataConfig))
             dispatch(detailsConsultationSummery(userInfo))
-            
+
         } catch (e) {
             console.log(e)
         }
@@ -461,217 +462,217 @@ export default function CtaFunctionScreen(props) {
         <>
             {
                 // (openPopup === false) ? <Loading /> :
-                    <>
-                        <PageTitle
-                            title="Consultancy"
-                            // button={
-                            //     createOperation &&
-                            //     <div>
-                            //         <Controls.Button
-                            //             text='Schedule a consult'
-                            //             // variant="outlined"
-                            //             // startIcon={<AddIcon />}
-                            //             onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
-                            //         />
-                            //     </div>
-                            // }
-                            showButton={!openPopup}
-                        />
+                <>
+                    <PageTitle
+                        title="Consultancy"
+                        // button={
+                        //     createOperation &&
+                        //     <div>
+                        //         <Controls.Button
+                        //             text='Schedule a consult'
+                        //             // variant="outlined"
+                        //             // startIcon={<AddIcon />}
+                        //             onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
+                        //         />
+                        //     </div>
+                        // }
+                        showButton={!openPopup}
+                    />
 
-                        <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                {
-                                    !openPopup && 
+                    <Grid container spacing={4}>
+                        <Grid item xs={12}>
+                            {
+                                !openPopup && !isAdminUser() &&
+                                <Widget
+                                    title={null}
+                                    upperTitle
+                                    disableWidgetMenu
+                                >
+                                    <div className={classes.summeryArea}>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Consultation Type: </b> {consultationSummery?.consultationTypeName} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Total Purchased Hours: </b> {consultationSummery?.purchasedHours} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Total Used Hours: </b> {consultationSummery?.usedHours} </Typography>
+                                        <Typography paragraph className={classes.customPharagraph}><b>Total Remaining Houes: </b> {consultationSummery?.remainingHours} </Typography>
+                                        {
+                                            createOperation &&
+                                            <div>
+                                                <Controls.Button
+                                                    text='Schedule a consult'
+                                                    // variant="outlined"
+                                                    // startIcon={<AddIcon />}
+                                                    onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
+                                                />
+                                            </div>
+                                        }
+                                    </div>
+                                </Widget>
+
+                            }
+
+                        </Grid>
+                        <Grid item xs={12}>
+                            {
+                                showCtaFunctionDetail ?
                                     <Widget
-                                        title={null}
+                                        title={recordForDetails?.isCategory ? "Cta Category Detail" : "Cta Function Detail"}
                                         upperTitle
+                                        // noBodyPadding
                                         disableWidgetMenu
+                                        closePopup={() => setShowCtaFunctionDetail(false)}
+                                        closePopUpButtonText='Go back to list'
                                     >
-                                        <div className={classes.summeryArea}>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Consultation Type: </b> {consultationSummery?.consultationTypeName} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Total Purchased Hours: </b> {consultationSummery?.purchasedHours} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Total Used Hours: </b> {consultationSummery?.usedHours} </Typography>
-                                            <Typography paragraph className={classes.customPharagraph}><b>Total Remaining Houes: </b> {consultationSummery?.remainingHours} </Typography>
-                                            {
-                                                createOperation &&
-                                                <div>
-                                                    <Controls.Button
-                                                        text='Schedule a consult'
-                                                        // variant="outlined"
-                                                        // startIcon={<AddIcon />}
-                                                        onClick={() => { setShowCtaFunctionDetail(false); setOpenPopup(true); setRecordForEdit(null); }}
-                                                    />
-                                                </div>
-                                            }
-                                        </div>  
-                                    </Widget>
-
-                                }
-                                
-                            </Grid>
-                            <Grid item xs={12}>
-                                {
-                                    showCtaFunctionDetail ?
-                                        <Widget
-                                            title={recordForDetails?.isCategory ? "Cta Category Detail" : "Cta Function Detail"}
+                                        <CtaFunctionDetailScreen
+                                            recordForDetails={recordForDetails}
+                                            // ctaFunctionModels={ctaFunctionModels}
+                                            // setOpenPopup={setShowCtaFunctionDetail}
+                                            createOperation={createOperation} // ctaScreen create permission for user
+                                            updateOperation={updateOperation}
+                                            deleteOperation={deleteOperation}
+                                            addOrEdit={addOrEdit}
+                                            successCtaFunctionSave={successCtaFunctionSave}
+                                            loadingCtaFunctionSave={loadingCtaFunctionSave}
+                                            addOrEditConsultancyAssign={addOrEditConsultancyAssign}
+                                        />
+                                    </Widget> :
+                                    (openPopup ?
+                                        (<Widget
+                                            title="Schedule a consult"
                                             upperTitle
                                             // noBodyPadding
                                             disableWidgetMenu
-                                            closePopup={() => setShowCtaFunctionDetail(false)}
-                                            closePopUpButtonText='Go back to list'
+                                            closePopup={() => { setOpenPopup(false); setRecordForEdit(null) }}
                                         >
-                                            <CtaFunctionDetailScreen
-                                                recordForDetails={recordForDetails}
-                                                // ctaFunctionModels={ctaFunctionModels}
-                                                // setOpenPopup={setShowCtaFunctionDetail}
-                                                createOperation={createOperation} // ctaScreen create permission for user
-                                                updateOperation = {updateOperation}
-                                                deleteOperation ={deleteOperation}
+                                            <CtaFunctionForm
+                                                recordForEdit={recordForEdit}
+                                                // setRecordForEdit = {setRecordForEdit}
                                                 addOrEdit={addOrEdit}
-                                                successCtaFunctionSave ={successCtaFunctionSave}
-                                                loadingCtaFunctionSave ={loadingCtaFunctionSave}
-                                                addOrEditConsultancyAssign={addOrEditConsultancyAssign}
-                                            />
-                                        </Widget> :
-                                        (openPopup ?
-                                            (<Widget
-                                                title="Schedule a consult"
-                                                upperTitle
-                                                // noBodyPadding
-                                                disableWidgetMenu
-                                                closePopup={() => { setOpenPopup(false); setRecordForEdit(null) }}
-                                            >
-                                                <CtaFunctionForm
-                                                    recordForEdit={recordForEdit}
-                                                    // setRecordForEdit = {setRecordForEdit}
-                                                    addOrEdit={addOrEdit}
-                                                    addOrEditCtaFunctionDocument={addOrEditCtaFunctionDocument}
-                                                    setOpenPopup={setOpenPopup}
-                                                    ctaFunctionSaveData={ctaFunctionSaveData}
-                                                    setConfirmDialog={setConfirmDialog}
-                                                    onDeleteCtaFunctionDocument={onDeleteCtaFunctionDocument}
-                                                    loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
-                                                    loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
-                                                    loadingCtaFunctionSave={loadingCtaFunctionSave}
-                                                    // ctaPackageHourlys={ctaPackageHourlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
-                                                    // loadingCtaPackageHourlys={loadingCtaPackageHourlys}
-                                                    // ctaPackageDailys={ctaPackageDailys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
-                                                    // loadingCtaPackageDailys={loadingCtaPackageDailys}
-                                                    // ctaPackageMonthlyYearlys={ctaPackageMonthlyYearlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
-                                                    // loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
-                                                    handleCtaPayment={handleCtaPayment}
-                                                    loadingCtaPaymentSave={loadingCtaPaymentSave}
-                                                    successCtaPaymentSave={successCtaPaymentSave}
-                                                    loadingCtaPurchaseHistorySave={loadingCtaPurchaseHistorySave}
-                                                    successCtaPurchaseHistorySave={successCtaPurchaseHistorySave}
-
-                                                />
-                                            </Widget>
-                                            )
-                                            :
-
-                                            <Widget
-                                                title="Consultancy List Table"
-                                                upperTitle
-                                                noBodyPadding
+                                                addOrEditCtaFunctionDocument={addOrEditCtaFunctionDocument}
                                                 setOpenPopup={setOpenPopup}
-                                                setRecordForEdit={setRecordForEdit}
-                                                threeDotDisplay={true}
-                                                disableWidgetMenu
-                                                addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                                                buttonText='Schedule a consult'
-                                                createOperation={false}
-                                                handleSearch={handleSearch}
-                                                searchLabel='Search here..'
-                                                searchValue={searchValue}
+                                                ctaFunctionSaveData={ctaFunctionSaveData}
+                                                setConfirmDialog={setConfirmDialog}
+                                                onDeleteCtaFunctionDocument={onDeleteCtaFunctionDocument}
+                                                loadingDeleteCtaFunctionDocument={loadingDeleteCtaFunctionDocument}
+                                                loadingCtaFunctionDocumentSave={loadingCtaFunctionDocumentSave}
+                                                loadingCtaFunctionSave={loadingCtaFunctionSave}
+                                                // ctaPackageHourlys={ctaPackageHourlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
+                                                // loadingCtaPackageHourlys={loadingCtaPackageHourlys}
+                                                // ctaPackageDailys={ctaPackageDailys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
+                                                // loadingCtaPackageDailys={loadingCtaPackageDailys}
+                                                // ctaPackageMonthlyYearlys={ctaPackageMonthlyYearlys?.filter(item => item.companyTypeId === userInfo?.companyTypeId)}
+                                                // loadingCtaPackageMonthlyYearlys={loadingCtaPackageMonthlyYearlys}
+                                                handleCtaPayment={handleCtaPayment}
+                                                loadingCtaPaymentSave={loadingCtaPaymentSave}
+                                                successCtaPaymentSave={successCtaPaymentSave}
+                                                loadingCtaPurchaseHistorySave={loadingCtaPurchaseHistorySave}
+                                                successCtaPurchaseHistorySave={successCtaPurchaseHistorySave}
 
-                                            >
-                                                <Paper style={{
-                                                    overflow: "auto",
-                                                    backgroundColor: "transparent",
+                                            />
+                                        </Widget>
+                                        )
+                                        :
 
-                                                }}>
-                                                    <TblContainer>
-                                                        <TblHead />
-                                                        {
+                                        <Widget
+                                            title="Consultancy List Table"
+                                            upperTitle
+                                            noBodyPadding
+                                            setOpenPopup={setOpenPopup}
+                                            setRecordForEdit={setRecordForEdit}
+                                            threeDotDisplay={true}
+                                            disableWidgetMenu
+                                            addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                                            buttonText='Schedule a consult'
+                                            createOperation={false}
+                                            handleSearch={handleSearch}
+                                            searchLabel='Search here..'
+                                            searchValue={searchValue}
 
-                                                            <TableBody>
+                                        >
+                                            <Paper style={{
+                                                overflow: "auto",
+                                                backgroundColor: "transparent",
 
-                                                                {loadingCtaFunctions ?
-                                                                    <TableRow key={0}>
-                                                                        <TableCell style={{ borderBottom: 'none' }}>
-                                                                            <Loading />
-                                                                        </TableCell>
+                                            }}>
+                                                <TblContainer>
+                                                    <TblHead />
+                                                    {
 
-                                                                    </TableRow>
-                                                                    :
-                                                                    recordsAfterPagingAndSorting().map(item =>
-                                                                    (<TableRow key={item.id}>
-                                                                        <TableCell>{item.id}</TableCell>
-                                                                        <TableCell>
-                                                                            {/* <span><b>Name:</b> {(item?.firstName && item?.firstName + ' ')  + (item?.lastName && item?.lastName)} </span> <br /> */}
-                                                                            <span><b>Name:</b> {Boolean(item?.firstName) && item?.firstName} </span> <br />
-                                                                            <span><b>Email:</b> {item?.email} </span> <br />
-                                                                            <span><b>Phone: </b>{item?.phone} </span> <br />
-                                                                        </TableCell>
-                                                                        {/* <TableCell>{item.name}</TableCell> */}
-                                                                        <TableCell>
-                                                                            <span><b>Company name:</b> {item?.companyName} </span> <br />
-                                                                            <span><b>Bussiness Industry:</b> {item?.businessIndustry} </span> <br />
-                                                                            <span><b>Company type: </b>{item?.companyTypeName} </span> <br />
-                                                                            <span><b>Company size: </b>{item?.companySizeName} </span> <br />
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            {
-                                                                                item?.totalHour ? <span><b>Total Hours:</b> {timeConverter(item?.totalHour)}  <br /> </span> : <span>Not applicable</span>
-                                                                            }
-                                                                            {
-                                                                                item?.hourUsed ? <span><b>Used Hours:</b> {timeConverter(item?.hourUsed)} <br /> </span> : null
-                                                                            }
-                                                                           {
-                                                                               item?.hourRemaining && <span><b>Remaining Hours: </b>{ timeConverter(item?.hourRemaining)} <br /></span> 
-                                                                           }
-                                                                             
-                                                                            
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Chip 
-                                                                                label= {item?.status ? searchTitleByIdFromArray(ctaFunctionStatus, item?.status) : "No status found"}
-                                                                                color="secondary"
-                                                                                style={{fontSize:"1.6rem"}}
-                                                                            />
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Controls.ActionButton
-                                                                                color="primary"
-                                                                                onClick={() => { openInDetails(item) }}>
-                                                                                <DetailsIcon fontSize="small" />
-                                                                            </Controls.ActionButton>
-                                                                        </TableCell>
-                                                                    </TableRow>)
-                                                                    )
-                                                                }
-                                                            </TableBody>
-                                                        }
-                                                    </TblContainer>
+                                                        <TableBody>
 
-                                                    <TblPagination />
-                                                </Paper>
-                                                <Notification
-                                                    notify={notify}
-                                                    setNotify={setNotify}
-                                                />
-                                                <ConfirmDialog
-                                                    confirmDialog={confirmDialog}
-                                                    setConfirmDialog={setConfirmDialog}
-                                                />
-                                            </Widget>
+                                                            {loadingCtaFunctions ?
+                                                                <TableRow key={0}>
+                                                                    <TableCell style={{ borderBottom: 'none' }}>
+                                                                        <Loading />
+                                                                    </TableCell>
 
-                                        )}
+                                                                </TableRow>
+                                                                :
+                                                                recordsAfterPagingAndSorting().map(item =>
+                                                                (<TableRow key={item.id}>
+                                                                    <TableCell>{item.id}</TableCell>
+                                                                    <TableCell>
+                                                                        {/* <span><b>Name:</b> {(item?.firstName && item?.firstName + ' ')  + (item?.lastName && item?.lastName)} </span> <br /> */}
+                                                                        <span><b>Name:</b> {Boolean(item?.firstName) && item?.firstName} </span> <br />
+                                                                        <span><b>Email:</b> {item?.email} </span> <br />
+                                                                        <span><b>Phone: </b>{item?.phone} </span> <br />
+                                                                    </TableCell>
+                                                                    {/* <TableCell>{item.name}</TableCell> */}
+                                                                    <TableCell>
+                                                                        <span><b>Company name:</b> {item?.companyName} </span> <br />
+                                                                        <span><b>Bussiness Industry:</b> {item?.businessIndustry} </span> <br />
+                                                                        <span><b>Company type: </b>{item?.companyTypeName} </span> <br />
+                                                                        <span><b>Company size: </b>{item?.companySizeName} </span> <br />
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        {
+                                                                            item?.totalHour ? <span><b>Total Hours:</b> {timeConverter(item?.totalHour)}  <br /> </span> : <span>Not applicable</span>
+                                                                        }
+                                                                        {
+                                                                            item?.hourUsed ? <span><b>Used Hours:</b> {timeConverter(item?.hourUsed)} <br /> </span> : null
+                                                                        }
+                                                                        {
+                                                                            item?.hourRemaining && <span><b>Remaining Hours: </b>{timeConverter(item?.hourRemaining)} <br /></span>
+                                                                        }
 
-                            </Grid>
+
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Chip
+                                                                            label={item?.status ? searchTitleByIdFromArray(ctaFunctionStatus, item?.status) : "No status found"}
+                                                                            color="secondary"
+                                                                            style={{ fontSize: "1.6rem" }}
+                                                                        />
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Controls.ActionButton
+                                                                            color="primary"
+                                                                            onClick={() => { openInDetails(item) }}>
+                                                                            <DetailsIcon fontSize="small" />
+                                                                        </Controls.ActionButton>
+                                                                    </TableCell>
+                                                                </TableRow>)
+                                                                )
+                                                            }
+                                                        </TableBody>
+                                                    }
+                                                </TblContainer>
+
+                                                <TblPagination />
+                                            </Paper>
+                                            <Notification
+                                                notify={notify}
+                                                setNotify={setNotify}
+                                            />
+                                            <ConfirmDialog
+                                                confirmDialog={confirmDialog}
+                                                setConfirmDialog={setConfirmDialog}
+                                            />
+                                        </Widget>
+
+                                    )}
+
                         </Grid>
-                    </>
+                    </Grid>
+                </>
             }
         </>
     )
