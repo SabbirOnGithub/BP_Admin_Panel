@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import CtaFunctionStatusUpdateForm from "./CtaFunctionStatusUpdateForm";
-import ConsultancyAssignmentForm from "./ConsultancyAssignmentForm";
-import { useSelector, useDispatch } from 'react-redux';
-import { Grid, makeStyles, Paper, Chip } from '@material-ui/core';
-import Controls from "../../../../components/controls/Controls";
-import Popup from "../../../../components/Popup/Popup";
+import { Chip, Grid, makeStyles, Paper } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-// import useTable from "../../../components/UseTable/useTable";
-import { searchTitleByIdFromArray } from '../../../../helpers/search';
-import { searchNameByIdFromArray } from '../../../../helpers/search';
-import { timeConverter } from '../../../../helpers/converter';
-import Loading from '../../../../components/Loading/Loading';
-import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
-import { detailsCtaFunction } from '../../../../redux/actions/ctaFunctionActions';
-import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
-import { listCtaCategoryModels } from '../../../../redux/actions/ctaCategoryActions';
-import { ctaFunctionStatus } from '../../../../helpers/staticData';
-import { isClientUser } from '../../../../helpers/search'
-
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Controls from "../../../../components/controls/Controls";
 import DocumentsLink from '../../../../components/DocumentsLink/DocumentsLink';
+import Loading from '../../../../components/Loading/Loading';
+import Popup from "../../../../components/Popup/Popup";
+import { timeConverter } from '../../../../helpers/converter';
+// import useTable from "../../../components/UseTable/useTable";
+import { isClientUser, searchNameByIdFromArray, searchTitleByIdFromArray } from '../../../../helpers/search';
+import { ctaFunctionStatus } from '../../../../helpers/staticData';
+import { listCtaCategoryModels } from '../../../../redux/actions/ctaCategoryActions';
+import { detailsCtaFunction, listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 import { listAcceptClientUsers } from '../../../../redux/actions/userActions';
+import ConsultancyReceiveHistoryScreen from '../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen';
+import ConsultancyAssignmentForm from "./ConsultancyAssignmentForm";
+import CtaFunctionStatusUpdateForm from "./CtaFunctionStatusUpdateForm";
+
 
 const useStyles = makeStyles(theme => ({
     detailsContent: {
@@ -318,10 +315,10 @@ export default function CtaFunctionDetailScreen(props) {
                                             </>
                                         }
 
-
-
-                                        {
-                                            ctaFunction?.hourRemaining && <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> {timeConverter(ctaFunction?.hourRemaining)} </Typography>
+                                        { ctaFunction?.totalHour  &&
+                                            <Typography paragraph className={classes.customPharagraph}><b>Remaining Hours: </b> 
+                                                {ctaFunction?.hourRemaining ? timeConverter(ctaFunction?.hourRemaining) : timeConverter(0)} 
+                                            </Typography> 
                                         }
                                         {
                                             ctaFunction?.hourUsed && <Typography paragraph className={classes.customPharagraph}><b>Used Hours: </b> {timeConverter(ctaFunction?.hourUsed)} </Typography>

@@ -6,7 +6,8 @@ const timeConverter = (givenMinutes) => {
         let minutes = (hours - rhours) * 60;
         let rminutes = Math.round(minutes);
         // return num + " minutes = " + rhours + " hour(s) and " + rminutes + " minute(s).";
-        return rhours + " hour(s) and " + rminutes + " minute(s).";
+        // return rhours + " hour(s) and " + rminutes + " minute(s).";
+        return rhours + ":" + rminutes + " hour(s).";
     }else{
         return 'invalid data'
     }
@@ -14,3 +15,4 @@ const timeConverter = (givenMinutes) => {
 }
 
 export { timeConverter };
+
