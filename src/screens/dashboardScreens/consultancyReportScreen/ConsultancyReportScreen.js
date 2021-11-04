@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import ConsultancyReportForm from "./ConsultancyReportForm";
+import ConsultancyReportSearchForm from "./ConsultancyReportSearchForm";
 import CtaFunctionDetailScreen from "../ctaScreen/ctaFunctionScreen/CtaFunctionDetailScreen";
 import { Grid, Paper, TableBody, TableRow, TableCell } from '@material-ui/core';
 // import useTable from "../../../components/UseTable/useTable";
@@ -25,6 +25,13 @@ import { accessDeniedRoute } from '../../../routes/routeConstants';
 import { listConsultancyReports } from '../../../redux/actions/consultancyReportActions';
 import { saveCtaFunction } from '../../../redux/actions/ctaFunctionActions';
 import { saveConsultancyAssignment } from '../../../redux/actions/consultancyAssignmentActions';
+
+// const filterOptions = [
+//     { id: 'today', title: 'Today' },
+//     { id: 'lastWeek', title: 'Last Week' },
+//     { id: 'last15days', title: 'Last 15 days' },
+//     { id: 'lastMonth', title: 'Last Month' },
+// ]
 
 const headCells = [
     { id: 'id', label: 'Id' },
@@ -79,7 +86,7 @@ export default function ConsultancyReportScreen() {
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
-    const [searchValue, setSearchValue] = useState("")
+    // const [searchValue, setSearchValue] = useState("")
 
     //eslint-disable-next-line
     const {
@@ -93,41 +100,15 @@ export default function ConsultancyReportScreen() {
 
     const dispatch = useDispatch();
     // search from table
-    const handleSearch = e => {
-        e.persist();
-        const recievedSearchValue = e.target.value;
-        setSearchValue(recievedSearchValue);
+    const handleSearch = (item, resetForm) => {
+        console.log(item)
         // --------------------
         // server side search
         // --------------------
         setPageDataConfig(prevState => {
-            return { ...prevState, keyword: recievedSearchValue }
+            return { ...prevState, ...item }
         })
-        // --------------------
-        // client side search
-        // --------------------
-        // setFilterFn({
-        //     fn: items => {
-        //         if (recievedSearchValue) {
-        //             return items.filter(x => {
-        //                 const makeStringInRow = (
-        //                     (x?.firstName && x?.firstName) +
-        //                     (x?.lastName && (' ' + x?.lastName)) +
-        //                     (x?.companyName && (' ' + x?.companyName)) +
-        //                     (x?.email && (' ' + x?.email)) +
-        //                     (x?.phone && (' ' + x?.phone))
-        //                 )?.toString()?.toLowerCase();
-        //                 return makeStringInRow.indexOf(recievedSearchValue.toString().toLowerCase()) > -1;
-        //             });
-        //         }
-        //         else {
-        //             return items;
-        //         }
-        //     }
-        // });
-        // --------------------
-        // client side search end
-        // --------------------
+        return resetForm();
     }
 
     const openInDetails = item => {
@@ -307,12 +288,16 @@ export default function ConsultancyReportScreen() {
                                                 disableWidgetMenu
                                                 addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                                 createOperation={createOperation}
-                                                handleSearch={handleSearch}
-                                                searchLabel='Search here..'
-                                                searchValue={searchValue}
+                                                // handleSearch={handleSearch}
+                                                // searchLabel='Search here..'
+                                                // searchValue={searchValue}
                                             >
                                                 <>
+
                                                     <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>
+                                                        <ConsultancyReportSearchForm 
+                                                            handleSearch = {handleSearch}
+                                                        />
                                                         <TblContainer>
                                                             <TblHead />
                                                             <TableBody>
