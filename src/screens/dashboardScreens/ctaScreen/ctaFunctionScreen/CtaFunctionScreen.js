@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from 'react'
-import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
-import CtaFunctionForm from "./CtaFunctionForm";
-import { Grid, Paper, TableBody, TableRow, TableCell, Chip, makeStyles } from '@material-ui/core';
+import { Chip, Grid, makeStyles, Paper, TableBody, TableCell, TableRow } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import useTableServerSide from "../../../../components/UseTable/useTableServerSide";
-import Controls from "../../../../components/controls/Controls";
-import Notification from "../../../../components/Notification/Notification";
-import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
-import PageTitle from "../../../../components/PageTitle/PageTitle";
-import Widget from "../../../../components/Widget/Widget";
 import DetailsIcon from '@material-ui/icons/Details';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
+import Controls from "../../../../components/controls/Controls";
 import Loading from '../../../../components/Loading/Loading';
-import { ResponseMessage } from "../../../../themes/responseMessage";
-import { searchTitleByIdFromArray } from '../../../../helpers/search';
-import { ctaFunctionStatus } from '../../../../helpers/staticData';
+import Notification from "../../../../components/Notification/Notification";
+import PageTitle from "../../../../components/PageTitle/PageTitle";
+import useTableServerSide from "../../../../components/UseTable/useTableServerSide";
+import Widget from "../../../../components/Widget/Widget";
 import { timeConverter } from '../../../../helpers/converter';
-import { isAdminUser } from '../../../../helpers/search';
-
+import { isAdminUser, searchTitleByIdFromArray } from '../../../../helpers/search';
+import { ctaFunctionStatus } from '../../../../helpers/staticData';
+import { saveConsultancyAssignment } from '../../../../redux/actions/consultancyAssignmentActions';
 // redux actions
 // import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
-import { listCtaFunctions, saveCtaFunction, saveCtaFunctionDocument, deleteCtaFunctionDocument, detailsConsultationSummery } from '../../../../redux/actions/ctaFunctionActions';
-import { saveConsultancyAssignment } from '../../../../redux/actions/consultancyAssignmentActions';
-
+import { deleteCtaFunctionDocument, detailsConsultationSummery, listCtaFunctions, saveCtaFunction, saveCtaFunctionDocument } from '../../../../redux/actions/ctaFunctionActions';
 // import { detailsUser } from '../../../../redux/actions/userActions';
 // import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
 // import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
 // import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
 // import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
-
 import { saveCtaPayment } from '../../../../redux/actions/ctaPaymentActions';
 import { saveCtaPurchaseHistory } from '../../../../redux/actions/ctaPurchaseHistoryActions';
+import { ResponseMessage } from "../../../../themes/responseMessage";
+import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
+import CtaFunctionForm from "./CtaFunctionForm";
+
+
 
 const useStyles = makeStyles(theme => ({
     customPharagraph: {
@@ -623,15 +621,17 @@ export default function CtaFunctionScreen(props) {
                                                                         <span><b>Company size: </b>{item?.companySizeName} </span> <br />
                                                                     </TableCell>
                                                                     <TableCell>
-                                                                        {
-                                                                            item?.totalHour ? <span><b>Total Hours:</b> {timeConverter(item?.totalHour)}  <br /> </span> : <span>Not applicable</span>
-                                                                        }
-                                                                        {
-                                                                            item?.hourUsed ? <span><b>Used Hours:</b> {timeConverter(item?.hourUsed)} <br /> </span> : null
-                                                                        }
-                                                                        {
-                                                                            item?.hourRemaining && <span><b>Remaining Hours: </b>{timeConverter(item?.hourRemaining)} <br /></span>
-                                                                        }
+                                                                    {
+                                                                        item?.totalHour ? (
+                                                                            <span>
+                                                                            <span><b>Total Hours:</b> {item?.totalHour ? timeConverter(item?.totalHour) : timeConverter(0)}  <br /> </span>
+                                                                            <span><b>Used Hours:</b> {item?.hourUsed ? timeConverter(item?.hourUsed) : timeConverter(0)}  <br /> </span>
+                                                                            <span><b>Remaining Hours:</b> {item?.hourRemaining ? timeConverter(item?.hourRemaining) : timeConverter(0)}  <br /> </span>
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span>Not applicable</span>
+                                                                        )
+                                                                    }
 
 
                                                                     </TableCell>

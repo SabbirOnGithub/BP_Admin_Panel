@@ -1,8 +1,8 @@
+import { CircularProgress, Grid } from '@material-ui/core';
 import React, { useEffect } from 'react';
-import { Grid, CircularProgress } from '@material-ui/core';
 import Controls from "../../../../components/controls/Controls";
-import { useForm, Form } from '../../../../components/UseForm/useForm';
-import {isAdminUser} from '../../../../helpers/search'
+import { Form, useForm } from '../../../../components/UseForm/useForm';
+import { isAdminUser } from '../../../../helpers/search';
 
 const initialFValues = {
     id: '',
@@ -31,7 +31,9 @@ export default function ConsultancyReceiveHistoryForm(props) {
         if ('consultancyReceiveDate' in fieldValues)
             temp.consultancyReceiveDate = fieldValues.consultancyReceiveDate ? "" : "This field is required."
         if ('consultancyReceiveTime' in fieldValues)
-            temp.consultancyReceiveTime = consultancyReceiveTimeIsValid(fieldValues.consultancyReceiveTime) ? "" : "This field is required."
+            temp.consultancyReceiveTime = consultancyReceiveTimeIsValid(fieldValues.consultancyReceiveTime) ? "" 
+            :
+             <span> {isExceeded(fieldValues.consultancyReceiveTime) ? "Requested time exceeded the remaining hour." :"This field is required."}</span>
          if ('status' in fieldValues)
             temp.status = fieldValues.status ? "" : "This field is required."
         setErrors({
@@ -68,6 +70,15 @@ export default function ConsultancyReceiveHistoryForm(props) {
             return value <= 1440 ? value : ""
         }
     } 
+
+    const isExceeded = (value) => {
+        if(hourRemaining){
+            return value > hourRemaining ? true : false
+        }else{
+            return false
+        }
+    } 
+
     // console.log(values)
 
     useEffect(() => {
