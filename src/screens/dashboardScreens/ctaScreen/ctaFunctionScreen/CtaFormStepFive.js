@@ -134,10 +134,11 @@ export default function CtaFormStepFive (props) {
                                 stripeKey={REACT_APP_STRIPE_KEY}
                                 token={(token)=>handleCtaPayment(token, createOrder, setActiveStep)}
                                 amount={createOrder?.rate * 100}
-                                name="bestpracticify.co"
+                                name="Best Practicify, LLC"
                                 billingAddress
                                 description="bestpracticify.co"
                                 locale="auto"
+                                currency="USD"
                             >
                                 <Button
                                     variant="contained"
@@ -167,7 +168,6 @@ export default function CtaFormStepFive (props) {
                                 onSuccess={(paymentAsToken)=>handleCtaPayment(paymentAsToken, {...createOrder, paypal:true}, setActiveStep)}
                                 onCancel={(data)=>console.log(data)}
                                 style={stylePaypal}
-
                             />
                         </div>
                         </div>
