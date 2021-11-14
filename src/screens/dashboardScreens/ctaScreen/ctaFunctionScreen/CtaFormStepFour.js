@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react'
-import { Form } from '../../../../components/UseForm/useForm';
-import Loading from '../../../../components/Loading/Loading';
-import useTab from '../../../../components/UseTab/useTab';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import InputSharpIcon from '@material-ui/icons/InputSharp';
-import Button from '@material-ui/core/Button';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import Typography from '@material-ui/core/Typography';
-import PopOver from '../../../../components/PopOver/PopOver'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import InputSharpIcon from '@material-ui/icons/InputSharp';
+import React, { useEffect } from 'react';
+import Loading from '../../../../components/Loading/Loading';
+import PopOver from '../../../../components/PopOver/PopOver';
+import { Form } from '../../../../components/UseForm/useForm';
+import useTab from '../../../../components/UseTab/useTab';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -113,9 +113,9 @@ export default function CtaFormStepFour(props) {
                                     aria-label="scrollable force tabs example"
                                     centered={true}
                                 >
-                                    <Tab label="Hourly Solution"  {...a11yPropsFullwidth(0)} />
-                                    <Tab label="Solution Discover"  {...a11yPropsFullwidth(1)} />
-                                    <Tab label="Access Retainer" {...a11yPropsFullwidth(2)} />
+                                    <Tab label="Hourly Support"  {...a11yPropsFullwidth(0)} />
+                                    <Tab label="Solutions Discovery"  {...a11yPropsFullwidth(1)} />
+                                    <Tab label="Concierge" {...a11yPropsFullwidth(2)} />
                                 </Tabs>
                             </AppBar>
                             <TabPanel value={value} index={0}>

@@ -101,6 +101,9 @@ export default function CtaFormStepFive (props) {
         sandbox: REACT_APP_PAYPAL_SANDBOX_APP_ID,
         production: REACT_APP_PAYPAL_PRODUCTION_APP_ID
       };
+
+      const paymentDesc = createOrder?.name +"   $"+createOrder?.rate;
+      const amount = (createOrder?createOrder.rate : 0) * 100;
     
 
     useEffect(() => {
@@ -128,17 +131,19 @@ export default function CtaFormStepFive (props) {
                         <h1 style={{alignSelf:'center', textAlign:'center'}}> Amount : $ {createOrder?.rate} </h1>
 
                         <div className={classes.paymentArea}>
+                        {/* <pre>{JSON.stringify(createOrder, undefined, 4)}</pre> */}
                         <div>
                             {createOrder?.rate && 
                             <StripeCheckout
                                 stripeKey={REACT_APP_STRIPE_KEY}
                                 token={(token)=>handleCtaPayment(token, createOrder, setActiveStep)}
-                                amount={createOrder?.rate * 100}
+                                amount={amount}
                                 name="Best Practicify, LLC"
                                 billingAddress
-                                description="bestpracticify.co"
+                                description={paymentDesc}
                                 locale="auto"
                                 currency="USD"
+                                image="https://www.bestpracticify.co/BP_logo.svg"
                             >
                                 <Button
                                     variant="contained"
@@ -171,8 +176,6 @@ export default function CtaFormStepFive (props) {
                             />
                         </div>
                         </div>
-                        
-                            
                         </Grid>
                     </Grid>
                 </Form>

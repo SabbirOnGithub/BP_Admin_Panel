@@ -1,12 +1,10 @@
-import React from 'react'
-import { 
-    MuiPickersUtilsProvider, 
+import DateFnsUtils from "@date-io/date-fns";
+import {
     // KeyboardDatePicker,
     DatePicker,
-    DateTimePicker,
-    TimePicker
+    DateTimePicker, MuiPickersUtilsProvider, TimePicker
 } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import React from 'react';
 // 
 // import { alpha } from '@material-ui/core/styles';
 
@@ -28,6 +26,8 @@ function DatePickerCustom(props) {
                     label={label}
                     format="MM/dd/yyyy"
                     name={name}
+                    autoOk = "true"
+                    variant="inline"
                     // value={new Date()}
                     value={value ? value : new Date()}
                     // onChange={date =>onChange(name,date.toISOString())}
@@ -90,4 +90,5 @@ function TimePickerCustom(props) {
 }
 
 
-export {DatePickerCustom, DateTimePickerCustom , TimePickerCustom}
+export { DatePickerCustom, DateTimePickerCustom, TimePickerCustom };
+

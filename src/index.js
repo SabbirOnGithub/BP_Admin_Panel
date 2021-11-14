@@ -1,19 +1,18 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import store from './redux/store'
-import 'draft-js/dist/Draft.css';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-// import * as serviceWorker from './serviceWorker';
-
-import { ThemeProvider } from "@material-ui/styles";
 import { CssBaseline } from "@material-ui/core";
-import Themes from "./themes";
-
+// import * as serviceWorker from './serviceWorker';
+import { ThemeProvider } from "@material-ui/styles";
+import 'draft-js/dist/Draft.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { Provider } from 'react-redux';
+import App from './App';
 // context
 import { LayoutProvider } from "./context/LayoutContext";
+import './index.css';
+import store from './redux/store';
+import Themes from "./themes";
+
 
 ReactDOM.render(
   // <React.StrictMode>

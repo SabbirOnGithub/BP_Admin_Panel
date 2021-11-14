@@ -1,6 +1,6 @@
-import React from 'react'
-import {  DialogTitle, DialogContent,  Typography, makeStyles, IconButton } from '@material-ui/core'
+import { DialogContent, DialogTitle, IconButton, makeStyles, Typography } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import React from 'react';
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,10 +19,10 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center'
     },
     titleIcon: {
-        backgroundColor: theme.palette.secondary.light,
-        color: theme.palette.secondary.main,
+        backgroundColor: theme.palette.success.light,
+        color: theme.palette.success.main,
         '&:hover': {
-            backgroundColor: theme.palette.secondary.light,
+            backgroundColor: theme.palette.success.light,
             cursor: 'default'
         },
         '& .MuiSvgIcon-root': {
@@ -43,11 +43,11 @@ export default function SuccessDialog(props) {
                     <CheckCircleIcon />
                 </IconButton>
             </DialogTitle>
-            <DialogContent className={classes.dialogContent}>
-                <Typography variant="h6">
+            <DialogContent className={`dialog-content ${classes.dialogContent}`}>
+                <Typography variant="h6" className="title">
                     {title}
                 </Typography>
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle2" className="subtitle">
                     {subTitle}
                 </Typography>
             </DialogContent>
