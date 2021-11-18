@@ -366,6 +366,9 @@ export default function CtaFunctionScreen(props) {
                                     userEmail: userInfo.email
 
                                 }
+
+                                console.log("response: " + JSON.stringify(res, undefined, 2))
+
                                 // item.getCtaHourlyId && (formatePurchaseHistoryData['ctaPackageHourlyId'] = item.ctaHourId);
                                 // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageDailyId'] = item.ctaDailyId);
                                 // item.ctaHourly && (formatePurchaseHistoryData['ctaPackageMonthlyYearlyId'] = item.ctaMonthlyYearlyId);
@@ -380,6 +383,7 @@ export default function CtaFunctionScreen(props) {
                                     .then(res => {
                                         if (res.status === true) {
                                             // stepper step auto increment
+                                            console.log("item: " + JSON.stringify(item, undefined, 2))
                                             resetActiveStep((prevActiveStep) => prevActiveStep + 1);
                                         }
                                     })

@@ -102,8 +102,14 @@ export default function CtaFormStepFive (props) {
         production: REACT_APP_PAYPAL_PRODUCTION_APP_ID
       };
 
-      const paymentDesc = createOrder?.name +"   $"+createOrder?.rate;
+     
       const amount = (createOrder?createOrder.rate : 0) * 100;
+      const amountString = (createOrder?createOrder.rate : 0).toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                });
+
+     const paymentDesc = createOrder?.name +"   USD "+ amountString;
     
 
     useEffect(() => {
@@ -128,10 +134,11 @@ export default function CtaFormStepFive (props) {
                 <Form>
                 <Grid container>
                     <Grid item xs={12}>
-                        <h1 style={{alignSelf:'center', textAlign:'center'}}> Amount : $ {createOrder?.rate} </h1>
+                        <h1 style={{alignSelf:'center', textAlign:'center'}}> Amount : USD {amountString} </h1>
 
                         <div className={classes.paymentArea}>
-                        {/* <pre>{JSON.stringify(createOrder, undefined, 4)}</pre> */}
+                        <pre>{JSON.stringify(createOrder, undefined, 4)}</pre>
+                        <pre>{JSON.stringify(values, undefined, 4)}</pre>
                         <div>
                             {createOrder?.rate && 
                             <StripeCheckout

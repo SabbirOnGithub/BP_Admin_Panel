@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react'
 import { Grid } from '@material-ui/core';
-import { useForm } from '../../../../components/UseForm/useForm';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import HorizontalStepper from '../../../../components/Stepper/Stepper';
-import CtaFormStepOne from './CtaFormStepOne';
-import CtaFormStepTwo from './CtaFormStepTwo';
-import CtaFormStepThree from './CtaFormStepThree';
-import CtaFormStepFour from './CtaFormStepFour';
-import CtaFormStepFive from './CtaFormStepFive';
-
-import { useSelector, useDispatch } from 'react-redux';
-
-import { listCtaFunctionModels, detailsCtaFunction, listCtaFunctionDocuments } from '../../../../redux/actions/ctaFunctionActions';
-import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
+import { useForm } from '../../../../components/UseForm/useForm';
+import { detailsCtaFunction, listCtaFunctionDocuments, listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
+import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
 import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
+import CtaFormStepFive from './CtaFormStepFive';
+import CtaFormStepFour from './CtaFormStepFour';
+import CtaFormStepOne from './CtaFormStepOne';
+import CtaFormStepThree from './CtaFormStepThree';
+import CtaFormStepTwo from './CtaFormStepTwo';
+
+
 
 const initialFValues = {
     id: '',
@@ -402,6 +402,7 @@ export default function CtaFunctionForm(props) {
 
     return (
         <Grid container>
+        steps: {getSteps().length} --   activeStep: {activeStep}
             <Grid item xs={12}>
                 <HorizontalStepper
                     getSteps={getSteps}
