@@ -6,7 +6,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Stepper from "@material-ui/core/Stepper";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import SuccessDialog from "../SuccessDialog/SuccessDialog";
+import PaymentSuccessDialog from "../SuccessDialog/PaymentSuccessDialog";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -59,6 +59,7 @@ export default function HorizontalStepper(props) {
     activeStep,
     progressBar,
     hideNext,
+    paymentResponse,
   } = props;
   // console.log(hideNext)
   const classes = useStyles();
@@ -103,7 +104,16 @@ export default function HorizontalStepper(props) {
             {/* <Typography className={classes.instructions}> 
                 
             </Typography> */}
-            <SuccessDialog title="Form Submission Successful" subTitle = "Click finish to go back to consultancy list" />
+            {/* {JSON.stringify(paymentResponse, undefined, 2)} */}
+            {/* <SuccessDialog
+              title="Form Submission Successful"
+              subTitle="Click finish to go back to consultancy list"
+            /> */}
+            <PaymentSuccessDialog
+              title="Your Order has been submitted successfully. "
+              subTitle="Please visit your consultancy dashboard to schedule a consultation and for more details."
+              details={paymentResponse}
+            />
             {/* <Button onClick={handleReset}>Finish</Button> */}
             <div style={{ marginTop: 10 }}>
               <Button
