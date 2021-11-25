@@ -138,10 +138,10 @@ export default function CtaFormStepFive(props) {
               </h1>
 
               <div className={classes.paymentArea}>
-                <pre>
+                {/* <pre>
                   createOrder : {JSON.stringify(createOrder, undefined, 4)}
                 </pre>
-                <pre>values: {JSON.stringify(values, undefined, 4)}</pre>
+                <pre>values: {JSON.stringify(values, undefined, 4)}</pre> */}
                 <div>
                   {createOrder?.rate && (
                     <StripeCheckout

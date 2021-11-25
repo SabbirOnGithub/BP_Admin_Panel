@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PaymentSuccessDialog(props) {
   const { title, subTitle, details } = props;
   const classes = useStyles();
-  const amountString = (details?.rate * 100).toLocaleString("en-US", {
+  const amountString = (details?.rate).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
