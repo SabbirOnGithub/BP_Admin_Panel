@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   container: {
     height: "100vh",
     width: "100vw",
@@ -26,22 +26,22 @@ export default makeStyles(theme => ({
       display: "none",
     },
   },
-  logoWrapper : {
-    width:180,
-    height:180,
-    borderRadius:'10px',
-    background:'#1a335b',
-    textAlign:'center'
+  logoWrapper: {
+    width: 180,
+    height: 180,
+    borderRadius: "10px",
+    background: "#1a335b",
+    textAlign: "center",
   },
   logotypeImage: {
     width: 165,
     marginBottom: theme.spacing(4),
   },
-  logImageInMobile:{
+  logImageInMobile: {
     fontWeight: 500,
     textAlign: "center",
     marginTop: theme.spacing(4),
-    display:"none",
+    display: "none",
     [theme.breakpoints.down("md")]: {
       display: "block",
     },
@@ -67,7 +67,7 @@ export default makeStyles(theme => ({
   },
   form: {
     width: 320,
-    padding:5,
+    padding: 5,
   },
   tab: {
     fontWeight: 400,
@@ -139,6 +139,7 @@ export default makeStyles(theme => ({
   },
   textField: {
     borderBottomColor: theme.palette.background.light,
+    fontSize: 16,
   },
   formButtons: {
     width: "100%",
@@ -153,6 +154,7 @@ export default makeStyles(theme => ({
   forgetButton: {
     textTransform: "none",
     fontWeight: 400,
+    fontSize: "14px",
   },
   loginLoader: {
     marginLeft: theme.spacing(4),
@@ -165,4 +167,5 @@ export default makeStyles(theme => ({
       bottom: theme.spacing(2),
     },
   },
+  forgetPassBtnLabel: {},
 }));
