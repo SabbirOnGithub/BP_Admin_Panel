@@ -1,4 +1,4 @@
-import {IconButton, makeStyles} from "@material-ui/core";
+import { IconButton, makeStyles } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import React from "react";
 
@@ -49,8 +49,9 @@ export default function PaymentSuccessDialog(props) {
 					<div className="header"> Purchase Details </div>
 					<p class="card-text">Package type : {details?.name}</p>
 					<p class="card-text">Amount Paid: USD {amountString}</p>
-					<p class="card-text">Payment Method: {details?.brand}</p>
-					<p class="card-text">Card Number: **** {details?.last4}</p>
+					<p class="card-text">Payment Method: {details?.brand ? details?.brand : "Paypal"}</p>
+					{details?.last4 ? <p class="card-text">Card Number: **** {details?.last4}</p> : ""}
+					
 					<p class="card-text message">
 						A copy of the recipt has been emailed to you.
 					</p>
