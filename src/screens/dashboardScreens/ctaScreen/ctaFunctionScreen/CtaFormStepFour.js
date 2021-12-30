@@ -1,14 +1,14 @@
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputSharpIcon from "@material-ui/icons/InputSharp";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Loading from "../../../../components/Loading/Loading";
 import PopOver from "../../../../components/PopOver/PopOver";
-import {Form} from "../../../../components/UseForm/useForm";
+import { Form } from "../../../../components/UseForm/useForm";
 import useTab from "../../../../components/UseTab/useTab";
 
 const useStyles = makeStyles((theme) => ({
@@ -133,6 +133,21 @@ export default function CtaFormStepFour(props) {
 		}
 	};
 
+	const columnCount = (itemcount)=>{
+		if (itemcount) {
+			// alert(itemcount);
+			switch (itemcount) {
+				
+				case 3:
+					return 4;
+				case 4:
+					return 3;
+				default:
+					return 3;
+			}
+		}
+	}
+
 	return (
 		<>
 			{!values.id ||
@@ -165,7 +180,6 @@ export default function CtaFormStepFour(props) {
 						<TabPanel value={value} index={0}>
 							{ctaPackageHourlys?.length > 0 ? (
 								<div className={classes.root}>
-									<pre>{JSON.stringify(ctaPackageHourlys, undefined, 4)}</pre>
 									<Grid container spacing={1}>
 										<Grid container item md={12} spacing={3}>
 											{ctaPackageHourlys?.map(
@@ -173,7 +187,7 @@ export default function CtaFormStepFour(props) {
 													item.id && (
 														<Grid
 															item
-															md={ctaPackageHourlys.length === 4 ? 3 : 4}
+															md={columnCount(ctaPackageHourlys.length)}
 															xs={12}
 															key={item.id}
 														>
@@ -272,6 +286,8 @@ export default function CtaFormStepFour(props) {
 								"No data found"
 							)}
 						</TabPanel>
+
+						{/*----------- solution discovery ---------- */}
 						<TabPanel value={value} index={1}>
 							{ctaPackageDailys?.length > 0 ? (
 								<div className={classes.root}>
@@ -280,7 +296,7 @@ export default function CtaFormStepFour(props) {
 											{ctaPackageDailys?.map((item) => (
 												<Grid
 													item
-													md={ctaPackageHourlys.length === 4 ? 3 : 4}
+													md={columnCount(ctaPackageDailys.length)}
 													xs={12}
 													key={item.id}
 												>
@@ -333,7 +349,7 @@ export default function CtaFormStepFour(props) {
 																	className={classes.subText}
 																	style={{fontStyle: "italic"}}
 																>
-																	per day
+																	per workshop
 																</Typography>
 															</div>
 															<div className="pricingTable-sign-up">
@@ -375,7 +391,7 @@ export default function CtaFormStepFour(props) {
 											{ctaPackageMonthlyYearlys?.map((item) => (
 												<Grid
 													item
-													md={ctaPackageHourlys.length === 4 ? 3 : 4}
+													md={columnCount(ctaPackageMonthlyYearlys.length)}
 													xs={12}
 													key={item.id}
 												>
