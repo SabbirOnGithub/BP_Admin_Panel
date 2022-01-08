@@ -416,6 +416,69 @@ export default function CtaFunctionScreen(props) {
 			});
 	};
 
+	const handelCtaPaymentStripe = (
+		intentObj,
+		paymentMethodObj,
+		item,
+		consultationObj,
+		setActiveStep
+	) => {
+		console.log("intentObj: " + JSON.stringify(intentObj, undefined, 4));
+		console.log(
+			"paymentMethodObj: " + JSON.stringify(paymentMethodObj, undefined, 4)
+		);
+		console.log("item: " + JSON.stringify(item, undefined, 4));
+		console.log(
+			"consultationObj" + JSON.stringify(consultationObj, undefined, 4)
+		);
+
+		const formatePurchaseHistoryData = {
+			transectionId: intentObj?.id,
+			isPaid: intentObj?.status === "succeeded",
+			amount: parseInt(item.rate),
+			ctaFunctionId: item?.ctaFunctionId,
+			paymentGateway: "stripe",
+			userEmail: userInfo.email,
+		};
+
+		var response = {
+			Paid: intentObj?.status === "succeeded",
+			Last4: paymentMethodObj?.card?.last4,
+			BalanceTransaction: intentObj?.id,
+			Brand: paymentMethodObj?.card.brand,
+			PaidAmount: (item?.rate ? item?.rate : 0).toLocaleString("en-US", {
+				style: "currency",
+				currency: "USD",
+			}),
+			...item,
+		};
+
+		setPaymentResponse(response);
+
+		console.log("response: " + JSON.stringify(response, undefined, 4));
+
+		item.getCtaHourlyId &&
+			(formatePurchaseHistoryData["ctaPackageHourlyId"] = item.id);
+		item.getCtaDailyId &&
+			(formatePurchaseHistoryData["ctaPackageDailyId"] = item.id);
+		item.getCtaMonthlyYearlyId &&
+			(formatePurchaseHistoryData["ctaPackageMonthlyYearlyId"] = item.id);
+		item.isMonthlySubscription &&
+			(formatePurchaseHistoryData["isMonthlySubscription"] =
+				item.isMonthlySubscription);
+		item.isYearlySubscription &&
+			(formatePurchaseHistoryData["isYearlySubscription"] =
+				item.isYearlySubscription);
+
+		dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
+			if (res.status === true) {
+				// stepper step auto increment
+				console.log("item: " + JSON.stringify(item, undefined, 2));
+				setActiveStep((prevActiveStep) => prevActiveStep + 1);
+			}
+		});
+	};
+
 	const handleCtaPayment = (token, item, resetActiveStep) => {
 		// const tokenId = token?.id;
 		// console.log(item)
@@ -709,6 +772,7 @@ export default function CtaFunctionScreen(props) {
 											successCtaPurchaseHistorySave
 										}
 										paymentResponse={paymentResponse}
+										handelCtaPaymentStripe={handelCtaPaymentStripe}
 									/>
 								</Widget>
 							) : (
