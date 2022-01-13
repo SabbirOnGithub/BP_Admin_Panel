@@ -116,6 +116,8 @@ export default function CtaFormStepFive(props) {
 
 	const paymentDesc = createOrder?.name + "   USD " + amountString;
 
+	const validity = () => {};
+
 	useEffect(() => {
 		setHideNext(true);
 
@@ -140,12 +142,24 @@ export default function CtaFormStepFive(props) {
 						<Grid item xs={6}>
 							<div className="card shadow-sm checkout-details-card">
 								<div className="card-body">
-									<h1 style={{alignSelf: "center", textAlign: "center"}}>
+									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+										Consulting Service : Paid
+									</h2>
+									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+										Consulting Type : Hourly Support
+									</h2>
+									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+										Business Type : {createOrder?.companyTypeName}
+									</h2>
+									<h2 style={{alignSelf: "center", textAlign: "center"}}>
 										Packege Name : {createOrder?.name}
-									</h1>
-									<h1 style={{alignSelf: "center", textAlign: "center"}}>
+									</h2>
+									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+										Validity : 60 Days
+									</h2>
+									<h2 style={{alignSelf: "center", textAlign: "center"}}>
 										Amount : USD {amountString}{" "}
-									</h1>
+									</h2>
 									<pre>
 										createOrder : {JSON.stringify(createOrder, undefined, 4)}
 									</pre>
