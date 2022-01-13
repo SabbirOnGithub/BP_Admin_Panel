@@ -1,14 +1,15 @@
-import {Grid} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {makeStyles} from "@material-ui/core/styles";
-import {Elements} from "@stripe/react-stripe-js";
-import {loadStripe} from "@stripe/stripe-js";
-import React, {useEffect} from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React, { useEffect } from "react";
 import PaypalExpressBtn from "react-paypal-express-checkout";
 import StripeCheckout from "react-stripe-checkout";
 import Loading from "../../../../components/Loading/Loading";
-import {Form} from "../../../../components/UseForm/useForm";
-import {config} from "../../../../config";
+import { Form } from "../../../../components/UseForm/useForm";
+import { config } from "../../../../config";
+import store from "../../../../redux/store";
 import CardForm from "./CardForm";
 
 // const REACT_APP_STRIPE_KEY = config.REACT_APP_STRIPE_KEY
@@ -20,6 +21,9 @@ const {
 } = config;
 
 const stripePromise = loadStripe(REACT_APP_STRIPE_KEY);
+
+const { userSignin } = store.getState();
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -142,28 +146,36 @@ export default function CtaFormStepFive(props) {
 						<Grid item xs={6}>
 							<div className="card shadow-sm checkout-details-card">
 								<div className="card-body">
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
-										Consulting Service : Paid
+									<h2 style={{alignSelf: "center", textAlign: "center", fontSize:"20px"}}>
+										Consulting Type : {createOrder?.consultingType}
 									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
-										Consulting Type : Hourly Support
+									<h2 style={{alignSelf: "center", textAlign: "center", fontSize:"20px"}}>
+										Business Name : {userSignin?.userInfo?.businessName}
 									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
-										Business Type : {createOrder?.companyTypeName}
+									<h2 style={{alignSelf: "center", textAlign: "center", fontSize:"20px"}}>
+										Business Type : {userSignin?.userInfo?.companyTypeName}
 									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									<h2 style={{alignSelf: "center", textAlign: "center", fontSize:"20px"}}>
 										Packege Name : {createOrder?.name}
 									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
-										Validity : 60 Days
-									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									{createOrder.validity > 0 ? (<h2 style={{alignSelf: "center", textAlign: "center", fontSize:"20px"}}>
+										Validity : {createOrder?.validity} days
+									</h2>) : "" }
+
+									{createOrder?.subscriptionType ? (<h2 style={{alignSelf: "center", textAlign: "center", fontSize:"20px"}}>
+										Subscription Type : {createOrder?.subscriptionType} 
+									</h2>): ""}
+									
+									<h2 style={{alignSelf: "center", textAlign: "center", fontSize:"20px"}}>
 										Amount : USD {amountString}{" "}
 									</h2>
-									<pre>
+									{/* <pre>
 										createOrder : {JSON.stringify(createOrder, undefined, 4)}
 									</pre>
-									<pre>values: {JSON.stringify(values, undefined, 4)}</pre>
+									<pre>
+									userSignin : {JSON.stringify(userSignin, undefined, 4)}
+									</pre>
+									<pre> values: {JSON.stringify(values, undefined, 4)}</pre> */}
 								</div>
 							</div>
 						</Grid>

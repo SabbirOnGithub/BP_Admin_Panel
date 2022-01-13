@@ -1,14 +1,14 @@
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputSharpIcon from "@material-ui/icons/InputSharp";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Loading from "../../../../components/Loading/Loading";
 import PopOver from "../../../../components/PopOver/PopOver";
-import {Form} from "../../../../components/UseForm/useForm";
+import { Form } from "../../../../components/UseForm/useForm";
 import useTab from "../../../../components/UseTab/useTab";
 
 const useStyles = makeStyles((theme) => ({
@@ -179,7 +179,7 @@ export default function CtaFormStepFour(props) {
 						<TabPanel value={value} index={0}>
 							{ctaPackageHourlys?.length > 0 ? (
 								<div className={classes.root}>
-									<pre>{JSON.stringify(ctaPackageHourlys, undefined, 4)}</pre>
+									{/* <pre>{JSON.stringify(ctaPackageHourlys, undefined, 4)}</pre> */}
 									<Grid container spacing={1}>
 										<Grid container item md={12} spacing={3}>
 											{ctaPackageHourlys?.map(
@@ -292,7 +292,7 @@ export default function CtaFormStepFour(props) {
 						<TabPanel value={value} index={1}>
 							{ctaPackageDailys?.length > 0 ? (
 								<div className={classes.root}>
-									<pre>{JSON.stringify(ctaPackageDailys, undefined, 4)}</pre>
+									{/* <pre>{JSON.stringify(ctaPackageDailys, undefined, 4)}</pre> */}
 									<Grid container spacing={1}>
 										<Grid container item md={12} spacing={3}>
 											{ctaPackageDailys?.map((item) => (
@@ -369,6 +369,7 @@ export default function CtaFormStepFour(props) {
 																			ctaFunctionId: values?.id,
 																			getCtaDailyId: item.id,
 																			consultingType: "Solutions Discovery",
+																			validity: 0
 																		})
 																	}
 																>
@@ -389,9 +390,9 @@ export default function CtaFormStepFour(props) {
 						<TabPanel value={value} index={2}>
 							{ctaPackageMonthlyYearlys?.length > 0 ? (
 								<div className={classes.root}>
-									<pre>
+									{/* <pre>
 										{JSON.stringify(ctaPackageMonthlyYearlys, undefined, 4)}
-									</pre>
+									</pre> */}
 									<Grid container spacing={1}>
 										<Grid container item md={12} spacing={3}>
 											{ctaPackageMonthlyYearlys?.map((item) => (
@@ -497,6 +498,7 @@ export default function CtaFormStepFour(props) {
 																				getCtaMonthlyYearlyId: item.id,
 																				consultingType: "Concierge",
 																				subscriptionType: "Monthly",
+																				validity:0
 																			})
 																		}
 																	>
@@ -519,6 +521,7 @@ export default function CtaFormStepFour(props) {
 																				getCtaMonthlyYearlyId: item.id,
 																				consultingType: "Concierge",
 																				subscriptionType: "Yearly",
+																				validity:0
 																			})
 																		}
 																	>
