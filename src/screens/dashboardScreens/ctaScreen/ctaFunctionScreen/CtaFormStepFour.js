@@ -370,6 +370,7 @@ export default function CtaFormStepFour(props) {
 																			ctaFunctionId: values?.id,
 																			getCtaDailyId: item.id,
 																			consultingType: "Solutions Discovery",
+validity: 0
 																			isSubscription: false,
 																		})
 																	}

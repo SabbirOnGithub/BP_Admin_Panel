@@ -62,6 +62,7 @@ const isAdminUser = () => {
     : false;
   // return true
 };
+
 const isClientUser = () => {
   const { userSignin } = store.getState();
   const { userInfo } = userSignin;
