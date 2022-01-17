@@ -1,10 +1,11 @@
 import {Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
-import {Elements} from "@stripe/react-stripe-js";
+import {CardElement, Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PaypalExpressBtn from "react-paypal-express-checkout";
+import {useSelector} from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import Loading from "../../../../components/Loading/Loading";
 import {Form} from "../../../../components/UseForm/useForm";
@@ -105,6 +106,10 @@ export default function CtaFormStepFive(props) {
 		production: REACT_APP_PAYPAL_PRODUCTION_APP_ID,
 	};
 
+	const userSignIn = useSelector((state) => state.userSignin);
+	const {userInfo} = userSignIn;
+	const [name, setName] = useState(userInfo.name);
+	const isSubscription = createOrder?.isSubscription;
 	const amount = (createOrder ? createOrder.rate : 0) * 100;
 	const amountString = (createOrder ? createOrder.rate : 0).toLocaleString(
 		"en-US",
@@ -160,84 +165,124 @@ export default function CtaFormStepFive(props) {
 									<h2 style={{alignSelf: "center", textAlign: "center"}}>
 										Amount : USD {amountString}{" "}
 									</h2>
-									<pre>
+									{/* <pre>
 										createOrder : {JSON.stringify(createOrder, undefined, 4)}
 									</pre>
-									<pre>values: {JSON.stringify(values, undefined, 4)}</pre>
+									<pre>values: {JSON.stringify(values, undefined, 4)}</pre> */}
 								</div>
 							</div>
 						</Grid>
 						<Grid item xs={6}>
-							<Form>
-								<div className={classes.paymentArea}>
-									<div>
-										<PaypalExpressBtn
-											env={REACT_APP_PAYPAL_ENV}
-											client={client}
-											currency={"USD"}
-											total={createOrder?.rate}
-											onError={(err) => console.log(err)}
-											onSuccess={(paymentAsToken) =>
-												handleCtaPayment(
-													paymentAsToken,
-													{...createOrder, paypal: true},
-													setActiveStep
-												)
-											}
-											onCancel={(data) => console.log(data)}
-											style={stylePaypal}
-											className="paypal-btn"
-										/>
+							{createOrder?.isSubscription ? (
+								<>
+									<div style={{margin: 15, width: "100%"}}>
+										<Elements stripe={stripePromise}>
+											<form>
+												<label>
+													<input
+														type="text"
+														id="name"
+														className="stripe-name-field"
+														value={name}
+														placeholder="Full Name"
+														onChange={(e) => setName(e.target.value)}
+													/>
+												</label>
+
+												<CardElement
+													className="card payment-card"
+													options={{
+														style: {
+															base: {
+																backgroundColor: "white",
+															},
+														},
+													}}
+												/>
+
+												<button className="pay-button">Subscribe</button>
+											</form>
+										</Elements>
 									</div>
+								</>
+							) : (
+								<div style={{margin: 15, width: "100%"}}>
+									<Form>
+										<div className={classes.paymentArea}>
+											<div>
+												<PaypalExpressBtn
+													env={REACT_APP_PAYPAL_ENV}
+													client={client}
+													currency={"USD"}
+													total={createOrder?.rate}
+													onError={(err) => console.log(err)}
+													onSuccess={(paymentAsToken) =>
+														handleCtaPayment(
+															paymentAsToken,
+															{...createOrder, paypal: true},
+															setActiveStep
+														)
+													}
+													onCancel={(data) => console.log(data)}
+													style={stylePaypal}
+													className="paypal-btn"
+												/>
+											</div>
 
-									<p className="payment-option-separator">
-										{" "}
-										<span>Or pay with card</span>{" "}
-									</p>
+											<p className="payment-option-separator">
+												{" "}
+												<span>Or pay with card</span>{" "}
+											</p>
 
-									<div style={{marginTop: 15, display: "none"}}>
-										{createOrder?.rate && (
-											<StripeCheckout
-												stripeKey={REACT_APP_STRIPE_KEY}
-												token={(token) =>
-													handleCtaPayment(token, createOrder, setActiveStep)
-												}
-												amount={amount}
-												name="Best Practicify"
-												billingAddress
-												description={paymentDesc}
-												locale="auto"
-												currency="USD"
-												image="https://www.bestpracticify.co/images/BP_logo_Straight.png"
-											>
-												<Button
-													variant="contained"
-													color="primary"
-													className={classes.button}
-												>
-													<span
-														className="paypal-button-text"
-														optional=""
-														style={{color: "#fff"}}
+											<div style={{marginTop: 15, display: "none"}}>
+												{createOrder?.rate && (
+													<StripeCheckout
+														stripeKey={REACT_APP_STRIPE_KEY}
+														token={(token) =>
+															handleCtaPayment(
+																token,
+																createOrder,
+																setActiveStep
+															)
+														}
+														amount={amount}
+														name="Best Practicify"
+														billingAddress
+														description={paymentDesc}
+														locale="auto"
+														currency="USD"
+														image="https://www.bestpracticify.co/images/BP_logo_Straight.png"
 													>
-														Pay with Card
-													</span>
-												</Button>
-											</StripeCheckout>
-										)}
+														<Button
+															variant="contained"
+															color="primary"
+															className={classes.button}
+														>
+															<span
+																className="paypal-button-text"
+																optional=""
+																style={{color: "#fff"}}
+															>
+																Pay with Card
+															</span>
+														</Button>
+													</StripeCheckout>
+												)}
+											</div>
+										</div>
+									</Form>
+									<div style={{margin: 15, width: "100%"}}>
+										<Elements stripe={stripePromise}>
+											<CardForm
+												consultancyObj={values}
+												item={createOrder}
+												setActiveStep={setActiveStep}
+												handelCtaPaymentStripe={handelCtaPaymentStripe}
+											/>
+										</Elements>
 									</div>
 								</div>
-							</Form>
-							<div style={{margin: 15, width: "100%"}}>
-								<Elements stripe={stripePromise}>
-									<CardForm
-										consultancyObj={values}
-										item={createOrder}
-										setActiveStep={setActiveStep}
-										handelCtaPaymentStripe={handelCtaPaymentStripe}
-									/>
-								</Elements>
-							</div>
+							)}
 						</Grid>
 					</Grid>
 				</>

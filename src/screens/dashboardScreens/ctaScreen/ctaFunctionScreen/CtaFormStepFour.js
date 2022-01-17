@@ -179,7 +179,7 @@ export default function CtaFormStepFour(props) {
 						<TabPanel value={value} index={0}>
 							{ctaPackageHourlys?.length > 0 ? (
 								<div className={classes.root}>
-									<pre>{JSON.stringify(ctaPackageHourlys, undefined, 4)}</pre>
+									{/* <pre>{JSON.stringify(ctaPackageHourlys, undefined, 4)}</pre> */}
 									<Grid container spacing={1}>
 										<Grid container item md={12} spacing={3}>
 											{ctaPackageHourlys?.map(
@@ -269,6 +269,7 @@ export default function CtaFormStepFour(props) {
 																					ctaFunctionId: values?.id,
 																					getCtaHourlyId: item.id,
 																					consultingType: "Hourly Support",
+																					isSubscription: false,
 																				})
 																			}
 																		>
@@ -292,7 +293,7 @@ export default function CtaFormStepFour(props) {
 						<TabPanel value={value} index={1}>
 							{ctaPackageDailys?.length > 0 ? (
 								<div className={classes.root}>
-									<pre>{JSON.stringify(ctaPackageDailys, undefined, 4)}</pre>
+									{/* <pre>{JSON.stringify(ctaPackageDailys, undefined, 4)}</pre> */}
 									<Grid container spacing={1}>
 										<Grid container item md={12} spacing={3}>
 											{ctaPackageDailys?.map((item) => (
@@ -369,6 +370,7 @@ export default function CtaFormStepFour(props) {
 																			ctaFunctionId: values?.id,
 																			getCtaDailyId: item.id,
 																			consultingType: "Solutions Discovery",
+																			isSubscription: false,
 																		})
 																	}
 																>
@@ -389,9 +391,9 @@ export default function CtaFormStepFour(props) {
 						<TabPanel value={value} index={2}>
 							{ctaPackageMonthlyYearlys?.length > 0 ? (
 								<div className={classes.root}>
-									<pre>
+									{/* <pre>
 										{JSON.stringify(ctaPackageMonthlyYearlys, undefined, 4)}
-									</pre>
+									</pre> */}
 									<Grid container spacing={1}>
 										<Grid container item md={12} spacing={3}>
 											{ctaPackageMonthlyYearlys?.map((item) => (
@@ -497,6 +499,7 @@ export default function CtaFormStepFour(props) {
 																				getCtaMonthlyYearlyId: item.id,
 																				consultingType: "Concierge",
 																				subscriptionType: "Monthly",
+																				isSubscription: true,
 																			})
 																		}
 																	>
@@ -519,6 +522,7 @@ export default function CtaFormStepFour(props) {
 																				getCtaMonthlyYearlyId: item.id,
 																				consultingType: "Concierge",
 																				subscriptionType: "Yearly",
+																				isSubscription: true,
 																			})
 																		}
 																	>
