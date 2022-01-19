@@ -1,10 +1,10 @@
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputSharpIcon from "@material-ui/icons/InputSharp";
+import {makeStyles} from "@material-ui/styles";
 import React, {useEffect} from "react";
 import Loading from "../../../../components/Loading/Loading";
 import PopOver from "../../../../components/PopOver/PopOver";
@@ -370,7 +370,7 @@ export default function CtaFormStepFour(props) {
 																			ctaFunctionId: values?.id,
 																			getCtaDailyId: item.id,
 																			consultingType: "Solutions Discovery",
-validity: 0
+																			validity: 0,
 																			isSubscription: false,
 																		})
 																	}

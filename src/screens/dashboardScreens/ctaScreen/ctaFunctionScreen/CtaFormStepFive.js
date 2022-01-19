@@ -1,16 +1,17 @@
 import {Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {makeStyles} from "@material-ui/core/styles";
-import {CardElement, Elements} from "@stripe/react-stripe-js";
+import {makeStyles} from "@material-ui/styles";
+import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import PaypalExpressBtn from "react-paypal-express-checkout";
 import {useSelector} from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import Loading from "../../../../components/Loading/Loading";
 import {Form} from "../../../../components/UseForm/useForm";
 import {config} from "../../../../config";
-import CardForm from "./CardForm";
+import StripeCardForm from "./StripeCardForm";
+import StripeSubscriptionForm from "./StripeSubscriptionForm";
 
 // const REACT_APP_STRIPE_KEY = config.REACT_APP_STRIPE_KEY
 const {
@@ -108,8 +109,6 @@ export default function CtaFormStepFive(props) {
 
 	const userSignIn = useSelector((state) => state.userSignin);
 	const {userInfo} = userSignIn;
-	const [name, setName] = useState(userInfo.name);
-	const isSubscription = createOrder?.isSubscription;
 	const amount = (createOrder ? createOrder.rate : 0) * 100;
 	const amountString = (createOrder ? createOrder.rate : 0).toLocaleString(
 		"en-US",
@@ -120,8 +119,6 @@ export default function CtaFormStepFive(props) {
 	);
 
 	const paymentDesc = createOrder?.name + "   USD " + amountString;
-
-	const validity = () => {};
 
 	useEffect(() => {
 		setHideNext(true);
@@ -177,36 +174,17 @@ export default function CtaFormStepFive(props) {
 								<>
 									<div style={{margin: 15, width: "100%"}}>
 										<Elements stripe={stripePromise}>
-											<form>
-												<label>
-													<input
-														type="text"
-														id="name"
-														className="stripe-name-field"
-														value={name}
-														placeholder="Full Name"
-														onChange={(e) => setName(e.target.value)}
-													/>
-												</label>
-
-												<CardElement
-													className="card payment-card"
-													options={{
-														style: {
-															base: {
-																backgroundColor: "white",
-															},
-														},
-													}}
-												/>
-
-												<button className="pay-button">Subscribe</button>
-											</form>
+											<StripeSubscriptionForm
+												consultancyObj={values}
+												item={createOrder}
+												setActiveStep={setActiveStep}
+												handelCtaPaymentStripe={handelCtaPaymentStripe}
+											/>
 										</Elements>
 									</div>
 								</>
 							) : (
-								<div style={{margin: 15, width: "100%"}}>
+								<div>
 									<Form>
 										<div className={classes.paymentArea}>
 											<div>
@@ -273,7 +251,7 @@ export default function CtaFormStepFive(props) {
 									</Form>
 									<div style={{margin: 15, width: "100%"}}>
 										<Elements stripe={stripePromise}>
-											<CardForm
+											<StripeCardForm
 												consultancyObj={values}
 												item={createOrder}
 												setActiveStep={setActiveStep}

@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import {config} from "../../../../config";
 import {useMessages} from "../../../../helpers/StatusMessages";
 
-const CardForm = ({
+const StripeCardForm = ({
 	consultancyObj,
 	item,
 	setActiveStep,
@@ -170,4 +170,4 @@ const CardForm = ({
 	);
 };
 
-export default CardForm;
+export default StripeCardForm;
