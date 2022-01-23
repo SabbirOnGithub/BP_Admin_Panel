@@ -1,15 +1,16 @@
-import {Grid} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {makeStyles} from "@material-ui/styles";
-import {Elements} from "@stripe/react-stripe-js";
-import {loadStripe} from "@stripe/stripe-js";
-import React, {useEffect} from "react";
+import { makeStyles } from "@material-ui/styles";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React, { useEffect } from "react";
 import PaypalExpressBtn from "react-paypal-express-checkout";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import Loading from "../../../../components/Loading/Loading";
-import {Form} from "../../../../components/UseForm/useForm";
-import {config} from "../../../../config";
+import { Form } from "../../../../components/UseForm/useForm";
+import { config } from "../../../../config";
+import PaypalSubscriptionBtn from "./PaypalSubscriptionBtn";
 import StripeCardForm from "./StripeCardForm";
 import StripeSubscriptionForm from "./StripeSubscriptionForm";
 
@@ -121,6 +122,21 @@ export default function CtaFormStepFive(props) {
 
 	const paymentDesc = createOrder?.name + "   USD " + amountString;
 
+	const paypalSubscribe = (data, actions) => {
+		return actions.subscription.create({
+				plan_id: "P-5UH5683707007742FMHWSYYY",
+			});
+		};
+	const paypalOnError = (err) => {
+		console.log("Error");
+		};	
+	const paypalOnApprove = (data, detail) => {
+		// call the backend api to store transaction details
+		console.log("Payapl approved");
+		console.log("data: ", data);
+		console.log(data.subscriptionID);
+		};
+
 	useEffect(() => {
 		setHideNext(true);
 
@@ -173,6 +189,24 @@ export default function CtaFormStepFive(props) {
 						<Grid item xs={6}>
 							{createOrder?.isSubscription ? (
 								<>
+									<div>
+										<PaypalSubscriptionBtn
+											amount="100"
+											currency="USD"
+											clientId={REACT_APP_PAYPAL_SANDBOX_APP_ID}
+											env={REACT_APP_PAYPAL_ENV}
+											createSubscription={paypalSubscribe}
+											onApprove={paypalOnApprove}
+											catchError={paypalOnError}
+											onError={paypalOnError}
+											onCancel={paypalOnError}
+										/>
+									</div>
+
+									<p className="payment-option-separator">
+										<span>Or pay with card</span>
+									</p>
+									
 									<div style={{margin: 15, width: "100%"}}>
 										<Elements stripe={stripePromise}>
 											<StripeSubscriptionForm

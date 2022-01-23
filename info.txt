@@ -3,3 +3,41 @@ Paypal:
 --------------------------
 Client Id: AR6ig7zria6XlzbIk4v92E8MsimubH9OtqOuN9_eHBhBidKqzVzicaLm6gREhZjnI1Vcu0B5IuMvbR1w
 Secret: EJTqVDIy831U3seQqjZWo_6jMxIG5-KsEEr2uF0zDMihu-CwHiVo5s0mzs-5i7j5jJTZxf4BkDkYOWLe
+
+SandBox App:
+-- Name: Best Practicify
+-- SandBox Acount: sb-hffx431462960@business.example.com
+-- Client ID: AcLhes-GT14dVUDxhSMGLk-1bbk1H-MiXnLnuygg4MmyrIkLVrK5NCMKWrVAKMkq6l-dHFqYqILAGJO_
+-- Secret: EByhgS9rAcuC7K2JPo0aeikWh1VukZRfqvZfrUOkuqZ6d2ogZGwM5PP7WHXOQLwgNauthwTy5c1Xt12-
+
+
+
+Accounts:
+
+ -- business (Default)
+	Email Id: sb-sfzl26119745@business.example.com
+	Password: 9g)8qX&M
+	
+ -- Personal (Defailt)
+	Email ID: sb-dgnjl6116953@personal.example.com
+	Password: TzOK%&[0
+	
+ -- business 
+	Email ID: sb-hffx431462960@business.example.com
+	Password: ?<[UhL!6
+		
+ -- business 
+	Email ID: sb-mwwg91317802@business.example.com
+	Password: Hv3yX4)j
+ 
+ 
+ 
+ ProductId: application-development-startup-m
+ planId: P-5UH5683707007742FMHWSYYY
+ 
+ 
+ 
+ User Credentials:
+ -------------------------
+ 
+ sabbir.ahmed.dev@gmail.com / vniy3261ON
