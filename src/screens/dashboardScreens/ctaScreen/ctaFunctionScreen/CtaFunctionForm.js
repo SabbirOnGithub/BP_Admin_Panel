@@ -59,6 +59,7 @@ export default function CtaFunctionForm(props) {
 		successCtaPurchaseHistorySave,
 		paymentResponse,
 		handelCtaPaymentStripe,
+		handelStripeSubscription,
 	} = props;
 	const userSignIn = useSelector((state) => state.userSignin);
 	//eslint-disable-next-line
@@ -331,6 +332,7 @@ export default function CtaFunctionForm(props) {
 						createOrder={createOrder}
 						setHideNext={setHideNext}
 						handelCtaPaymentStripe={handelCtaPaymentStripe}
+						handelStripeSubscription={handelStripeSubscription}
 						handleCtaPayment={handleCtaPayment}
 						loadingCtaPaymentSave={loadingCtaPaymentSave}
 						successCtaPaymentSave={successCtaPaymentSave}

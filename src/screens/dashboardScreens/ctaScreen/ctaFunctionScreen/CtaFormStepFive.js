@@ -81,8 +81,8 @@ const stylePaypal = {
 	label: "pay",
 	tagline: false,
 	size: "large",
-	shape: "pill",
-	color: "gold",
+	shape: "rect",
+	color: "blue",
 };
 export default function CtaFormStepFive(props) {
 	const {
@@ -98,6 +98,7 @@ export default function CtaFormStepFive(props) {
 		loadingCtaPurchaseHistorySave,
 		setActiveStep,
 		handelCtaPaymentStripe,
+		handelStripeSubscription,
 	} = props;
 
 	const classes = useStyles();
@@ -178,7 +179,7 @@ export default function CtaFormStepFive(props) {
 												consultancyObj={values}
 												item={createOrder}
 												setActiveStep={setActiveStep}
-												handelCtaPaymentStripe={handelCtaPaymentStripe}
+												handelStripeSubscription={handelStripeSubscription}
 											/>
 										</Elements>
 									</div>

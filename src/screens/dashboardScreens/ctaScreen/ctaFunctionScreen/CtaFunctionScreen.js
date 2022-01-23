@@ -5,12 +5,12 @@ import {
 	Paper,
 	TableBody,
 	TableCell,
-	TableRow,
+	TableRow
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import DetailsIcon from "@material-ui/icons/Details";
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog";
 import Controls from "../../../../components/controls/Controls";
 import Loading from "../../../../components/Loading/Loading";
@@ -18,13 +18,13 @@ import Notification from "../../../../components/Notification/Notification";
 import PageTitle from "../../../../components/PageTitle/PageTitle";
 import useTableServerSide from "../../../../components/UseTable/useTableServerSide";
 import Widget from "../../../../components/Widget/Widget";
-import {timeConverter} from "../../../../helpers/converter";
+import { timeConverter } from "../../../../helpers/converter";
 import {
 	isAdminUser,
-	searchTitleByIdFromArray,
+	searchTitleByIdFromArray
 } from "../../../../helpers/search";
-import {ctaFunctionStatus} from "../../../../helpers/staticData";
-import {saveConsultancyAssignment} from "../../../../redux/actions/consultancyAssignmentActions";
+import { ctaFunctionStatus } from "../../../../helpers/staticData";
+import { saveConsultancyAssignment } from "../../../../redux/actions/consultancyAssignmentActions";
 // redux actions
 // import { listCtaCategorys } from '../../../../redux/actions/ctaCategoryActions';
 import {
@@ -32,16 +32,16 @@ import {
 	detailsConsultationSummery,
 	listCtaFunctions,
 	saveCtaFunction,
-	saveCtaFunctionDocument,
+	saveCtaFunctionDocument
 } from "../../../../redux/actions/ctaFunctionActions";
 // import { detailsUser } from '../../../../redux/actions/userActions';
 // import { listCtaPackageHourlys } from '../../../../redux/actions/ctaPackageHourlyActions';
 // import { listCtaPackageDailys } from '../../../../redux/actions/ctaPackageDailyActions';
 // import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
 // import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
-import {saveCtaPayment} from "../../../../redux/actions/ctaPaymentActions";
-import {saveCtaPurchaseHistory} from "../../../../redux/actions/ctaPurchaseHistoryActions";
-import {ResponseMessage} from "../../../../themes/responseMessage";
+import { saveCtaPayment } from "../../../../redux/actions/ctaPaymentActions";
+import { saveCtaPurchaseHistory } from "../../../../redux/actions/ctaPurchaseHistoryActions";
+import { ResponseMessage } from "../../../../themes/responseMessage";
 import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
 import CtaFunctionForm from "./CtaFunctionForm";
 
@@ -479,6 +479,73 @@ export default function CtaFunctionScreen(props) {
 		});
 	};
 
+	const handelStripeSubscription = (
+		paymentIntent,
+		subscriptionId,
+		item,
+		consultationObj,
+		setActiveStep
+	) => {
+		console.log(
+			"paymentIntent: " + JSON.stringify(paymentIntent, undefined, 4)
+		);
+		console.log(
+			"subscriptionId: " + JSON.stringify(subscriptionId, undefined, 4)
+		);
+		console.log("item: " + JSON.stringify(item, undefined, 4));
+		console.log(
+			"consultationObj" + JSON.stringify(consultationObj, undefined, 4)
+		);
+
+		const formatePurchaseHistoryData = {
+			transectionId: paymentIntent?.id,
+			isPaid: paymentIntent?.status === "succeeded",
+			amount: parseInt(item.rate),
+			ctaFunctionId: item?.ctaFunctionId,
+			paymentGateway: "stripe",
+			userEmail: userInfo.email,
+			SubscriptionId: subscriptionId,
+		};
+
+		var response = {
+			Paid: paymentIntent?.status === "succeeded",
+			Last4: "",
+			BalanceTransaction: paymentIntent?.id,
+			Brand: "",
+			PaidAmount: (item?.rate ? item?.rate : 0).toLocaleString("en-US", {
+				style: "currency",
+				currency: "USD",
+			}),
+			subscriptionId: subscriptionId,
+			...item,
+		};
+
+		setPaymentResponse(response);
+
+		console.log("response: " + JSON.stringify(response, undefined, 4));
+
+		item.getCtaHourlyId &&
+			(formatePurchaseHistoryData["ctaPackageHourlyId"] = item.id);
+		item.getCtaDailyId &&
+			(formatePurchaseHistoryData["ctaPackageDailyId"] = item.id);
+		item.getCtaMonthlyYearlyId &&
+			(formatePurchaseHistoryData["ctaPackageMonthlyYearlyId"] = item.id);
+		item.isMonthlySubscription &&
+			(formatePurchaseHistoryData["isMonthlySubscription"] =
+				item.isMonthlySubscription);
+		item.isYearlySubscription &&
+			(formatePurchaseHistoryData["isYearlySubscription"] =
+				item.isYearlySubscription);
+
+		dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
+			if (res.status === true) {
+				// stepper step auto increment
+				console.log("item: " + JSON.stringify(item, undefined, 2));
+				setActiveStep((prevActiveStep) => prevActiveStep + 1);
+			}
+		});
+	};
+
 	const handleCtaPayment = (token, item, resetActiveStep) => {
 		// const tokenId = token?.id;
 		// console.log(item)
@@ -773,6 +840,7 @@ export default function CtaFunctionScreen(props) {
 										}
 										paymentResponse={paymentResponse}
 										handelCtaPaymentStripe={handelCtaPaymentStripe}
+										handelStripeSubscription={handelStripeSubscription}
 									/>
 								</Widget>
 							) : (

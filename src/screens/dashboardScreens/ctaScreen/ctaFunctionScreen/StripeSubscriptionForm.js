@@ -8,7 +8,7 @@ const StripeSubscriptionForm = ({
 	consultancyObj,
 	item,
 	setActiveStep,
-	handelCtaPaymentStripe,
+	handelStripeSubscription,
 }) => {
 	const userSignIn = useSelector((state) => state.userSignin);
 	//eslint-disable-next-line
@@ -18,7 +18,7 @@ const StripeSubscriptionForm = ({
 	const elements = useElements();
 	const [messages, addMessage] = useMessages();
 
-	const [priceId, setPriceId] = useState("price_1KIXl2J708iVAZsoAt5kw2lY");
+	const [priceId, setPriceId] = useState(item.stripePriceId);
 	// const [customer, setCustomer] = useState(null);
 	// const [subscriptionData, setSubscriptionData] = useState(null);
 	// const [paymentIntent, setPaymentIntent] = useState();
@@ -103,7 +103,16 @@ const StripeSubscriptionForm = ({
 				if (paymentIntent && paymentIntent.status === "succeeded") {
 					// todo : add action after subscription successfull
 					setPaymentLoading(false);
-					alert(paymentIntent.status);
+					if (paymentIntent.id) {
+						handelStripeSubscription(
+							paymentIntent,
+							subscriptionId,
+							item,
+							consultancyObj,
+							setActiveStep
+						);
+					}
+					// alert(paymentIntent.status);
 				}
 			}
 		} else {

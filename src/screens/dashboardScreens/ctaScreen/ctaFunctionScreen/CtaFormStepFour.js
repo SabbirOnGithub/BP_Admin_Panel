@@ -501,6 +501,7 @@ export default function CtaFormStepFour(props) {
 																				consultingType: "Concierge",
 																				subscriptionType: "Monthly",
 																				isSubscription: true,
+																				stripePriceId: item.monthlyPriceId,
 																			})
 																		}
 																	>
@@ -524,6 +525,7 @@ export default function CtaFormStepFour(props) {
 																				consultingType: "Concierge",
 																				subscriptionType: "Yearly",
 																				isSubscription: true,
+																				stripePriceId: item.yearlyPriceId,
 																			})
 																		}
 																	>

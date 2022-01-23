@@ -1,0 +1,5 @@
+
+Paypal: 
+--------------------------
+Client Id: AR6ig7zria6XlzbIk4v92E8MsimubH9OtqOuN9_eHBhBidKqzVzicaLm6gREhZjnI1Vcu0B5IuMvbR1w
+Secret: EJTqVDIy831U3seQqjZWo_6jMxIG5-KsEEr2uF0zDMihu-CwHiVo5s0mzs-5i7j5jJTZxf4BkDkYOWLe
