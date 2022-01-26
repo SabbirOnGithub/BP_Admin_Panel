@@ -33,10 +33,20 @@ const useStyles = makeStyles((theme) => ({
 export default function PaymentSuccessDialog(props) {
 	const {title, subTitle, details} = props;
 	const classes = useStyles();
-	const amountString = (details?.rate).toLocaleString("en-US", {
-		style: "currency",
-		currency: "USD",
-	});
+	// const [amountString, setAmountString] = useState(null);
+
+	// if (details.PaidAmount) {
+	// 	setAmountString(details.PaidAmount);
+	// } else {
+	// 	setAmountString(
+	// 		(details?.rate).toLocaleString("en-US", {
+	// 			style: "currency",
+	// 			currency: "USD",
+	// 		})
+	// 	);
+	// }
+
+	console.log("success Details: " + JSON.stringify(details, undefined, 4));
 
 	return (
 		<>
@@ -49,10 +59,12 @@ export default function PaymentSuccessDialog(props) {
 					<h4 className="card-title title">{title}</h4>
 					<div className="header"> Purchase Details </div>
 					<p className="card-text">Package type : {details?.name}</p>
-					<p className="card-text">Amount Paid: USD {amountString}</p>
+					<p className="card-text">Amount Paid: USD {details?.PaidAmount}</p>
 					{details.isSubscription ? (
 						<>
-							<p className="card-text">Payment Method: Card</p>
+							<p className="card-text">
+								Payment Method: {details?.PaymentMethod}
+							</p>
 							<p className="card-text">
 								Subscription Type: {details?.subscriptionType}
 							</p>

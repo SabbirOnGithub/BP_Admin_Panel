@@ -502,6 +502,7 @@ export default function CtaFormStepFour(props) {
 																				subscriptionType: "Monthly",
 																				isSubscription: true,
 																				stripePriceId: item.monthlyPriceId,
+																				paypalPlanId: item.paypalMonthlyPlanId,
 																			})
 																		}
 																	>
@@ -526,6 +527,7 @@ export default function CtaFormStepFour(props) {
 																				subscriptionType: "Yearly",
 																				isSubscription: true,
 																				stripePriceId: item.yearlyPriceId,
+																				paypalPlanId: item.paypalYearlyPlanId,
 																			})
 																		}
 																	>

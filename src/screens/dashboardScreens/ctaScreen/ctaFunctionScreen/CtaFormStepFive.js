@@ -1,16 +1,16 @@
-import { Grid } from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/styles";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import React, { useEffect } from "react";
+import {makeStyles} from "@material-ui/styles";
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js";
+import React, {useEffect} from "react";
+import {PayPalButton} from "react-paypal-button-v2";
 import PaypalExpressBtn from "react-paypal-express-checkout";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import Loading from "../../../../components/Loading/Loading";
-import { Form } from "../../../../components/UseForm/useForm";
-import { config } from "../../../../config";
-import PaypalSubscriptionBtn from "./PaypalSubscriptionBtn";
+import {Form} from "../../../../components/UseForm/useForm";
+import {config} from "../../../../config";
 import StripeCardForm from "./StripeCardForm";
 import StripeSubscriptionForm from "./StripeSubscriptionForm";
 
@@ -23,6 +23,7 @@ const {
 } = config;
 
 const stripePromise = loadStripe(REACT_APP_STRIPE_KEY);
+const paypalKey = REACT_APP_PAYPAL_SANDBOX_APP_ID;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -100,6 +101,7 @@ export default function CtaFormStepFive(props) {
 		setActiveStep,
 		handelCtaPaymentStripe,
 		handelStripeSubscription,
+		handelPaypalSubscription,
 	} = props;
 
 	const classes = useStyles();
@@ -121,21 +123,24 @@ export default function CtaFormStepFive(props) {
 	);
 
 	const paymentDesc = createOrder?.name + "   USD " + amountString;
+	const paypalPlanId = createOrder?.paypalPlanId;
 
 	const paypalSubscribe = (data, actions) => {
 		return actions.subscription.create({
-				plan_id: "P-5UH5683707007742FMHWSYYY",
-			});
-		};
+			plan_id: paypalPlanId,
+		});
+	};
 	const paypalOnError = (err) => {
 		console.log("Error");
-		};	
+	};
 	const paypalOnApprove = (data, detail) => {
 		// call the backend api to store transaction details
+
 		console.log("Payapl approved");
 		console.log("data: ", data);
 		console.log(data.subscriptionID);
-		};
+		handelPaypalSubscription(data, createOrder, values, setActiveStep);
+	};
 
 	useEffect(() => {
 		setHideNext(true);
@@ -161,24 +166,24 @@ export default function CtaFormStepFive(props) {
 						<Grid item xs={6}>
 							<div className="card shadow-sm checkout-details-card">
 								<div className="card-body">
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Consulting Service : Paid
-									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									</h1>
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Consulting Type : Hourly Support
-									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									</h1>
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Business Type : {createOrder?.companyTypeName}
-									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									</h1>
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Packege Name : {createOrder?.name}
-									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									</h1>
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Validity : 60 Days
-									</h2>
-									<h2 style={{alignSelf: "center", textAlign: "center"}}>
+									</h1>
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Amount : USD {amountString}{" "}
-									</h2>
+									</h1>
 									{/* <pre>
 										createOrder : {JSON.stringify(createOrder, undefined, 4)}
 									</pre>
@@ -188,9 +193,33 @@ export default function CtaFormStepFive(props) {
 						</Grid>
 						<Grid item xs={6}>
 							{createOrder?.isSubscription ? (
-								<>
-									<div>
-										<PaypalSubscriptionBtn
+								<div style={{margin: 15}} className={classes.paymentArea}>
+									<div style={{width: "100%", textAlign: "center"}}>
+										<PayPalButton
+											amount={amount}
+											currency="USD"
+											createSubscription={(data, details) =>
+												paypalSubscribe(data, details)
+											}
+											onApprove={(data, details) =>
+												paypalOnApprove(data, details)
+											}
+											onError={(err) => paypalOnError(err)}
+											catchError={(err) => paypalOnError(err)}
+											onCancel={(err) => paypalOnError(err)}
+											options={{
+												clientId: paypalKey,
+												vault: true,
+											}}
+											style={{
+												shape: "rect",
+												color: "blue",
+												size: "large",
+												layout: "horizontal",
+												label: "subscribe",
+											}}
+										/>
+										{/* <PaypalSubscriptionBtn
 											amount="100"
 											currency="USD"
 											clientId={REACT_APP_PAYPAL_SANDBOX_APP_ID}
@@ -200,14 +229,14 @@ export default function CtaFormStepFive(props) {
 											catchError={paypalOnError}
 											onError={paypalOnError}
 											onCancel={paypalOnError}
-										/>
+										/> */}
 									</div>
 
 									<p className="payment-option-separator">
 										<span>Or pay with card</span>
 									</p>
-									
-									<div style={{margin: 15, width: "100%"}}>
+
+									<div style={{margin: 15, width: "100%", textAlign: "center"}}>
 										<Elements stripe={stripePromise}>
 											<StripeSubscriptionForm
 												consultancyObj={values}
@@ -217,7 +246,7 @@ export default function CtaFormStepFive(props) {
 											/>
 										</Elements>
 									</div>
-								</>
+								</div>
 							) : (
 								<div>
 									<Form>
