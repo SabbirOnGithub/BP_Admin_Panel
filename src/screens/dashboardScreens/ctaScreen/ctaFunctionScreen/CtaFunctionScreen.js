@@ -724,15 +724,15 @@ export default function CtaFunctionScreen(props) {
 				JSON.stringify(formatePurchaseHistoryData, undefined, 4)
 		);
 
-		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+		// setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-		// dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
-		// 	if (res.status === true) {
-		// 		// stepper step auto increment
-		// 		console.log("item: " + JSON.stringify(item, undefined, 2));
-		// 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-		// 	}
-		// });
+		dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
+			if (res.status === true) {
+				// stepper step auto increment
+				console.log("item: " + JSON.stringify(item, undefined, 2));
+				setActiveStep((prevActiveStep) => prevActiveStep + 1);
+			}
+		});
 	};
 
 	const openInDetails = (item) => {
