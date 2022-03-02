@@ -1,8 +1,8 @@
-import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
-import React, {useState} from "react";
-import {useSelector} from "react-redux";
-import {config} from "../../../../config";
-import {useMessages} from "../../../../helpers/StatusMessages";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { config } from "../../../../config";
+import StatusMessages, { useMessages } from "../../../../helpers/StatusMessages";
 
 const StripeCardForm = ({
 	consultancyObj,
@@ -43,6 +43,7 @@ const StripeCardForm = ({
 
 		if (error) {
 			console.log("[error]", error);
+			setPaymentLoading(false);
 		} else {
 			console.log("[PaymentMethod]", paymentMethod);
 			// ... SEND to your API server to process payment intent
@@ -68,6 +69,7 @@ const StripeCardForm = ({
 
 		if (backendError) {
 			addMessage(backendError.message);
+			setPaymentLoading(false);
 			return;
 		}
 
@@ -90,6 +92,7 @@ const StripeCardForm = ({
 		if (stripeError) {
 			// Show error to your customer (e.g., insufficient funds)
 			addMessage(stripeError.message);
+			setPaymentLoading(false);
 			return;
 		}
 
@@ -165,7 +168,7 @@ const StripeCardForm = ({
 					</div>
 				</div>
 			</form>
-			{/* <StatusMessages messages={messages} /> */}
+			<StatusMessages messages={messages} />
 		</>
 	);
 };
