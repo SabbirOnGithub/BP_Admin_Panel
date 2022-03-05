@@ -27,7 +27,7 @@ const initialFValues = {
 	email: "",
 	phone: "",
 	tellUsMore: null,
-	estimation: null,
+	estimation: new Date(),
 	description: null,
 	companyTypeId: null,
 	companySizeId: null,

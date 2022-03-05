@@ -1,8 +1,8 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { config } from "../../../../config";
-import StatusMessages, { useMessages } from "../../../../helpers/StatusMessages";
+import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
+import React, {useState} from "react";
+import {useSelector} from "react-redux";
+import {config} from "../../../../config";
+import StatusMessages, {useMessages} from "../../../../helpers/StatusMessages";
 
 const StripeCardForm = ({
 	consultancyObj,
@@ -17,6 +17,7 @@ const StripeCardForm = ({
 	const stripe = useStripe();
 	const elements = useElements();
 	const [messages, addMessage] = useMessages();
+	const [isPaymentLoading, setPaymentLoading] = useState(false);
 
 	const handleSubmit = async (e) => {
 		// We don't want to let default form submission happen here,
@@ -32,6 +33,7 @@ const StripeCardForm = ({
 
 		const cardElement = elements.getElement(CardElement);
 		// ----------- (1) create payment method
+		console.log("payment: stripe.createPaymentMethod");
 		const {error, paymentMethod} = await stripe.createPaymentMethod({
 			type: "card",
 			card: cardElement,
@@ -47,12 +49,12 @@ const StripeCardForm = ({
 		} else {
 			console.log("[PaymentMethod]", paymentMethod);
 			// ... SEND to your API server to process payment intent
-
-			// ----------- (2) create payment intent
 		}
 
+		// ----------- (2) create payment intent
+		console.log("payment: payment/create-payment-intent");
 		const {error: backendError, clientSecret} = await fetch(
-			baseURL + "payment/create-payment-intent",
+			baseURL + "/payment/create-payment-intent",
 			{
 				method: "POST",
 				headers: {
@@ -76,6 +78,7 @@ const StripeCardForm = ({
 		addMessage("Client secret returned");
 
 		// ----------- (3) create payment intent
+		console.log("payment: stripe.confirmCardPayment");
 		const {error: stripeError, paymentIntent} = await stripe.confirmCardPayment(
 			clientSecret,
 			{
@@ -113,7 +116,6 @@ const StripeCardForm = ({
 			);
 		}
 	};
-	const [isPaymentLoading, setPaymentLoading] = useState(false);
 
 	return (
 		<>
@@ -133,7 +135,7 @@ const StripeCardForm = ({
 							margin: "0 auto",
 						}}
 					>
-						<form
+						<div
 							style={{
 								display: "block",
 								width: "100%",
@@ -164,7 +166,7 @@ const StripeCardForm = ({
 									{isPaymentLoading ? "Loading..." : "Pay"}
 								</button>
 							</div>
-						</form>
+						</div>
 					</div>
 				</div>
 			</form>

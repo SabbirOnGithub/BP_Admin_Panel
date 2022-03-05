@@ -1,5 +1,4 @@
 import {Grid} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/styles";
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
@@ -7,7 +6,6 @@ import React, {useEffect} from "react";
 import {PayPalButton} from "react-paypal-button-v2";
 import PaypalExpressBtn from "react-paypal-express-checkout";
 import {useSelector} from "react-redux";
-import StripeCheckout from "react-stripe-checkout";
 import Loading from "../../../../components/Loading/Loading";
 import {Form} from "../../../../components/UseForm/useForm";
 import {config} from "../../../../config";
@@ -167,10 +165,11 @@ export default function CtaFormStepFive(props) {
 							<div className="card shadow-sm checkout-details-card">
 								<div className="card-body">
 									<h1 style={{alignSelf: "center", textAlign: "center"}}>
-										Consulting Service : Paid
+										Current Consultancy Status :{" "}
+										{userInfo?.currentConsultancyName}
 									</h1>
 									<h1 style={{alignSelf: "center", textAlign: "center"}}>
-										Consulting Type : Hourly Support
+										Consulting Type : {createOrder?.consultingType}
 									</h1>
 									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Business Type : {createOrder?.companyTypeName}
@@ -178,15 +177,19 @@ export default function CtaFormStepFive(props) {
 									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Packege Name : {createOrder?.name}
 									</h1>
-									<h1 style={{alignSelf: "center", textAlign: "center"}}>
-										Validity : 60 Days
-									</h1>
+									{createOrder?.validityTime && (
+										<h1 style={{alignSelf: "center", textAlign: "center"}}>
+											Validity : {createOrder?.validityTime}
+										</h1>
+									)}
+
 									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Amount : USD {amountString}{" "}
 									</h1>
 									{/* <pre>
 										createOrder : {JSON.stringify(createOrder, undefined, 4)}
 									</pre>
+									<pre>userInfo : {JSON.stringify(userInfo, undefined, 4)}</pre>
 									<pre>values: {JSON.stringify(values, undefined, 4)}</pre> */}
 								</div>
 							</div>
@@ -251,69 +254,30 @@ export default function CtaFormStepFive(props) {
 								<div>
 									<Form>
 										<div className={classes.paymentArea}>
-											<div>
-												<PaypalExpressBtn
-													env={REACT_APP_PAYPAL_ENV}
-													client={client}
-													currency={"USD"}
-													total={createOrder?.rate}
-													onError={(err) => console.log(err)}
-													onSuccess={(paymentAsToken) =>
-														handleCtaPayment(
-															paymentAsToken,
-															{...createOrder, paypal: true},
-															setActiveStep
-														)
-													}
-													onCancel={(data) => console.log(data)}
-													style={stylePaypal}
-													className="paypal-btn"
-												/>
-											</div>
-
-											<p className="payment-option-separator">
-												{" "}
-												<span>Or pay with card</span>{" "}
-											</p>
-
-											<div style={{marginTop: 15, display: "none"}}>
-												{createOrder?.rate && (
-													<StripeCheckout
-														stripeKey={REACT_APP_STRIPE_KEY}
-														token={(token) =>
-															handleCtaPayment(
-																token,
-																createOrder,
-																setActiveStep
-															)
-														}
-														amount={amount}
-														name="Best Practicify"
-														billingAddress
-														description={paymentDesc}
-														locale="auto"
-														currency="USD"
-														image="https://www.bestpracticify.co/images/BP_logo_Straight.png"
-													>
-														<Button
-															variant="contained"
-															color="primary"
-															className={classes.button}
-														>
-															<span
-																className="paypal-button-text"
-																optional=""
-																style={{color: "#fff"}}
-															>
-																Pay with Card
-															</span>
-														</Button>
-													</StripeCheckout>
-												)}
-											</div>
+											<PaypalExpressBtn
+												env={REACT_APP_PAYPAL_ENV}
+												client={client}
+												currency={"USD"}
+												total={createOrder?.rate}
+												onError={(err) => console.log(err)}
+												onSuccess={(paymentAsToken) =>
+													handleCtaPayment(
+														paymentAsToken,
+														{...createOrder, paypal: true},
+														setActiveStep
+													)
+												}
+												onCancel={(data) => console.log(data)}
+												style={stylePaypal}
+												className="paypal-btn"
+											/>
 										</div>
 									</Form>
-									<div style={{margin: 15, width: "100%"}}>
+									<p className="payment-option-separator">
+										{" "}
+										<span>Or pay with card</span>{" "}
+									</p>
+									<div style={{margin: 0, width: "100%"}}>
 										<Elements stripe={stripePromise}>
 											<StripeCardForm
 												consultancyObj={values}

@@ -270,6 +270,7 @@ export default function CtaFormStepFour(props) {
 																					getCtaHourlyId: item.id,
 																					consultingType: "Hourly Support",
 																					isSubscription: false,
+																					validityTime: item?.validity + "Days",
 																				})
 																			}
 																		>

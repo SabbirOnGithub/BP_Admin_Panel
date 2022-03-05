@@ -35,7 +35,7 @@ const StripeSubscriptionForm = ({
 		const cardElement = elements.getElement(CardElement);
 
 		console.log("Calling create-customer...");
-		const {customer} = await fetch(baseURL + "payment/create-customer", {
+		const {customer} = await fetch(baseURL + "/payment/create-customer", {
 			method: "post",
 			headers: {
 				"Content-Type": "application/json",
@@ -55,7 +55,7 @@ const StripeSubscriptionForm = ({
 				error: backendError,
 				subscriptionId,
 				clientSecret,
-			} = await fetch(baseURL + "payment/create-subscription", {
+			} = await fetch(baseURL + "/payment/create-subscription", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

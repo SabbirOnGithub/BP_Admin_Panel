@@ -1033,7 +1033,7 @@ export default function CtaFunctionScreen(props) {
 																						ctaFunctionStatus,
 																						item?.status
 																				  )
-																				: "No status found"
+																				: "Requested"
 																		}
 																		color="secondary"
 																		style={{fontSize: "1.6rem"}}
