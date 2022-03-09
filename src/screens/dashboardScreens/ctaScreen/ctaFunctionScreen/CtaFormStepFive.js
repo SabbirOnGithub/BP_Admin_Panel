@@ -165,10 +165,6 @@ export default function CtaFormStepFive(props) {
 							<div className="card shadow-sm checkout-details-card">
 								<div className="card-body">
 									<h1 style={{alignSelf: "center", textAlign: "center"}}>
-										Current Consultancy Status :{" "}
-										{userInfo?.currentConsultancyName}
-									</h1>
-									<h1 style={{alignSelf: "center", textAlign: "center"}}>
 										Consulting Type : {createOrder?.consultingType}
 									</h1>
 									<h1 style={{alignSelf: "center", textAlign: "center"}}>
@@ -180,6 +176,11 @@ export default function CtaFormStepFive(props) {
 									{createOrder?.validityTime && (
 										<h1 style={{alignSelf: "center", textAlign: "center"}}>
 											Validity : {createOrder?.validityTime}
+										</h1>
+									)}
+									{createOrder?.subscriptionType && (
+										<h1 style={{alignSelf: "center", textAlign: "center"}}>
+											Subscription : {createOrder?.subscriptionType}
 										</h1>
 									)}
 

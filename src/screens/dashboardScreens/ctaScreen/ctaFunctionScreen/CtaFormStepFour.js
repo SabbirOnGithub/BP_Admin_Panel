@@ -474,6 +474,16 @@ export default function CtaFormStepFour(props) {
 																</Typography>
 															</div>
 
+															<div className="notes">
+																<ul>
+																	<li className="list-group-item">
+																		Each call: 30 min (max)
+																	</li>
+																	<li className="list-group-item">
+																		Monthly Limit: 3 hours (max)
+																	</li>
+																</ul>
+															</div>
 															<div className="pricingTable-sign-up">
 																<PopOver
 																	variant="contained"

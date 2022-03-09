@@ -32,8 +32,10 @@ export default function Header(props) {
 	//eslint-disable-next-line
 	const {userInfo} = userSignIn;
 
-	const userimage =
-		BASE_ROOT_URL + "/" + userInfo?.userImage.split("\\").join("/");
+	let userimage = "";
+	if (userInfo?.userImage) {
+		userimage = BASE_ROOT_URL + "/" + userInfo?.userImage.split("\\").join("/");
+	}
 
 	console.log("Header userInfo: ", userInfo);
 

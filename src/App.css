@@ -157,3 +157,17 @@
 	border-radius: 4px;
 	margin-bottom: 10px;
 }
+
+
+.pricingTable .notes {
+	margin: 20px auto;
+	font-size: 14px;
+	text-align: center;
+  }
+.pricingTable .notes ul li {
+	list-style: none;
+	padding: 10px 0;
+  }
+.pricingTable .notes ul{
+	padding: 0;
+  }
