@@ -748,11 +748,7 @@ export default function CtaFunctionScreen(props) {
 		});
 
 	const onDeleteCtaFunctionDocument = (id) => {
-		// console.log(id)
-		// setConfirmDialog({
-		//     ...confirmDialog,
-		//     isOpen: false
-		// })
+		
 		deleteItem(id).then(() => {
 			if (successDeleteCtaFunctionDocument) {
 				setNotify({
