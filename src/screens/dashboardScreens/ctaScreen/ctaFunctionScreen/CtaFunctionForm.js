@@ -148,25 +148,7 @@ export default function CtaFunctionForm(props) {
 		let temp = {...errors};
 
 		if (activeStep === 0) {
-			// if ('name' in fieldValues)
-			//     temp.name = fieldValues.name ? "" : "This field is required."
-			// if ('firstName' in fieldValues)
-			//     temp.firstName = fieldValues.firstName ? "" : "This field is required."
-			// if ('lastName' in fieldValues)
-			//     temp.lastName = fieldValues.lastName ? "" : "This field is required."
-			// if ('companyName' in fieldValues)
-			//     temp.companyName = fieldValues.companyName ? "" : "This field is required."
-			// if ('email' in fieldValues)
-			//     temp.email = fieldValues.email ? "" : "This field is required."
-			// if ('phone' in fieldValues)
-			//     temp.phone = fieldValues.phone ? "" : "This field is required."
-			// if ('businessIndustry' in fieldValues)
-			//     temp.businessIndustry = fieldValues.businessIndustry ? "" : "This field is required."
-			// if ('companyTypeId' in fieldValues)
-			//     temp.companyTypeId = fieldValues.companyTypeId ? "" : "This field is required."
-			// if ('companySizeId' in fieldValues)
-			//     temp.companySizeId = fieldValues.companySizeId ? "" : "This field is required."
-			// ----
+			
 			if ("solutionSpecificity" in fieldValues)
 				temp.solutionSpecificity = fieldValues.solutionSpecificity
 					? ""
