@@ -618,9 +618,10 @@ export default function UserDashboardScreen() {
                                     }
                                 </Grid>
                             </Grid>
+							{/* <PurchaseConsultancy setPurchase={setPurchase}></PurchaseConsultancy> */}
                             {
                                 purchase ? (
-                                    <PurchaseConsultancy setPurchase={setPurchase}></PurchaseConsultancy>
+                                    <PurchaseConsultancy purchase={purchase} setPurchase={setPurchase}></PurchaseConsultancy>
                                 ) : <>
                                     {
                                     !openPopup ? (
@@ -772,7 +773,6 @@ export default function UserDashboardScreen() {
                                                 <Widget
                                                     title="Schedule a consult"
                                                     upperTitle
-                                                    // noBodyPadding
                                                     disableWidgetMenu
                                                     closePopup={() => {
                                                         setOpenPopup(false);
