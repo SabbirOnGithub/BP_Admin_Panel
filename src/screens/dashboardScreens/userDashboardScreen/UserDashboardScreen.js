@@ -17,9 +17,7 @@ import Controls from "../../../components/controls/Controls";
 import {ResponseMessage} from "../../../themes/responseMessage";
 import {saveCtaPayment} from "../../../redux/actions/ctaPaymentActions";
 // ../../../../redux/actions/ctaPaymentActions
-import {
-    isAdminUser
-} from "../../../helpers/search";
+import { isAdminUser} from "../../../helpers/search";
 
 import {
 	deleteCtaFunctionDocument,
