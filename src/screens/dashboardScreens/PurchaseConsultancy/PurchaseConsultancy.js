@@ -1,20 +1,20 @@
-import {Grid} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 // import { Box } from '@mui/system';
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputSharpIcon from "@material-ui/icons/InputSharp";
-import {makeStyles} from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Loading from "../../../components/Loading/Loading";
 import PopOver from "../../../components/PopOver/PopOver";
-import {Form, useForm} from "../../../components/UseForm/useForm";
+import { Form, useForm } from "../../../components/UseForm/useForm";
 import useTab from "../../../components/UseTab/useTab";
 import Widget from "../../../components/Widget/Widget";
-import {config} from "../../../config";
+import { config } from "../../../config";
 import PaymentPurchaseConsultancy from "./PaymentPurchaseConsultancy";
 
 const useStyles = makeStyles((theme) => ({
@@ -412,6 +412,7 @@ export default function PurchaseConsultancy(props) {
 			});
 	};
 
+
 	return (
 		<>
 			<>
@@ -450,11 +451,13 @@ export default function PurchaseConsultancy(props) {
 												<Tab label="Concierge" {...a11yPropsFullwidth(2)} />
 											</Tabs>
 										</AppBar>
+										{/* ==== payment package Lists =====*/}
 										<TabPanel value={value} index={0}>
 											{loading ? (
 												<Loading></Loading>
 											) : (
 												<>
+												
 													{filteredCtaPackageHourlys?.length > 0 ? (
 														<div className={classes.root}>
 															<Grid container spacing={1}>
@@ -876,6 +879,7 @@ export default function PurchaseConsultancy(props) {
 								<PaymentPurchaseConsultancy
 									values={values}
 									createOrder={createOrder}
+									closePurchaseScreen = {props.setPurchase}
 								/>
 							)}
 						</Widget>

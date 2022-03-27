@@ -1,15 +1,17 @@
-import {Grid} from "@material-ui/core";
-import {makeStyles} from "@material-ui/styles";
-import {Elements} from "@stripe/react-stripe-js";
-import {loadStripe} from "@stripe/stripe-js";
-import React, {useState} from "react";
-import {PayPalButton} from "react-paypal-button-v2";
+import { Grid } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/styles";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React, { useState } from "react";
+import { PayPalButton } from "react-paypal-button-v2";
 import PaypalExpressBtn from "react-paypal-express-checkout";
-import {useDispatch, useSelector} from "react-redux";
-import {Form} from "../../../components/UseForm/useForm";
-import {config} from "../../../config";
-import {saveCtaPayment} from "../../../redux/actions/ctaPaymentActions";
-import {saveCtaPurchaseHistory} from "../../../redux/actions/ctaPurchaseHistoryActions";
+import { useDispatch, useSelector } from "react-redux";
+import PaymentSuccessDialog from "../../../components/SuccessDialog/PaymentSuccessDialog";
+import { Form } from "../../../components/UseForm/useForm";
+import { config } from "../../../config";
+import { saveCtaPayment } from "../../../redux/actions/ctaPaymentActions";
+import { saveCtaPurchaseHistory } from "../../../redux/actions/ctaPurchaseHistoryActions";
 import StripeCardForm from "./StripeCardForm";
 import StripeSubscriptionForm from "./StripeSubscriptionForm";
 
@@ -90,8 +92,9 @@ export default function PaymentPurchaseConsultancy(props) {
 	const [activeStep, setActiveStep] = useState(0);
 	const [hideNext, setHideNext] = useState(false);
 	const dispatch = useDispatch();
+	const [paymeneSuccess, setPaymeneSuccess] = useState(false);
 
-	const {values, createOrder} = props;
+	const {values, createOrder, closePurchaseScreen} = props;
 
 	const handelStripeSubscription = (
 		paymentIntent,
@@ -154,9 +157,7 @@ export default function PaymentPurchaseConsultancy(props) {
 
 		dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
 			if (res.status === true) {
-				// stepper step auto increment
-				console.log("item: " + JSON.stringify(item, undefined, 2));
-				setActiveStep((prevActiveStep) => prevActiveStep + 1);
+				setPaymeneSuccess(true);
 			}
 		});
 	};
@@ -225,9 +226,7 @@ export default function PaymentPurchaseConsultancy(props) {
 
 		dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
 			if (res.status === true) {
-				// stepper step auto increment
-				console.log("item: " + JSON.stringify(item, undefined, 2));
-				setActiveStep((prevActiveStep) => prevActiveStep + 1);
+				setPaymeneSuccess(true);
 			}
 		});
 	};
@@ -288,9 +287,7 @@ export default function PaymentPurchaseConsultancy(props) {
 
 		dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
 			if (res.status === true) {
-				// stepper step auto increment
-				console.log("item: " + JSON.stringify(item, undefined, 2));
-				setActiveStep((prevActiveStep) => prevActiveStep + 1);
+				setPaymeneSuccess(true);
 			}
 		});
 	};
@@ -378,8 +375,7 @@ export default function PaymentPurchaseConsultancy(props) {
 						saveCtaPurchaseHistory(paypalFormatPurchaseHistoryData)
 					).then((res) => {
 						if (res.status === true) {
-							// stepper step auto increment
-							resetActiveStep((prevActiveStep) => prevActiveStep + 1);
+							setPaymeneSuccess(true);
 						}
 					});
 				} else {
@@ -433,9 +429,7 @@ export default function PaymentPurchaseConsultancy(props) {
 									saveCtaPurchaseHistory(formatePurchaseHistoryData)
 								).then((res) => {
 									if (res.status === true) {
-										// stepper step auto increment
-										console.log("item: " + JSON.stringify(item, undefined, 2));
-										resetActiveStep((prevActiveStep) => prevActiveStep + 1);
+										setPaymeneSuccess(true);
 									}
 								});
 							}
@@ -470,6 +464,7 @@ export default function PaymentPurchaseConsultancy(props) {
 
 	return (
 		<>
+		{!paymeneSuccess ? 
 			<Grid container>
 				<Grid item xs={6}>
 					<div className="card shadow-sm checkout-details-card">
@@ -600,6 +595,27 @@ export default function PaymentPurchaseConsultancy(props) {
 					)}
 				</Grid>
 			</Grid>
+			: 
+			<>
+			<div>
+            <PaymentSuccessDialog
+              title="Your Order has been submitted successfully. "
+              subTitle="Please visit your consultancy dashboard to schedule a consultation and for more details."
+              details={paymentResponse}
+            />
+            <div style={{ marginTop: 10 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                className="btn-finish"
+                onClick={()=>{closePurchaseScreen(false)}}
+                style={{ display: "flex", margin: "auto" }}
+              >
+                Finish
+              </Button>
+            </div>
+          </div>
+			</>}
 		</>
 	);
 }

@@ -1,18 +1,18 @@
-import React from "react";
-
-import classnames from "classnames";
-import { Box } from '@material-ui/core'
-
-// styles
-import useStyles from "./styles";
+import { Box } from '@material-ui/core';
 import { useTheme } from "@material-ui/styles";
-
+import classnames from "classnames";
+import React from "react";
+// context
+import { useLayoutState } from "../../context/LayoutContext";
 // components
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
+// styles
+import useStyles from "./styles";
 
-// context
-import { useLayoutState } from "../../context/LayoutContext";
+
+
+
 
 const CustomLayout = props => {
 
@@ -44,9 +44,7 @@ const CustomLayout = props => {
           <div className={classes.fakeToolbar} />
 
           <div style={{ minHeight: '80%' }} > 
-          
               {props.children} 
-          
           </div>
 
           <Box

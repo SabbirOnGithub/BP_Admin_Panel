@@ -1,42 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import Loading from '../../../components/Loading/Loading';
 import { Grid } from "@material-ui/core";
-import Widget from "../../../components/Widget/Widget";
-import { Typography } from "../../../components/Wrappers/Wrappers";
-import PageTitle from "../../../components/PageTitle/PageTitle";
 import Avatar from '@material-ui/core/Avatar';
-import classnames from "classnames";
-// import PageviewIcon from '@material-ui/icons/Pageview';
-import ReceiptIcon from '@material-ui/icons/Receipt';
+import Box from '@material-ui/core/Box';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PaymentIcon from '@material-ui/icons/Payment';
+// import PageviewIcon from '@material-ui/icons/Pageview';
+import ReceiptIcon from '@material-ui/icons/Receipt';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ReplyAllIcon from '@material-ui/icons/ReplyAll';
+import classnames from "classnames";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Controls from "../../../components/controls/Controls";
-import {ResponseMessage} from "../../../themes/responseMessage";
-import {saveCtaPayment} from "../../../redux/actions/ctaPaymentActions";
+import Loading from '../../../components/Loading/Loading';
+import PageTitle from "../../../components/PageTitle/PageTitle";
+import Widget from "../../../components/Widget/Widget";
+import { Typography } from "../../../components/Wrappers/Wrappers";
 // ../../../../redux/actions/ctaPaymentActions
-import { isAdminUser} from "../../../helpers/search";
-
+import { isAdminUser } from "../../../helpers/search";
 import {
-	deleteCtaFunctionDocument,
-	detailsConsultationSummery,
-	listCtaFunctions,
-	saveCtaFunction,
-	saveCtaFunctionDocument,
+	deleteCtaFunctionDocument, saveCtaFunction,
+	saveCtaFunctionDocument
 } from "../../../redux/actions/ctaFunctionActions";
-import {saveCtaPurchaseHistory} from "../../../redux/actions/ctaPurchaseHistoryActions";
+import { saveCtaPayment } from "../../../redux/actions/ctaPaymentActions";
+import { saveCtaPurchaseHistory } from "../../../redux/actions/ctaPurchaseHistoryActions";
+// redux actions
+import { detailsUserDashboard } from '../../../redux/actions/dashboardActions';
+import { ResponseMessage } from "../../../themes/responseMessage";
 import CtaFunctionForm from '../ctaScreen/ctaFunctionScreen/CtaFunctionForm';
+import PurchaseConsultancy from '../PurchaseConsultancy/PurchaseConsultancy';
 // ../../../../redux/actions/ctaPurchaseHistoryActions
-
 // styles
 import useStyles from "./styles";
 
-// redux actions
-import { detailsUserDashboard } from '../../../redux/actions/dashboardActions';
-import CtaFormStepFour from '../ctaScreen/ctaFunctionScreen/CtaFormStepFour';
-import PurchaseConsultancy from '../PurchaseConsultancy/PurchaseConsultancy';
+
 
 export default function UserDashboardScreen() {
     var classes = useStyles();
@@ -587,30 +583,34 @@ export default function UserDashboardScreen() {
                 loading ? <Loading /> :
                     ( 
                         <>
-                         <PageTitle 
-                            title="Dashboard" 
-                        />
-                            <Grid container spacing={4}>
-                                <Grid item xs={12}>
+                         
+                            <Grid container spacing={2}>
+								<Grid item xs={4}>
+									<PageTitle 
+										title="Dashboard" 
+									/>
+								</Grid>
+                                <Grid item xs={8}>
                                     {
                                         !isAdminUser() && (
-
                                             <>
-                                                <Controls.Button
-                                                    text="purchase Consultation"
-                                                    onClick={() => {
-                                                        setPurchase(true);
-                                                        setOpenPopup(false);
-                                                    }}
-                                                />
-                                                
-                                                <Controls.Button
-                                                    text="Schedule a consult"
-                                                    onClick={() => {
-                                                        setOpenPopup(true);
-                                                        setPurchase(false);
-                                                    }}
-                                                />
+												<Box display="flex" justifyContent="flex-end" alignItems="center" height="100%">
+													<Controls.Button
+															text="purchase Consultation"
+															onClick={() => {
+																setPurchase(true);
+																setOpenPopup(false);
+															}}
+														/>
+														
+														<Controls.Button
+															text="Schedule a consult"
+															onClick={() => {
+																setOpenPopup(true);
+																setPurchase(false);
+															}}
+														/>
+												</Box>
                                             </>
                                         )
                                     }
