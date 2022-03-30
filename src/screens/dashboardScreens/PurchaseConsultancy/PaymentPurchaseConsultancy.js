@@ -1,17 +1,17 @@
-import { Grid } from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/styles";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import React, { useState } from "react";
-import { PayPalButton } from "react-paypal-button-v2";
+import {makeStyles} from "@material-ui/styles";
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js";
+import React, {useState} from "react";
+import {PayPalButton} from "react-paypal-button-v2";
 import PaypalExpressBtn from "react-paypal-express-checkout";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PaymentSuccessDialog from "../../../components/SuccessDialog/PaymentSuccessDialog";
-import { Form } from "../../../components/UseForm/useForm";
-import { config } from "../../../config";
-import { saveCtaPayment } from "../../../redux/actions/ctaPaymentActions";
-import { saveCtaPurchaseHistory } from "../../../redux/actions/ctaPurchaseHistoryActions";
+import {Form} from "../../../components/UseForm/useForm";
+import {config} from "../../../config";
+import {saveCtaPayment} from "../../../redux/actions/ctaPaymentActions";
+import {saveCtaPurchaseHistory} from "../../../redux/actions/ctaPurchaseHistoryActions";
 import StripeCardForm from "./StripeCardForm";
 import StripeSubscriptionForm from "./StripeSubscriptionForm";
 
@@ -251,7 +251,7 @@ export default function PaymentPurchaseConsultancy(props) {
 			transectionId: intentObj?.id,
 			isPaid: intentObj?.status === "succeeded",
 			amount: parseInt(item.rate),
-			ctaFunctionId: item?.ctaFunctionId,
+			ctaFunctionId: consultationObj?.id,
 			paymentGateway: "stripe",
 			userEmail: userInfo.email,
 		};
@@ -464,69 +464,71 @@ export default function PaymentPurchaseConsultancy(props) {
 
 	return (
 		<>
-		{!paymeneSuccess ? 
-			<Grid container>
-				<Grid item xs={6}>
-					<div className="card shadow-sm checkout-details-card">
-						<div className="card-body">
-							<h1 style={{alignSelf: "center", textAlign: "center"}}>
-								Consulting Type : {createOrder?.consultingType}
-							</h1>
-							<h1 style={{alignSelf: "center", textAlign: "center"}}>
-								Business Type : {createOrder?.companyTypeName}
-							</h1>
-							<h1 style={{alignSelf: "center", textAlign: "center"}}>
-								Packege Name : {createOrder?.name}
-							</h1>
-							{createOrder?.validityTime && (
+			{!paymeneSuccess ? (
+				<Grid container>
+					<Grid item xs={6}>
+						<div className="card shadow-sm checkout-details-card">
+							<div className="card-body">
 								<h1 style={{alignSelf: "center", textAlign: "center"}}>
-									Validity : {createOrder?.validityTime}
+									Consulting Type : {createOrder?.consultingType}
 								</h1>
-							)}
-							{createOrder?.subscriptionType && (
 								<h1 style={{alignSelf: "center", textAlign: "center"}}>
-									Subscription : {createOrder?.subscriptionType}
+									Business Type : {createOrder?.companyTypeName}
 								</h1>
-							)}
+								<h1 style={{alignSelf: "center", textAlign: "center"}}>
+									Packege Name : {createOrder?.name}
+								</h1>
+								{createOrder?.validityTime && (
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
+										Validity : {createOrder?.validityTime}
+									</h1>
+								)}
+								{createOrder?.subscriptionType && (
+									<h1 style={{alignSelf: "center", textAlign: "center"}}>
+										Subscription : {createOrder?.subscriptionType}
+									</h1>
+								)}
 
-							<h1 style={{alignSelf: "center", textAlign: "center"}}>
-								Amount : USD {amountString}{" "}
-							</h1>
-							{/* <pre>
-								createOrder : {JSON.stringify(createOrder, undefined, 4)}
-							</pre>
-							<pre>userInfo : {JSON.stringify(userInfo, undefined, 4)}</pre>
-							<pre>values: {JSON.stringify(values, undefined, 4)}</pre> */}
+								{/* <h1 style={{alignSelf: "center", textAlign: "center"}}>
+									Amount : USD {amountString}{" "}
+								</h1>
+								<pre>
+									createOrder : {JSON.stringify(createOrder, undefined, 4)}
+								</pre>
+								<pre>userInfo : {JSON.stringify(userInfo, undefined, 4)}</pre>
+								<pre>values: {JSON.stringify(values, undefined, 4)}</pre> */}
+							</div>
 						</div>
-					</div>
-				</Grid>
-				<Grid item xs={6}>
-					{createOrder?.isSubscription ? (
-						<div style={{margin: 15}} className={classes.paymentArea}>
-							<div style={{width: "100%", textAlign: "center"}}>
-								<PayPalButton
-									amount={amount}
-									currency="USD"
-									createSubscription={(data, details) =>
-										paypalSubscribe(data, details)
-									}
-									onApprove={(data, details) => paypalOnApprove(data, details)}
-									onError={(err) => paypalOnError(err)}
-									catchError={(err) => paypalOnError(err)}
-									onCancel={(err) => paypalOnError(err)}
-									options={{
-										clientId: paypalKey,
-										vault: true,
-									}}
-									style={{
-										shape: "rect",
-										color: "blue",
-										size: "large",
-										layout: "horizontal",
-										label: "subscribe",
-									}}
-								/>
-								{/* <PaypalSubscriptionBtn
+					</Grid>
+					<Grid item xs={6}>
+						{createOrder?.isSubscription ? (
+							<div style={{margin: 15}} className={classes.paymentArea}>
+								<div style={{width: "100%", textAlign: "center"}}>
+									<PayPalButton
+										amount={amount}
+										currency="USD"
+										createSubscription={(data, details) =>
+											paypalSubscribe(data, details)
+										}
+										onApprove={(data, details) =>
+											paypalOnApprove(data, details)
+										}
+										onError={(err) => paypalOnError(err)}
+										catchError={(err) => paypalOnError(err)}
+										onCancel={(err) => paypalOnError(err)}
+										options={{
+											clientId: paypalKey,
+											vault: true,
+										}}
+										style={{
+											shape: "rect",
+											color: "blue",
+											size: "large",
+											layout: "horizontal",
+											label: "subscribe",
+										}}
+									/>
+									{/* <PaypalSubscriptionBtn
                                     amount="100"
                                     currency="USD"
                                     clientId={REACT_APP_PAYPAL_SANDBOX_APP_ID}
@@ -537,85 +539,88 @@ export default function PaymentPurchaseConsultancy(props) {
                                     onError={paypalOnError}
                                     onCancel={paypalOnError}
                                 /> */}
-							</div>
-
-							<p className="payment-option-separator">
-								<span>Or pay with card</span>
-							</p>
-
-							<div style={{margin: 15, width: "100%", textAlign: "center"}}>
-								<Elements stripe={stripePromise}>
-									<StripeSubscriptionForm
-										consultancyObj={values}
-										item={createOrder}
-										setActiveStep={setActiveStep}
-										handelStripeSubscription={handelStripeSubscription}
-									/>
-								</Elements>
-							</div>
-						</div>
-					) : (
-						<div>
-							<Form>
-								<div className={classes.paymentArea}>
-									<PaypalExpressBtn
-										env={REACT_APP_PAYPAL_ENV}
-										client={client}
-										currency={"USD"}
-										total={createOrder?.rate}
-										onError={(err) => console.log(err)}
-										onSuccess={(paymentAsToken) =>
-											handleCtaPayment(
-												paymentAsToken,
-												{...createOrder, paypal: true},
-												setActiveStep
-											)
-										}
-										onCancel={(data) => console.log(data)}
-										style={stylePaypal}
-										className="paypal-btn"
-									/>
 								</div>
-							</Form>
-							<p className="payment-option-separator">
-								{" "}
-								<span>Or pay with card</span>{" "}
-							</p>
-							<div style={{margin: 0, width: "100%"}}>
-								<Elements stripe={stripePromise}>
-									<StripeCardForm
-										consultancyObj={values}
-										item={createOrder}
-										setActiveStep={setActiveStep}
-										handelCtaPaymentStripe={handelCtaPaymentStripe}
-									/>
-								</Elements>
+
+								<p className="payment-option-separator">
+									<span>Or pay with card</span>
+								</p>
+
+								<div style={{margin: 15, width: "100%", textAlign: "center"}}>
+									<Elements stripe={stripePromise}>
+										<StripeSubscriptionForm
+											consultancyObj={values}
+											item={createOrder}
+											setActiveStep={setActiveStep}
+											handelStripeSubscription={handelStripeSubscription}
+										/>
+									</Elements>
+								</div>
 							</div>
-						</div>
-					)}
+						) : (
+							<div>
+								<Form>
+									<div className={classes.paymentArea}>
+										<PaypalExpressBtn
+											env={REACT_APP_PAYPAL_ENV}
+											client={client}
+											currency={"USD"}
+											total={createOrder?.rate}
+											onError={(err) => console.log(err)}
+											onSuccess={(paymentAsToken) =>
+												handleCtaPayment(
+													paymentAsToken,
+													{...createOrder, paypal: true},
+													setActiveStep
+												)
+											}
+											onCancel={(data) => console.log(data)}
+											style={stylePaypal}
+											className="paypal-btn"
+										/>
+									</div>
+								</Form>
+								<p className="payment-option-separator">
+									{" "}
+									<span>Or pay with card</span>{" "}
+								</p>
+								<div style={{margin: 0, width: "100%"}}>
+									<Elements stripe={stripePromise}>
+										<StripeCardForm
+											consultancyObj={values}
+											item={createOrder}
+											setActiveStep={setActiveStep}
+											handelCtaPaymentStripe={handelCtaPaymentStripe}
+										/>
+									</Elements>
+								</div>
+							</div>
+						)}
+					</Grid>
 				</Grid>
-			</Grid>
-			: 
-			<>
-			<div>
-            <PaymentSuccessDialog
-              title="Your Order has been submitted successfully. "
-              subTitle="Please visit your consultancy dashboard to schedule a consultation and for more details."
-              details={paymentResponse}
-            />
-            <div style={{ marginTop: 10 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                className="btn-finish"
-                onClick={()=>{closePurchaseScreen(false)}}
-                style={{ display: "flex", margin: "auto" }}
-              >
-                Finish
-              </Button>
-            </div>
-          </div>
-			</>}
+			) : (
+				<>
+					<div>
+						<PaymentSuccessDialog
+							title="Your Order has been submitted successfully. "
+							subTitle="Please visit your consultancy dashboard to schedule a consultation and for more details."
+							details={paymentResponse}
+						/>
+						<div style={{marginTop: 10}}>
+							<Button
+								variant="contained"
+								color="primary"
+								className="btn-finish"
+								onClick={() => {
+									closePurchaseScreen(false);
+								}}
+								style={{display: "flex", margin: "auto"}}
+							>
+								Finish
+							</Button>
+						</div>
+					</div>
+				</>
+			)}
 		</>
 	);
 }
