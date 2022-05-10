@@ -1,5 +1,6 @@
 import {AppBar, IconButton, Menu, Toolbar} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
 import {
 	ArrowBack as ArrowBackIcon,
 	Menu as MenuIcon,
@@ -123,25 +124,48 @@ export default function Header(props) {
         } */}
 				{/* <div>{userInfo.consultationTypeName}</div> */}
 
-				<IconButton
+				{/* <IconButton
 					aria-haspopup="true"
 					color="inherit"
 					className={classes.headerMenuButton}
 					aria-controls="profile-menu"
 					onClick={(e) => setProfileMenu(e.currentTarget)}
 				>
-					{/* <AccountIcon classes={{ root: classes.headerIcon }} /> */}
 					{userInfo?.userImage ? (
 						<>
 							<Avatar alt="Profile" src={userimage} />
-							<span className={classes.menuUserName}>
-								{userInfo && userInfo?.firstName}
-							</span>
 						</>
 					) : (
-						<AccountIcon classes={{root: classes.headerIcon}} />
+						<>
+							<AccountIcon classes={{root: classes.headerIcon}} />
+						</>
 					)}
-				</IconButton>
+				</IconButton> */}
+
+				<Button
+					color="inherit"
+					classes={{root: classes.avaterButton}}
+					className={classes.headerMenuButton}
+					aria-controls="profile-menu"
+					size="large"
+					fontSize="large"
+					onClick={(e) => setProfileMenu(e.currentTarget)}
+					startIcon={
+						userInfo?.userImage ? (
+							<>
+								<Avatar alt="Profile" src={userimage} />
+							</>
+						) : (
+							<>
+								<AccountIcon classes={{root: classes.headerIcon}} />
+							</>
+						)
+					}
+				>
+					<span className={classes.menuUserName}>
+						{userInfo && userInfo?.firstName}
+					</span>
+				</Button>
 
 				<Menu
 					id="profile-menu"
@@ -219,8 +243,8 @@ export default function Header(props) {
 							to={"/admin/userProfile"}
 							onClick={() => setProfileMenu(null)}
 						>
-							<AccountCircleIcon className={classes.profilemenuicons} /> User
-							Profile
+							<AccountCircleIcon className={classes.profilemenuicons} />
+							User Profile
 						</Typography>
 
 						<Typography
@@ -232,6 +256,17 @@ export default function Header(props) {
 						>
 							<RotateLeftIcon className={classes.profilemenuicons} />
 							Visit Website
+						</Typography>
+
+						<Typography
+							className={classes.profileMenuLink}
+							color="primary"
+							component={Link}
+							to={"/admin/changePassword"}
+							onClick={() => setProfileMenu(null)}
+						>
+							<RotateLeftIcon className={classes.profilemenuicons} />
+							Change Password
 						</Typography>
 					</div>
 					<div className={classes.profileMenuUser}>

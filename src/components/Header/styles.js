@@ -144,6 +144,8 @@ export default makeStyles((theme) => ({
 	},
 	headerIcon: {
 		fontSize: 28,
+		height: 30,
+		width: 30,
 		color: "rgba(255, 255, 255, 0.35)",
 	},
 	headerIconCollapse: {
@@ -235,5 +237,9 @@ export default makeStyles((theme) => ({
 
 	menuUserName: {
 		paddingLeft: "5px",
+	},
+	avaterButton: {
+		padding: 10,
+		fontSize: 15,
 	},
 }));

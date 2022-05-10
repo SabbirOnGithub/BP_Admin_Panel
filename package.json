@@ -29,6 +29,7 @@
     "draftjs-to-html": "^0.9.1",
     "html-react-parser": "^1.2.7",
     "js-cookie": "^2.2.1",
+    "material-ui-password-field": "^2.1.2",
     "only": "0.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

@@ -748,7 +748,6 @@ export default function CtaFunctionScreen(props) {
 		});
 
 	const onDeleteCtaFunctionDocument = (id) => {
-		
 		deleteItem(id).then(() => {
 			if (successDeleteCtaFunctionDocument) {
 				setNotify({
@@ -810,14 +809,15 @@ export default function CtaFunctionScreen(props) {
 											{consultationSummery?.consultationTypeName}{" "}
 										</Typography>
 										<Typography paragraph className={classes.customPharagraph}>
-											<b>Total Purchased Hours: </b>{" "}
+											<b>Total Purchased Minutes: </b>{" "}
 											{consultationSummery?.purchasedHours}{" "}
 										</Typography>
 										<Typography paragraph className={classes.customPharagraph}>
-											<b>Total Used Hours: </b> {consultationSummery?.usedHours}{" "}
+											<b>Total Used Minutes: </b>{" "}
+											{consultationSummery?.usedHours}{" "}
 										</Typography>
 										<Typography paragraph className={classes.customPharagraph}>
-											<b>Total Remaining Houes: </b>{" "}
+											<b>Total Remaining Minutes: </b>{" "}
 											{consultationSummery?.remainingHours}{" "}
 										</Typography>
 										{createOperation && (
