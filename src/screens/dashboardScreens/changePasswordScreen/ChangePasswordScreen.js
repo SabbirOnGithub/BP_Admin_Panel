@@ -1,16 +1,17 @@
-import {Divider, Grid} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import { Divider, Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading/Loading";
+import Notification from "../../../components/Notification/Notification";
 import Widget from "../../../components/Widget/Widget";
-import {config} from "../../../config";
-import {listCompanySizes} from "../../../redux/actions/companySizeActions";
-import {listCompanyTypes} from "../../../redux/actions/companyTypeActions";
-import {listConsultingTypes} from "../../../redux/actions/consultingTypeActions";
+import { config } from "../../../config";
+import { listCompanySizes } from "../../../redux/actions/companySizeActions";
+import { listCompanyTypes } from "../../../redux/actions/companyTypeActions";
+import { listConsultingTypes } from "../../../redux/actions/consultingTypeActions";
 // import { useHistory } from 'react-router';
 // redux actions
-import {detailsUser, saveUser} from "../../../redux/actions/userActions";
+import { changePassword, detailsUser } from "../../../redux/actions/userActions";
 import ChangePasswordForm from "./ChangePasswordForm";
 
 const BASE_ROOT_URL = config.BASE_ROOT_URL;
@@ -58,19 +59,15 @@ export const ChangePasswordScreen = () => {
 	// const history = useHistory();
 
 	const userSignIn = useSelector((state) => state.userSignin);
-	//eslint-disable-next-line
 	const {userInfo} = userSignIn;
-	// console.log(userInfo)
-	// const userDetails = useSelector(state => state.userDetails);
-	// //eslint-disable-next-line
-	// const { user, loading, error } = userDetails;
-	const userSave = useSelector((state) => state.userSave);
+
+	const userPasswordChange = useSelector((state) => state.userPasswordChange);
 	//eslint-disable-next-line
 	const {
 		loading: loadingSave,
 		success: successSave,
 		error: errorSave,
-	} = userSave;
+	} = userPasswordChange;
 
 	const classes = useStyles();
 
@@ -79,12 +76,7 @@ export const ChangePasswordScreen = () => {
 
 	//eslint-disable-next-line
 	const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
-	//eslint-disable-next-line
-	const [confirmDialog, setConfirmDialog] = useState({
-		isOpen: false,
-		title: "",
-		subTitle: "",
-	});
+
 
 	const dispatch = useDispatch();
 
@@ -92,7 +84,7 @@ export const ChangePasswordScreen = () => {
 	const addOrEdit = (item, resetForm) => {
 		// console.log(item)
 		const formData = new FormData();
-		item.userId && formData.append("UserId", item?.userId);
+		formData.append("UserId", userInfo?.userId);
 		item?.tempPass && formData.append("TempPass", item?.tempPass);
 		item?.newPassword && formData.append("NewPassword", item?.newPassword);
 
@@ -101,20 +93,20 @@ export const ChangePasswordScreen = () => {
 			// setRecordForEdit(null)
 			// setOpenPopup(true)
 			// saveItem(formData, item.id)
-			dispatch(saveUser(formData, item.id)).then((res) => {
-				// console.log(res)
+			dispatch(changePassword(formData)).then((res) => {
+				console.log(res);
 				if (res?.status) {
 					// history.go(0);
 					setNotify({
 						isOpen: true,
-						message: "Successfull",
+						message: res?.message,
 						type: "success",
 					});
 				} else {
 					setNotify({
 						isOpen: true,
-						message: "Submition Failed",
-						type: "warning",
+						message: res?.message,
+						type: "error",
 					});
 				}
 			});
@@ -150,12 +142,13 @@ export const ChangePasswordScreen = () => {
 									<Divider style={{marginBottom: 16}} />
 
 									<ChangePasswordForm
-										recordForEdit={userInfo}
-										// recordForEdit = {recordForEdit}
 										addOrEdit={addOrEdit}
 										loadingSave={loadingSave}
 										userInfo={userInfo}
 									/>
+
+									<Notification notify={notify} setNotify={setNotify} />
+									
 								</Widget>
 							)}
 						</Grid>

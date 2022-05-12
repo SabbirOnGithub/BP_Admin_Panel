@@ -1,58 +1,49 @@
 import {Grid} from "@material-ui/core";
-import React, {useEffect} from "react";
+import React, {useState} from "react";
 import Controls from "../../../components/controls/Controls";
 import {Form, useForm} from "../../../components/UseForm/useForm";
-import {isClientUser} from "../../../helpers/search";
 
 const initialFValues = {
 	userId: "",
 	tempPass: "",
 	newPassword: "",
-	newPasswordClone: "",
+	newPasswordCopy: "",
 };
 
 const ChangePasswordForm = (props) => {
-	const {addOrEdit, recordForEdit, loadingSave, userInfo} = props;
+	const {addOrEdit, loadingSave, userInfo} = props;
+
+	const [password, setPassword] = useState("");
 
 	const validate = (fieldValues = values) => {
 		let temp = {...errors};
 
-		if ("username" in fieldValues)
-			temp.username = fieldValues.username ? "" : "This field is required.";
-		// if ('email' in fieldValues)
-		//     (temp.email = fieldValues.email ? "" : "This field is required.") || (temp.email = (/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})?$/).test(fieldValues.email) ? "" : "Email is not valid.")
-		if ("firstName" in fieldValues)
-			temp.firstName = fieldValues.firstName ? "" : "This field is required.";
-		if ("businessIndustry" in fieldValues)
-			isClientUser(userInfo) &&
-				(temp.businessIndustry = fieldValues.businessIndustry
-					? ""
-					: "This field is required.");
-		if ("businessName" in fieldValues)
-			temp.businessName = fieldValues.businessName
+		// console.log("fieldValues: ", fieldValues);
+
+		if ("tempPass" in fieldValues)
+			temp.tempPass = fieldValues.tempPass ? "" : "This field is required.";
+		if ("newPassword" in fieldValues) {
+			temp.newPassword = fieldValues.newPassword
 				? ""
 				: "This field is required.";
-		// if ('lastName' in fieldValues)
-		//     temp.lastName = fieldValues.lastName ? "" : "This field is required."
-		if ("address" in fieldValues)
-			temp.address = fieldValues.address ? "" : "This field is required.";
-		if ("mobile" in fieldValues)
-			temp.mobile = fieldValues.mobile ? "" : "This field is required.";
-		if ("companySizeId" in fieldValues)
-			isClientUser(userInfo) &&
-				(temp.companySizeId = fieldValues.companySizeId
-					? ""
-					: "This field is required.");
-		if ("companyTypeId" in fieldValues)
-			isClientUser(userInfo) &&
-				(temp.companyTypeId = fieldValues.companyTypeId
-					? ""
-					: "This field is required.");
-		if ("currentConsultingTypeId" in fieldValues)
-			isClientUser(userInfo) &&
-				(temp.currentConsultingTypeId = fieldValues.currentConsultingTypeId
-					? ""
-					: "This field is required.");
+
+			setPassword(fieldValues.newPassword);
+		}
+
+		if ("newPasswordCopy" in fieldValues) {
+			temp.newPasswordCopy = fieldValues.newPasswordCopy
+				? ""
+				: "This field is required.";
+
+			if (password.length > 0) {
+				temp.newPasswordCopy =
+					fieldValues.newPasswordCopy === password
+						? ""
+						: "Password Does not match";
+			} else {
+				temp.newPasswordCopy = "This field is required.";
+			}
+		}
 
 		setErrors({
 			...temp,
@@ -61,16 +52,8 @@ const ChangePasswordForm = (props) => {
 			return Object.values(temp).every((x) => x === "");
 	};
 
-	const {
-		values,
-		setValues,
-		errors,
-		setErrors,
-		handleInputChange,
-		handleFileChange,
-		resetForm,
-		resetFileInput,
-	} = useForm(initialFValues, true, validate);
+	const {values, setValues, errors, setErrors, handleInputChange, resetForm} =
+		useForm(initialFValues, true, validate);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -83,23 +66,6 @@ const ChangePasswordForm = (props) => {
 			}
 		}
 	};
-	useEffect(() => {
-		if (recordForEdit != null) {
-			// console.log(recordForEdit)
-			try {
-				setValues({
-					...recordForEdit,
-					photo: recordForEdit.userImage,
-					username: recordForEdit.userName,
-					id: recordForEdit.userId,
-					roleId: recordForEdit.userRole,
-					// isActive: true
-				});
-			} catch (e) {
-				console.warn(e);
-			}
-		}
-	}, [recordForEdit, setValues]);
 
 	return (
 		<Form onSubmit={handleSubmit}>
@@ -109,25 +75,25 @@ const ChangePasswordForm = (props) => {
 						name="tempPass"
 						label="Old password"
 						type="password"
-						value={values?.firstName}
+						value={values?.tempPass}
 						onChange={handleInputChange}
-						error={errors.firstName}
+						error={errors.tempPass}
 					/>
 					<Controls.Input
 						name="newPassword"
 						label="New password"
 						type="password"
-						value={values?.lastName}
+						value={values?.newPassword}
 						onChange={handleInputChange}
-						error={errors.lastName}
+						error={errors.newPassword}
 					/>
 					<Controls.Input
-						name="newPasswordClone"
+						name="newPasswordCopy"
 						label="Confirm new password"
 						type="password"
-						value={values?.businessName}
+						value={values?.newPasswordCopy}
 						onChange={handleInputChange}
-						error={errors.businessName}
+						error={errors.newPasswordCopy}
 					/>
 				</Grid>
 			</Grid>
