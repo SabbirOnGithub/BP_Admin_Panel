@@ -24,9 +24,6 @@ const overrides = {
       fontSize: "1.142rem",
     },
   },
-  
- 
-
 };
 
 //eslint-disable-next-line

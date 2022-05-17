@@ -1,141 +1,6 @@
-import {createStore, combineReducers, compose, applyMiddleware} from "redux";
-import {
-	subMenuDeleteReducer,
-	subMenuDetailsReducer,
-	subMenuListReducer,
-	subMenuSaveReducer,
-} from "./reducers/subMenuReducers";
-import {
-	homePageDataListReducer,
-	homePageDataDetailsReducer,
-	homePageDataSaveReducer,
-	homePageDataDeleteReducer,
-} from "./reducers/homePageReducers";
-import {
-	menuListReducer,
-	menuDetailsReducer,
-	menuSaveReducer,
-	menuDeleteReducer,
-} from "./reducers/menuReducers";
-import thunk from "redux-thunk";
 import Cookie from "js-cookie";
-import {
-	userSigninReducer,
-	userListReducer,
-	userDeleteReducer,
-	userDetailsReducer,
-	userSaveReducer,
-	userAcceptClientListReducer,
-	userPasswordChangeReducer,
-} from "./reducers/userReducers";
-import {
-	homePageSliderDeleteReducer,
-	homePageSliderDetailsReducer,
-	homePageSliderListReducer,
-	homePageSliderSaveReducer,
-} from "./reducers/homePageSliderReducers";
-import {
-	footerSectionDeleteReducer,
-	footerSectionDetailsReducer,
-	footerSectionListReducer,
-	footerSectionSaveReducer,
-} from "./reducers/footerSectionReducers";
-import {
-	homePageCoreValueDetailDeleteReducer,
-	homePageCoreValueDetailDetailsReducer,
-	homePageCoreValueDetailListReducer,
-	homePageCoreValueDetailSaveReducer,
-} from "./reducers/homePageCoreValueDetailReducers";
-import {
-	homePageFunctionAreaDetailDeleteReducer,
-	homePageFunctionAreaDetailDetailsReducer,
-	homePageFunctionAreaDetailListReducer,
-	homePageFunctionAreaDetailSaveReducer,
-} from "./reducers/homePageFunctionAreaDetailReducers";
-import {
-	homeConsultationTopicDeleteReducer,
-	homeConsultationTopicDetailsReducer,
-	homeConsultationTopicListReducer,
-	homeConsultationTopicSaveReducer,
-} from "./reducers/homeConsultationTopicReducers";
-import {
-	trainingDetailDeleteReducer,
-	trainingDetailDetailsReducer,
-	trainingDetailListReducer,
-	trainingDetailSaveReducer,
-} from "./reducers/trainingDetailReducers";
-import {
-	testimonialDetailDeleteReducer,
-	testimonialDetailDetailsReducer,
-	testimonialDetailListReducer,
-	testimonialDetailSaveReducer,
-} from "./reducers/testimonialDetailReducers";
-import {
-	roleDeleteReducer,
-	roleDetailsReducer,
-	roleListReducer,
-	roleSaveReducer,
-} from "./reducers/roleReducers";
-import {
-	submenuBestPracticeDeleteReducer,
-	submenuBestPracticeDetailsReducer,
-	submenuBestPracticeListReducer,
-	submenuBestPracticeSaveReducer,
-} from "./reducers/submenuBestPracticeReducers";
-import {
-	subMenuOverViewDeleteReducer,
-	subMenuOverViewDetailsReducer,
-	subMenuOverViewListReducer,
-	subMenuOverViewSaveReducer,
-} from "./reducers/subMenuOverViewReducers";
-import {
-	menuSubMenuMapItemDeleteReducer,
-	menuSubMenuMapItemDetailsReducer,
-	menuSubMenuMapItemListReducer,
-	menuSubMenuMapItemSaveReducer,
-} from "./reducers/menuSubMenuMapItemReducers";
-import {
-	menuSubMenuMapItemListItemDeleteReducer,
-	menuSubMenuMapItemListItemDetailsReducer,
-	menuSubMenuMapItemListItemListReducer,
-	menuSubMenuMapItemListItemSaveReducer,
-} from "./reducers/menuSubMenuMapItemListItemReducers";
-import {
-	menuSubMenuMapDeleteReducer,
-	menuSubMenuMapDetailsReducer,
-	menuSubMenuMapListReducer,
-	menuSubMenuMapSaveReducer,
-} from "./reducers/menuSubMenuMapReducers";
-import {
-	menuSectionDeleteReducer,
-	menuSectionDetailsReducer,
-	menuSectionListReducer,
-	menuSectionSaveReducer,
-} from "./reducers/menuSectionReducers";
-import {
-	menuHeroSliderDeleteReducer,
-	menuHeroSliderDetailsReducer,
-	menuHeroSliderListReducer,
-	menuHeroSliderSaveReducer,
-} from "./reducers/menuHeroSliderReducers";
-import {
-	menuSectionDetailDeleteReducer,
-	menuSectionDetailDetailsReducer,
-	menuSectionDetailListReducer,
-	menuSectionDetailSaveReducer,
-} from "./reducers/menuSectionDetailReducers";
-import {
-	menuSubMenuMapDetailDeleteReducer,
-	menuSubMenuMapDetailDetailsReducer,
-	menuSubMenuMapDetailListReducer,
-	menuSubMenuMapDetailSaveReducer,
-} from "./reducers/menuSubMenuMapDetailReducers";
-import {
-	resourceDeleteReducer,
-	resourceDetailsReducer,
-	resourceListReducer,
-	resourceSaveReducer,
-} from "./reducers/resourceReducers";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import thunk from "redux-thunk";
 import {
 	blogCategoryDeleteReducer,
 	blogCategoryDetailsReducer,
@@ -143,107 +8,17 @@ import {
 	blogCategorySaveReducer,
 } from "./reducers/blogCategoryReducers";
 import {
-	blogSubCategoryDeleteReducer,
-	blogSubCategoryDetailsReducer,
-	blogSubCategoryListReducer,
-	blogSubCategorySaveReducer,
-} from "./reducers/blogSubCategoryReducers";
-import {
-	roleResourceDeleteReducer,
-	roleResourceDetailsReducer,
-	roleResourceListReducer,
-	roleResourceSaveReducer,
-} from "./reducers/roleResourceReducers";
-import {
 	blogPostDeleteReducer,
 	blogPostDetailsReducer,
 	blogPostListReducer,
 	blogPostSaveReducer,
 } from "./reducers/blogPostReducers";
 import {
-	modernTechDetailDeleteReducer,
-	modernTechDetailDetailsReducer,
-	modernTechDetailListReducer,
-	modernTechDetailSaveReducer,
-} from "./reducers/modernTechDetailReducers";
-import {
-	personalizedServiceDetailDeleteReducer,
-	personalizedServiceDetailDetailsReducer,
-	personalizedServiceDetailListReducer,
-	personalizedServiceDetailSaveReducer,
-} from "./reducers/personalizedServiceDetailReducers";
-import {
-	uniqueSolutionDetailDeleteReducer,
-	uniqueSolutionDetailDetailsReducer,
-	uniqueSolutionDetailListReducer,
-	uniqueSolutionDetailSaveReducer,
-} from "./reducers/uniqueSolutionDetailReducers";
-import {
-	subMenuBusinessContextDeleteReducer,
-	subMenuBusinessContextDetailsReducer,
-	subMenuBusinessContextListReducer,
-	subMenuBusinessContextSaveReducer,
-} from "./reducers/subMenuBusinessContextReducers";
-import {
-	ctaCategoryDetailsReducer,
-	ctaCategoryDocumentSaveReducer,
-	ctaCategoryListReducer,
-	ctaCategoryModelListReducer,
-	ctaCategorySaveReducer,
-} from "./reducers/ctaCategoryReducers";
-import {contactUsMessageListReducer} from "./reducers/contactUsMessageReducers";
-import {
-	paymentPackageDeleteReducer,
-	paymentPackageDetailsReducer,
-	paymentPackageListReducer,
-	paymentPackageSaveReducer,
-} from "./reducers/paymentPackageReducers";
-import {
-	consultationSummeryDetailsReducer,
-	ctaFunctionDetailsReducer,
-	ctaFunctionDocumentDeleteReducer,
-	ctaFunctionDocumentListReducer,
-	ctaFunctionDocumentSaveReducer,
-	ctaFunctionListReducer,
-	ctaFunctionModelListReducer,
-	ctaFunctionSaveReducer,
-} from "./reducers/ctaFunctionReducers";
-import {
-	consultingTypeDeleteReducer,
-	consultingTypeDetailsReducer,
-	consultingTypeListReducer,
-	consultingTypeSaveReducer,
-} from "./reducers/consultingTypeReducers";
-import {
-	ctaHourDeleteReducer,
-	ctaHourDetailsReducer,
-	ctaHourListReducer,
-	ctaHourSaveReducer,
-} from "./reducers/ctaHourReducers";
-import {
-	ctaPackageDailyDeleteReducer,
-	ctaPackageDailyDetailsReducer,
-	ctaPackageDailyListReducer,
-	ctaPackageDailySaveReducer,
-} from "./reducers/ctaPackageDailyReducers";
-import {
-	companyTypeDeleteReducer,
-	companyTypeDetailsReducer,
-	companyTypeListReducer,
-	companyTypeSaveReducer,
-} from "./reducers/companyTypeReducers";
-import {
-	ctaPackageHourlyDeleteReducer,
-	ctaPackageHourlyDetailsReducer,
-	ctaPackageHourlyListReducer,
-	ctaPackageHourlySaveReducer,
-} from "./reducers/ctaPackageHourlyReducers";
-import {
-	ctaPackageMonthlyYearlyListReducer,
-	ctaPackageMonthlyYearlyDetailsReducer,
-	ctaPackageMonthlyYearlySaveReducer,
-	ctaPackageMonthlyYearlyDeleteReducer,
-} from "./reducers/ctaPackageMonthlyYearlyReducers";
+	blogSubCategoryDeleteReducer,
+	blogSubCategoryDetailsReducer,
+	blogSubCategoryListReducer,
+	blogSubCategorySaveReducer,
+} from "./reducers/blogSubCategoryReducers";
 import {
 	businessPrincipalDescriptorDeleteReducer,
 	businessPrincipalDescriptorDetailsReducer,
@@ -251,35 +26,49 @@ import {
 	businessPrincipalDescriptorSaveReducer,
 } from "./reducers/businessPrincipalDescriptorReducers";
 import {
+	companyDeleteReducer,
+	companyDetailsReducer,
+	companyListReducer,
+	companySaveReducer,
+} from "./reducers/companyReducers";
+import {
+	companySizeDeleteReducer,
+	companySizeDetailsReducer,
+	companySizeListReducer,
+	companySizeSaveReducer,
+} from "./reducers/companySizeReducers";
+import {
+	companyTypeDeleteReducer,
+	companyTypeDetailsReducer,
+	companyTypeListReducer,
+	companyTypeSaveReducer,
+} from "./reducers/companyTypeReducers";
+import {
+	consultancyAssignmentDeleteReducer,
+	consultancyAssignmentDetailsReducer,
+	consultancyAssignmentListReducer,
+	consultancyAssignmentSaveReducer,
+} from "./reducers/consultancyAssignmentReducers";
+import {
+	consultancyReceiveHistoryDeleteReducer,
+	consultancyReceiveHistorySaveReducer,
+	consultancyReceiveHistoryStatusListReducer,
+} from "./reducers/consultancyReceiveHistoryReducers";
+import {consultancyReportListReducer} from "./reducers/consultancyReportReducers";
+import {
 	consultationOverviewDeleteReducer,
 	consultationOverviewDetailsReducer,
 	consultationOverviewListReducer,
 	consultationOverviewSaveReducer,
 } from "./reducers/consultationOverviewReducers";
 import {
-	trainingCandidateDescriptorDeleteReducer,
-	trainingCandidateDescriptorDetailsReducer,
-	trainingCandidateDescriptorListReducer,
-	trainingCandidateDescriptorSaveReducer,
-} from "./reducers/trainingCandidateDescriptorReducers";
-import {
-	trainingOverviewDeleteReducer,
-	trainingOverviewDetailsReducer,
-	trainingOverviewListReducer,
-	trainingOverviewSaveReducer,
-} from "./reducers/trainingOverviewReducers";
-import {
-	trainingTypeDeleteReducer,
-	trainingTypeDetailsReducer,
-	trainingTypeListReducer,
-	trainingTypeSaveReducer,
-} from "./reducers/trainingTypeReducers";
-import {
-	softwareDeleteReducer,
-	softwareDetailsReducer,
-	softwareListReducer,
-	softwareSaveReducer,
-} from "./reducers/softwareReducers";
+	consultingTypeDeleteReducer,
+	consultingTypeDetailsReducer,
+	consultingTypeListReducer,
+	consultingTypeSaveReducer,
+} from "./reducers/consultingTypeReducers";
+import {contactUsMessageListReducer} from "./reducers/contactUsMessageReducers";
+import {courseAvailabilityDateSaveReducer} from "./reducers/courseAvailabilityDateReducers";
 import {
 	courseBenefitDeleteReducer,
 	courseBenefitDetailsReducer,
@@ -293,17 +82,188 @@ import {
 	courseContentSaveReducer,
 } from "./reducers/courseContentReducers";
 import {
+	coursePurchaseDetailsReducer,
+	coursePurchaseListReducer,
+} from "./reducers/coursePurchaseReducers";
+import {
 	courseRequirementDeleteReducer,
 	courseRequirementDetailsReducer,
 	courseRequirementListReducer,
 	courseRequirementSaveReducer,
 } from "./reducers/courseRequirementReducers";
 import {
-	softwareTrainingSummaryDeleteReducer,
-	softwareTrainingSummaryDetailsReducer,
-	softwareTrainingSummaryListReducer,
-	softwareTrainingSummarySaveReducer,
-} from "./reducers/softwareTrainingSummaryReducers";
+	ctaCategoryDetailsReducer,
+	ctaCategoryDocumentSaveReducer,
+	ctaCategoryListReducer,
+	ctaCategoryModelListReducer,
+	ctaCategorySaveReducer,
+} from "./reducers/ctaCategoryReducers";
+import {
+	consultationSummeryDetailsReducer,
+	ctaFunctionDetailsReducer,
+	ctaFunctionDocumentDeleteReducer,
+	ctaFunctionDocumentListReducer,
+	ctaFunctionDocumentSaveReducer,
+	ctaFunctionListReducer,
+	ctaFunctionModelListReducer,
+	ctaFunctionSaveReducer,
+} from "./reducers/ctaFunctionReducers";
+import {
+	ctaHourDeleteReducer,
+	ctaHourDetailsReducer,
+	ctaHourListReducer,
+	ctaHourSaveReducer,
+} from "./reducers/ctaHourReducers";
+import {
+	ctaPackageDailyDeleteReducer,
+	ctaPackageDailyDetailsReducer,
+	ctaPackageDailyListReducer,
+	ctaPackageDailySaveReducer,
+} from "./reducers/ctaPackageDailyReducers";
+import {
+	ctaPackageHourlyDeleteReducer,
+	ctaPackageHourlyDetailsReducer,
+	ctaPackageHourlyListReducer,
+	ctaPackageHourlySaveReducer,
+} from "./reducers/ctaPackageHourlyReducers";
+import {
+	ctaPackageMonthlyYearlyDeleteReducer,
+	ctaPackageMonthlyYearlyDetailsReducer,
+	ctaPackageMonthlyYearlyListReducer,
+	ctaPackageMonthlyYearlySaveReducer,
+} from "./reducers/ctaPackageMonthlyYearlyReducers";
+import {ctaPaymentSaveReducer} from "./reducers/ctaPaymentReducers";
+import {ctaPurchaseHistorySaveReducer} from "./reducers/ctaPurchaseHistoryReducers";
+import {
+	adminDashboardDetailsReducer,
+	userDashboardDetailsReducer,
+} from "./reducers/dashboardReducers";
+import {
+	footerSectionDeleteReducer,
+	footerSectionDetailsReducer,
+	footerSectionListReducer,
+	footerSectionSaveReducer,
+} from "./reducers/footerSectionReducers";
+import {
+	homeConsultationTopicDeleteReducer,
+	homeConsultationTopicDetailsReducer,
+	homeConsultationTopicListReducer,
+	homeConsultationTopicSaveReducer,
+} from "./reducers/homeConsultationTopicReducers";
+import {
+	homePageCoreValueDetailDeleteReducer,
+	homePageCoreValueDetailDetailsReducer,
+	homePageCoreValueDetailListReducer,
+	homePageCoreValueDetailSaveReducer,
+} from "./reducers/homePageCoreValueDetailReducers";
+import {
+	homePageFunctionAreaDetailDeleteReducer,
+	homePageFunctionAreaDetailDetailsReducer,
+	homePageFunctionAreaDetailListReducer,
+	homePageFunctionAreaDetailSaveReducer,
+} from "./reducers/homePageFunctionAreaDetailReducers";
+import {
+	homePageDataDeleteReducer,
+	homePageDataDetailsReducer,
+	homePageDataListReducer,
+	homePageDataSaveReducer,
+} from "./reducers/homePageReducers";
+import {
+	homePageSliderDeleteReducer,
+	homePageSliderDetailsReducer,
+	homePageSliderListReducer,
+	homePageSliderSaveReducer,
+} from "./reducers/homePageSliderReducers";
+import {
+	menuHeroSliderDeleteReducer,
+	menuHeroSliderDetailsReducer,
+	menuHeroSliderListReducer,
+	menuHeroSliderSaveReducer,
+} from "./reducers/menuHeroSliderReducers";
+import {
+	menuDeleteReducer,
+	menuDetailsReducer,
+	menuListReducer,
+	menuSaveReducer,
+} from "./reducers/menuReducers";
+import {
+	menuSectionDetailDeleteReducer,
+	menuSectionDetailDetailsReducer,
+	menuSectionDetailListReducer,
+	menuSectionDetailSaveReducer,
+} from "./reducers/menuSectionDetailReducers";
+import {
+	menuSectionDeleteReducer,
+	menuSectionDetailsReducer,
+	menuSectionListReducer,
+	menuSectionSaveReducer,
+} from "./reducers/menuSectionReducers";
+import {
+	menuSubMenuMapDetailDeleteReducer,
+	menuSubMenuMapDetailDetailsReducer,
+	menuSubMenuMapDetailListReducer,
+	menuSubMenuMapDetailSaveReducer,
+} from "./reducers/menuSubMenuMapDetailReducers";
+import {
+	menuSubMenuMapItemListItemDeleteReducer,
+	menuSubMenuMapItemListItemDetailsReducer,
+	menuSubMenuMapItemListItemListReducer,
+	menuSubMenuMapItemListItemSaveReducer,
+} from "./reducers/menuSubMenuMapItemListItemReducers";
+import {
+	menuSubMenuMapItemDeleteReducer,
+	menuSubMenuMapItemDetailsReducer,
+	menuSubMenuMapItemListReducer,
+	menuSubMenuMapItemSaveReducer,
+} from "./reducers/menuSubMenuMapItemReducers";
+import {
+	menuSubMenuMapDeleteReducer,
+	menuSubMenuMapDetailsReducer,
+	menuSubMenuMapListReducer,
+	menuSubMenuMapSaveReducer,
+} from "./reducers/menuSubMenuMapReducers";
+import {
+	modernTechDetailDeleteReducer,
+	modernTechDetailDetailsReducer,
+	modernTechDetailListReducer,
+	modernTechDetailSaveReducer,
+} from "./reducers/modernTechDetailReducers";
+import {
+	paymentPackageDeleteReducer,
+	paymentPackageDetailsReducer,
+	paymentPackageListReducer,
+	paymentPackageSaveReducer,
+} from "./reducers/paymentPackageReducers";
+import {
+	personalizedServiceDetailDeleteReducer,
+	personalizedServiceDetailDetailsReducer,
+	personalizedServiceDetailListReducer,
+	personalizedServiceDetailSaveReducer,
+} from "./reducers/personalizedServiceDetailReducers";
+import {
+	resourceDeleteReducer,
+	resourceDetailsReducer,
+	resourceListReducer,
+	resourceSaveReducer,
+} from "./reducers/resourceReducers";
+import {
+	roleDeleteReducer,
+	roleDetailsReducer,
+	roleListReducer,
+	roleSaveReducer,
+} from "./reducers/roleReducers";
+import {
+	roleResourceDeleteReducer,
+	roleResourceDetailsReducer,
+	roleResourceListReducer,
+	roleResourceSaveReducer,
+} from "./reducers/roleResourceReducers";
+import {
+	softwareDeleteReducer,
+	softwareDetailsReducer,
+	softwareListReducer,
+	softwareSaveReducer,
+} from "./reducers/softwareReducers";
 import {
 	softwareTrainingPriceDeleteReducer,
 	softwareTrainingPriceDetailsReducer,
@@ -311,39 +271,47 @@ import {
 	softwareTrainingPriceSaveReducer,
 } from "./reducers/softwareTrainingPriceReducers";
 import {
+	softwareTrainingSummaryDeleteReducer,
+	softwareTrainingSummaryDetailsReducer,
+	softwareTrainingSummaryListReducer,
+	softwareTrainingSummarySaveReducer,
+} from "./reducers/softwareTrainingSummaryReducers";
+import {
 	softwareTrainingTypeAndLengthDeleteReducer,
 	softwareTrainingTypeAndLengthDetailsReducer,
 	softwareTrainingTypeAndLengthListReducer,
 	softwareTrainingTypeAndLengthSaveReducer,
 } from "./reducers/softwareTrainingTypeAndLengthReducers";
 import {
-	coursePurchaseDetailsReducer,
-	coursePurchaseListReducer,
-} from "./reducers/coursePurchaseReducers";
-import {ctaPaymentSaveReducer} from "./reducers/ctaPaymentReducers";
-import {ctaPurchaseHistorySaveReducer} from "./reducers/ctaPurchaseHistoryReducers";
-import {courseAvailabilityDateSaveReducer} from "./reducers/courseAvailabilityDateReducers";
+	submenuBestPracticeDeleteReducer,
+	submenuBestPracticeDetailsReducer,
+	submenuBestPracticeListReducer,
+	submenuBestPracticeSaveReducer,
+} from "./reducers/submenuBestPracticeReducers";
+import {
+	subMenuBusinessContextDeleteReducer,
+	subMenuBusinessContextDetailsReducer,
+	subMenuBusinessContextListReducer,
+	subMenuBusinessContextSaveReducer,
+} from "./reducers/subMenuBusinessContextReducers";
+import {
+	subMenuOverViewDeleteReducer,
+	subMenuOverViewDetailsReducer,
+	subMenuOverViewListReducer,
+	subMenuOverViewSaveReducer,
+} from "./reducers/subMenuOverViewReducers";
+import {
+	subMenuDeleteReducer,
+	subMenuDetailsReducer,
+	subMenuListReducer,
+	subMenuSaveReducer,
+} from "./reducers/subMenuReducers";
 import {
 	subscriptionDeleteReducer,
 	subscriptionDetailsReducer,
 	subscriptionListReducer,
 	subscriptionSaveReducer,
 } from "./reducers/subscriptionReducers";
-import {
-	companySizeDeleteReducer,
-	companySizeDetailsReducer,
-	companySizeListReducer,
-	companySizeSaveReducer,
-} from "./reducers/companySizeReducers";
-import {
-	consultancyReceiveHistoryDeleteReducer,
-	consultancyReceiveHistorySaveReducer,
-	consultancyReceiveHistoryStatusListReducer,
-} from "./reducers/consultancyReceiveHistoryReducers";
-import {
-	adminDashboardDetailsReducer,
-	userDashboardDetailsReducer,
-} from "./reducers/dashboardReducers";
 import {
 	techCategoryDeleteReducer,
 	techCategoryDetailsReducer,
@@ -369,12 +337,50 @@ import {
 	techStackSaveReducer,
 } from "./reducers/techStackReducers";
 import {
-	consultancyAssignmentDeleteReducer,
-	consultancyAssignmentDetailsReducer,
-	consultancyAssignmentListReducer,
-	consultancyAssignmentSaveReducer,
-} from "./reducers/consultancyAssignmentReducers";
-import {consultancyReportListReducer} from "./reducers/consultancyReportReducers";
+	testimonialDetailDeleteReducer,
+	testimonialDetailDetailsReducer,
+	testimonialDetailListReducer,
+	testimonialDetailSaveReducer,
+} from "./reducers/testimonialDetailReducers";
+import {
+	trainingCandidateDescriptorDeleteReducer,
+	trainingCandidateDescriptorDetailsReducer,
+	trainingCandidateDescriptorListReducer,
+	trainingCandidateDescriptorSaveReducer,
+} from "./reducers/trainingCandidateDescriptorReducers";
+import {
+	trainingDetailDeleteReducer,
+	trainingDetailDetailsReducer,
+	trainingDetailListReducer,
+	trainingDetailSaveReducer,
+} from "./reducers/trainingDetailReducers";
+import {
+	trainingOverviewDeleteReducer,
+	trainingOverviewDetailsReducer,
+	trainingOverviewListReducer,
+	trainingOverviewSaveReducer,
+} from "./reducers/trainingOverviewReducers";
+import {
+	trainingTypeDeleteReducer,
+	trainingTypeDetailsReducer,
+	trainingTypeListReducer,
+	trainingTypeSaveReducer,
+} from "./reducers/trainingTypeReducers";
+import {
+	uniqueSolutionDetailDeleteReducer,
+	uniqueSolutionDetailDetailsReducer,
+	uniqueSolutionDetailListReducer,
+	uniqueSolutionDetailSaveReducer,
+} from "./reducers/uniqueSolutionDetailReducers";
+import {
+	userAcceptClientListReducer,
+	userDeleteReducer,
+	userDetailsReducer,
+	userListReducer,
+	userPasswordChangeReducer,
+	userSaveReducer,
+	userSigninReducer,
+} from "./reducers/userReducers";
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const roleResource = null;
@@ -609,6 +615,10 @@ const reducer = combineReducers({
 	subscriptionDetails: subscriptionDetailsReducer,
 	subscriptionSave: subscriptionSaveReducer,
 	subscriptionDelete: subscriptionDeleteReducer,
+	companyList: companyListReducer,
+	companyDetails: companyDetailsReducer,
+	companySave: companySaveReducer,
+	companyDelete: companyDeleteReducer,
 	companySizeList: companySizeListReducer,
 	companySizeDetails: companySizeDetailsReducer,
 	companySizeSave: companySizeSaveReducer,

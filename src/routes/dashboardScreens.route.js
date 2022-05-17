@@ -10,6 +10,7 @@ import BlogPostScreen from "../screens/dashboardScreens/blogPostScreen/BlogPostS
 import BlogSubCategoryScreen from "../screens/dashboardScreens/blogSubCategoryScreen/BlogSubCategoryScreen";
 import BusinessPrincipalDescriptorScreen from "../screens/dashboardScreens/businessPrincipalDescriptorScreen/BusinessPrincipalDescriptorScreen";
 import {ChangePasswordScreen} from "../screens/dashboardScreens/changePasswordScreen/ChangePasswordScreen";
+import CompanyScreen from "../screens/dashboardScreens/companyScreen/CompanyScreen";
 import CompanySizeScreen from "../screens/dashboardScreens/companySizeScreen/CompanySizeScreen";
 import CompanyTypeScreen from "../screens/dashboardScreens/companyTypeScreen/CompanyTypeScreen";
 import ConsultancyReportScreen from "../screens/dashboardScreens/consultancyReportScreen/ConsultancyReportScreen";
@@ -265,6 +266,11 @@ const DashboardScreensRoute = (props) => {
 						exact
 						path={`${props.match.path}/ctaPackageDaily`}
 						component={CtaPackageDailyScreen}
+					/>
+					<Route
+						exact
+						path={`${props.match.path}/company`}
+						component={CompanyScreen}
 					/>
 					<Route
 						exact
