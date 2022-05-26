@@ -60,7 +60,7 @@ const structure = [
 				link: "/admin/personalizedServiceDetail",
 			},
 			{label: "Unique Solution Detail", link: "/admin/uniqueSolutionDetail"},
-			{label: "Company", link: "/admin/company"},
+			{label: "Client", link: "/admin/client"},
 		],
 	},
 	{

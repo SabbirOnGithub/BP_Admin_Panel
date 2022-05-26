@@ -26,11 +26,11 @@ import {
 	businessPrincipalDescriptorSaveReducer,
 } from "./reducers/businessPrincipalDescriptorReducers";
 import {
-	companyDeleteReducer,
-	companyDetailsReducer,
-	companyListReducer,
-	companySaveReducer,
-} from "./reducers/companyReducers";
+	clientDeleteReducer,
+	clientDetailsReducer,
+	clientListReducer,
+	clientSaveReducer,
+} from "./reducers/clientReducers";
 import {
 	companySizeDeleteReducer,
 	companySizeDetailsReducer,
@@ -133,7 +133,10 @@ import {
 	ctaPackageMonthlyYearlySaveReducer,
 } from "./reducers/ctaPackageMonthlyYearlyReducers";
 import {ctaPaymentSaveReducer} from "./reducers/ctaPaymentReducers";
-import {ctaPurchaseHistorySaveReducer} from "./reducers/ctaPurchaseHistoryReducers";
+import {
+	ctaPurchaseHistoryPackageUpdateReducer,
+	ctaPurchaseHistorySaveReducer,
+} from "./reducers/ctaPurchaseHistoryReducers";
 import {
 	adminDashboardDetailsReducer,
 	userDashboardDetailsReducer,
@@ -307,7 +310,6 @@ import {
 	subMenuSaveReducer,
 } from "./reducers/subMenuReducers";
 import {
-	subscriptionDeleteReducer,
 	subscriptionDetailsReducer,
 	subscriptionListReducer,
 	subscriptionSaveReducer,
@@ -544,6 +546,10 @@ const reducer = combineReducers({
 	ctaPackageDailyDetails: ctaPackageDailyDetailsReducer,
 	ctaPackageDailySave: ctaPackageDailySaveReducer,
 	ctaPackageDailyDelete: ctaPackageDailyDeleteReducer,
+	clientList: clientListReducer,
+	clientDetails: clientDetailsReducer,
+	clientSave: clientSaveReducer,
+	clientDelete: clientDeleteReducer,
 	companyTypeList: companyTypeListReducer,
 	companyTypeDetails: companyTypeDetailsReducer,
 	companyTypeSave: companyTypeSaveReducer,
@@ -610,15 +616,11 @@ const reducer = combineReducers({
 	coursePurchaseDetails: coursePurchaseDetailsReducer,
 	ctaPaymentSave: ctaPaymentSaveReducer,
 	ctaPurchaseHistorySave: ctaPurchaseHistorySaveReducer,
+	ctaPurchaseHistoryPackageUpdate: ctaPurchaseHistoryPackageUpdateReducer,
 	courseAvailabilityDateSave: courseAvailabilityDateSaveReducer,
 	subscriptionList: subscriptionListReducer,
 	subscriptionDetails: subscriptionDetailsReducer,
 	subscriptionSave: subscriptionSaveReducer,
-	subscriptionDelete: subscriptionDeleteReducer,
-	companyList: companyListReducer,
-	companyDetails: companyDetailsReducer,
-	companySave: companySaveReducer,
-	companyDelete: companyDeleteReducer,
 	companySizeList: companySizeListReducer,
 	companySizeDetails: companySizeDetailsReducer,
 	companySizeSave: companySizeSaveReducer,

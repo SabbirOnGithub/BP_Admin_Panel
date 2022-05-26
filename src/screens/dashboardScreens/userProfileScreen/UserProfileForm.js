@@ -1,5 +1,6 @@
 import {CircularProgress, Grid} from "@material-ui/core";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import Controls from "../../../components/controls/Controls";
 import {Form, useForm} from "../../../components/UseForm/useForm";
 import {isClientUser} from "../../../helpers/search";
@@ -15,6 +16,7 @@ const initialFValues = {
 	photo: "",
 	businessIndustry: "",
 	businessName: "",
+	isActive: true,
 	companySizeId: "",
 	companyTypeId: "",
 	currentConsultingTypeId: "",
@@ -23,6 +25,7 @@ const initialFValues = {
 export default function UserProfileForm(props) {
 	const {
 		addOrEdit,
+		removeUser,
 		recordForEdit,
 		loadingSave,
 		setOpenPopup,
@@ -90,6 +93,27 @@ export default function UserProfileForm(props) {
 		resetForm,
 		resetFileInput,
 	} = useForm(initialFValues, true, validate);
+
+	const [confirmDialog, setConfirmDialog] = useState({
+		isOpen: false,
+		title: "",
+		subTitle: "",
+	});
+
+	const onDelete = (id) => {
+		setConfirmDialog({
+			...confirmDialog,
+			isOpen: false,
+		});
+
+		if (validate()) {
+			try {
+				removeUser(id);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -166,6 +190,7 @@ export default function UserProfileForm(props) {
 						error={errors.businessName}
 						disabled={openPopup}
 					/>
+
 					{isClientUser(userInfo) && (
 						<>
 							<Controls.Input
@@ -247,12 +272,12 @@ export default function UserProfileForm(props) {
 								<CircularProgress size={26} />
 							) : (
 								<>
-									<Controls.Button type="submit" text="Submit" />
-									<Controls.Button
+									<Controls.Button type="submit" text="Update" />
+									{/* <Controls.Button
 										text="Reset"
 										color="default"
 										onClick={resetForm}
-									/>
+									/> */}
 									<Controls.Button
 										text="Back"
 										color="default"
@@ -260,10 +285,30 @@ export default function UserProfileForm(props) {
 											setOpenPopup(!openPopup);
 										}}
 									/>
+
+									<Controls.Button
+										text="DeActivate"
+										color="secondary"
+										onClick={() => {
+											setConfirmDialog({
+												isOpen: true,
+												title: "Are you sure to deactivate yourself?",
+												subTitle: "You can't undo this operation",
+												onConfirm: () => {
+													onDelete(userInfo?.userId);
+												},
+											});
+										}}
+									/>
 								</>
 							)}
 						</div>
 					)}
+
+					<ConfirmDialog
+						confirmDialog={confirmDialog}
+						setConfirmDialog={setConfirmDialog}
+					/>
 				</Grid>
 			</Grid>
 		</Form>

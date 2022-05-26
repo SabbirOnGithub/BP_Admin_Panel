@@ -30,12 +30,18 @@ const BASE_ROOT_URL = config.BASE_ROOT_URL;
 
 export default function Header(props) {
 	const userSignIn = useSelector((state) => state.userSignin);
-	//eslint-disable-next-line
+	// //eslint-disable-next-line
 	const {userInfo} = userSignIn;
+
+	// const userInfo = JSON.parse(Cookie.get("userInfo"));
 
 	let userimage = "";
 	if (userInfo?.userImage) {
 		userimage = BASE_ROOT_URL + "/" + userInfo?.userImage.split("\\").join("/");
+	}
+	let photo = "";
+	if (userInfo?.photo) {
+		userimage = BASE_ROOT_URL + "/" + userInfo?.photo.split("\\").join("/");
 	}
 
 	console.log("Header userInfo: ", userInfo);
@@ -57,6 +63,16 @@ export default function Header(props) {
 		// console.log('logout');
 		dispatch(logout());
 		history.push("/signin");
+	};
+
+	const avatarIcon = (userInfo) => {
+		if (userInfo?.userImage) {
+			return <Avatar alt="Profile" src={userimage} />;
+		} else if (userInfo?.photo) {
+			return <Avatar alt="Profile" src={photo} />;
+		} else {
+			return <AccountIcon classes={{root: classes.headerIcon}} />;
+		}
 	};
 
 	return (
@@ -150,17 +166,7 @@ export default function Header(props) {
 					size="large"
 					fontSize="large"
 					onClick={(e) => setProfileMenu(e.currentTarget)}
-					startIcon={
-						userInfo?.userImage ? (
-							<>
-								<Avatar alt="Profile" src={userimage} />
-							</>
-						) : (
-							<>
-								<AccountIcon classes={{root: classes.headerIcon}} />
-							</>
-						)
-					}
+					startIcon={avatarIcon(userInfo)}
 				>
 					<span className={classes.menuUserName}>
 						{userInfo && userInfo?.firstName}

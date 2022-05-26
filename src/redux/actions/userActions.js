@@ -145,14 +145,7 @@ const saveUser = (item, id) => async (dispatch) => {
 					dispatch({type: USER_UPDATE_SUCCESS, payload: data.data}), // <-- async dispatch chaining in action
 					dispatch({type: USER_SAVE_SUCCESS, payload: data}),
 				]);
-				Cookie.set(
-					"userInfo",
-					JSON.stringify({
-						...JSON.parse(Cookie.get("userInfo")),
-						...data.data,
-						userImage: data?.data?.photo,
-					})
-				);
+
 				return data;
 			} else {
 				dispatch({type: USER_SAVE_FAIL, payload: data.message});
@@ -161,6 +154,31 @@ const saveUser = (item, id) => async (dispatch) => {
 	} catch (error) {
 		console.log(error);
 		dispatch({type: USER_SAVE_FAIL, payload: error.message});
+	}
+};
+
+// register and update user
+const updateProfile = (item, id) => async (dispatch) => {
+	const {data} = await axiosWithTokenAndMultipartData.put(
+		"/User/UpdateUser",
+		item
+	);
+	if (data.status === true) {
+		await Promise.all([
+			dispatch({type: USER_UPDATE_SUCCESS, payload: data.data}), // <-- async dispatch chaining in action
+			dispatch({type: USER_SAVE_SUCCESS, payload: data}),
+		]);
+		Cookie.set(
+			"userInfo",
+			JSON.stringify({
+				...JSON.parse(Cookie.get("userInfo")),
+				...data.data,
+				userImage: data?.data?.photo,
+			})
+		);
+		return data;
+	} else {
+		dispatch({type: USER_SAVE_FAIL, payload: data.message});
 	}
 };
 
@@ -254,6 +272,22 @@ const deleteUser = (id) => async (dispatch, getState) => {
 		dispatch({type: USER_DELETE_FAIL, payload: error.message});
 	}
 };
+
+const deActivateUser = (id) => async (dispatch) => {
+	try {
+		dispatch({type: USER_DELETE_REQUEST});
+		const {data} = await axiosWithToken.post("/User/DeActivateUser/" + id);
+		console.log("action response: ", data);
+		if (data.status === true) {
+			dispatch({type: USER_DELETE_SUCCESS, payload: data, success: true});
+		} else {
+			dispatch({type: USER_DELETE_FAIL, payload: data.message});
+		}
+	} catch (error) {
+		dispatch({type: USER_DELETE_FAIL, payload: error.message});
+	}
+};
+
 // sign in method
 const signin = (email, password) => async (dispatch) => {
 	const username = email;
@@ -289,7 +323,9 @@ export {
 	logout,
 	listUsers,
 	saveUser,
+	updateProfile,
 	detailsUser,
+	deActivateUser,
 	deleteUser,
 	changePassword,
 	saveRecoverPassword,

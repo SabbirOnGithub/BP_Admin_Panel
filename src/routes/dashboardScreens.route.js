@@ -10,7 +10,7 @@ import BlogPostScreen from "../screens/dashboardScreens/blogPostScreen/BlogPostS
 import BlogSubCategoryScreen from "../screens/dashboardScreens/blogSubCategoryScreen/BlogSubCategoryScreen";
 import BusinessPrincipalDescriptorScreen from "../screens/dashboardScreens/businessPrincipalDescriptorScreen/BusinessPrincipalDescriptorScreen";
 import {ChangePasswordScreen} from "../screens/dashboardScreens/changePasswordScreen/ChangePasswordScreen";
-import CompanyScreen from "../screens/dashboardScreens/companyScreen/CompanyScreen";
+import CompanyScreen from "../screens/dashboardScreens/clientScreen/ClientScreen";
 import CompanySizeScreen from "../screens/dashboardScreens/companySizeScreen/CompanySizeScreen";
 import CompanyTypeScreen from "../screens/dashboardScreens/companyTypeScreen/CompanyTypeScreen";
 import ConsultancyReportScreen from "../screens/dashboardScreens/consultancyReportScreen/ConsultancyReportScreen";
@@ -82,7 +82,7 @@ const DashboardScreensRoute = (props) => {
 
 	useEffect(() => {
 		try {
-			dispatch(detailsRoleResource(userInfo.userRole));
+			dispatch(detailsRoleResource(userInfo?.userRole));
 		} catch (error) {
 			console.warn(error);
 		}
@@ -90,7 +90,7 @@ const DashboardScreensRoute = (props) => {
 		return () => {
 			//
 		};
-	}, [dispatch, userInfo.userRole]);
+	}, [dispatch, userInfo?.userRole]);
 
 	return (
 		<div>
@@ -269,7 +269,7 @@ const DashboardScreensRoute = (props) => {
 					/>
 					<Route
 						exact
-						path={`${props.match.path}/company`}
+						path={`${props.match.path}/client`}
 						component={CompanyScreen}
 					/>
 					<Route

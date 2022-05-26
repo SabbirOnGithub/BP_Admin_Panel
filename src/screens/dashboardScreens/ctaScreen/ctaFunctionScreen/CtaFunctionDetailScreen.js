@@ -19,9 +19,13 @@ import {
 	detailsCtaFunction,
 	listCtaFunctionModels,
 } from "../../../../redux/actions/ctaFunctionActions";
+import {listCtaPackageDailys} from "../../../../redux/actions/ctaPackageDailyActions";
+import {listCtaPackageHourlys} from "../../../../redux/actions/ctaPackageHourlyActions";
+import {listCtaPackageMonthlyYearlys} from "../../../../redux/actions/ctaPackageMonthlyYearlyActions";
 import {listAcceptClientUsers} from "../../../../redux/actions/userActions";
 import ConsultancyReceiveHistoryScreen from "../consultancyReceiveHistoryScreen/ConsultancyReceiveHistoryScreen";
 import ConsultancyAssignmentForm from "./ConsultancyAssignmentForm";
+import CtaFunctionPackageChangeForm from "./CtaFunctionPackageChangeForm";
 import CtaFunctionStatusUpdateForm from "./CtaFunctionStatusUpdateForm";
 
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +82,7 @@ export default function CtaFunctionDetailScreen(props) {
 		successCtaFunctionSave,
 		loadingCtaFunctionSave,
 		addOrEditConsultancyAssign,
+		addOrEditConsultancyPackage,
 	} = props;
 	const classes = useStyles();
 	const userSignIn = useSelector((state) => state.userSignin);
@@ -97,6 +102,7 @@ export default function CtaFunctionDetailScreen(props) {
 	const {ctaCategoryModels} = ctaCategoryModelList;
 
 	const [recordForEdit, setRecordForEdit] = useState(null);
+	const [recordForEditPackage, setRecordForEditPackage] = useState(null);
 	//eslint-disable-next-line
 	const [filterFn, setFilterFn] = useState({
 		fn: (items) => {
@@ -105,6 +111,8 @@ export default function CtaFunctionDetailScreen(props) {
 	});
 	const [openPopup, setOpenPopup] = useState(false);
 	const [openPopupForAssign, setOpenPopupForAssign] = useState(false);
+	const [openPopupForPckageChange, setOpenPopupForPckageChange] =
+		useState(false);
 	const [fetched, setFetched] = useState(false);
 	//eslint-disable-next-line
 	// const {
@@ -128,6 +136,30 @@ export default function CtaFunctionDetailScreen(props) {
 	//eslint-disable-next-line
 	const {ctaFunction, loading, error} = ctaFunctionDetails;
 
+	const [packageName, setPackageName] = useState("Free");
+
+	const ctaPackageDailyList = useSelector((state) => state.ctaPackageDailyList);
+	const {ctaPackageDailys} = ctaPackageDailyList;
+	const filteredCtaPackageDailys = ctaPackageDailys?.filter(
+		(item) => item.companyTypeId === userInfo?.companyTypeId
+	);
+
+	const ctaPackageHourlyList = useSelector(
+		(state) => state.ctaPackageHourlyList
+	);
+	const {ctaPackageHourlys} = ctaPackageHourlyList;
+	const filteredCtaPackageHourlys = ctaPackageHourlys?.filter(
+		(item) => item.companyTypeId === userInfo?.companyTypeId
+	);
+
+	const ctaPackageMonthlyYearlyList = useSelector(
+		(state) => state.ctaPackageMonthlyYearlyList
+	);
+	const {ctaPackageMonthlyYearlys} = ctaPackageMonthlyYearlyList;
+	const filteredCtaPackageMonthlyYearlys = ctaPackageMonthlyYearlys?.filter(
+		(item) => item.companyTypeId === userInfo?.companyTypeId
+	);
+
 	const consultancyReceiveHistorySave = useSelector(
 		(state) => state.consultancyReceiveHistorySave
 	);
@@ -140,6 +172,17 @@ export default function CtaFunctionDetailScreen(props) {
 	const consultancyReceiveHistoryDelete = useSelector(
 		(state) => state.consultancyReceiveHistoryDelete
 	);
+
+	const ctaPurchaseHistoryPackageUpdate = useSelector(
+		(state) => state.ctaPurchaseHistoryPackageUpdate
+	);
+	//eslint-disable-next-line
+	const {
+		loading: loadingCtaPurchaseHistoryPackageUpdate,
+		success: successSaveCtaPurchaseHistoryPackageUpdate,
+		error: errorSaveCtaPurchaseHistoryPackageUpdate,
+	} = ctaPurchaseHistoryPackageUpdate;
+
 	//eslint-disable-next-line
 	const {
 		loading: loadingDeleteConsultancyReceiveHistory,
@@ -161,6 +204,13 @@ export default function CtaFunctionDetailScreen(props) {
 		setRecordForEdit(item);
 		setOpenPopup(true);
 	};
+
+	const openInPopupForChange = (item, typeName) => {
+		setRecordForEditPackage(item);
+		setPackageName(typeName);
+		setOpenPopupForPckageChange(true);
+	};
+
 	const openInPopupForAssign = (item) => {
 		dispatch(listAcceptClientUsers()).then((res) => {
 			if (res?.status) {
@@ -170,14 +220,38 @@ export default function CtaFunctionDetailScreen(props) {
 		});
 	};
 
+	const convertPricetoUsd = (rate) => {
+		return rate.toLocaleString("en-US", {
+			currency: "USD",
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+		});
+	};
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		// if (ctaFunction?.ctaPurchaseHistories?.length > 0) {
+		// 	const element = ctaFunction.ctaPurchaseHistories[0];
+		// 	if (element.ctaPackageHourly) {
+		// 		setPackageName("Hourly");
+		// 	}
+		// 	if (element.ctaPackageDaily) {
+		// 		setPackageName("Daily");
+		// 	}
+		// 	if (element.ctaPackageMonthlyYearly) {
+		// 		setPackageName("Monthly");
+		// 	}
+		// }
+
 		const ac = new AbortController();
 
 		try {
 			Promise.all([
 				dispatch(listCtaFunctionModels()),
+				dispatch(listCtaPackageDailys()),
+				dispatch(listCtaPackageMonthlyYearlys()),
+				dispatch(listCtaPackageHourlys()),
 				dispatch(detailsCtaFunction(recordForDetails?.id, recordForDetails)),
 			])
 				.then(
@@ -204,13 +278,17 @@ export default function CtaFunctionDetailScreen(props) {
 		successDeleteConsultancyReceiveHistory,
 		successCtaFunctionSave,
 		successConsultancyAssignmentSave,
+		successSaveCtaPurchaseHistoryPackageUpdate,
 	]);
 
 	// console.log(ctaFunctionModels?.techStacks)
 	// console.log(ctaFunction)
 	return (
 		<>
-			{loading || loadingCtaFunctionSave || loadingConsultancyAssignmentSave ? (
+			{loading ||
+			loadingCtaFunctionSave ||
+			loadingConsultancyAssignmentSave ||
+			loadingCtaPurchaseHistoryPackageUpdate ? (
 				<Loading />
 			) : (
 				<Grid container>
@@ -268,12 +346,25 @@ export default function CtaFunctionDetailScreen(props) {
 									)}
 								</Grid>
 							}
-							<h1 className={classes.subHeadlineText}>Details</h1>
+
+							<h1 className={classes.subHeadlineText}>
+								<Grid
+									item
+									style={{
+										display: "flex",
+										justifyContent: "space-between",
+										alignItems: "center",
+									}}
+								>
+									<div>Details</div>
+								</Grid>
+							</h1>
 
 							<Grid container>
 								<Grid item md={6}>
 									<Typography paragraph className={classes.customPharagraph}>
-										<b>First Name: </b> {ctaFunction?.firstName}{" "}
+										<b>Name: </b> {ctaFunction?.firstName}{" "}
+										{ctaFunction?.lastName}{" "}
 									</Typography>
 									<Typography paragraph className={classes.customPharagraph}>
 										<b>Phone: </b> {ctaFunction?.phone}{" "}
@@ -411,9 +502,6 @@ export default function CtaFunctionDetailScreen(props) {
 								</Grid>
 								<Grid item md={6}>
 									<Typography paragraph className={classes.customPharagraph}>
-										<b>Last Name: </b> {ctaFunction?.lastName}{" "}
-									</Typography>
-									<Typography paragraph className={classes.customPharagraph}>
 										<b>Email: </b> {ctaFunction?.email}{" "}
 									</Typography>
 									{recordForDetails.isCategory && (
@@ -538,7 +626,10 @@ export default function CtaFunctionDetailScreen(props) {
 
 							{!recordForDetails.isCategory && (
 								<>
-									<h1 className={classes.subHeadlineText}>Payment History</h1>
+									<h1 className={classes.subHeadlineText}>
+										Payment Information
+									</h1>
+
 									{ctaFunction?.ctaPurchaseHistories?.length > 0 ? (
 										ctaFunction?.ctaPurchaseHistories?.map((item) => (
 											<div key={item.id}>
@@ -575,7 +666,7 @@ export default function CtaFunctionDetailScreen(props) {
 																className={classes.customPharagraph}
 															>
 																<b>Package Name:</b>{" "}
-																{item?.ctaPackageHourly?.ctaHourName}{" "}
+																{item?.ctaPackageHourly?.name}{" "}
 															</Typography>
 														)}
 
@@ -584,7 +675,8 @@ export default function CtaFunctionDetailScreen(props) {
 																paragraph
 																className={classes.customPharagraph}
 															>
-																<b>Package Name:</b> Solution Discovery{" "}
+																<b>Package Name:</b>
+																{item?.ctaPackageDaily?.name}
 															</Typography>
 														)}
 
@@ -593,8 +685,29 @@ export default function CtaFunctionDetailScreen(props) {
 																paragraph
 																className={classes.customPharagraph}
 															>
-																<b>Package Name:</b> Access Retainer{" "}
+																<b>Package Name:</b>{" "}
+																{item?.ctaPackageMonthlyYearly?.name}
 															</Typography>
+														)}
+
+														{isClientUser(userInfo) && (
+															<Controls.Button
+																style={{
+																	borderRadius: 35,
+																	backgroundColor: "#21b6ae",
+																	padding: "18px 36px",
+																	fontSize: "18px",
+																}}
+																onClick={() => {
+																	openInPopupForChange(
+																		item,
+																		item?.consultationTypeName
+																	);
+																}}
+																text={"Change Package"}
+																ariant="contained"
+																size="large"
+															></Controls.Button>
 														)}
 
 														{item?.completionDate && (
@@ -614,7 +727,7 @@ export default function CtaFunctionDetailScreen(props) {
 															paragraph
 															className={classes.customPharagraph}
 														>
-															<b>Amount: </b> ${item?.amount}{" "}
+															<b>Amount: </b>$ {convertPricetoUsd(item?.amount)}
 														</Typography>
 														<Typography
 															paragraph
@@ -631,7 +744,28 @@ export default function CtaFunctionDetailScreen(props) {
 																`${item?.purchaseDate} UTC`
 															).toLocaleDateString()}
 														</Typography>
-														<Typography
+
+														{item?.isYearlySubscription && (
+															<Typography
+																paragraph
+																className={classes.customPharagraph}
+															>
+																<b>Subscription: </b>
+																Yearly
+															</Typography>
+														)}
+
+														{item?.isMonthlySubscription && (
+															<Typography
+																paragraph
+																className={classes.customPharagraph}
+															>
+																<b>Subscription: </b>
+																Monthly
+															</Typography>
+														)}
+
+														{/* <Typography
 															paragraph
 															className={classes.customPharagraph}
 														>
@@ -640,7 +774,7 @@ export default function CtaFunctionDetailScreen(props) {
 															{item?.isMonthlySubscription && "Monthly"}
 															{item?.ctaPackageDailyId && "Daily"}
 															{item?.ctaPackageHourlyId && "Hourly"}
-														</Typography>
+														</Typography> */}
 													</Grid>
 												</Grid>
 											</div>
@@ -684,6 +818,24 @@ export default function CtaFunctionDetailScreen(props) {
 								setRecordForEdit={setRecordForEdit}
 								setOpenPopup={setOpenPopup}
 								ctaFunctionStatus={ctaFunctionStatus}
+							/>
+						</Popup>
+
+						<Popup
+							title="Change Cta Package"
+							openPopup={openPopupForPckageChange}
+							setOpenPopup={setOpenPopupForPckageChange}
+						>
+							<CtaFunctionPackageChangeForm
+								recordForEdit={recordForEditPackage}
+								addOrEditConsultancyPackage={addOrEditConsultancyPackage}
+								// loadingSave={loadingSave}
+								packageName={packageName}
+								setRecordForEdit={setRecordForEdit}
+								setOpenPopupForPckageChange={setOpenPopupForPckageChange}
+								ctaPackageDailys={filteredCtaPackageDailys}
+								ctaPackageHourlys={filteredCtaPackageHourlys}
+								ctaPackageMonthlyYearlys={filteredCtaPackageMonthlyYearlys}
 							/>
 						</Popup>
 

@@ -171,3 +171,7 @@
 .pricingTable .notes ul{
 	padding: 0;
   }
+
+  td .userPhoto{
+	  height: 50px;
+  }

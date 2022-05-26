@@ -1,22 +1,28 @@
-import React, {useState, useEffect} from "react";
-import UserProfileForm from "./UserProfileForm";
-import {makeStyles} from "@material-ui/core/styles";
+import {Divider, Grid} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
-import {useSelector, useDispatch} from "react-redux";
-import {Grid, Divider} from "@material-ui/core";
-import Widget from "../../../components/Widget/Widget";
+import {makeStyles} from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import Loading from "../../../components/Loading/Loading";
-// import { useHistory } from 'react-router';
-
-// redux actions
-import {detailsUser, saveUser} from "../../../redux/actions/userActions";
-import {listCompanyTypes} from "../../../redux/actions/companyTypeActions";
-import {listCompanySizes} from "../../../redux/actions/companySizeActions";
-import {listConsultingTypes} from "../../../redux/actions/consultingTypeActions";
-
+import Widget from "../../../components/Widget/Widget";
 import {config} from "../../../config";
+import {isClientUser} from "../../../helpers/search";
+import {listCompanySizes} from "../../../redux/actions/companySizeActions";
+import {listCompanyTypes} from "../../../redux/actions/companyTypeActions";
+import {listConsultingTypes} from "../../../redux/actions/consultingTypeActions";
+// import { useHistory } from 'react-router';
+// redux actions
+import {
+	deActivateUser,
+	detailsUser,
+	logout,
+	updateProfile,
+} from "../../../redux/actions/userActions";
+import UserProfileForm from "./UserProfileForm";
+
 const BASE_ROOT_URL = config.BASE_ROOT_URL;
 
 const useStyles = makeStyles((theme) => ({
@@ -117,12 +123,35 @@ function UserProfileScreen() {
 		subTitle: "",
 	});
 
+	const history = useHistory();
+
+	const avaterPath = (imageUrl) => {
+		return BASE_ROOT_URL + "/" + imageUrl?.split("\\").join("/");
+	};
 	const dispatch = useDispatch();
 	// add/update promise
 	//   const saveItem = (item, id) => new Promise((resolve, reject) => {
 	//     dispatch(saveUser(item, id));
 	//     resolve();
 	// })
+
+	const removeUser = (id) => {
+		dispatch(deActivateUser(id)).then(() => {
+			setOpenPopup(false);
+			setNotify({
+				isOpen: true,
+				message: "DeActivate Successful",
+				type: "success",
+			});
+			handleLogout();
+		});
+	};
+
+	const handleLogout = () => {
+		// console.log('logout');
+		dispatch(logout());
+		history.push("/signin");
+	};
 
 	//eslint-disable-next-line
 	const addOrEdit = (item, resetForm) => {
@@ -133,7 +162,7 @@ function UserProfileScreen() {
 		item?.lastName && formData.append("LastName", item?.lastName);
 		item?.roleId && formData.append("RoleId", item?.roleId);
 		// formData.append('Name', item?.name)
-		item?.isActive && formData.append("IsActive", item?.isActive); // true or false
+		formData.append("IsActive", item.isActive); // true or false
 		item?.companySizeId &&
 			formData.append("CompanySizeId", item?.companySizeId);
 		item?.companyTypeId &&
@@ -163,14 +192,14 @@ function UserProfileScreen() {
 			// setRecordForEdit(null)
 			// setOpenPopup(true)
 			// saveItem(formData, item.id)
-			dispatch(saveUser(formData, item.id)).then((res) => {
+			dispatch(updateProfile(formData, item.id)).then((res) => {
 				setOpenPopup(true);
 				// console.log(res)
 				if (res?.status) {
 					// history.go(0);
 					setNotify({
 						isOpen: true,
-						message: "Successfull",
+						message: "Successful",
 						type: "success",
 					});
 				} else {
@@ -225,24 +254,33 @@ function UserProfileScreen() {
                     src={userInfo?.photo ? BASE_ROOT_URL + "/" + userInfo?.photo?.split("\\").join('/') : ''}
                     classes={{ root: classes.avatar, circle: classes.circle }}
                   /> */}
-								<Avatar
-									alt="Profile"
-									src={
-										BASE_ROOT_URL +
-										"/" +
-										userInfo.userImage?.split("\\").join("/")
-									}
-									classes={{root: classes.avatar, circle: classes.circle}}
-								/>
+								{userInfo?.photo ? (
+									<Avatar
+										alt="Profile"
+										src={avaterPath(userInfo?.photo)}
+										classes={{root: classes.avatar, circle: classes.circle}}
+									/>
+								) : (
+									<Avatar
+										alt="Profile"
+										src={avaterPath(userInfo?.userImage)}
+										classes={{root: classes.avatar, circle: classes.circle}}
+									/>
+								)}
+
 								<Typography className={classes.nameStyle} variant={"h5"}>
 									{userInfo?.name}
 								</Typography>
-								<Chip
-									variant={"outlined"}
-									avatar={<Avatar>{}</Avatar>}
-									label={userInfo?.roleName}
-									size="medium"
-								/>
+								{!isClientUser(userInfo) && (
+									<>
+										<Chip
+											variant={"outlined"}
+											avatar={<Avatar>{}</Avatar>}
+											label={userInfo?.roleName}
+											size="medium"
+										/>
+									</>
+								)}
 							</div>
 						</div>
 					</div>
@@ -262,6 +300,7 @@ function UserProfileScreen() {
 									<Divider style={{marginBottom: 16}} />
 									<UserProfileForm
 										recordForEdit={userInfo}
+										removeUser={removeUser}
 										// recordForEdit = {recordForEdit}
 										addOrEdit={addOrEdit}
 										loadingSave={loadingSave}

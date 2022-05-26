@@ -40,7 +40,10 @@ import {
 // import { listCtaPackageMonthlyYearlys } from '../../../../redux/actions/ctaPackageMonthlyYearlyActions';
 // import { listCtaFunctionModels } from '../../../../redux/actions/ctaFunctionActions';
 import {saveCtaPayment} from "../../../../redux/actions/ctaPaymentActions";
-import {saveCtaPurchaseHistory} from "../../../../redux/actions/ctaPurchaseHistoryActions";
+import {
+	saveCtaPurchaseHistory,
+	updateCtaPurchaseHistoryPackage,
+} from "../../../../redux/actions/ctaPurchaseHistoryActions";
 import {ResponseMessage} from "../../../../themes/responseMessage";
 import CtaFunctionDetailScreen from "./CtaFunctionDetailScreen";
 import CtaFunctionForm from "./CtaFunctionForm";
@@ -288,6 +291,19 @@ export default function CtaFunctionScreen(props) {
 		new Promise((resolve, reject) => {
 			dispatch(saveConsultancyAssignment(item))
 				.then((res) => {
+					console.log("response: ", res);
+					resolve(res);
+				})
+				.catch((err) => {
+					console.log("err occured" + err);
+					reject(err);
+				});
+		});
+
+	const savePackageChange = (item, id) =>
+		new Promise((resolve, reject) => {
+			dispatch(updateCtaPurchaseHistoryPackage(item))
+				.then((res) => {
 					resolve(res);
 				})
 				.catch((err) => {
@@ -372,10 +388,39 @@ export default function CtaFunctionScreen(props) {
 	const addOrEditConsultancyAssign = async (
 		item,
 		resetForm,
+		setRecordForEdit
+	) => {
+		return saveAssignItem(item)
+			.then((res) => {
+				if (res?.status) {
+					resetForm();
+					setRecordForEdit(null);
+					setNotify({
+						isOpen: true,
+						message: "Submitted Successfully",
+						type: "success",
+					});
+				} else {
+					setNotify({
+						isOpen: true,
+						message: "Submition Failed",
+						type: "warning",
+					});
+				}
+				return res;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const addOrEditConsultancyPackage = async (
+		item,
+		resetForm,
 		setRecordForEdit,
 		setOpenPopupForAssign
 	) => {
-		return saveAssignItem(item)
+		return savePackageChange(item)
 			.then((res) => {
 				if (res?.status) {
 					resetForm();
@@ -393,22 +438,6 @@ export default function CtaFunctionScreen(props) {
 						type: "warning",
 					});
 				}
-
-				// if (successConsultancyAssignmentSave) {
-				//     setNotify({
-				//         isOpen: true,
-				//         message: 'Submitted Successfully',
-				//         type: 'success'
-				//     })
-				// }
-
-				// if (errorConsultancyAssignmentSave) {
-				//     setNotify({
-				//         isOpen: true,
-				//         message: 'Submition Failed',
-				//         type: 'warning'
-				//     })
-				// }
 				return res;
 			})
 			.catch((err) => {
@@ -863,6 +892,7 @@ export default function CtaFunctionScreen(props) {
 										successCtaFunctionSave={successCtaFunctionSave}
 										loadingCtaFunctionSave={loadingCtaFunctionSave}
 										addOrEditConsultancyAssign={addOrEditConsultancyAssign}
+										addOrEditConsultancyPackage={addOrEditConsultancyPackage}
 									/>
 								</Widget>
 							) : openPopup ? (
