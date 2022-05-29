@@ -1,28 +1,30 @@
-import {AppBar, IconButton, Menu, Toolbar} from "@material-ui/core";
+import { AppBar, IconButton, Menu, Toolbar } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import {
 	ArrowBack as ArrowBackIcon,
 	Menu as MenuIcon,
-	Person as AccountIcon,
+	Person as AccountIcon
 } from "@material-ui/icons";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import RotateLeftIcon from "@material-ui/icons/RotateLeft";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LockIcon from '@material-ui/icons/Lock';
+import PublicIcon from '@material-ui/icons/Public';
 import classNames from "classnames";
-import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Link, useHistory} from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 // import { isAdminUser } from '../../helpers/search';
-import {config} from "../../config";
+import { config } from "../../config";
 // context
 import {
 	toggleSidebar,
 	useLayoutDispatch,
-	useLayoutState,
+	useLayoutState
 } from "../../context/LayoutContext";
-import {logout} from "../../redux/actions/userActions";
+import { logout } from "../../redux/actions/userActions";
 // components
-import {Typography} from "../Wrappers";
+import { Typography } from "../Wrappers";
 // styles
 import useStyles from "./styles";
 
@@ -182,6 +184,7 @@ export default function Header(props) {
 					classes={{paper: classes.profileMenu}}
 					disableAutoFocusItem
 				>
+				  {/* hidden div */}
 					<div className={classes.profileMenuUserhidden}>
 						<Typography variant="h4" weight="medium">
 							{userInfo && userInfo.userName}
@@ -260,7 +263,7 @@ export default function Header(props) {
 							to={"/"}
 							onClick={() => setProfileMenu(null)}
 						>
-							<RotateLeftIcon className={classes.profilemenuicons} />
+							<PublicIcon className={classes.profilemenuicons} />
 							Visit Website
 						</Typography>
 
@@ -271,7 +274,7 @@ export default function Header(props) {
 							to={"/admin/changePassword"}
 							onClick={() => setProfileMenu(null)}
 						>
-							<RotateLeftIcon className={classes.profilemenuicons} />
+							<LockIcon className={classes.profilemenuicons} />
 							Change Password
 						</Typography>
 					</div>
@@ -281,6 +284,7 @@ export default function Header(props) {
 							color="primary"
 							onClick={handleLogout}
 						>
+						<ExitToAppIcon className={classes.profilemenuicons} />
 							Sign Out
 						</Typography>
 					</div>

@@ -1,177 +1,180 @@
 .MuiButton-root.Mui-disabled {
-	padding: 10px 20px 8px;
-	font-size: 1.5rem;
-	border: 1px solid #d6d6d6;
+  padding: 10px 20px 8px;
+  font-size: 1.5rem;
+  border: 1px solid #d6d6d6;
 }
 
 .MuiButton-containedPrimary {
-	padding: 10px 20px 8px !important;
-	font-size: 1.5rem !important;
+  padding: 10px 20px 8px !important;
+  font-size: 1.5rem !important;
 }
 
 .makeStyles-backButton-119 {
-	padding: 10px 20px 8px !important;
-	font-size: 1.5rem !important;
-	border: 1px solid #d6d6d6 !important;
+  padding: 10px 20px 8px !important;
+  font-size: 1.5rem !important;
+  border: 1px solid #d6d6d6 !important;
 }
 
 .MuiFormHelperText-root,
 .ErrorMessage {
-	font-size: 1.2rem !important;
+  font-size: 1.2rem !important;
 }
 
 .MuiTab-wrapper {
-	font-size: 1.5rem !important;
+  font-size: 1.5rem !important;
 }
 
 .btn-back {
-	padding: 10px 20px 8px !important;
-	font-size: 1.5rem !important;
-	border: 1px solid #d6d6d6 !important;
+  padding: 10px 20px 8px !important;
+  font-size: 1.5rem !important;
+  border: 1px solid #d6d6d6 !important;
 }
 
 .purchase-success {
-	text-align: center;
+  text-align: center;
 }
 
 .purchase-success .title {
-	font-size: 25px;
-	color: rgb(24, 121, 40);
+  font-size: 25px;
+  color: rgb(24, 121, 40);
 }
 
 .purchase-success .header {
-	font-size: 22px;
-	background: transparent;
-	color: #000;
-	display: flex;
-	justify-content: center;
-	font-weight: 500;
+  font-size: 22px;
+  background: transparent;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
 }
 
 .purchase-success .subtitle {
-	font-size: 18px;
-	color: rgb(90, 90, 90);
+  font-size: 18px;
+  color: rgb(90, 90, 90);
 }
 
 .purchase-success .card-text {
-	font-size: 15px;
-	margin: 0 auto;
-	padding: 5px 0;
+  font-size: 15px;
+  margin: 0 auto;
+  padding: 5px 0;
 }
 
 .purchase-success .message {
-	font-size: 18px;
-	color: green;
+  font-size: 18px;
+  color: green;
 }
 
 #stripe-card {
-	background: #f5fcff;
-	padding: 10px;
-	border: 1px solid #e9f4ff;
-	border-radius: 8px;
+  background: #f5fcff;
+  padding: 10px;
+  border: 1px solid #e9f4ff;
+  border-radius: 8px;
 }
 
 .stripe-payment-button {
-	margin-top: 10px;
-	padding: 10px 16px;
-	font-size: 15px;
-	color: #fff;
-	background: rgb(14, 44, 177);
-	border: none;
-	width: 100%;
-	border-radius: 8px;
-	font-weight: bold;
-	cursor: pointer;
+  margin-top: 10px;
+  padding: 10px 16px;
+  font-size: 15px;
+  color: #fff;
+  background: rgb(14, 44, 177);
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .stripe-payment-button:hover {
-	background: rgb(10, 38, 161);
+  background: rgb(10, 38, 161);
 }
 
 .card.payment-card {
-	background-color: white;
-	padding: 10px 20px 11px;
-	border-radius: 5px;
-	width: 100%;
-	border: 1px solid #afafaf;
-	box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+  background-color: white;
+  padding: 10px 20px 11px;
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid #afafaf;
+  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
 }
 .pay-button {
-	padding: 1rem 2rem;
-	width: 100%;
-	margin: 1rem 0;
-	color: white;
-	font-weight: bold;
-	font-size: medium;
-	background-color: #556cd6;
-	border: 0;
-	border-radius: 5px;
-	box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
-	transition: box-shadow 500ms;
-	cursor: pointer;
+  padding: 1rem 2rem;
+  width: 100%;
+  margin: 1rem 0;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  background-color: #556cd6;
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 500ms;
+  cursor: pointer;
 }
 .pay-button:disabled {
-	background-color: #afafaf;
-	box-shadow: none;
-	cursor: default;
+  background-color: #afafaf;
+  box-shadow: none;
+  cursor: default;
 }
 .pay-button:disabled:hover {
-	box-shadow: none;
+  box-shadow: none;
 }
 .pay-button:hover {
-	box-shadow: 2px 5px 15px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 5px 15px 2px rgba(0, 0, 0, 0.2);
 }
 
 .payment-option-separator {
-	font-size: 13px;
-	width: 85%;
-	text-align: center;
-	border-bottom: 1px solid #c7c7c7;
-	line-height: 0.1em;
-	margin: 40px auto 25px;
+  font-size: 13px;
+  width: 85%;
+  text-align: center;
+  border-bottom: 1px solid #c7c7c7;
+  line-height: 0.1em;
+  margin: 40px auto 25px;
 }
 
 .payment-option-separator span {
-	background: #fff;
-	padding: 0 10px;
+  background: #fff;
+  padding: 0 10px;
 }
 
 .paypal-button .paypal-button-text {
-	font-size: 15px !important;
-	padding-right: 5px !important;
-	font-weight: 700 !important;
+  font-size: 15px !important;
+  padding-right: 5px !important;
+  font-weight: 700 !important;
 }
 
 .checkout-details-card {
-	width: 90%;
-	justify-content: center;
-	margin: 0 auto;
-	border: 1px solid #e2f2fd;
-	background: #f8fcff;
+  width: 90%;
+  justify-content: center;
+  margin: 0 auto;
+  border: 1px solid #e2f2fd;
+  background: #f8fcff;
 }
 
 .stripe-name-field {
-	padding: 12px 10px 11px;
-	width: 100%;
-	border: 1px solid #afafaf;
-	border-radius: 4px;
-	margin-bottom: 10px;
+  padding: 12px 10px 11px;
+  width: 100%;
+  border: 1px solid #afafaf;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
-
 .pricingTable .notes {
-	margin: 20px auto;
-	font-size: 14px;
-	text-align: center;
-  }
+  margin: 20px auto;
+  font-size: 14px;
+  text-align: center;
+}
 .pricingTable .notes ul li {
-	list-style: none;
-	padding: 10px 0;
-  }
-.pricingTable .notes ul{
-	padding: 0;
-  }
+  list-style: none;
+  padding: 10px 0;
+}
+.pricingTable .notes ul {
+  padding: 0;
+}
 
-  td .userPhoto{
-	  height: 50px;
-  }
+td .userPhoto {
+  height: 50px;
+}
+
+.deactivate-btn {
+  float: right;
+}

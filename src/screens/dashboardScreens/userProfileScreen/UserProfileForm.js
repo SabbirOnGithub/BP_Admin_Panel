@@ -1,9 +1,9 @@
-import {CircularProgress, Grid} from "@material-ui/core";
-import React, {useEffect, useState} from "react";
+import { CircularProgress, Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import Controls from "../../../components/controls/Controls";
-import {Form, useForm} from "../../../components/UseForm/useForm";
-import {isClientUser} from "../../../helpers/search";
+import { Form, useForm } from "../../../components/UseForm/useForm";
+import { isClientUser } from "../../../helpers/search";
 const initialFValues = {
 	id: "",
 	username: "",
@@ -268,43 +268,46 @@ export default function UserProfileForm(props) {
 								error={errors.photo}
 								resetFileInput={resetFileInput}
 							/>
-							{loadingSave ? (
-								<CircularProgress size={26} />
-							) : (
-								<>
-									<Controls.Button type="submit" text="Update" />
-									{/* <Controls.Button
-										text="Reset"
-										color="default"
-										onClick={resetForm}
-									/> */}
-									<Controls.Button
-										text="Back"
-										color="default"
-										onClick={() => {
-											setOpenPopup(!openPopup);
-										}}
-									/>
-
-									<Controls.Button
-										text="DeActivate"
-										color="secondary"
-										onClick={() => {
-											setConfirmDialog({
-												isOpen: true,
-												title: "Are you sure to deactivate yourself?",
-												subTitle: "You can't undo this operation",
-												onConfirm: () => {
-													onDelete(userInfo?.userId);
-												},
-											});
-										}}
-									/>
-								</>
-							)}
+							
 						</div>
 					)}
 
+					
+				</Grid>
+				<Grid item md={12}>
+					{loadingSave ? (
+						<CircularProgress size={26} />
+					) : (
+						<>
+							<Controls.Button type="submit" text="Update" />
+							
+							<Controls.Button
+								text="Back"
+								color="default"
+								onClick={() => {
+									setOpenPopup(!openPopup);
+								}}
+							/>
+
+							<Controls.Button
+								className="deactivate-btn"
+								variant="outlined"
+								text="DeActivate"
+								color="primary"
+								onClick={() => {
+									setConfirmDialog({
+										isOpen: true,
+										title: "Are you sure to deactivate yourself?",
+										subTitle: "You can't undo this operation",
+										onConfirm: () => {
+											onDelete(userInfo?.userId);
+										},
+									});
+								}}
+							/>
+						</>
+					)}
+					
 					<ConfirmDialog
 						confirmDialog={confirmDialog}
 						setConfirmDialog={setConfirmDialog}
