@@ -185,6 +185,18 @@ export default function AdminDashboardScreen() {
 		(state) => state.adminDashboardDetails
 	);
 
+	const convertPriceToUsd = (rate) => {
+		if (rate) {
+			return rate.toLocaleString("en-US", {
+				currency: "USD",
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2,
+			});
+		} else {
+			return "0";
+		}
+	};
+
 	//eslint-disable-next-line
 	const {adminDashboard, loading, error} = adminDashboardDetails;
 	const dispatch = useDispatch();
@@ -340,7 +352,7 @@ export default function AdminDashboardScreen() {
 									<Grid container item alignItems={"center"}>
 										<Grid item xs={6}>
 											<Typography size="xl" weight="medium" noWrap>
-												{adminDashboard?.totalPayment} $
+												$ {convertPriceToUsd(adminDashboard?.todayPayment)}
 											</Typography>
 										</Grid>
 										<Grid item xs={6}>
@@ -370,7 +382,7 @@ export default function AdminDashboardScreen() {
 									<Grid container item alignItems={"center"}>
 										<Grid item xs={6}>
 											<Typography size="xl" weight="medium" noWrap>
-												{adminDashboard?.todayPayment} $
+												$ {convertPriceToUsd(adminDashboard?.todayPayment)}
 											</Typography>
 										</Grid>
 										<Grid item xs={6}>

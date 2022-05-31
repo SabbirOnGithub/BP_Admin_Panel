@@ -1,66 +1,67 @@
-import { Grid } from "@material-ui/core";
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import PaymentIcon from '@material-ui/icons/Payment';
+import {Grid} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import PaymentIcon from "@material-ui/icons/Payment";
 // import PageviewIcon from '@material-ui/icons/Pageview';
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import ReplyIcon from '@material-ui/icons/Reply';
-import ReplyAllIcon from '@material-ui/icons/ReplyAll';
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import ReplyIcon from "@material-ui/icons/Reply";
+import ReplyAllIcon from "@material-ui/icons/ReplyAll";
 import classnames from "classnames";
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import Controls from "../../../components/controls/Controls";
-import Loading from '../../../components/Loading/Loading';
+import Loading from "../../../components/Loading/Loading";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import Widget from "../../../components/Widget/Widget";
-import { Typography } from "../../../components/Wrappers/Wrappers";
+import {Typography} from "../../../components/Wrappers/Wrappers";
 // ../../../../redux/actions/ctaPaymentActions
-import { isAdminUser } from "../../../helpers/search";
+import {isAdminUser} from "../../../helpers/search";
 import {
-	deleteCtaFunctionDocument, saveCtaFunction,
-	saveCtaFunctionDocument
+	deleteCtaFunctionDocument,
+	saveCtaFunction,
+	saveCtaFunctionDocument,
 } from "../../../redux/actions/ctaFunctionActions";
-import { saveCtaPayment } from "../../../redux/actions/ctaPaymentActions";
-import { saveCtaPurchaseHistory } from "../../../redux/actions/ctaPurchaseHistoryActions";
+import {saveCtaPayment} from "../../../redux/actions/ctaPaymentActions";
+import {saveCtaPurchaseHistory} from "../../../redux/actions/ctaPurchaseHistoryActions";
 // redux actions
-import { detailsUserDashboard } from '../../../redux/actions/dashboardActions';
-import { ResponseMessage } from "../../../themes/responseMessage";
-import CtaFunctionForm from '../ctaScreen/ctaFunctionScreen/CtaFunctionForm';
-import PurchaseConsultancy from '../PurchaseConsultancy/PurchaseConsultancy';
+import {detailsUserDashboard} from "../../../redux/actions/dashboardActions";
+import {ResponseMessage} from "../../../themes/responseMessage";
+import CtaFunctionForm from "../ctaScreen/ctaFunctionScreen/CtaFunctionForm";
+import PurchaseConsultancy from "../PurchaseConsultancy/PurchaseConsultancy";
 // ../../../../redux/actions/ctaPurchaseHistoryActions
 // styles
 import useStyles from "./styles";
 
-
-
 export default function UserDashboardScreen() {
-    var classes = useStyles();
-    //set state
-    const [openPopup , setOpenPopup] = useState(false);
-    const [purchase , setPurchase] = useState(false);
-    const [recordForEdit, setRecordForEdit] = useState(null);
+	var classes = useStyles();
+	//set state
+	const [openPopup, setOpenPopup] = useState(false);
+	const [purchase, setPurchase] = useState(false);
+	const [recordForEdit, setRecordForEdit] = useState(null);
 	const [recordForDetails, setRecordForDetails] = useState(null);
-    const [confirmDialog, setConfirmDialog] = useState({
+	const [confirmDialog, setConfirmDialog] = useState({
 		isOpen: false,
 		title: "",
 		subTitle: "",
 	});
-    const [notify, setNotify] = useState({
+	const [notify, setNotify] = useState({
 		isOpen: false,
 		message: "",
 		type: "",
 	});
 	const [paymentResponse, setPaymentResponse] = useState({});
 
-    const userSignIn = useSelector(state => state.userSignin);
-    //eslint-disable-next-line
-    const { userInfo } = userSignIn;
+	const userSignIn = useSelector((state) => state.userSignin);
+	//eslint-disable-next-line
+	const {userInfo} = userSignIn;
 
-    const userDashboardDetails = useSelector(state => state.userDashboardDetails);
+	const userDashboardDetails = useSelector(
+		(state) => state.userDashboardDetails
+	);
 
-    //cta function save
-    const ctaFunctionSave = useSelector((state) => state.ctaFunctionSave);
+	//cta function save
+	const ctaFunctionSave = useSelector((state) => state.ctaFunctionSave);
 	//eslint-disable-next-line
 	const {
 		loading: loadingCtaFunctionSave,
@@ -69,7 +70,7 @@ export default function UserDashboardScreen() {
 		ctaFunction: ctaFunctionSaveData,
 	} = ctaFunctionSave;
 
-    //cta function delete document
+	//cta function delete document
 	const ctaFunctionDocumentDelete = useSelector(
 		(state) => state.ctaFunctionDocumentDelete
 	);
@@ -80,7 +81,7 @@ export default function UserDashboardScreen() {
 		error: errorDeleteCtaFunctionDocument,
 	} = ctaFunctionDocumentDelete;
 
-    //cta function document save
+	//cta function document save
 	const ctaFunctionDocumentSave = useSelector(
 		(state) => state.ctaFunctionDocumentSave
 	);
@@ -92,7 +93,7 @@ export default function UserDashboardScreen() {
 		ctaFunction: ctaFunctionDocumentSaveData,
 	} = ctaFunctionDocumentSave;
 
-    //cta payment save
+	//cta payment save
 	const ctaPaymentSave = useSelector((state) => state.ctaPaymentSave);
 	//eslint-disable-next-line
 	const {
@@ -101,7 +102,7 @@ export default function UserDashboardScreen() {
 		error: errorCtaPaymentSave,
 	} = ctaPaymentSave;
 
-    //cta purches history
+	//cta purches history
 	const ctaPurchaseHistorySave = useSelector(
 		(state) => state.ctaPurchaseHistorySave
 	);
@@ -112,24 +113,34 @@ export default function UserDashboardScreen() {
 		error: errorCtaPurchaseHistorySave,
 	} = ctaPurchaseHistorySave;
 
-    //eslint-disable-next-line
-    const { userDashboard, loading, error } = userDashboardDetails;
-    const dispatch = useDispatch();
-    // console.log(Math.max(...mainChartData.map(item=>item.count)))
-    // console.log(userDashboard)
-    useEffect(() => {
-        try {
-            userInfo?.userId && dispatch(detailsUserDashboard(userInfo?.userId))
-            
-        } catch (e) {
-            console.log(e)
-        }
-        return () => {
-            // 
-        }
-    }, [dispatch, userInfo?.userId])
+	//eslint-disable-next-line
+	const {userDashboard, loading, error} = userDashboardDetails;
+	const dispatch = useDispatch();
+	// console.log(Math.max(...mainChartData.map(item=>item.count)))
+	// console.log(userDashboard)
+	useEffect(() => {
+		try {
+			userInfo?.userId && dispatch(detailsUserDashboard(userInfo?.userId));
+		} catch (e) {
+			console.log(e);
+		}
+		return () => {
+			//
+		};
+	}, [dispatch, userInfo?.userId]);
 
-    // add/update promise
+	const convertPriceToUsd = (rate) => {
+		if (rate) {
+			return rate.toLocaleString("en-US", {
+				currency: "USD",
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2,
+			});
+		}
+		return "0";
+	};
+
+	// add/update promise
 	const saveItem = (item, id) =>
 		new Promise((resolve, reject) => {
 			dispatch(saveCtaFunction(item))
@@ -142,7 +153,7 @@ export default function UserDashboardScreen() {
 				});
 		});
 
-    const addOrEdit = async (
+	const addOrEdit = async (
 		item,
 		resetForm,
 		values,
@@ -181,8 +192,7 @@ export default function UserDashboardScreen() {
 			});
 	};
 
-
-    //add or edit function document
+	//add or edit function document
 	const addOrEditCtaFunctionDocument = (item, resetForm) => {
 		// console.log(item)
 		if (item?.id && item?.file) {
@@ -218,7 +228,6 @@ export default function UserDashboardScreen() {
 		}
 	};
 
-    
 	// delete promise
 	const deleteItem = (id) =>
 		new Promise((resolve, reject) => {
@@ -227,7 +236,6 @@ export default function UserDashboardScreen() {
 		});
 
 	const onDeleteCtaFunctionDocument = (id) => {
-		
 		deleteItem(id).then(() => {
 			if (successDeleteCtaFunctionDocument) {
 				setNotify({
@@ -246,9 +254,7 @@ export default function UserDashboardScreen() {
 		});
 	};
 
-
-    //payment
-    
+	//payment
 
 	const handleCtaPayment = (token, item, resetActiveStep) => {
 		// const tokenId = token?.id;
@@ -367,8 +373,6 @@ export default function UserDashboardScreen() {
 		}
 	};
 
-    
-
 	const handelCtaPaymentStripe = (
 		intentObj,
 		paymentMethodObj,
@@ -431,8 +435,6 @@ export default function UserDashboardScreen() {
 			}
 		});
 	};
-
-    
 
 	const handelStripeSubscription = (
 		paymentIntent,
@@ -501,8 +503,6 @@ export default function UserDashboardScreen() {
 			}
 		});
 	};
-
-    
 
 	const handelPaypalSubscription = (
 		subscriptionResult,
@@ -575,248 +575,258 @@ export default function UserDashboardScreen() {
 		});
 	};
 
+	return (
+		<>
+			{loading ? (
+				<Loading />
+			) : (
+				<>
+					<Grid container spacing={2}>
+						<Grid item xs={4}>
+							<PageTitle title="Dashboard" />
+						</Grid>
+						<Grid item xs={8}>
+							{!isAdminUser() && (
+								<>
+									<Box
+										display="flex"
+										justifyContent="flex-end"
+										alignItems="center"
+										height="100%"
+									>
+										<Controls.Button
+											text="purchase Consultation"
+											onClick={() => {
+												setPurchase(true);
+												setOpenPopup(false);
+											}}
+										/>
 
-    return (
-
-        <>
-            {
-                loading ? <Loading /> :
-                    ( 
-                        <>
-                         
-                            <Grid container spacing={2}>
-								<Grid item xs={4}>
-									<PageTitle 
-										title="Dashboard" 
-									/>
+										<Controls.Button
+											text="Schedule a consult"
+											onClick={() => {
+												setOpenPopup(true);
+												setPurchase(false);
+											}}
+										/>
+									</Box>
+								</>
+							)}
+						</Grid>
+					</Grid>
+					{/* <PurchaseConsultancy setPurchase={setPurchase}></PurchaseConsultancy> */}
+					{purchase ? (
+						<PurchaseConsultancy
+							purchase={purchase}
+							setPurchase={setPurchase}
+						></PurchaseConsultancy>
+					) : (
+						<>
+							{!openPopup ? (
+								<Grid container spacing={4}>
+									<Grid item lg={4} md={6} sm={6} xs={12}>
+										<Widget
+											title="Course Purchase"
+											upperTitle
+											bodyClass={classes.fullHeightBody}
+											className={classes.card}
+											disableWidgetMenu
+										>
+											<div className={classes.visitsNumberContainer}>
+												<Grid container item alignItems={"center"}>
+													<Grid item xs={6}>
+														<Typography size="xl" weight="medium" noWrap>
+															{userDashboard?.coursePurchase}
+														</Typography>
+													</Grid>
+													<Grid item xs={6}>
+														<Avatar
+															className={classnames(
+																classes.secondary,
+																classes.avatarPosition
+															)}
+															variant="rounded"
+														>
+															<ReceiptIcon />
+														</Avatar>
+													</Grid>
+												</Grid>
+											</div>
+										</Widget>
+									</Grid>
+									<Grid item lg={4} md={6} sm={6} xs={12}>
+										<Widget
+											title="Total Cta Requests"
+											upperTitle
+											bodyClass={classes.fullHeightBody}
+											className={classes.card}
+											disableWidgetMenu
+										>
+											<div className={classes.visitsNumberContainer}>
+												<Grid container item alignItems={"center"}>
+													<Grid item xs={6}>
+														<Typography size="xl" weight="medium" noWrap>
+															{userDashboard?.totalCtaRequest}
+														</Typography>
+													</Grid>
+													<Grid item xs={6}>
+														<Avatar
+															className={classnames(
+																classes.warning,
+																classes.avatarPosition
+															)}
+															variant="rounded"
+														>
+															<ReplyAllIcon />
+														</Avatar>
+													</Grid>
+												</Grid>
+											</div>
+										</Widget>
+									</Grid>
+									<Grid item lg={4} md={6} sm={6} xs={12}>
+										<Widget
+											title="Today Cta Requests"
+											upperTitle
+											bodyClass={classes.fullHeightBody}
+											className={classes.card}
+											disableWidgetMenu
+										>
+											<div className={classes.visitsNumberContainer}>
+												<Grid container item alignItems={"center"}>
+													<Grid item xs={6}>
+														<Typography size="xl" weight="medium" noWrap>
+															{userDashboard?.todayCtaRequest}
+														</Typography>
+													</Grid>
+													<Grid item xs={6}>
+														<Avatar
+															className={classnames(
+																classes.info,
+																classes.avatarPosition
+															)}
+															variant="rounded"
+														>
+															<ReplyIcon />
+														</Avatar>
+													</Grid>
+												</Grid>
+											</div>
+										</Widget>
+									</Grid>
+									<Grid item lg={4} md={6} sm={6} xs={12}>
+										<Widget
+											title="Total Payment"
+											upperTitle
+											bodyClass={classes.fullHeightBody}
+											className={classes.card}
+											disableWidgetMenu
+										>
+											<div className={classes.visitsNumberContainer}>
+												<Grid container item alignItems={"center"}>
+													<Grid item xs={6}>
+														<Typography size="xl" weight="medium" noWrap>
+															$ {convertPriceToUsd(userDashboard?.totalPayment)}
+														</Typography>
+													</Grid>
+													<Grid item xs={6}>
+														<Avatar
+															className={classnames(
+																classes.primary,
+																classes.avatarPosition
+															)}
+															variant="rounded"
+														>
+															<PaymentIcon />
+														</Avatar>
+													</Grid>
+												</Grid>
+											</div>
+										</Widget>
+									</Grid>
+									<Grid item lg={4} md={6} sm={6} xs={12}>
+										<Widget
+											title="Today Payment"
+											upperTitle
+											bodyClass={classes.fullHeightBody}
+											className={classes.card}
+											disableWidgetMenu
+										>
+											<div className={classes.visitsNumberContainer}>
+												<Grid container item alignItems={"center"}>
+													<Grid item xs={6}>
+														<Typography size="xl" weight="medium" noWrap>
+															$ {convertPriceToUsd(userDashboard?.todayPayment)}
+														</Typography>
+													</Grid>
+													<Grid item xs={6}>
+														<Avatar
+															className={classnames(
+																classes.secondary,
+																classes.avatarPosition
+															)}
+															variant="rounded"
+														>
+															<AttachMoneyIcon />
+														</Avatar>
+													</Grid>
+												</Grid>
+											</div>
+										</Widget>
+									</Grid>
 								</Grid>
-                                <Grid item xs={8}>
-                                    {
-                                        !isAdminUser() && (
-                                            <>
-												<Box display="flex" justifyContent="flex-end" alignItems="center" height="100%">
-													<Controls.Button
-															text="purchase Consultation"
-															onClick={() => {
-																setPurchase(true);
-																setOpenPopup(false);
-															}}
-														/>
-														
-														<Controls.Button
-															text="Schedule a consult"
-															onClick={() => {
-																setOpenPopup(true);
-																setPurchase(false);
-															}}
-														/>
-												</Box>
-                                            </>
-                                        )
-                                    }
-                                </Grid>
-                            </Grid>
-							{/* <PurchaseConsultancy setPurchase={setPurchase}></PurchaseConsultancy> */}
-                            {
-                                purchase ? (
-                                    <PurchaseConsultancy purchase={purchase} setPurchase={setPurchase}></PurchaseConsultancy>
-                                ) : <>
-                                    {
-                                    !openPopup ? (
-                                        <Grid container spacing={4}>
-                                            <Grid item lg={4} md={6} sm={6} xs={12}>
-                                                <Widget
-                                                    title="Course Purchase"
-                                                    upperTitle
-                                                    bodyClass={classes.fullHeightBody}
-                                                    className={classes.card}
-                                                    disableWidgetMenu
-                                                >
-                                                    <div className={classes.visitsNumberContainer}>
-                                                    <Grid container item alignItems={"center"}>
-                                                        <Grid item xs={6}>
-                                                            <Typography size="xl" weight="medium" noWrap>
-                                                                {userDashboard?.coursePurchase}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={6}>
-                                                            <Avatar 
-                                                                    className={classnames(classes.secondary, classes.avatarPosition )}
-                                                                    variant= "rounded"
-                                                            >
-                                                                <ReceiptIcon />
-                                                            </Avatar>
-                                                        </Grid>
-                                                    </Grid>
-                                                    </div>
-                                                    
-                                                </Widget>
-                                            </Grid>
-                                            <Grid item lg={4} md={6} sm={6} xs={12}>
-                                                <Widget
-                                                    title="Total Cta Requests"
-                                                    upperTitle
-                                                    bodyClass={classes.fullHeightBody}
-                                                    className={classes.card}
-                                                    disableWidgetMenu
-                                                >
-                                                    <div className={classes.visitsNumberContainer}>
-                                                    <Grid container item alignItems={"center"}>
-                                                        <Grid item xs={6}>
-                                                            <Typography size="xl" weight="medium" noWrap>
-                                                                {userDashboard?.totalCtaRequest}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={6}>
-                                                            <Avatar 
-                                                                    className={classnames(classes.warning, classes.avatarPosition )}
-                                                                    variant= "rounded"
-                                                            >
-                                                                <ReplyAllIcon />
-                                                            </Avatar>
-                                                        </Grid>
-                                                    </Grid>
-                                                    </div>
-                                                    
-                                                </Widget>
-                                            </Grid>
-                                            <Grid item lg={4} md={6} sm={6} xs={12}>
-                                                <Widget
-                                                    title="Today Cta Requests"
-                                                    upperTitle
-                                                    bodyClass={classes.fullHeightBody}
-                                                    className={classes.card}
-                                                    disableWidgetMenu
-                                                >
-                                                    <div className={classes.visitsNumberContainer}>
-                                                    <Grid container item alignItems={"center"}>
-                                                        <Grid item xs={6}>
-                                                            <Typography size="xl" weight="medium" noWrap>
-                                                                {userDashboard?.todayCtaRequest}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={6}>
-                                                            <Avatar 
-                                                                    className={classnames(classes.info, classes.avatarPosition )}
-                                                                    variant= "rounded"
-                                                            >
-                                                                <ReplyIcon />
-                                                            </Avatar>
-                                                        </Grid>
-                                                    </Grid>
-                                                    </div>
-                                                    
-                                                </Widget>
-                                            </Grid>
-                                            <Grid item lg={4} md={6} sm={6} xs={12}>
-                                                <Widget
-                                                    title="Total Payment"
-                                                    upperTitle
-                                                    bodyClass={classes.fullHeightBody}
-                                                    className={classes.card}
-                                                    disableWidgetMenu
-                                                >
-                                                    <div className={classes.visitsNumberContainer}>
-                                                    <Grid container item alignItems={"center"}>
-                                                        <Grid item xs={6}>
-                                                            <Typography size="xl" weight="medium" noWrap>
-                                                                {userDashboard?.totalPayment} $
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={6}>
-                                                            <Avatar 
-                                                                className={classnames(classes.primary, classes.avatarPosition )}
-                                                                variant= "rounded"
-                                                            >
-                                                                <PaymentIcon />
-                                                            </Avatar>
-                                                        </Grid>
-                                                    </Grid>
-                                                    </div>
-                                                    
-                                                </Widget>
-                                            </Grid>
-                                            <Grid item lg={4} md={6} sm={6} xs={12}>
-                                                <Widget
-                                                    title="Today Payment"
-                                                    upperTitle
-                                                    bodyClass={classes.fullHeightBody}
-                                                    className={classes.card}
-                                                    disableWidgetMenu
-                                                >
-                                                    <div className={classes.visitsNumberContainer}>
-                                                    <Grid container item alignItems={"center"}>
-                                                        <Grid item xs={6}>
-                                                            <Typography size="xl" weight="medium" noWrap>
-                                                                {userDashboard?.todayPayment} $
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={6}>
-                                                            <Avatar 
-                                                                className={classnames(classes.secondary, classes.avatarPosition )}
-                                                                variant= "rounded"
-                                                            >
-                                                                <AttachMoneyIcon />
-                                                            </Avatar>
-                                                        </Grid>
-                                                    </Grid>
-                                                    </div>
-                                                    
-                                                </Widget>
-                                            </Grid>
-                                        </Grid>
-                                    ) : (
-                                        <Grid container spacing={4}>
-                                            <Grid item xs={12}>
-                                                <Widget
-                                                    title="Schedule a consult"
-                                                    upperTitle
-                                                    disableWidgetMenu
-                                                    closePopup={() => {
-                                                        setOpenPopup(false);
-                                                    }}
-                                                >
-                                                    <CtaFunctionForm
-                                                        recordForEdit={recordForEdit}
-                                                        addOrEdit={addOrEdit}
-                                                        addOrEditCtaFunctionDocument={addOrEditCtaFunctionDocument}
-                                                        setOpenPopup={setOpenPopup}
-                                                        ctaFunctionSaveData={ctaFunctionSaveData}
-                                                        setConfirmDialog={setConfirmDialog}
-                                                        onDeleteCtaFunctionDocument={onDeleteCtaFunctionDocument}
-                                                        loadingDeleteCtaFunctionDocument={
-                                                            loadingDeleteCtaFunctionDocument
-                                                        }
-                                                        loadingCtaFunctionDocumentSave={
-                                                            loadingCtaFunctionDocumentSave
-                                                        }
-                                                        loadingCtaFunctionSave={loadingCtaFunctionSave}
-
-                                                        handleCtaPayment={handleCtaPayment}
-                                                        loadingCtaPaymentSave={loadingCtaPaymentSave}
-                                                        successCtaPaymentSave={successCtaPaymentSave}
-                                                        loadingCtaPurchaseHistorySave={
-                                                            loadingCtaPurchaseHistorySave
-                                                        }
-                                                        successCtaPurchaseHistorySave={
-                                                            successCtaPurchaseHistorySave
-                                                        }
-                                                        paymentResponse={paymentResponse}
-                                                        handelCtaPaymentStripe={handelCtaPaymentStripe}
-                                                        handelStripeSubscription={handelStripeSubscription}
-                                                        handelPaypalSubscription={handelPaypalSubscription}
-                                                    />
-                                                </Widget>
-                                            </Grid>
-                                        </Grid>
-                                    )
-                                }
-                                </>
-                            }
-                            
-                        </>
-                    )
-            }
-        </>
-    )
+							) : (
+								<Grid container spacing={4}>
+									<Grid item xs={12}>
+										<Widget
+											title="Schedule a consult"
+											upperTitle
+											disableWidgetMenu
+											closePopup={() => {
+												setOpenPopup(false);
+											}}
+										>
+											<CtaFunctionForm
+												recordForEdit={recordForEdit}
+												addOrEdit={addOrEdit}
+												addOrEditCtaFunctionDocument={
+													addOrEditCtaFunctionDocument
+												}
+												setOpenPopup={setOpenPopup}
+												ctaFunctionSaveData={ctaFunctionSaveData}
+												setConfirmDialog={setConfirmDialog}
+												onDeleteCtaFunctionDocument={
+													onDeleteCtaFunctionDocument
+												}
+												loadingDeleteCtaFunctionDocument={
+													loadingDeleteCtaFunctionDocument
+												}
+												loadingCtaFunctionDocumentSave={
+													loadingCtaFunctionDocumentSave
+												}
+												loadingCtaFunctionSave={loadingCtaFunctionSave}
+												handleCtaPayment={handleCtaPayment}
+												loadingCtaPaymentSave={loadingCtaPaymentSave}
+												successCtaPaymentSave={successCtaPaymentSave}
+												loadingCtaPurchaseHistorySave={
+													loadingCtaPurchaseHistorySave
+												}
+												successCtaPurchaseHistorySave={
+													successCtaPurchaseHistorySave
+												}
+												paymentResponse={paymentResponse}
+												handelCtaPaymentStripe={handelCtaPaymentStripe}
+												handelStripeSubscription={handelStripeSubscription}
+												handelPaypalSubscription={handelPaypalSubscription}
+											/>
+										</Widget>
+									</Grid>
+								</Grid>
+							)}
+						</>
+					)}
+				</>
+			)}
+		</>
+	);
 }

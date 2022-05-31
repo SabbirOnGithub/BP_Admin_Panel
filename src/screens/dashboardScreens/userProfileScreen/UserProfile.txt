@@ -13,13 +13,13 @@ import {isClientUser} from "../../../helpers/search";
 import {listCompanySizes} from "../../../redux/actions/companySizeActions";
 import {listCompanyTypes} from "../../../redux/actions/companyTypeActions";
 import {listConsultingTypes} from "../../../redux/actions/consultingTypeActions";
-import {listRoles} from "../../../redux/actions/roleActions";
 // import { useHistory } from 'react-router';
 // redux actions
 import {
 	deActivateUser,
 	detailsUser,
-	saveUser,
+	logout,
+	updateProfile,
 } from "../../../redux/actions/userActions";
 import UserProfileForm from "./UserProfileForm";
 
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 		flexWrap: "wrap",
 		position: "absolute",
 		width: "calc(100%)",
-		top: "-150px",
+		top: "-70px",
 		alignItems: "flex-end",
 		"& > *": {
 			margin: `${theme.spacing(3)}px ${theme.spacing(1)}px`,
@@ -45,10 +45,9 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: "1",
 	},
 	avatar: {
-		background: "#fff",
 		border: `3px solid white`,
-		width: theme.spacing(25),
-		height: theme.spacing(25),
+		width: theme.spacing(13),
+		height: theme.spacing(13),
 		boxShadow: theme.shadows[3],
 	},
 	actionGroup: {
@@ -59,14 +58,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 	nameStyle: {
 		fontSize: 24,
-		// fontFamily: "Oxanium, cursive",
+		fontFamily: "Oxanium, cursive",
 		fontWeight: 400,
 		lineHeight: 1.5,
 	},
 }));
 
 function UserProfileScreen() {
-	const history = useHistory();
+	// const history = useHistory();
 
 	const userSignIn = useSelector((state) => state.userSignin);
 	//eslint-disable-next-line
@@ -75,10 +74,6 @@ function UserProfileScreen() {
 	// const userDetails = useSelector(state => state.userDetails);
 	// //eslint-disable-next-line
 	// const { user, loading, error } = userDetails;
-
-	const avaterPath = (imageUrl) => {
-		return BASE_ROOT_URL + "/" + imageUrl?.split("\\").join("/");
-	};
 
 	const userSave = useSelector((state) => state.userSave);
 	//eslint-disable-next-line
@@ -113,22 +108,6 @@ function UserProfileScreen() {
 		error: errorConsultingType,
 	} = consultingTypeList;
 
-	const roleList = useSelector((state) => state.roleList);
-	//eslint-disable-next-line
-	const {roles} = roleList;
-
-	const getUserRoleName = (id) => {
-		const roleDetails = roles.find((item) => item.id === id);
-		if (roleDetails) {
-			return roleDetails.name;
-		} else {
-			return "role not found";
-		}
-	};
-
-	const deactiveUser = useSelector((state) => state.userDeactivate);
-	const {loading: loadingDeactiveUser, error: errorDeactiveUser} = deactiveUser;
-
 	const classes = useStyles();
 
 	//eslint-disable-next-line
@@ -144,12 +123,35 @@ function UserProfileScreen() {
 		subTitle: "",
 	});
 
+	const history = useHistory();
+
+	const avaterPath = (imageUrl) => {
+		return BASE_ROOT_URL + "/" + imageUrl?.split("\\").join("/");
+	};
 	const dispatch = useDispatch();
 	// add/update promise
 	//   const saveItem = (item, id) => new Promise((resolve, reject) => {
 	//     dispatch(saveUser(item, id));
 	//     resolve();
 	// })
+
+	const removeUser = (id) => {
+		dispatch(deActivateUser(id)).then(() => {
+			setOpenPopup(false);
+			setNotify({
+				isOpen: true,
+				message: "DeActivate Successful",
+				type: "success",
+			});
+			handleLogout();
+		});
+	};
+
+	const handleLogout = () => {
+		// console.log('logout');
+		dispatch(logout());
+		history.push("/signin");
+	};
 
 	//eslint-disable-next-line
 	const addOrEdit = (item, resetForm) => {
@@ -160,7 +162,7 @@ function UserProfileScreen() {
 		item?.lastName && formData.append("LastName", item?.lastName);
 		item?.roleId && formData.append("RoleId", item?.roleId);
 		// formData.append('Name', item?.name)
-		item?.isActive && formData.append("IsActive", item?.isActive); // true or false
+		formData.append("IsActive", item.isActive); // true or false
 		item?.companySizeId &&
 			formData.append("CompanySizeId", item?.companySizeId);
 		item?.companyTypeId &&
@@ -190,14 +192,14 @@ function UserProfileScreen() {
 			// setRecordForEdit(null)
 			// setOpenPopup(true)
 			// saveItem(formData, item.id)
-			dispatch(saveUser(formData, item.id)).then((res) => {
+			dispatch(updateProfile(formData, item.id)).then((res) => {
 				setOpenPopup(true);
 				// console.log(res)
 				if (res?.status) {
 					// history.go(0);
 					setNotify({
 						isOpen: true,
-						message: "Successfull",
+						message: "Successful",
 						type: "success",
 					});
 				} else {
@@ -210,31 +212,6 @@ function UserProfileScreen() {
 			});
 		}
 	};
-
-	// const logout = () => (dispatch) => {
-	// 	Cookie.remove("userInfo");
-	// 	Cookie.remove("userToken");
-	// 	dispatch({type: USER_LOGOUT});
-	// };
-
-	const handleLogout = () => {
-		// console.log('logout');
-		// dispatch(logout());
-		history.push("/signin");
-	};
-
-	const removeUser = (id) => {
-		dispatch(deActivateUser(id)).then(() => {
-			setOpenPopup(false);
-			setNotify({
-				isOpen: true,
-				message: "DeActivate Successful",
-				type: "success",
-			});
-			handleLogout();
-		});
-	};
-
 	// console.log(user)
 
 	useEffect(() => {
@@ -242,7 +219,6 @@ function UserProfileScreen() {
 			dispatch(listCompanySizes());
 			dispatch(listCompanyTypes());
 			dispatch(listConsultingTypes());
-			dispatch(listRoles());
 			// userInfo?.userId && dispatch(detailsUser(userInfo.userId));
 			dispatch(detailsUser(userInfo.userId));
 		} catch (e) {
@@ -257,23 +233,27 @@ function UserProfileScreen() {
 			{loadingSave ||
 			loadingCompanySize ||
 			loadingCompanyType ||
-			loadingConsultingType ||
-			loadingDeactiveUser ? (
+			loadingConsultingType ? (
 				<Loading />
 			) : (
 				<>
 					<div>
 						<div
 							style={{
-								height: "250px",
+								height: "200px",
 								backgroundPosition: "center",
 								backgroundSize: "cover",
 								filter: "contrast(75%)",
-								backgroundImage: "url(/user-bg.jpg)",
+								backgroundImage: "url(/wallpaper.jpeg)",
 							}}
 						></div>
 						<div className={classes.headerContainer}>
 							<div className={classes.header}>
+								{/* <Avatar
+                    alt={'test'}
+                    src={userInfo?.photo ? BASE_ROOT_URL + "/" + userInfo?.photo?.split("\\").join('/') : ''}
+                    classes={{ root: classes.avatar, circle: classes.circle }}
+                  /> */}
 								{userInfo?.photo ? (
 									<Avatar
 										alt="Profile"
@@ -289,14 +269,14 @@ function UserProfileScreen() {
 								)}
 
 								<Typography className={classes.nameStyle} variant={"h5"}>
-									{userInfo?.userName}
+									{userInfo?.name}
 								</Typography>
 								{!isClientUser(userInfo) && (
 									<>
 										<Chip
 											variant={"outlined"}
 											avatar={<Avatar>{}</Avatar>}
-											label={getUserRoleName(userInfo?.userId)}
+											label={userInfo?.roleName}
 											size="medium"
 										/>
 									</>
@@ -304,8 +284,46 @@ function UserProfileScreen() {
 							</div>
 						</div>
 					</div>
-					<Grid container spacing={4}>
-						<Grid item xs={12}>
+					<Grid container spacing={2}>
+						<Grid item xs={12} md={3}>
+							<div className={classes.headerContainer}>
+								<div className={classes.header}>
+									{/* <Avatar
+                    alt={'test'}
+                    src={userInfo?.photo ? BASE_ROOT_URL + "/" + userInfo?.photo?.split("\\").join('/') : ''}
+                    classes={{ root: classes.avatar, circle: classes.circle }}
+                  /> */}
+									{userInfo?.photo ? (
+										<Avatar
+											alt="Profile"
+											src={avaterPath(userInfo?.photo)}
+											classes={{root: classes.avatar, circle: classes.circle}}
+										/>
+									) : (
+										<Avatar
+											alt="Profile"
+											src={avaterPath(userInfo?.userImage)}
+											classes={{root: classes.avatar, circle: classes.circle}}
+										/>
+									)}
+
+									<Typography className={classes.nameStyle} variant={"h5"}>
+										{userInfo?.name}
+									</Typography>
+									{!isClientUser(userInfo) && (
+										<>
+											<Chip
+												variant={"outlined"}
+												avatar={<Avatar>{}</Avatar>}
+												label={userInfo?.roleName}
+												size="medium"
+											/>
+										</>
+									)}
+								</div>
+							</div>
+						</Grid>
+						<Grid item xs={12} md={9}>
 							{userInfo && (
 								<Widget
 									title="Profile"

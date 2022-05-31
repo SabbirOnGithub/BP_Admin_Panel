@@ -1,9 +1,9 @@
-import { CircularProgress, Grid } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import {CircularProgress, Grid} from "@material-ui/core";
+import React, {useEffect, useState} from "react";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import Controls from "../../../components/controls/Controls";
-import { Form, useForm } from "../../../components/UseForm/useForm";
-import { isClientUser } from "../../../helpers/search";
+import {Form, useForm} from "../../../components/UseForm/useForm";
+import {isClientUser} from "../../../helpers/search";
 const initialFValues = {
 	id: "",
 	username: "",
@@ -16,7 +16,6 @@ const initialFValues = {
 	photo: "",
 	businessIndustry: "",
 	businessName: "",
-	isActive: true,
 	companySizeId: "",
 	companyTypeId: "",
 	currentConsultingTypeId: "",
@@ -41,8 +40,14 @@ export default function UserProfileForm(props) {
 
 		if ("username" in fieldValues)
 			temp.username = fieldValues.username ? "" : "This field is required.";
-		// if ('email' in fieldValues)
-		//     (temp.email = fieldValues.email ? "" : "This field is required.") || (temp.email = (/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})?$/).test(fieldValues.email) ? "" : "Email is not valid.")
+		if ("email" in fieldValues)
+			(temp.email = fieldValues.email ? "" : "This field is required.") ||
+				(temp.email =
+					/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})?$/.test(
+						fieldValues.email
+					)
+						? ""
+						: "Email is not valid.");
 		if ("firstName" in fieldValues)
 			temp.firstName = fieldValues.firstName ? "" : "This field is required.";
 		if ("businessIndustry" in fieldValues)
@@ -190,7 +195,6 @@ export default function UserProfileForm(props) {
 						error={errors.businessName}
 						disabled={openPopup}
 					/>
-
 					{isClientUser(userInfo) && (
 						<>
 							<Controls.Input
@@ -268,46 +272,49 @@ export default function UserProfileForm(props) {
 								error={errors.photo}
 								resetFileInput={resetFileInput}
 							/>
-							
 						</div>
 					)}
-
-					
 				</Grid>
 				<Grid item md={12}>
 					{loadingSave ? (
 						<CircularProgress size={26} />
 					) : (
 						<>
-							<Controls.Button type="submit" text="Update" />
-							
-							<Controls.Button
-								text="Back"
-								color="default"
-								onClick={() => {
-									setOpenPopup(!openPopup);
-								}}
-							/>
+							{!openPopup && (
+								<div>
+									<Controls.Button type="submit" text="Update" />
 
-							<Controls.Button
-								className="deactivate-btn"
-								variant="outlined"
-								text="DeActivate"
-								color="primary"
-								onClick={() => {
-									setConfirmDialog({
-										isOpen: true,
-										title: "Are you sure to deactivate yourself?",
-										subTitle: "You can't undo this operation",
-										onConfirm: () => {
-											onDelete(userInfo?.userId);
-										},
-									});
-								}}
-							/>
+									<Controls.Button
+										text="Back"
+										color="default"
+										onClick={() => {
+											setOpenPopup(!openPopup);
+										}}
+									/>
+
+									{isClientUser(userInfo) && (
+										<Controls.Button
+											className="deactivate-btn"
+											variant="outlined"
+											text="Close Account"
+											color="primary"
+											onClick={() => {
+												setConfirmDialog({
+													isOpen: true,
+													title: "Are you sure you want to close your account?",
+													subTitle: "You can't undo this operation",
+													onConfirm: () => {
+														onDelete(userInfo?.userId);
+													},
+												});
+											}}
+										/>
+									)}
+								</div>
+							)}
 						</>
 					)}
-					
+
 					<ConfirmDialog
 						confirmDialog={confirmDialog}
 						setConfirmDialog={setConfirmDialog}

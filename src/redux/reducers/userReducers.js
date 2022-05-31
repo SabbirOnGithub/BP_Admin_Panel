@@ -19,6 +19,9 @@ const {
 	USER_ACCEPT_CLIENT_LIST_REQUEST,
 	USER_ACCEPT_CLIENT_LIST_SUCCESS,
 	USER_ACCEPT_CLIENT_LIST_FAIL,
+	USER_DEACTIVATE_REQUEST,
+	USER_DEACTIVATE_SUCCESS,
+	USER_DEACTIVATE_FAIL,
 	USER_PASSWORD_CHANGE_REQUEST,
 	USER_PASSWORD_CHANGE_SUCCESS,
 	USER_PASSWORD_CHANGE_FAIL,
@@ -111,6 +114,26 @@ const userSigninReducer = (state = {}, action) => {
 	}
 };
 
+const userDeactivateReducer = (state = {}, action) => {
+	switch (action.type) {
+		case USER_DEACTIVATE_REQUEST:
+			return {loading: true};
+		case USER_DEACTIVATE_SUCCESS:
+			return {
+				// loading: false,
+				// userInfo: {
+				// 	...state.userInfo,
+				// 	...action.payload,
+				// 	userImage: action?.payload?.photo,
+				// },
+			};
+		case USER_DEACTIVATE_FAIL:
+			return {loading: false, error: action.payload};
+		default:
+			return state;
+	}
+};
+
 const userPasswordChangeReducer = (state = {}, action) => {
 	switch (action.type) {
 		case USER_PASSWORD_CHANGE_REQUEST:
@@ -142,5 +165,6 @@ export {
 	userDeleteReducer,
 	userDetailsReducer,
 	userAcceptClientListReducer,
+	userDeactivateReducer,
 	userPasswordChangeReducer,
 };

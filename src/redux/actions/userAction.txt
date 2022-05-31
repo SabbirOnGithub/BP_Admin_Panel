@@ -9,9 +9,6 @@ import {
 	USER_ACCEPT_CLIENT_LIST_FAIL,
 	USER_ACCEPT_CLIENT_LIST_REQUEST,
 	USER_ACCEPT_CLIENT_LIST_SUCCESS,
-	USER_DEACTIVATE_FAIL,
-	USER_DEACTIVATE_REQUEST,
-	USER_DEACTIVATE_SUCCESS,
 	USER_DELETE_FAIL,
 	USER_DELETE_REQUEST,
 	USER_DELETE_SUCCESS,
@@ -148,14 +145,7 @@ const saveUser = (item, id) => async (dispatch) => {
 					dispatch({type: USER_UPDATE_SUCCESS, payload: data.data}), // <-- async dispatch chaining in action
 					dispatch({type: USER_SAVE_SUCCESS, payload: data}),
 				]);
-				Cookie.set(
-					"userInfo",
-					JSON.stringify({
-						...JSON.parse(Cookie.get("userInfo")),
-						...data.data,
-						userImage: data?.data?.photo,
-					})
-				);
+
 				return data;
 			} else {
 				dispatch({type: USER_SAVE_FAIL, payload: data.message});
@@ -164,6 +154,31 @@ const saveUser = (item, id) => async (dispatch) => {
 	} catch (error) {
 		console.log(error);
 		dispatch({type: USER_SAVE_FAIL, payload: error.message});
+	}
+};
+
+// register and update user
+const updateProfile = (item, id) => async (dispatch) => {
+	const {data} = await axiosWithTokenAndMultipartData.put(
+		"/User/UpdateUser",
+		item
+	);
+	if (data.status === true) {
+		await Promise.all([
+			dispatch({type: USER_UPDATE_SUCCESS, payload: data.data}), // <-- async dispatch chaining in action
+			dispatch({type: USER_SAVE_SUCCESS, payload: data}),
+		]);
+		Cookie.set(
+			"userInfo",
+			JSON.stringify({
+				...JSON.parse(Cookie.get("userInfo")),
+				...data.data,
+				userImage: data?.data?.photo,
+			})
+		);
+		return data;
+	} else {
+		dispatch({type: USER_SAVE_FAIL, payload: data.message});
 	}
 };
 
@@ -221,6 +236,7 @@ const saveResetPassword = (item, id) => async (dispatch) => {
 		dispatch({type: USER_RESET_PASSWORD_FAIL, payload: error.message});
 	}
 };
+
 const changePassword = (item) => async (dispatch) => {
 	// console.log(item)
 	try {
@@ -242,6 +258,7 @@ const changePassword = (item) => async (dispatch) => {
 		dispatch({type: USER_PASSWORD_CHANGE_FAIL, payload: error.message});
 	}
 };
+
 const deleteUser = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({type: USER_DELETE_REQUEST});
@@ -255,6 +272,22 @@ const deleteUser = (id) => async (dispatch, getState) => {
 		dispatch({type: USER_DELETE_FAIL, payload: error.message});
 	}
 };
+
+const deActivateUser = (id) => async (dispatch) => {
+	try {
+		dispatch({type: USER_DELETE_REQUEST});
+		const {data} = await axiosWithToken.post("/User/DeActivateUser/" + id);
+		console.log("action response: ", data);
+		if (data.status === true) {
+			dispatch({type: USER_DELETE_SUCCESS, payload: data, success: true});
+		} else {
+			dispatch({type: USER_DELETE_FAIL, payload: data.message});
+		}
+	} catch (error) {
+		dispatch({type: USER_DELETE_FAIL, payload: error.message});
+	}
+};
+
 // sign in method
 const signin = (email, password) => async (dispatch) => {
 	const username = email;
@@ -285,33 +318,17 @@ const logout = () => (dispatch) => {
 	dispatch({type: USER_LOGOUT});
 };
 
-const deActivateUser = (id) => async (dispatch) => {
-	try {
-		dispatch({type: USER_DEACTIVATE_REQUEST});
-		const {data} = await axiosWithToken.post("/User/DeActivateUser/" + id);
-		console.log("action response: ", data);
-		if (data.status === true) {
-			Cookie.remove("userInfo");
-			Cookie.remove("userToken");
-			dispatch({type: USER_DEACTIVATE_SUCCESS, payload: data, success: true});
-		} else {
-			dispatch({type: USER_DEACTIVATE_FAIL, payload: data.message});
-		}
-	} catch (error) {
-		dispatch({type: USER_DEACTIVATE_FAIL, payload: error.message});
-	}
-};
-
 export {
 	signin,
 	logout,
 	listUsers,
 	saveUser,
+	updateProfile,
 	detailsUser,
+	deActivateUser,
 	deleteUser,
+	changePassword,
 	saveRecoverPassword,
 	saveResetPassword,
 	listAcceptClientUsers,
-	changePassword,
-	deActivateUser,
 };

@@ -376,6 +376,7 @@ import {
 } from "./reducers/uniqueSolutionDetailReducers";
 import {
 	userAcceptClientListReducer,
+	userDeactivateReducer,
 	userDeleteReducer,
 	userDetailsReducer,
 	userListReducer,
@@ -396,6 +397,7 @@ const reducer = combineReducers({
 	userSignin: userSigninReducer,
 	userPasswordChange: userPasswordChangeReducer,
 	userList: userListReducer,
+	userDeactivate: userDeactivateReducer,
 	userAcceptClientList: userAcceptClientListReducer,
 	userSave: userSaveReducer,
 	userDetails: userDetailsReducer,
