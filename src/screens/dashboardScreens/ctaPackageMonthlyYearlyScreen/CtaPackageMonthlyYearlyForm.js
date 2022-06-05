@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { Grid, CircularProgress } from '@material-ui/core';
+import { CircularProgress, Grid } from '@material-ui/core';
+import React, { useEffect } from 'react';
 import Controls from "../../../components/controls/Controls";
-import { useForm, Form } from '../../../components/UseForm/useForm';
+import { Form, useForm } from '../../../components/UseForm/useForm';
 
 
 const initialFValues = {
@@ -11,6 +11,10 @@ const initialFValues = {
     submenuId: "",
     monthlyRate: "",
     yearlyRate: "",
+    monthlyPriceId: "",
+    yearlyPriceId: "",
+    paypalMonthlyPlanId: "",
+    paypalYearlyPlanId: "",
 }
 
 export default function CtaPackageMonthlyYearlyForm(props) {
@@ -93,6 +97,20 @@ export default function CtaPackageMonthlyYearlyForm(props) {
                         onChange={handleInputNumberChange}
                         error={errors.monthlyRate}
                     />
+
+                    <Controls.Input
+                        name="monthlyPriceId"
+                        label="Stripe Monthly Price Id"
+                        value={values.monthlyPriceId}
+                        onChange={handleInputChange}
+                    />
+
+                    <Controls.Input
+                        name="paypalMonthlyPlanId"
+                        label="Paypal Monthly Price Id"
+                        value={values.paypalMonthlyPlanId}
+                        onChange={handleInputChange}
+                    />
                     
                     <Controls.Input
                         name="yearlyRate"
@@ -102,6 +120,21 @@ export default function CtaPackageMonthlyYearlyForm(props) {
                         onChange={handleInputNumberChange}
                         error={errors.namyearlyRatee}
                     />
+
+                    <Controls.Input
+                        name="yearlyPriceId"
+                        label="Stripe Yearly Plan Id"
+                        value={values.yearlyPriceId}
+                        onChange={handleInputChange}
+                    />
+
+                    <Controls.Input
+                        name="paypalYearlyPlanId"
+                        label="Paypal Monthly Plan Id"
+                        value={values.paypalYearlyPlanId}
+                        onChange={handleInputChange}
+                    />
+
                     <div>
                         {loadingSave ? (
                             <CircularProgress size={26} />

@@ -1,8 +1,8 @@
-import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
-import React, {useState} from "react";
-import {useSelector} from "react-redux";
-import {config} from "../../../../config";
-import StatusMessages, {useMessages} from "../../../../helpers/StatusMessages";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { config } from "../../../../config";
+import StatusMessages, { useMessages } from "../../../../helpers/StatusMessages";
 
 const StripeCardForm = ({
 	consultancyObj,

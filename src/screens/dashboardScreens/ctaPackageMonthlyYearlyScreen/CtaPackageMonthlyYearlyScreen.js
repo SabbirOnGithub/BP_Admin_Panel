@@ -186,7 +186,7 @@ export default function CtaPackageMonthlyYearlyScreen() {
                     (
                         ctaPackageMonthlyYearlys.length >= 0 &&
                         <>
-                        <PageTitle title="Consultancy Packages (Concierge)" />
+                        <PageTitle title="Consultancy Packages (Concierge)" /> 
 
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
@@ -200,7 +200,6 @@ export default function CtaPackageMonthlyYearlyScreen() {
                                         disableWidgetMenu
                                         addNew={() => { setOpenPopup(true); setRecordForEdit(null); }}
                                         createOperation={createOperation}
-
                                     >
 
                                         <Paper style={{ overflow: "auto", backgroundColor: "transparent" }}>

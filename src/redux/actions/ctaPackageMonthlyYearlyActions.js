@@ -1,5 +1,5 @@
-import {config} from "../../config";
-import {axiosWithoutToken, axiosWithToken} from "../../helpers/axios";
+import { config } from "../../config";
+import { axiosWithoutToken, axiosWithToken } from "../../helpers/axios";
 import {
 	CTA_PACKAGE_MONTHLY_YEARLY_DELETE_FAIL,
 	CTA_PACKAGE_MONTHLY_YEARLY_DELETE_REQUEST,
@@ -12,7 +12,7 @@ import {
 	CTA_PACKAGE_MONTHLY_YEARLY_LIST_SUCCESS,
 	CTA_PACKAGE_MONTHLY_YEARLY_SAVE_FAIL,
 	CTA_PACKAGE_MONTHLY_YEARLY_SAVE_REQUEST,
-	CTA_PACKAGE_MONTHLY_YEARLY_SAVE_SUCCESS,
+	CTA_PACKAGE_MONTHLY_YEARLY_SAVE_SUCCESS
 } from "../constants/ctaPackageMonthlyYearlyConstants";
 
 const BASE_API_URL = config.BASE_API_URL;
@@ -83,7 +83,7 @@ const saveCtaPackageMonthlyYearly = (item) => async (dispatch) => {
 			}
 		} else {
 			const {data} = await axiosWithToken.put(
-				"/CtaPackageMonthlyYearly/",
+				"/CtaPackageMonthlyYearly",
 				item
 			);
 			if (data.status === true) {
@@ -139,3 +139,4 @@ export {
 	saveCtaPackageMonthlyYearly,
 	deleteCtaPackageMonthlyYearly,
 };
+
