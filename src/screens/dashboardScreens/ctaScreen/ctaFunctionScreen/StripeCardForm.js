@@ -1,6 +1,7 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import Notification from "../../../../components/Notification/Notification";
 import { config } from "../../../../config";
 import StatusMessages, { useMessages } from "../../../../helpers/StatusMessages";
 
@@ -18,6 +19,7 @@ const StripeCardForm = ({
 	const elements = useElements();
 	const [messages, addMessage] = useMessages();
 	const [isPaymentLoading, setPaymentLoading] = useState(false);
+	const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
 
 	const handleSubmit = async (e) => {
 		// We don't want to let default form submission happen here,
@@ -46,6 +48,13 @@ const StripeCardForm = ({
 		if (error) {
 			console.log("[error]", error);
 			setPaymentLoading(false);
+			setNotify({
+				isOpen: true,
+				message: error?.message,
+				type: 'error'
+			})
+			
+			return;
 		} else {
 			console.log("[PaymentMethod]", paymentMethod);
 			// ... SEND to your API server to process payment intent
@@ -70,8 +79,13 @@ const StripeCardForm = ({
 		).then((r) => r.json());
 
 		if (backendError) {
-			addMessage(backendError.message);
+			addMessage("Create Payment intent return: " + backendError.message);
 			setPaymentLoading(false);
+			setNotify({
+				isOpen: true,
+				message: backendError?.message,
+				type: 'error'
+			})
 			return;
 		}
 
@@ -96,6 +110,11 @@ const StripeCardForm = ({
 			// Show error to your customer (e.g., insufficient funds)
 			addMessage(stripeError.message);
 			setPaymentLoading(false);
+			setNotify({
+				isOpen: true,
+				message: stripeError.message,
+				type: 'error'
+			})
 			return;
 		}
 
@@ -170,7 +189,11 @@ const StripeCardForm = ({
 					</div>
 				</div>
 			</form>
-			<StatusMessages messages={messages} />
+			{/* <StatusMessages messages={messages} /> */}
+			<Notification
+                                            notify={notify}
+                                            setNotify={setNotify}
+                                        />
 		</>
 	);
 };

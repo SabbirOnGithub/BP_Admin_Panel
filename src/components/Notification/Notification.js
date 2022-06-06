@@ -1,6 +1,6 @@
-import React from 'react'
-import { Snackbar, makeStyles } from '@material-ui/core';
+import { makeStyles, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -27,13 +27,14 @@ export default function Notification(props) {
         <Snackbar
             className={classes.root}
             open={notify.isOpen}
-            autoHideDuration={3000}
+            autoHideDuration={5000}
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             onClose={handleClose}>
             <Alert
                 severity={notify.type}
+                variant="filled"
                 onClose={handleClose}>
-                {notify.message}
+                <span style={{fontSize: "14px"}}>{notify.message}</span>
             </Alert>
         </Snackbar>
     )
