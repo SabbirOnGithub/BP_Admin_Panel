@@ -54,6 +54,17 @@ function SignInScreen(props) {
 		};
 	});
 
+	//check redirect from sign in
+	const params = new URLSearchParams(window.location.search)
+	const fromPayment = params.get('fromPayment');
+
+	const isPaymentCheck = localStorage.getItem('fromPayment');
+
+    if (!isPaymentCheck && fromPayment) {
+      localStorage.setItem('fromPayment',true);
+    }
+	
+
 	return (
 		<Grid container className={classes.container}>
 			<div className={classes.logotypeContainer}>

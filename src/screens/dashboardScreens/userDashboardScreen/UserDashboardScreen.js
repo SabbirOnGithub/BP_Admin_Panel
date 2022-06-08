@@ -8,7 +8,7 @@ import ReceiptIcon from "@material-ui/icons/Receipt";
 import ReplyIcon from "@material-ui/icons/Reply";
 import ReplyAllIcon from "@material-ui/icons/ReplyAll";
 import classnames from "classnames";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Controls from "../../../components/controls/Controls";
 import Loading from "../../../components/Loading/Loading";
@@ -51,6 +51,31 @@ export default function UserDashboardScreen() {
 		type: "",
 	});
 	const [paymentResponse, setPaymentResponse] = useState({});
+
+	//check is from payment true of false
+	const fromPayment = localStorage.getItem('fromPayment');
+	console.log(fromPayment);
+
+	useEffect(
+	  () => {
+		if(fromPayment){
+			setPurchase(true);
+		}
+	  },
+	  [],
+	)
+	
+
+	// if (fromPayment) {
+	// 	useCallback( () => {
+	// 		setPurchase(true);
+	// 	}, [purchase])
+	// }
+
+	
+	
+
+	
 
 	const userSignIn = useSelector((state) => state.userSignin);
 	//eslint-disable-next-line
