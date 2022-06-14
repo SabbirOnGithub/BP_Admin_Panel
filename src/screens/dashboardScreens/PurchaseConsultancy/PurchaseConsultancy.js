@@ -1,20 +1,20 @@
-import { Grid } from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 // import { Box } from '@mui/system';
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputSharpIcon from "@material-ui/icons/InputSharp";
-import { makeStyles } from "@material-ui/styles";
+import {makeStyles} from "@material-ui/styles";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
 import Loading from "../../../components/Loading/Loading";
 import PopOver from "../../../components/PopOver/PopOver";
-import { Form, useForm } from "../../../components/UseForm/useForm";
+import {Form, useForm} from "../../../components/UseForm/useForm";
 import useTab from "../../../components/UseTab/useTab";
 import Widget from "../../../components/Widget/Widget";
-import { config } from "../../../config";
+import {config} from "../../../config";
 import PaymentPurchaseConsultancy from "./PaymentPurchaseConsultancy";
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +53,16 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "40px",
 		fontWeight: "normal",
 		lineHeight: "normal",
+	},
+	tabs: {
+		"& .MuiTabs-indicator": {
+			backgroundColor: "none",
+			height: 0,
+		},
+		"& .MuiTab-root.Mui-selected": {
+			color: "#fff",
+			backgroundColor: "#09a2ad",
+		},
 	},
 }));
 
@@ -412,7 +422,6 @@ export default function PurchaseConsultancy(props) {
 			});
 	};
 
-
 	return (
 		<>
 			<>
@@ -435,8 +444,9 @@ export default function PurchaseConsultancy(props) {
 												onChange={handleTabChange}
 												variant="fullWidth" //"standard" or "scrollable" or "fullWidth"
 												scrollButtons="on"
-												indicatorColor="primary"
-												textColor="primary"
+												// indicatorColor="primary"
+												className={classes.tabs}
+												// textColor="primary"
 												aria-label="scrollable force tabs example"
 												centered={true}
 											>
@@ -457,7 +467,6 @@ export default function PurchaseConsultancy(props) {
 												<Loading></Loading>
 											) : (
 												<>
-												
 													{filteredCtaPackageHourlys?.length > 0 ? (
 														<div className={classes.root}>
 															<Grid container spacing={1}>
@@ -560,7 +569,8 @@ export default function PurchaseConsultancy(props) {
 																												"Hourly Support",
 																											isSubscription: false,
 																											validityTime:
-																												item?.validity + "Days",
+																												item?.validity +
+																												" Days",
 																										})
 																									}
 																								>
@@ -879,7 +889,7 @@ export default function PurchaseConsultancy(props) {
 								<PaymentPurchaseConsultancy
 									values={values}
 									createOrder={createOrder}
-									closePurchaseScreen = {props.setPurchase}
+									closePurchaseScreen={props.setPurchase}
 								/>
 							)}
 						</Widget>

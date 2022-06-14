@@ -1,9 +1,9 @@
 import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
+import Notification from "../../../components/Notification/Notification";
 import {config} from "../../../config";
 import {useMessages} from "../../../helpers/StatusMessages";
-import Notification from "../../../components/Notification/Notification";
 
 const StripeCardForm = ({
 	consultancyObj,
@@ -19,7 +19,7 @@ const StripeCardForm = ({
 	const elements = useElements();
 	const [messages, addMessage] = useMessages();
 	const [isPaymentLoading, setPaymentLoading] = useState(false);
-	const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+	const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
 
 	const handleSubmit = async (e) => {
 		// We don't want to let default form submission happen here,
@@ -51,8 +51,8 @@ const StripeCardForm = ({
 			setNotify({
 				isOpen: true,
 				message: error?.message,
-				type: 'error'
-			})
+				type: "error",
+			});
 			return;
 		} else {
 			console.log("[PaymentMethod]", paymentMethod);
@@ -83,8 +83,8 @@ const StripeCardForm = ({
 			setNotify({
 				isOpen: true,
 				message: backendError?.message,
-				type: 'error'
-			})
+				type: "error",
+			});
 			return;
 		}
 
@@ -112,8 +112,8 @@ const StripeCardForm = ({
 			setNotify({
 				isOpen: true,
 				message: stripeError.message,
-				type: 'error'
-			})
+				type: "error",
+			});
 			return;
 		}
 
@@ -189,10 +189,7 @@ const StripeCardForm = ({
 				</div>
 			</form>
 			{/* <StatusMessages messages={messages} /> */}
-			<Notification
-                                            notify={notify}
-                                            setNotify={setNotify}
-                                        />
+			<Notification notify={notify} setNotify={setNotify} />
 		</>
 	);
 };

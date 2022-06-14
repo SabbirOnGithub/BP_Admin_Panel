@@ -48,6 +48,16 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "normal",
 		lineHeight: "normal",
 	},
+	tabs: {
+		"& .MuiTabs-indicator": {
+			backgroundColor: "none",
+			height: 0,
+		},
+		"& .MuiTab-root.Mui-selected": {
+			color: "#fff",
+			backgroundColor: "#09a2ad",
+		},
+	},
 }));
 
 export default function CtaFormStepFour(props) {
@@ -166,8 +176,10 @@ export default function CtaFormStepFour(props) {
 								onChange={handleTabChange}
 								variant="fullWidth" //"standard" or "scrollable" or "fullWidth"
 								scrollButtons="on"
-								indicatorColor="primary"
-								textColor="primary"
+								className={classes.tabs}
+								// indicatorColor="primary"
+								// TabIndicatorProps={{style: {background: "primary"}}}
+								// // textColor="primary"
 								aria-label="scrollable force tabs example"
 								centered={true}
 							>

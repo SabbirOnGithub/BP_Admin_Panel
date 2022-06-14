@@ -85,7 +85,7 @@ export default function PaymentSuccessDialog(props) {
 					)}
 
 					<p className="card-text message">
-						A copy of the recipt has been emailed to you.
+						A copy of the receipt has been emailed to you.
 					</p>
 					<div className="subtitle"> {subTitle}</div>
 				</div>

@@ -1,30 +1,26 @@
-import { AppBar, IconButton, Menu, Toolbar } from "@material-ui/core";
+import {AppBar, IconButton, Menu, Toolbar} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import {
-	ArrowBack as ArrowBackIcon,
-	Menu as MenuIcon,
-	Person as AccountIcon
-} from "@material-ui/icons";
+import {Menu as MenuIcon, Person as AccountIcon} from "@material-ui/icons";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LockIcon from '@material-ui/icons/Lock';
-import PublicIcon from '@material-ui/icons/Public';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import LockIcon from "@material-ui/icons/Lock";
+import PublicIcon from "@material-ui/icons/Public";
 import classNames from "classnames";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import React, {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useHistory} from "react-router-dom";
 // import { isAdminUser } from '../../helpers/search';
-import { config } from "../../config";
+import {config} from "../../config";
 // context
 import {
 	toggleSidebar,
 	useLayoutDispatch,
-	useLayoutState
+	useLayoutState,
 } from "../../context/LayoutContext";
-import { logout } from "../../redux/actions/userActions";
+import {logout} from "../../redux/actions/userActions";
 // components
-import { Typography } from "../Wrappers";
+import {Typography} from "../Wrappers";
 // styles
 import useStyles from "./styles";
 
@@ -69,9 +65,17 @@ export default function Header(props) {
 
 	const avatarIcon = (userInfo) => {
 		if (userInfo?.userImage) {
-			return <Avatar alt="Profile" src={userimage} />;
+			return (
+				<Avatar
+					alt="Profile"
+					src={userimage}
+					style={{backgroundColor: "#fff"}}
+				/>
+			);
 		} else if (userInfo?.photo) {
-			return <Avatar alt="Profile" src={photo} />;
+			return (
+				<Avatar alt="Profile" src={photo} style={{backgroundColor: "#fff"}} />
+			);
 		} else {
 			return <AccountIcon classes={{root: classes.headerIcon}} />;
 		}
@@ -89,14 +93,25 @@ export default function Header(props) {
 					)}
 				>
 					{layoutState.isSidebarOpened ? (
-						<ArrowBackIcon
-							classes={{
-								root: classNames(
-									classes.headerIcon,
-									classes.headerIconCollapse
-								),
-							}}
-						/>
+						<>
+							{/* <ArrowBackIcon
+								classes={{
+									root: classNames(
+										classes.headerIcon,
+										classes.headerIconCollapse
+									),
+								}}
+							/> */}
+
+							<MenuIcon
+								classes={{
+									root: classNames(
+										classes.headerIcon,
+										classes.headerIconCollapse
+									),
+								}}
+							/>
+						</>
 					) : (
 						<MenuIcon
 							classes={{
@@ -184,7 +199,7 @@ export default function Header(props) {
 					classes={{paper: classes.profileMenu}}
 					disableAutoFocusItem
 				>
-				  {/* hidden div */}
+					{/* hidden div */}
 					<div className={classes.profileMenuUserhidden}>
 						<Typography variant="h4" weight="medium">
 							{userInfo && userInfo.userName}
@@ -284,7 +299,7 @@ export default function Header(props) {
 							color="primary"
 							onClick={handleLogout}
 						>
-						<ExitToAppIcon className={classes.profilemenuicons} />
+							<ExitToAppIcon className={classes.profilemenuicons} />
 							Sign Out
 						</Typography>
 					</div>

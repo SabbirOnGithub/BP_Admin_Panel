@@ -8,7 +8,7 @@ import ReceiptIcon from "@material-ui/icons/Receipt";
 import ReplyIcon from "@material-ui/icons/Reply";
 import ReplyAllIcon from "@material-ui/icons/ReplyAll";
 import classnames from "classnames";
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Controls from "../../../components/controls/Controls";
 import Loading from "../../../components/Loading/Loading";
@@ -53,29 +53,20 @@ export default function UserDashboardScreen() {
 	const [paymentResponse, setPaymentResponse] = useState({});
 
 	//check is from payment true of false
-	const fromPayment = localStorage.getItem('fromPayment');
+	const fromPayment = localStorage.getItem("fromPayment");
 	console.log(fromPayment);
 
-	useEffect(
-	  () => {
-		if(fromPayment){
+	useEffect(() => {
+		if (fromPayment) {
 			setPurchase(true);
 		}
-	  },
-	  [],
-	)
-	
+	}, []);
 
 	// if (fromPayment) {
 	// 	useCallback( () => {
 	// 		setPurchase(true);
 	// 	}, [purchase])
 	// }
-
-	
-	
-
-	
 
 	const userSignIn = useSelector((state) => state.userSignin);
 	//eslint-disable-next-line
@@ -346,7 +337,7 @@ export default function UserDashboardScreen() {
 									isPaid: res.data.paid,
 									amount: parseInt(item.rate),
 									ctaFunctionId: item?.ctaFunctionId,
-									paymentGateway: "stripe",
+									paymentGateway: "Card",
 									userEmail: userInfo.email,
 								};
 
@@ -419,7 +410,7 @@ export default function UserDashboardScreen() {
 			isPaid: intentObj?.status === "succeeded",
 			amount: parseInt(item.rate),
 			ctaFunctionId: item?.ctaFunctionId,
-			paymentGateway: "stripe",
+			paymentGateway: "Card",
 			userEmail: userInfo.email,
 		};
 
@@ -455,7 +446,7 @@ export default function UserDashboardScreen() {
 		dispatch(saveCtaPurchaseHistory(formatePurchaseHistoryData)).then((res) => {
 			if (res.status === true) {
 				// stepper step auto increment
-				console.log("item: " + JSON.stringify(item, undefined, 2));
+				// console.log("item: " + JSON.stringify(item, undefined, 2));
 				setActiveStep((prevActiveStep) => prevActiveStep + 1);
 			}
 		});
@@ -484,7 +475,7 @@ export default function UserDashboardScreen() {
 			isPaid: paymentIntent?.status === "succeeded",
 			amount: parseInt(item.rate),
 			ctaFunctionId: item?.ctaFunctionId,
-			paymentGateway: "stripe",
+			paymentGateway: "Card",
 			userEmail: userInfo.email,
 			SubscriptionId: subscriptionId,
 		};

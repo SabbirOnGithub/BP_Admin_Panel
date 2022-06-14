@@ -1,6 +1,7 @@
 import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
+import Notification from "../../../components/Notification/Notification";
 import {config} from "../../../config";
 import {useMessages} from "../../../helpers/StatusMessages";
 
@@ -19,13 +20,14 @@ const StripeSubscriptionForm = ({
 	const [messages, addMessage] = useMessages();
 
 	const [priceId, setPriceId] = useState(item.stripePriceId);
+	const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
 	// const [customer, setCustomer] = useState(null);
 	// const [subscriptionData, setSubscriptionData] = useState(null);
 	// const [paymentIntent, setPaymentIntent] = useState();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// setPaymentLoading(true);
+		setPaymentLoading(true);
 		if (!stripe || !elements) {
 			// Stripe.js has not yet loaded.
 			// Make sure to disable form submission until Stripe.js has loaded.
@@ -69,6 +71,12 @@ const StripeSubscriptionForm = ({
 			if (backendError) {
 				addMessage(backendError.message);
 				console.log(backendError.message);
+				setPaymentLoading(false);
+				setNotify({
+					isOpen: true,
+					message: backendError?.message,
+					type: "error",
+				});
 				return;
 			}
 
@@ -94,6 +102,12 @@ const StripeSubscriptionForm = ({
 				if (stripeError) {
 					// show error and collect new card details.
 					console.log("Subscrition Confirm error: ", stripeError.message);
+					setPaymentLoading(false);
+					setNotify({
+						isOpen: true,
+						message: stripeError?.message,
+						type: "error",
+					});
 					return;
 				}
 
@@ -144,6 +158,7 @@ const StripeSubscriptionForm = ({
 					{isPaymentLoading ? "Loading..." : "Subscribe"}
 				</button>
 			</form>
+			<Notification notify={notify} setNotify={setNotify} />
 			{/* <StatusMessages messages={messages} /> */}
 		</>
 	);

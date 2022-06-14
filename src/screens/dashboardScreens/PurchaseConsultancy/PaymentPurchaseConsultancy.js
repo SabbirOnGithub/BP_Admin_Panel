@@ -310,7 +310,7 @@ export default function PaymentPurchaseConsultancy(props) {
 		}
 	);
 
-	const paymentDesc = createOrder?.name + "   USD " + amountString;
+	const paymentDesc = "USD " + amountString;
 	const paypalPlanId = createOrder?.paypalPlanId;
 
 	const paypalSubscribe = (data, actions) => {
@@ -488,7 +488,9 @@ export default function PaymentPurchaseConsultancy(props) {
 										Subscription : {createOrder?.subscriptionType}
 									</h1>
 								)}
-
+								<h1 style={{alignSelf: "center", textAlign: "center"}}>
+									Amount to Pay : {paymentDesc}
+								</h1>
 								{/* <h1 style={{alignSelf: "center", textAlign: "center"}}>
 									Amount : USD {amountString}{" "}
 								</h1>
