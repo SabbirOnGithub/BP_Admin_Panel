@@ -1,91 +1,92 @@
-import React, { useEffect } from 'react'
-import { Grid, CircularProgress } from '@material-ui/core';
+import {CircularProgress, Grid} from "@material-ui/core";
+import {useEffect} from "react";
 import Controls from "../../../components/controls/Controls";
-import { useForm, Form } from '../../../components/UseForm/useForm';
-
+import {Form, useForm} from "../../../components/UseForm/useForm";
 
 const initialFValues = {
-    id: '',
-    name: "",
-    isActive: false,
-}
+	id: "",
+	name: "",
+	isActive: false,
+	slug: "",
+};
 
 export default function MenuForm(props) {
-    const { addOrEdit, recordForEdit, loadingSave } = props
+	const {addOrEdit, recordForEdit, loadingSave} = props;
 
-    const validate = (fieldValues = values) => {
-        let temp = { ...errors }
-        if ('name' in fieldValues)
-            temp.name = fieldValues.name ? "" : "This field is required."
-        setErrors({
-            ...temp
-        })
-        if (fieldValues === values)
-            return Object.values(temp).every(x => x === "")
-    }
+	const validate = (fieldValues = values) => {
+		let temp = {...errors};
+		if ("name" in fieldValues)
+			temp.name = fieldValues.name ? "" : "This field is required.";
+		setErrors({
+			...temp,
+		});
+		if (fieldValues === values)
+			return Object.values(temp).every((x) => x === "");
+	};
 
-    const {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm
-    } = useForm(initialFValues, true, validate);
+	const {values, setValues, errors, setErrors, handleInputChange, resetForm} =
+		useForm(initialFValues, true, validate);
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        // console.log(values)
-        if (validate()) {
-            // console.log(values)
-            addOrEdit(values, resetForm);
-        }
-    }
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		// console.log(values)
+		if (validate()) {
+			// console.log(values)
+			addOrEdit(values, resetForm);
+		}
+	};
 
-    useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
-                ...recordForEdit
-            })
-    }, [recordForEdit, setValues])
+	useEffect(() => {
+		if (recordForEdit != null)
+			setValues({
+				...recordForEdit,
+			});
+	}, [recordForEdit, setValues]);
 
-    return (
-        <Form onSubmit={handleSubmit}>
-            <Grid container>
-                <Grid item xs={12}>
-                    <Controls.Input
-                        name="name"
-                        label="Name"
-                        value={values.name}
-                        onChange={handleInputChange}
-                        error={errors.name}
-                    />
-                    
-                    <Controls.Checkbox
-                        name="isActive"
-                        label="Active"
-                        value={values.isActive}
-                        onChange={handleInputChange}
-                        error={errors.isActive}
-                    />
-                   
-                    <div>
-                        {loadingSave ? (
-                            <CircularProgress size={26} />
-                        ) : (<>
-                            <Controls.Button
-                                type="submit"
-                                text="Submit" />
-                            <Controls.Button
-                                text="Reset"
-                                color="default"
-                                onClick={resetForm} />
-                        </>
-                            )
-                        }
-                    </div>
-                </Grid>
-            </Grid>
-        </Form>
-    )
+	return (
+		<Form onSubmit={handleSubmit}>
+			<Grid container>
+				<Grid item xs={12}>
+					<Controls.Input
+						name="name"
+						label="Name"
+						value={values.name}
+						onChange={handleInputChange}
+						error={errors.name}
+					/>
+
+					<Controls.Input
+						name="slug"
+						label="Slug"
+						value={values.slug}
+						onChange={handleInputChange}
+						error={errors.slug}
+					/>
+
+					<Controls.Checkbox
+						name="isActive"
+						label="Active"
+						value={values.isActive}
+						onChange={handleInputChange}
+						error={errors.isActive}
+					/>
+
+					<div>
+						{loadingSave ? (
+							<CircularProgress size={26} />
+						) : (
+							<>
+								<Controls.Button type="submit" text="Submit" />
+								<Controls.Button
+									text="Reset"
+									color="default"
+									onClick={resetForm}
+								/>
+							</>
+						)}
+					</div>
+				</Grid>
+			</Grid>
+		</Form>
+	);
 }

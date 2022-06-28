@@ -123,9 +123,9 @@ const saveUser = (item, id) => async (dispatch) => {
 	try {
 		dispatch({type: USER_SAVE_REQUEST, payload: item});
 		if (!id) {
-			console.log("create");
+			// console.log("create");
 			//eslint-disable-next-line
-			const formatData = delete item.id;
+			// const formatData = delete item.id;
 			const {data} = await axiosWithToken.post("/User/AddUser", item);
 			// console.log(data)
 			if (data.status === true) {

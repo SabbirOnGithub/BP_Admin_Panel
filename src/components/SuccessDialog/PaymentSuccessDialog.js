@@ -46,7 +46,7 @@ export default function PaymentSuccessDialog(props) {
 	// 	);
 	// }
 
-	console.log("success Details: " + JSON.stringify(details, undefined, 4));
+	// console.log("success Details: " + JSON.stringify(details, undefined, 4));
 
 	return (
 		<>

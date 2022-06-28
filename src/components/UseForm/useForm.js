@@ -10,8 +10,8 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
 	const handleInputChange = (e) => {
 		// e.target.name === "file" && console.log(e.target.files[0])
 		const {name, value} = e.target;
-		console.log(name);
-		console.log(value);
+		// console.log(name);
+		// console.log(value);
 		// console.log(typeof e.target.value);
 		setValues({
 			...values,

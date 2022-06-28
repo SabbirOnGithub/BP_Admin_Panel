@@ -72,8 +72,10 @@ export default function UserForm(props) {
 		}
 	};
 
+	const [isCreate, setIsCreate] = React.useState(true);
+
 	useEffect(() => {
-		if (recordForEdit != null)
+		if (recordForEdit != null) {
 			!recordForEdit.password
 				? setValues({
 						...recordForEdit,
@@ -82,6 +84,11 @@ export default function UserForm(props) {
 				: setValues({
 						...recordForEdit,
 				  });
+
+			if (recordForEdit.id) {
+				setIsCreate(false);
+			}
+		}
 	}, [recordForEdit, setValues]);
 
 	return (
@@ -102,22 +109,24 @@ export default function UserForm(props) {
 						onChange={handleInputChange}
 						error={errors.lastName}
 					/>
-					{/* <Controls.Input
+					<Controls.Input
 						name="email"
 						label="Email"
 						type="email"
 						value={values?.email}
 						onChange={handleInputChange}
 						error={errors.email}
-						disabled
-					/> */}
-					{/* <Controls.Input
-                        name="username"
-                        label="User Name"
-                        value={values?.username}
-                        onChange={handleInputChange}
-                        error={errors.username}
-                    /> */}
+					/>
+					{!isCreate && (
+						<Controls.Input
+							name="username"
+							label="User Name"
+							value={values?.username}
+							onChange={handleInputChange}
+							error={errors.username}
+						/>
+					)}
+
 					<Controls.Input
 						name="password"
 						label="Password"

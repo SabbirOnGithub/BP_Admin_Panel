@@ -1,7 +1,7 @@
 import {Grid, Paper, TableBody, TableCell, TableRow} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import Controls from "../../../components/controls/Controls";
@@ -172,53 +172,57 @@ export default function UserScreen() {
 			resolve();
 		});
 	//eslint-disable-next-line
-	const addOrEdit = (item, resetForm) => {
-		// console.log(item.id)
-		const formData = new FormData();
-		item.id && formData.append("Id", item.id);
-		formData.append("Username", item.email);
-		formData.append("Password", item.password);
-		formData.append("RoleId", item.roleId);
-		formData.append("firstName", item.firstName);
-		formData.append("lastName", item.lastName);
-		formData.append("IsActive", item.isActive);
-		formData.append("Mobile", item.mobile);
-		formData.append("Email", item.email);
-		formData.append("Address", item.address);
-		formData.append("BusinessName", item.businessName);
-		// append for add/update image
-		if (typeof item.photo === "object") {
-			formData.append("file", item.photo);
-		}
-		// eslint-disable-next-line
-		if (typeof item.photo === "null" || typeof item.pictureUrl === "string") {
-			formData.append("photo", item.photo);
-		}
+	const addOrEdit = async (item, resetForm) => {
+		// console.log("userItem: ", item);
+		try {
+			const formData = new FormData();
+			item.id && formData.append("Id", item.id);
+			formData.append("Username", item.email);
+			formData.append("Password", item.password);
+			formData.append("RoleId", item.roleId);
+			formData.append("firstName", item.firstName);
+			formData.append("lastName", item.lastName);
+			formData.append("IsActive", item.isActive);
+			formData.append("Mobile", item.mobile);
+			formData.append("Email", item.email);
+			formData.append("Address", item.address);
+			formData.append("BusinessName", item.businessName);
+			// append for add/update image
+			if (typeof item.photo === "object") {
+				formData.append("file", item.photo);
+			}
+			// eslint-disable-next-line
+			if (typeof item.photo === "null") {
+				formData.append("photo", item.photo);
+			}
 
-		if (formData) {
-			resetForm();
-			setRecordForEdit(null);
-			setOpenPopup(false);
-			saveItem(formData, item.id).then(() => {
-				// resetForm()
-				// setRecordForEdit(null)
-				// setOpenPopup(false)
-				if (successSave) {
-					setNotify({
-						isOpen: true,
-						message: successSaveMessage,
-						type: "success",
-					});
-				}
+			if (formData) {
+				resetForm();
+				setRecordForEdit(null);
+				setOpenPopup(false);
+				await saveItem(formData, item.id).then(() => {
+					// resetForm()
+					// setRecordForEdit(null)
+					// setOpenPopup(false)
+					if (successSave) {
+						setNotify({
+							isOpen: true,
+							message: successSaveMessage,
+							type: "success",
+						});
+					}
 
-				if (errorSave) {
-					setNotify({
-						isOpen: true,
-						message: "Submition Failed",
-						type: "warning",
-					});
-				}
-			});
+					if (errorSave) {
+						setNotify({
+							isOpen: true,
+							message: errorSave,
+							type: "error",
+						});
+					}
+				});
+			}
+		} catch (error) {
+			console.log("UserForm-Error: ", error);
 		}
 	};
 

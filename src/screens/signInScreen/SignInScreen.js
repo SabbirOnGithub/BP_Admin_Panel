@@ -45,6 +45,9 @@ function SignInScreen(props) {
 				// res && console.log(userInfo)
 			});
 	};
+	const getYear = () => {
+		return new Date().getFullYear();
+	};
 	useEffect(() => {
 		if (Auth.validAdmin()) {
 			props.history.push("/admin");
@@ -55,15 +58,14 @@ function SignInScreen(props) {
 	});
 
 	//check redirect from sign in
-	const params = new URLSearchParams(window.location.search)
-	const fromPayment = params.get('fromPayment');
+	const params = new URLSearchParams(window.location.search);
+	const fromPayment = params.get("fromPayment");
 
-	const isPaymentCheck = localStorage.getItem('fromPayment');
+	const isPaymentCheck = localStorage.getItem("fromPayment");
 
-    if (!isPaymentCheck && fromPayment) {
-      localStorage.setItem('fromPayment',true);
-    }
-	
+	if (!isPaymentCheck && fromPayment) {
+		localStorage.setItem("fromPayment", true);
+	}
 
 	return (
 		<Grid container className={classes.container}>
@@ -203,7 +205,7 @@ function SignInScreen(props) {
 					</React.Fragment>
 				</div>
 				<Typography color="primary" className={classes.copyright}>
-					© 2021, All rights reserved.
+					© {getYear()}, All rights reserved.
 				</Typography>
 			</div>
 		</Grid>
