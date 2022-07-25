@@ -107,7 +107,7 @@ export default function CtaPackageMonthlyYearlyForm(props) {
 
                     <Controls.Input
                         name="paypalMonthlyPlanId"
-                        label="Paypal Monthly Price Id"
+                        label="Paypal Monthly Plan Id"
                         value={values.paypalMonthlyPlanId}
                         onChange={handleInputChange}
                     />
@@ -123,14 +123,14 @@ export default function CtaPackageMonthlyYearlyForm(props) {
 
                     <Controls.Input
                         name="yearlyPriceId"
-                        label="Stripe Yearly Plan Id"
+                        label="Stripe Yearly Price Id"
                         value={values.yearlyPriceId}
                         onChange={handleInputChange}
                     />
 
                     <Controls.Input
                         name="paypalYearlyPlanId"
-                        label="Paypal Monthly Plan Id"
+                        label="Paypal Yearly Plan Id"
                         value={values.paypalYearlyPlanId}
                         onChange={handleInputChange}
                     />

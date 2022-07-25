@@ -1,14 +1,14 @@
-import {Grid} from "@material-ui/core";
-import {makeStyles} from "@material-ui/styles";
-import {Elements} from "@stripe/react-stripe-js";
-import {loadStripe} from "@stripe/stripe-js";
-import React, {useEffect} from "react";
-import {PayPalButton} from "react-paypal-button-v2";
+import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React, { useEffect } from "react";
+import { PayPalButton } from "react-paypal-button-v2";
 import PaypalExpressBtn from "react-paypal-express-checkout";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import Loading from "../../../../components/Loading/Loading";
-import {Form} from "../../../../components/UseForm/useForm";
-import {config} from "../../../../config";
+import { Form } from "../../../../components/UseForm/useForm";
+import { config } from "../../../../config";
 import StripeCardForm from "./StripeCardForm";
 import StripeSubscriptionForm from "./StripeSubscriptionForm";
 
@@ -275,8 +275,7 @@ export default function CtaFormStepFive(props) {
 										</div>
 									</Form>
 									<p className="payment-option-separator">
-										{" "}
-										<span>Or pay with card</span>{" "}
+										<span>Or pay with card </span>
 									</p>
 									<div style={{margin: 0, width: "100%"}}>
 										<Elements stripe={stripePromise}>
